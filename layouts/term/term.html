@@ -3,13 +3,6 @@
         {{ partial "components/post-page-header.html" . }}
         {{ partial "components/breadcrumbs.html" . }}
 
-        {{ with .Params.description }}
-            <div class="taxonomy-description markdown-body">
-                {{ . | markdownify }}
-                <hr />
-            </div>
-        {{ end }}
-
         <div class="term-list">
             <ul class="term-list-posts">
                 {{ range where .Pages "Section" "ne" "cards" }}
