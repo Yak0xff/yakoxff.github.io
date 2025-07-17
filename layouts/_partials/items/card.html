@@ -12,7 +12,7 @@
         </h3>
         <div class="text-base m-0">{{ partial "components/tags" $ctx }}</div>
     </div>
-    <div class="text-lg mt-2 leading-loose markdown-body">
+    <div class="mt-2 leading-loose markdown-body">
         {{ if $showSummary }}{{ $ctx.Summary }}{{ else }}{{ $ctx.Content }}{{ end }}
     </div>
 </div>
