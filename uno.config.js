@@ -52,4 +52,15 @@ export default defineConfig({
       dark: 'media'
     }),
   ],
+  theme: {
+    colors: {
+      blockBg: 'var(--block-background-color)',
+      bg: 'var(--background-color)',
+      textColor: 'var(--text-color)'
+    }
+  },
+  shortcuts: {
+    'small-button': 'bg-blockBg px-2 py-1 no-underline hover:no-underline rounded border border-solid border-bg hover:border-textColor transition',
+    'round-sticker': 'bg-blockBg rounded-full shadow-sm p-4'
+  }
 })
