@@ -2,18 +2,23 @@
     <article class="fiction-list-page">
         {{ partial "header.html" . }}
         <div id="fiction-section">
-            <div class="my-[2rem] markdown-body">
+            <div class="my-8 markdown-body">
             {{ with .Content }}{{ . }}{{ end }}
             </div>
-            <div class="flex flex-wrap justify-around gap-[2rem]">
+            <div class="flex flex-wrap justify-around gap-8">
                 {{- $fictions := .Site.GetPage "section" "fictions" }}
                 {{- range $fictions.Pages }}
 
-                {{ $rotationDeg := add (math.Floor (mul (math.Rand) 7)) -4 }}  {{/* -4 to +4 */}}
-                {{ $opacity := add (div (math.Floor (mul (math.Rand) 5)) 10) 0.6 }}  {{/* 0.6 to 1.0 */}}
+                {{ $rotationDeg := add (math.Floor (mul (math.Rand) 7)) -4 }}
+                {{- $deg := int $rotationDeg -}}
+                {{- $rotateClass := cond (ge $deg 0)
+                    (printf "rotate-%d" $deg)
+                    (printf "-rotate-%d" (mul -1 $deg))
+                -}}
 
-                {{ $rotateClass := printf "rotate-[%.1fdeg]" $rotationDeg }}
-                {{ $opacityClass := printf "opacity-[%.1f]" $opacity }}
+                {{ $steps := slice 60 70 80 90 100 }}
+                {{ $opacity := index $steps (int (math.Floor (mul (math.Rand) 5))) }}
+                {{ $opacityClass := printf "opacity-%d" $opacity }}
 
                 <div class="xerox text-center text-2xl font-extrabold {{ $rotateClass }} {{ $opacityClass }}"
                     style="view-transition-name: post-{{ .File.UniqueID }}">

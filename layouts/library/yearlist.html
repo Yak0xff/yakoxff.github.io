@@ -3,7 +3,7 @@
     <article id="library">
       <div id="library-content">
           <h2>{{ .Title }}</h2>  <!-- 显示年份 -->
-          <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-[1rem] my-[1rem]">
+          <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
             {{ $year := .Title }}
             {{ range where .Site.RegularPages "Section" "library" }}
               {{ if eq (printf "%d" .Date.Year) $year }}

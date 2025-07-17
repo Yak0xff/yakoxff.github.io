@@ -1,7 +1,7 @@
 <div{{ if eq .Params.rating 1 }} class="opacity-50 z-0"{{ end }}
   style="view-transition-name: book-{{ .File.UniqueID }}">
   <a href="{{ .Permalink }}" style="view-transition-name: book-{{ .Title }}"
-      class="border-[0.2rem] border-solid rotate-[3deg] shadow-md block
+      class="border-3 border-solid rotate-3 shadow-md block
       hover:rotate-0 hover:-translate-y-2 hover:scale-110 transition
 
       {{ if eq .Params.rating 1 }} relative

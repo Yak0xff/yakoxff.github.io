@@ -3,7 +3,7 @@
   <article id="library">
     <div id="library-content">
         <h2>{{ now.Year }} 年读的书</h2>
-        <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-[1rem] my-[1rem]">
+        <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
           {{ range where .Site.RegularPages "Section" "library" }}
             {{ if eq .Date.Year now.Year }}
             {{ partial "items/book" . }}
@@ -29,7 +29,7 @@
         </div>
 
         <h2>推荐好书</h2>
-        <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-[1rem] my-[1rem]">
+        <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
         {{ range where (where .Site.RegularPages "Section" "library") ".Params.rating" "==" 5 }}
         {{ partial "items/book" . }}
         {{ end }}

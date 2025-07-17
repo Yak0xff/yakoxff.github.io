@@ -1,18 +1,18 @@
 <header id="site-header">
   <!-- Header Title -->
-  <div class="flex flex-col items-center gap-[0.5rem]">
+  <div class="flex flex-col items-center gap-2">
     {{ partial "components/logo" (dict "imageClass" "w-[10rem]") }}
-    <a class="text-[2rem] font-900 text-center tracking-[.15rem]
+    <a class="text-8 font-900 text-center tracking-widest
         xerox underline-offset-10 underline-3"
         href="{{ .Site.LanguagePrefix }}/"
       >{{ .Site.Title }}</a
     >
   </div>
   <!-- Navigation -->
-  <div class="flex justify-center items-center gap-[0.75rem] pl-[1rem]">
-      <nav class="my-[1rem] flex justify-center items-center w-fit rounded-[1rem] overflow-hidden">
+  <div class="flex justify-center items-center gap-3 pl-4">
+      <nav class="my-4 flex justify-center items-center w-fit rounded-4 overflow-hidden">
         {{ range .Site.Params.nav }}
-        <a class="inline-block py-[0.25rem] px-[0.5rem] first:pl-[0.75rem] last:pr-[0.75rem]
+        <a class="inline-block py-1 px-2 first:pl-3 last:pr-3
             block hover:no-underline
             {{ if strings.Contains $.Page.RelPermalink .link }}
             text-[var(--text-color)] bg-[var(--block-background-color)]
