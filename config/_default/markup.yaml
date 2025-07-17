@@ -1,6 +1,11 @@
 goldmark:
   renderer:
     unsafe: true
+  parser:
+    attribute:
+      block: true
+      title: true
+    wrapStandAloneImageWithinParagraph: false
   extensions:
     extras:
       mark:
