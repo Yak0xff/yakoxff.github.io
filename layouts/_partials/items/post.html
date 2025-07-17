@@ -21,7 +21,7 @@
                     {{ end }}
                 </a>
                 {{ if eq .ctx.Section "fictions" }}
-                <span class="font-normal text-[1rem] text-[var(--secondary-text-color)]">小说</span>
+                <span class="font-normal text-4 text-[var(--secondary-text-color)]">小说</span>
                 {{ end }}
             </h2>
         </div>
@@ -34,7 +34,7 @@
         {{ end }}
     </header>
     {{ if $showSummary }}
-        <div class="markdown-body text-[1.1rem]"
+        <div class="markdown-body text-size-lg!"
             style="view-transition-name: post-content-{{ .File.UniqueID }}">
             {{ .ctx.Summary }}
         </div>

@@ -1,4 +1,4 @@
-<footer class="my-[2rem] mx-auto font-mono
+<footer class="my-8 mx-auto font-mono
     md:w-[var(--page-width)] md:flex md:justify-between">
     <!-- copyright -->
     <section>
@@ -8,10 +8,10 @@
     <!-- links -->
     <section class="flex flex-col md:items-end">
         <!-- Internal Links -->
-        <ul class="list-none flex gap-[0.25rem] ps-0 my-[0.5rem] mx-0 md:justify-end">
+        <ul class="list-none flex gap-1 ps-0 my-2 mx-0 md:justify-end">
             {{ range .Site.Params.footerInternalLinks }}
             <li><a href="{{ .link }}" title="{{ .name }}">{{ .name }}</a></li>
-            <li class="font-secondary last:hidden ml-[0.25rem]">/</li>
+            <li class="font-secondary last:hidden ml-1">/</li>
             {{ end }}
             <li class="inline-flex items-center">
                 {{ if eq .Site.Language.Lang "en" }}
@@ -25,10 +25,10 @@
         </ul>
 
         <!-- External Links -->
-        <ul class="list-style-none flex gap-[0.5rem] ps-0 my-[0.5rem] mx-0 md:justify-end">
+        <ul class="list-style-none flex gap-2 ps-0 my-2 mx-0 md:justify-end">
             {{ range .Site.Params.footerExternalLinks }}
             <li class="inline-flex items-center"><a href="{{ .link }}" title="{{ .name }}" target="_blank">
-                <img class="h-[1rem] w-auto inline-block rounded-full grayscale dark:invert" src="{{ .icon }}" />
+                <img class="h-4 w-auto inline-block rounded-full grayscale dark:invert" src="{{ .icon }}" />
             </a></li>
             {{ end }}
         </ul>

@@ -7,19 +7,19 @@
         {{ range (where site.RegularPages "Type" "eq" "posts").GroupByDate "2006" -}}
           <section class="w-full">
             <h1 class="border-b-2 border-b-solid border-[var(--border-color)]
-                py-2 text-[1.5rem] sticky top-0 bg-[var(--background-color)] z-1
+                py-2 text-6 sticky top-0 bg-[var(--background-color)] z-1
                 flex justify-between items-center">
                 {{ .Key }}
-                <small class="font-mono font-secondary text-[0.8rem]">{{ T "archivePage.postCountAnnual" (len .Pages) }}</small>
+                <small class="font-mono font-secondary text-3">{{ T "archivePage.postCountAnnual" (len .Pages) }}</small>
             </h1>
 
             {{ range .Pages.GroupByDate "January" }}
             <details class="posts-month-archive"{{ if gt $remainingMonthsToOpen 0 }} open{{ end }}>
                 <summary class="flex items-center border-b border-b-dashed border-[var(--border-color)] py-2 px-1">
-                    <h2 class="text-[1.1rem] inline-block w-full m-0
+                    <h2 class="text-size-lg inline-block w-full m-0
                         flex justify-between items-center">
                         {{ .Key }}
-                        <small class="font-mono font-secondary text-[0.8rem]">{{ T "archivePage.postCountMonthly" (len .Pages) }}</small>
+                        <small class="font-mono font-secondary text-3">{{ T "archivePage.postCountMonthly" (len .Pages) }}</small>
                     </h2>
                 </summary>
                 <ul class="ps-0 flex flex-col gap-2 list-none leading-relaxed">

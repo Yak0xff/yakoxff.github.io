@@ -7,7 +7,7 @@
       >
         {{ if .Params.banner }}
             {{ partial "components/logo" (dict
-                "class" "block round-sticker w-[5rem] h-[5rem] md:w-[7rem] md:h-[7rem] right-[-3rem] md:right-[-5rem] top-[1rem] absolute rotate-[3.0deg]"
+                "class" "block round-sticker w-14 h-14 lg:w-28 lg:h-28 right-2 lg:-right-20 top-2 lg:top-4 absolute rotate-[3.0deg]"
                 "imageClass" "block w-full"
             ) }}
         {{ else }}
@@ -19,10 +19,10 @@
 
         {{ partial "posts/banner" . }}
         <!-- Title and Subtitle -->
-        <h1 class="text-[2rem] font-900 xerox">
+        <h1 class="text-size-3xl font-900 xerox">
           <span data-pagefind-meta="title">{{ .Title }}</span>
           {{ with .Params.subtitle }}
-            <small class="block font-secondary font-italic text-[1.2rem]">{{ . }}</small>
+            <small class="block font-secondary font-italic text-size-xl">{{ . }}</small>
           {{ end }}
         </h1>
         <!-- Post Meta -->
@@ -35,7 +35,7 @@
       </header>
 
       <!-- Post Content -->
-      <div class="min-h-[60%] leading-[2] mb-8 markdown-body"
+      <div class="min-h-[60%] leading-loose mb-8 markdown-body"
           style="view-transition-name: post-content-{{ .File.UniqueID }}">
         <!-- TOC -->
         {{ partial "posts/toc" . }}
