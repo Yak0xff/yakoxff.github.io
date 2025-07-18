@@ -1,4 +1,24 @@
-<table class="site-stats-table">
+<style>
+.site-stats-table td {
+  padding: 0.5rem;
+  text-align: left;
+}
+.site-stats-table td:nth-child(2n) {
+  text-align: right;
+}
+.number-pill {
+    text-align: center;
+    display: inline-block;
+    line-height: 1.75rem;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 0 0.5rem;
+    background-color: var(--block-background-color);
+    font-size: 1rem;
+}
+</style>
+
+<table class="site-stats-table w-full max-w-[700px] border-collapse mb-6">
   <tbody>
     <tr>
         <td>页面总数</td>
@@ -34,29 +54,3 @@
     </tr>
   </tbody>
 </table>
-
-<style>
-.site-stats-table {
-  width: 100%;
-  max-width: 700px;
-  border-collapse: collapse;
-  margin-bottom: 1.5rem;
-}
-.site-stats-table td {
-  padding: 0.5rem;
-  text-align: left;
-}
-.site-stats-table td:nth-child(2n) {
-  text-align: right;
-}
-.number-pill {
-    text-align: center;
-    display: inline-block;
-    line-height: 1.75rem;
-    box-sizing: border-box;
-    border-radius: 5px;
-    padding: 0 0.5rem;
-    background-color: var(--block-background-color);
-    font-size: 1rem;
-}
-</style>
