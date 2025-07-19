@@ -1,7 +1,7 @@
 {{ define "main" }}
   {{ partial "header.html" . }}
-  <article id="library">
-    <div id="library-content">
+  <article class="pagefind-exclude">
+    <div>
         <h2>{{ now.Year }} 年读的书</h2>
         <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
           {{ range where .Site.RegularPages "Section" "library" }}
