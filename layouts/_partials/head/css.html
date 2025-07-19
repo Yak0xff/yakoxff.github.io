@@ -27,12 +27,6 @@
 <style>{{ .Content | safeCSS }}</style>
 {{ end }}
 
-{{ with resources.Get "css/global.scss" | css.Sass | minify }}
+{{ with resources.Get "css/main.scss" | css.Sass | minify }}
 <style>{{ .Content | safeCSS }}</style>
 {{ end }}
-
-{{- if or (in .Section "posts") (in .Section "cards") (in .Section "fictions") (in .Section "library") (eq .Type "single") }}
-{{ with resources.Get "css/content.scss" | css.Sass | minify }}
-<style>{{ .Content | safeCSS }}</style>
-{{ end }}
-{{- end }}
