@@ -1,7 +1,7 @@
 {{ define "main" }}
-    <article class="posts">
+    <article>
       {{ partial "header.html" . }}
-      <div id="posts-archive" class="posts-list">
+      <div class="posts-list pagefind-exclude">
         <!-- Post Archive List -->
         {{ $remainingMonthsToOpen := 3 }}
         {{ range (where site.RegularPages "Type" "eq" "posts").GroupByDate "2006" -}}

@@ -31,6 +31,7 @@ export default defineConfig({
   },
   safelist: [
     'text-sm', 'text-md', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl',
+    'text-base!',
 
     ...range(10, i => `opacity-${i * 10}`),
     ...rangeWithPrefixes(5, 'rotate', ['', '-']),

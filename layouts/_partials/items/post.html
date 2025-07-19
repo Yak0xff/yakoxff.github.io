@@ -33,10 +33,14 @@
         </div>
         {{ end }}
     </header>
-    {{ if $showSummary }}
-        <div class="markdown-body text-size-lg!"
-            style="view-transition-name: post-content-{{ .File.UniqueID }}">
+    {{ if or $showSummary .ctx.Params.description }}
+    <div class="markdown-body text-size-lg!"
+        style="view-transition-name: post-content-{{ .File.UniqueID }}">
+        {{ if $showSummary }}
             {{ .ctx.Summary }}
-        </div>
+        {{ else if .ctx.Params.description }}
+            {{ .ctx.Params.description }}
+        {{ end }}
+    </div>
     {{ end }}
 </div>
