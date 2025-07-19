@@ -1,5 +1,5 @@
 <!-- Latest Posts -->
-<section id="latest-posts">
+<section class="pagefind-exclude">
     <div class="flex flex-col my-4">
         {{ $firstPost := true }} <!-- 初始化标记 -->
         {{ range first 8 (where site.RegularPages "Type" "in" site.Params.mainSections) }}
