@@ -1,7 +1,7 @@
 {{ define "main" }}
-    <article class="fiction-list-page">
+    <article>
         {{ partial "header.html" . }}
-        <div id="fiction-section">
+        <div class="pagefind-exclude">
             <div class="my-8 markdown-body">
             {{ with .Content }}{{ . }}{{ end }}
             </div>
