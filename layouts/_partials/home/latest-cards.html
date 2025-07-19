@@ -6,11 +6,14 @@
         {{- $paginator := .Paginate $cards.Pages 4 }}  <!-- 对该部分内容进行分页 -->
         {{- range $paginator.Pages }}
           <div class="flex-shrink-0 w-[50%]">
-              {{ partial "items/card" (dict "context" . "summary" true) }}
+              {{ partial "items/card" (dict
+                "context" .
+                "summary" true
+                "summaryClass" "text-base!") }}
           </div>
         {{- end }}
     </div>
-    <div style="margin: 1rem 0">
+    <div class="py-4">
         <a href="/cards" class="small-button"
             data-umami-event="➕ Click more cards link">
             {{ T "moreLinks.cards" }} →
