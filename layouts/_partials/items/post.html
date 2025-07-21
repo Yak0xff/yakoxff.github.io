@@ -26,10 +26,8 @@
             </h2>
         </div>
         {{ with .ctx.Params.categories }}
-        <div class="my-2">
-            <a href="/categories/{{ . }}" style="padding: 0.1rem 0.3rem;">
-                {{ . }}
-            </a>
+        <div class="my-4">
+            {{ partial "components/category-pill" $ctx }}
         </div>
         {{ end }}
     </header>
