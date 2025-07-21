@@ -9,7 +9,7 @@
             {{ partial "home/home-nav-item" (dict
                 "text" (T "postNav.featured")
                 "link" "featured"
-                "active" (eq "/featured" $.Page.RelPermalink)
+                "active" (eq "/featured/" $.Page.RelPermalink)
             ) }}
             {{ partial "home/home-nav-item" (dict
                 "text" (T "postNav.categories")
