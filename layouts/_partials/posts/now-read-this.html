@@ -6,10 +6,10 @@
       <a class="font-800" href="{{ .RelPermalink }}" data-umami-event="🤔 Click Related Post">
           {{ .LinkTitle }}
           {{ with .Params.subtitle }}
-              <span class="font-secondary font-normal">：{{ . }}</span>
+              <span class="text-secondary font-normal">：{{ . }}</span>
           {{ end }}
       </a>
-      <span class="font-secondary">⏱️ {{ .ReadingTime }}min </span>
+      <span class="text-secondary">⏱️ {{ .ReadingTime }}min </span>
   </div>
   <div class="font-light">
       <p>{{ .Summary | plainify }}</p>

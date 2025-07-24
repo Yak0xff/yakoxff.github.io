@@ -41,7 +41,7 @@
 <div class="w-full max-w-[700px] my-4">
     <div class="flex items-center gap-4 mb-4">
         <div class="text-size-2xl flex-shrink-0">☀️</div>
-        <div class="flex gap-2 w-full h-6 invert-if-dark">
+        <div class="flex gap-2 w-full h-6 dark:invert">
             {{ range $fuzzyTimes }}
                 {{ $count := index $timeCounts .label }}
                 {{ if gt $total 0 }}
@@ -68,7 +68,7 @@
             {{ if gt $count 0 }}
                 {{ $percentage := div (mul $count 100.0) $total }}
                 <div class="flex flex-col items-center text-size-xs
-                    font-secondary font-mono"
+                    text-secondary font-mono"
                     style="width: {{ printf "%.1f" $percentage }}%;">
                     <span class="font-600 text-[var(--primary-text-color)]">{{ $count }}</span>
                 </div>

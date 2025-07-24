@@ -28,7 +28,7 @@ slug: zero-js-chart
 <div class="time-chart-container">
 	<div class="time-chart-wrapper">
 		<div class="time-icon">☀️</div>
-		<div class="time-chart-bar invert-if-dark">
+		<div class="time-chart-bar dark:invert">
 			<!-- for each time segement -->
 			<div class="time-segment"
 				 style="width: {{$percentage}}">
@@ -38,10 +38,10 @@ slug: zero-js-chart
 		</div>
 		<div class="time-icon">🌙</div>
 	</div>
-	
+
 	<div class="time-counts">
 		<!-- for each time segement -->
-		<div class="count-item" 
+		<div class="count-item"
 		 style="width: {{$percentage}}">
 			<span class="count-number">{{$count}}</span>
 		</div>

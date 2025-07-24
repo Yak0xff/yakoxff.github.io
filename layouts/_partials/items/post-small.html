@@ -1,9 +1,9 @@
 <li class="flex justify-between text-size-lg">
     <a href="{{ .RelPermalink }}" data-umami-event="🗃️ Click Post Link from Category Page">
-        {{ .Title }}{{ with .Params.subtitle }}：<span class="font-secondary">{{. }}</span>
+        {{ .Title }}{{ with .Params.subtitle }}：<span class="text-secondary">{{. }}</span>
         {{ end }}
     </a>
-    <time class="text-size-sm font-mono font-secondary flex-shrink-0">
+    <time class="text-size-sm font-mono text-secondary flex-shrink-0">
         {{ .Date.Format "2006-1-2" }}
     </time>
 </li>

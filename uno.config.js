@@ -1,4 +1,4 @@
-import { defineConfig, presetWind3, presetAttributify } from 'unocss'
+import { defineConfig, presetWind3, presetAttributify, presetWebFonts } from 'unocss'
 
 const range = (n, fn) => Array.from({ length: n }, (_, i) => fn(i));
 
@@ -16,13 +16,18 @@ export default defineConfig({
     presetAttributify(),
     presetWind3({
       dark: 'media'
-    }),
+    })
   ],
   theme: {
     colors: {
       blockBg: 'var(--block-background-color)',
       bg: 'var(--background-color)',
-      textColor: 'var(--text-color)'
+      textColor: 'var(--text-color)',
+      secondary: 'var(--secondary-text-color)'
+    },
+    fontFamily: {
+      mono: ["Courier New", "Courier", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Lucida Console"],
+      serif: ["Noto Serif", "Noto Serif SC", "serif"],
     }
   },
   shortcuts: {
