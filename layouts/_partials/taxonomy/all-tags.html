@@ -34,9 +34,9 @@
 
   <!-- Display categorized tags -->
     {{ range $category, $categoryTags := $categorizedTags }}
-      <div class="taxonomy-category">
-        <h3 class="taxonomy-category-title">{{ $category }}</h3>
-        <div class="taxonomy-tags">
+      <div>
+        <h3>{{ $category }}</h3>
+        <div class="flex flex-wrap gap-2">
           {{ range $categoryTags }}
           {{ partial "taxonomy/tag-pill" . }}
           {{ end }}
