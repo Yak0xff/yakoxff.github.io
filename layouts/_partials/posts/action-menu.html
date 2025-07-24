@@ -2,7 +2,7 @@
   <!-- 操作按钮组 -->
   <div class="flex justify-between items-center mb-6">
     <div class="flex gap-2">
-      <button class="invert-if-dark flex items-center justify-center gap-1.5 min-w-12 h-12 px-2 border-none bg-transparent text-gray-600 cursor-pointer relative transition-all duration-200 hover:bg-black/5 hover:rounded-lg group" id="comments-toggle" title="评论">
+      <button class="dark:invert flex items-center justify-center gap-1.5 min-w-12 h-12 px-2 border-none bg-transparent text-gray-600 cursor-pointer relative transition-all duration-200 hover:bg-black/5 hover:rounded-lg group" id="comments-toggle" title="评论">
         <img src="/img/comments.svg" width="20" height="20" alt="评论" class="brightness-40 flex-shrink-0 dark:brightness-70 dark:contrast-120" />
         <span class="text-xs font-bold text-gray-600 min-w-4 text-center bg-white/90 rounded-xl px-1.5 py-0.5 shadow-sm dark:text-gray-400 dark:bg-black/70" id="comment-count">...</span>
         <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 translate-y-1 bg-black/80 text-white px-2.5 py-1.5 rounded text-xs whitespace-nowrap opacity-0 invisible transition-all duration-300 pointer-events-none mb-2 z-1000 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 dark:bg-white/90 dark:text-black">评论</div>
@@ -10,7 +10,7 @@
 
       <!-- 点赞按钮 -->
       <div class="relative" id="like-container-{{ .File.UniqueID | urlize }}">
-        <button class="invert-if-dark flex items-center justify-center gap-1.5 min-w-12 h-12 px-2 border-none bg-transparent text-gray-600 cursor-pointer relative transition-all duration-200 hover:bg-black/5 hover:rounded-lg group"
+        <button class="dark:invert flex items-center justify-center gap-1.5 min-w-12 h-12 px-2 border-none bg-transparent text-gray-600 cursor-pointer relative transition-all duration-200 hover:bg-black/5 hover:rounded-lg group"
                 onclick="sendLike('{{ .File.UniqueID | urlize }}')"
                 id="like-btn-{{ .File.UniqueID | urlize }}"
                 title="为这篇文章献上心脏"
@@ -23,11 +23,11 @@
     </div>
 
     <div class="flex gap-1">
-      <a href="https://t.me/teaparty418" target="_blank" class="invert-if-dark flex items-center justify-center gap-1.5 min-w-8 h-8 px-1 border-none bg-transparent text-gray-600 cursor-pointer relative transition-all duration-200 hover:opacity-70 group" title="Telegram 群组" data-umami-event="✈️ Click Telegram link from post tabs">
+      <a href="https://t.me/teaparty418" target="_blank" class="dark:invert flex items-center justify-center gap-1.5 min-w-8 h-8 px-1 border-none bg-transparent text-gray-600 cursor-pointer relative transition-all duration-200 hover:opacity-70 group" title="Telegram 群组" data-umami-event="✈️ Click Telegram link from post tabs">
         <img src="/img/paper-plane.svg" width="16" height="16" alt="Telegram" class="brightness-40 flex-shrink-0 dark:brightness-70 dark:contrast-120" />
         <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 translate-y-1 bg-black/80 text-white px-2.5 py-1.5 rounded text-xs whitespace-nowrap opacity-0 invisible transition-all duration-300 pointer-events-none mb-2 z-1000 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 dark:bg-white/90 dark:text-black">Telegram 群组</div>
       </a>
-      <a href="/sponsor" class="invert-if-dark flex items-center justify-center gap-1.5 min-w-8 h-8 px-1 border-none bg-transparent text-gray-600 cursor-pointer relative transition-all duration-200 hover:opacity-70 group" title="赞助作者" data-umami-event="💗 Click sponsor button from post tabs">
+      <a href="/sponsor" class="dark:invert flex items-center justify-center gap-1.5 min-w-8 h-8 px-1 border-none bg-transparent text-gray-600 cursor-pointer relative transition-all duration-200 hover:opacity-70 group" title="赞助作者" data-umami-event="💗 Click sponsor button from post tabs">
         <img src="/img/coffee.svg" width="16" height="16" alt="赞助" class="brightness-40 flex-shrink-0 dark:brightness-70 dark:contrast-120" />
         <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 translate-y-1 bg-black/80 text-white px-2.5 py-1.5 rounded text-xs whitespace-nowrap opacity-0 invisible transition-all duration-300 pointer-events-none mb-2 z-1000 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 dark:bg-white/90 dark:text-black">赞助作者</div>
       </a>
