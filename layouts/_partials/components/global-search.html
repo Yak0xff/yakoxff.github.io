@@ -11,7 +11,6 @@
 #global-search.shown {
     z-index: 15!important;
     display: flex!important;
-    animation: fade-in 0.3s ease-in-out!important;
 }
 </style>
 
@@ -40,12 +39,14 @@
 
         const turnOn = () => {
           search.classList.add("shown");
+          search.classList.add("animation-fade-in");
           overlay.classList.add("shown");
 
           umami.track('🔍 Open search panel')
         };
         const turnOff = () => {
           search.classList.remove("shown");
+          search.classList.remove("animation-fade-in");
           overlay.classList.remove("shown");
         };
 
