@@ -28,6 +28,14 @@ export default defineConfig({
     fontFamily: {
       mono: ["Courier New", "Courier", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Lucida Console"],
       serif: ["Noto Serif", "Noto Serif SC", "serif"],
+    },
+    animation: {
+      kayframes: {
+        fadeIn: '{from { opacity: 0; transform: translateY(1rem); } to { opacity: 1;transform: translateY(0); }}'
+      },
+      counts: {
+        infinite: 'infinite'
+      }
     }
   },
   shortcuts: {
@@ -37,6 +45,8 @@ export default defineConfig({
   safelist: [
     'text-sm', 'text-md', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl',
     'text-base!',
+
+    'animate-heart-beat', 'animate-fade-in',
 
     ...range(10, i => `opacity-${i * 10}`),
     ...rangeWithPrefixes(5, 'rotate', ['', '-']),
