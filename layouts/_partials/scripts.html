@@ -6,3 +6,7 @@
 {{ partial "scripts/littlefoot-js" . }}
 {{ partial "scripts/fancybox-js" . }}
 {{ partial "scripts/aplayer-js" . }}
+
+{{ with resources.Get "js/tooltip.js" }}
+<script>{{ .Content | safeJS }}</script>
+{{ end }}
