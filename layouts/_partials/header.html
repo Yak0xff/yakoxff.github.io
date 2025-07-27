@@ -9,11 +9,11 @@
     >
   </div>
   <!-- Navigation -->
-  <div class="flex justify-center items-center gap-3 pl-4">
+  <div class="flex justify-center items-center gap-3 pl-4 text-size-sm md:text-size-base">
       <nav class="my-4 flex justify-center items-center w-fit rounded-4 overflow-hidden">
         {{ range .Site.Params.nav }}
-        <a class="inline-block py-1 px-2 first:pl-3 last:pr-3
-            block hover:no-underline
+        <a class="inline-block py-1 px-[0.35rem] md:px-2 first:pl-3 last:pr-3
+            block hover:no-underline text-nowrap
             {{ if strings.Contains $.Page.RelPermalink .link }}
             text-[var(--text-color)] bg-[var(--block-background-color)]
             {{ else }}

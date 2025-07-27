@@ -13,7 +13,7 @@
         <ul class="list-none flex gap-1 ps-0 my-2 mx-0 md:justify-end">
             {{ range .Site.Params.footerInternalLinks }}
             <li><a href="{{ .link }}" title="{{ .name }}">{{ .name }}</a></li>
-            <li class="text-secondary last:hidden ml-1">/</li>
+            <li class="text-secondary last:hidden">·</li>
             {{ end }}
             <li class="inline-flex items-center">
                 {{ if eq .Site.Language.Lang "en" }}

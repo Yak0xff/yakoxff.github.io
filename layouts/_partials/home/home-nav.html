@@ -1,5 +1,6 @@
 <div id="home-nav">
-    <ul class="relative w-full ps-0 flex list-none gap-1">
+    <ul class="relative w-full ps-0 flex list-none gap-1
+        text-size-sm md:text-size-base">
         {{ partial "home/home-nav-item" (dict
             "text" (T "postNav.latest")
             "link" ""
@@ -19,7 +20,7 @@
                     (strings.HasPrefix $.Page.RelPermalink "/tags/"))
             ) }}
         {{ end }}
-        <li id="search-instruction" class="text-size-sm text-secondary ml-2">
+        <li id="search-instruction" class="cursor-pointer text-size-sm text-secondary ml-2">
             <span>{{ T "searchInstruction" }}</span>
         </li>
         <li class="absolute right-0 dark:invert">
