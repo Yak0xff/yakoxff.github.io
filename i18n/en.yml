@@ -24,3 +24,4 @@ termPage:
   cards: 'Cards about this topic'
   books: "Books I've read about this topic"
 RSS: RSS
+statsTooltip: Insights
