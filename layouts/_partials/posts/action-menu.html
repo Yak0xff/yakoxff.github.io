@@ -56,6 +56,7 @@
 // 初始化所有功能
 function initializeFeatures() {
   const pageId = "{{ .File.UniqueID | urlize }}";
+  console.log(pageId)
   if (!pageId) return;
 
   // 评论展开/收起功能
@@ -134,7 +135,8 @@ function initializeLikes(pageId) {
       if (localStorage.getItem("liked_" + pageId)) {
         setLikedState();
       }
-    } catch {
+    } catch(e) {
+      console.log(e);
       elements.count.innerText = "❌";
     }
   }
@@ -152,7 +154,8 @@ function initializeLikes(pageId) {
       localStorage.setItem("liked_" + pageId, "1");
       elements.count.innerText = data.likes ?? 1;
       setLikedState();
-    } catch {
+    } catch(e) {
+      console.log(e);
       alert("点赞失败，请稍后再试");
     }
   };
