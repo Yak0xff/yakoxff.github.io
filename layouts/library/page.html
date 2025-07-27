@@ -27,14 +27,12 @@
             </p>
         </header>
         <div class="markdown-body">
-            <div class="leading-loose">
-                {{ .Content }}
-            </div>
-            <!-- Endnotes -->
+            <div class="leading-loose">{{ .Content }}</div>
             {{ partial "posts/endnotes" . }}
-            <div class="text-size-base text-secondary">
-                <p>于 {{ partial "components/date" . }} 读完</p>
-            </div>
+        </div>
+        <div class="text-size-base text-secondary md:flex md:justify-between">
+            <p>于 {{ partial "components/date" . }} 读完</p>
+            <p>{{ partial "components/tags" . }}</p>
         </div>
         {{ partial "posts/comment.html" . }}
     </article>

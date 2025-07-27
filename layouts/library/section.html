@@ -4,7 +4,7 @@
     <div>
         <h2>{{ now.Year }} 年读的书</h2>
         <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
-          {{ range where .Site.RegularPages "Section" "library" }}
+          {{ range first 18 (where .Site.RegularPages "Section" "library") }}
             {{ if eq .Date.Year now.Year }}
             {{ partial "items/book" . }}
             {{ end }}
@@ -19,11 +19,16 @@
         {{ end }}
         {{ end }}
 
-        <div class="markdown-body">
-            <p>往年书单：
+
+        <div class="flex items-center my-8">
+            <a href="/library/2025" class="small-button">
+                {{ T "library.viewAllThisYear" }}
+                <span class="text-secondary">→</span>
+            </a>
+            <p class="my-0 mx-4">
               {{ $currentYear := printf "%d" now.Year }}
               {{ range $years }}
-                {{ if ne . $currentYear }}<a href="{{ printf "/library/%s/" . }}">{{ . }} 年</a>{{ end }}
+                {{ if ne . $currentYear }}<a class="text-secondary" href="{{ printf "/library/%s/" . }}">{{ . }} 年</a>{{ end }}
               {{ end }}
             </p>
         </div>

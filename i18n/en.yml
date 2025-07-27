@@ -25,3 +25,5 @@ termPage:
   books: "Books I've read about this topic"
 RSS: RSS
 statsTooltip: Insights
+library:
+  viewAllThisYear: All Books This Year
