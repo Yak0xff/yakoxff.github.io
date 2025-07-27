@@ -1,5 +1,5 @@
 (() => {
-  const allTooltipped = document.querySelectorAll('[data-tooltip], [title]');
+  const allTooltipped = document.querySelectorAll('[data-tooltip]');
 
   const createOrUpdateTooltip = (element) => {
     const tooltipText = element.getAttribute('data-tooltip') || element.getAttribute('title');
