@@ -8,10 +8,8 @@
 {{ end }}
 
 <!-- Aplayer -->
-{{ if .Params.aplayer }}
 {{ with resources.Get "css/aplayer.css" }}
 <style>{{ .Content | safeCSS }}</style>
-{{ end }}
 {{ end }}
 
 <!-- Extra -->

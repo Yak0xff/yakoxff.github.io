@@ -1,4 +1,3 @@
-{{ if .Params.aplayer }}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const lazyPlayers = document.querySelectorAll(".lazy-aplayer");
@@ -47,4 +46,3 @@ document.addEventListener("DOMContentLoaded", function () {
   lazyPlayers.forEach(player => observer.observe(player));
 });
 </script>
-{{ end }}
