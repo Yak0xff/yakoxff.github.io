@@ -14,6 +14,8 @@ tags:
   - 认知
 aliases:
   - /library/2025/The-Subtle-Art-of-Not-Giving-a-Fuck/
+mentioned_books:
+  - 一生之敌
 ---
 
 一本讲应该关注什么（what to give a fuck about）来过好一生的书。教人怎么过好一生可能不是作者的写作目的，但书中的确包含了不少通用且通俗的人生建议，是作者通过自身经验总结出来的人生哲学。
