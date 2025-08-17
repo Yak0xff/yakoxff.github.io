@@ -17,5 +17,7 @@ nav:
 footerInternalLinks:
   - name: 林卷
     link: /linkroll/
+  - name: 标记
+    link: /highlights/
   - name: 赞助
     link: /sponsor/
