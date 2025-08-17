@@ -3,8 +3,9 @@
 {{ partial "head.html" . }}
 <body>
     {{ partial "components/svg-filters.html" . }}
-    <main class="my-[var(--page-margin-y)]">
+    <main class="my-[var(--page-margin-y)] relative">
       {{ block "main" . }}{{ end }}
+      {{ partial "components/shade-mask" . }}
     </main>
     {{ partial "scripts.html" . }}
     {{ partial "components/global-search" . }}
