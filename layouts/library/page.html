@@ -35,6 +35,7 @@
             <p>{{ partial "components/tags" . }}</p>
         </div>
         {{ partial "components/backlinks" (dict "filename" .File.BaseFileName "type" "library" "context" .) }}
-        {{ partial "posts/comment.html" . }}
+        {{ partial "posts/action-menu.html" . }}
+        {{ partial "components/back-to-top.html" . }}
     </article>
 {{ end }}
