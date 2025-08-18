@@ -221,7 +221,7 @@ slug: zero-js-chart
 
 要遍历所有的页面看起来是开销很大的事情，但 Hugo 的构建速度很快，比 Node.js 快多了。从算法的角度来看，时间复杂度是线性的，不会很慢。我把这段代码做成了一个单独的 partial，包含完整的 Go 语言代码和 HTML 以及 CSS，如果你也使用 Hugo，可以直接复制[这里的代码](https://github.com/BigCoke233/geek-death-project/blob/master/layouts/partials/components/publish-time-chart.html)来用。
 
-如果要收集其他的统计数据，算法自然会有所不同，这里只是展示这个方法的基本思想：==通过 SSG 在构建网站的同时计算数据并生成对应的 HTML 结构，完全不需要 JavaScript 就能制作直观的统计图表==。
+如果要收集其他的统计数据，算法自然会有所不同，这里只是展示这个方法的基本思想：通过 SSG 在构建网站的同时计算数据并生成对应的 HTML 结构，完全不需要 JavaScript 就能制作直观的统计图表。
 
 ## SSG 无法统计的数据
 
