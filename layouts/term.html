@@ -5,8 +5,13 @@
         <div class="term-header">
             <h1 class="term-title"
                 style="view-transition-name: category-{{ .Title }}">
-                {{ with .Params.icon }}
-                <span class="category-icon">{{ . }}</span>
+                {{ if or (hasPrefix .Page.Params.icon "http://") (hasPrefix .Page.Params.icon "https://") }}
+                    <span>
+                        <img src="{{ .Page.Params.icon }}" alt="{{ .Page.LinkTitle }}"
+                            style="height:1em;width:1em">
+                    </span>
+                {{ else }}
+                    <span>{{ .Page.Params.icon }}</span>
                 {{ end }}
                 {{ if and (eq .Data.Singular "tag") (not .Params.icon) }}#{{ end }}{{ .Title }}
             </h1>
