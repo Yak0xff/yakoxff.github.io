@@ -12,7 +12,7 @@
             <ul class="list-none">
                 {{ range .highlights }}
                     <li class="my-2 text-lg">
-                        <mark class="bg-amber-2"><a href="{{ .link }}">{{ .text | markdownify }}</a></mark>
+                        <mark class="bg-amber-2 dark:bg-amber-3/50"><a href="{{ .link }}">{{ .text | markdownify }}</a></mark>
                     </li>
                 {{ end }}
             </ul>
