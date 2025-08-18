@@ -29,9 +29,11 @@
         <!-- External Links -->
         <ul class="list-style-none flex gap-2 ps-0 my-2 mx-0 md:justify-end">
             {{ range .Site.Params.footerExternalLinks }}
-            <li class="inline-flex items-center"><a href="{{ .link }}" title="{{ .name }}" target="_blank">
-                <img class="h-4 w-auto inline-block rounded-full grayscale dark:invert" src="{{ .icon }}" />
-            </a></li>
+            <li class="inline-flex items-center">
+                <a href="{{ .link }}" title="{{ .name }}" target="_blank" data-tooltip>
+                    <img class="h-4 w-auto inline-block rounded-full grayscale dark:invert" src="{{ .icon }}" />
+                </a>
+            </li>
             {{ end }}
         </ul>
     </section>
