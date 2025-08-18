@@ -4,11 +4,14 @@
     <div>
         <h2>{{ now.Year }} 年读的书</h2>
         <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
-          {{ range first 18 (where .Site.RegularPages "Section" "library") }}
-            {{ if eq .Date.Year now.Year }}
-            {{ partial "items/book" . }}
+            {{ $books := first 18 (where .Site.RegularPages "Section" "library") }}
+            {{ range $i, $book := $books }}
+                {{ if eq .Date.Year now.Year }}
+                <div class="{{ if gt $i 15 }}hidden md:block{{ end }}">
+                    {{ partial "items/book" $book }}
+                </div>
+                {{ end }}
             {{ end }}
-          {{ end }}
         </div>
 
         {{ $years := slice }}
