@@ -2,7 +2,6 @@
 title: Anthropomorphic
 tags:
   - 设计
-  - 美学
   - 词源学
   - 语言
 date: 2025-03-24 11:37:57

@@ -2,7 +2,6 @@
 title: 零 JavaScript 的博客统计图表
 tags:
   - Web
-  - CSS
   - Geek
 date: 2025-06-28T16:09:00
 draft: false
