@@ -21,11 +21,16 @@
         {{ end }}
     </div>
     {{ end }}
-    <div class="giscus my-4">
+
+    <p class="mt-4 text-size-sm text-secondary">
+        *{{ T "emailMe" }} <a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a>
+    </p>
+    <div class="giscus mb-4">
         <p style="text-align:center">
             {{ T "postPage.commentNotLoaded" }}
         </p>
     </div>
+
     <!-- giscus script -->
     <script id="giscus-script"
             src="https://giscus.app/client.js"
