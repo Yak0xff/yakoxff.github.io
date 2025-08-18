@@ -6,7 +6,7 @@
         <div>
             <p class="font-mono text-secondary">
                 <time>{{ .ctx.Date.Format "January 2" }},</time>
-                <span>in <a href="/{{ .Section }}/">{{ .ctx.Section }}</a></span>
+                <span>in <a href="/{{ .ctx.Section }}/">{{ .ctx.Section }}</a></span>
             </p>
             <h2 class="xerox"
                 {{ if $showSummary }} style="margin-bottom: 0"{{ end }}>
