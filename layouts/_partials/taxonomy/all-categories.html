@@ -1,7 +1,8 @@
 <!-- Display Categories -->
-<section class="grid grid-cols-2 grid-rows-masonry gap-4">
+<section class="flex flex-wrap justify-between gap-4">
 {{ range sort .Site.Taxonomies.categories ".Count" "desc" }}
-    <a href="{{ .Page.RelPermalink }}" class="hover:no-underline"
+    <a href="{{ .Page.RelPermalink }}"
+        class="block hover:no-underline hover:-transform-translate-y-2 transition-transform"
         style="view-transition-name: category-{{ .Page.Title }};">
         <div class="taxonomy-categories-item">
             <h3 class="category-title my-1">
@@ -16,6 +17,8 @@
 {{ end }}
 </section>
 
-<a class="small-button" href="/categories/uncategorized/">
-    查看随笔 <span class="text-secondary">→</span>
-</a>
+<p class="mt-4">
+    <a class="small-button" href="/categories/uncategorized/">
+        查看随笔 <span class="text-secondary">→</span>
+    </a>
+</p>
