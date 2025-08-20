@@ -23,6 +23,10 @@
     const hideWeeklyButton = document.getElementById("hide-weekly")
     const weeklies = postList.querySelectorAll(".weekly")
 
+    if (weeklies.length === 0) {
+      hideWeeklyButton.classList.add("hidden")
+    }
+
     const entranceAnimation = "animate-flip-in-x"
     const exitAnimation = "animate-flip-out-x"
     const animationDuration = 500
@@ -54,12 +58,12 @@
     const highlightClasses = ["animate-flash", "opacity-50"]
 
     const highlightWeekly = () => {
-    if (weeklies[0].classList.contains(highlightClasses[0])) return;
-    weeklies.forEach(e => e.classList.add(...highlightClasses))
+      if (weeklies[0].classList.contains(highlightClasses[0])) return;
+      weeklies.forEach(e => e.classList.add(...highlightClasses))
     }
 
     const unhighlightWeekly = () => {
-    weeklies.forEach(e => e.classList.remove(...highlightClasses))
+      weeklies.forEach(e => e.classList.remove(...highlightClasses))
     }
 
     hideWeeklyButton.addEventListener("click", toggleWeekly)
