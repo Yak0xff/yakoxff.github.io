@@ -1,0 +1,6 @@
+<ul id="term-posts"
+    class="animate-duration-100 ps-0 flex flex-col gap-2 list-none leading-relaxed">
+    {{ range where .Pages "Section" "not in" (slice "cards" "library") }}
+    {{ partial "items/post-small" . }}
+    {{ end }}
+</ul>

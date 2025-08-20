@@ -1,0 +1,9 @@
+{{ $books := where .Pages "Section" "eq" "library" }}
+{{ if gt (len $books) 0 }}
+<h2>{{ T "termPage.books" }}</h2>
+<div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
+    {{ range $books }}
+    {{ partial "items/book" . }}
+    {{ end }}
+</div>
+{{ end }}
