@@ -2,55 +2,13 @@
     <article>
         {{ partial "header" . }}
         {{ partial "home/home-nav" . }}
-        <div class="term-header">
-            <h1 class="term-title"
-                style="view-transition-name: category-{{ .Title }}">
-                {{ if or (hasPrefix .Page.Params.icon "http://") (hasPrefix .Page.Params.icon "https://") }}
-                    <span>
-                        <img src="{{ .Page.Params.icon }}" alt="{{ .Page.LinkTitle }}"
-                            style="height:1em;width:1em">
-                    </span>
-                {{ else }}
-                    <span>{{ .Page.Params.icon }}</span>
-                {{ end }}
-                {{ if and (eq .Data.Singular "tag") (not .Params.icon) }}#{{ end }}{{ .Title }}
-            </h1>
-            {{ with .Params.description | markdownify }}
-                <p class="term-description">{{ . }}</p>
-            {{ end }}
-        </div>
-        <div>
-            <!-- Posts under this Term -->
-            <ul class="ps-0 flex flex-col gap-2 list-none leading-relaxed">
-                {{ range where .Pages "Section" "not in" (slice "cards" "library") }}
-                {{ partial "items/post-small" . }}
-                {{ end }}
-            </ul>
-
-            <!-- Cards under this Term -->
-            {{ $cards := where .Pages "Section" "eq" "cards" }}
-            {{ if gt (len $cards) 0 }}
-            <h2>{{ T "termPage.cards" }}</h2>
-            <div class="outbox small">
-                <div class="grid grid-cols-2 gap-4">
-                    {{ range $cards }}
-                    {{ partial "items/card" (dict "context" . "summary" true) }}
-                    {{ end }}
-                </div>
-            </div>
-            {{ end }}
-
-            <!-- Books under this Term -->
-            {{ $books := where .Pages "Section" "eq" "library" }}
-            {{ if gt (len $books) 0 }}
-            <h2>{{ T "termPage.books" }}</h2>
-            <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
-                {{ range $books }}
-                {{ partial "items/book" . }}
-                {{ end }}
-            </div>
-            {{ end }}
-        </div>
+        {{ partial "term/term-header" . }}
+        <section>
+            {{ partial "term/term-posts" . }}
+            {{ partial "term/term-cards" . }}
+            {{ partial "term/term-books" . }}
+        </section>
     </article>
-    {{ partial "footer.html" . }}
+    {{ partial "term/term-scripts" . }}
+    {{ partial "footer" . }}
 {{ end }}
