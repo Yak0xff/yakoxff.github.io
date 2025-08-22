@@ -4,7 +4,7 @@ title: 关于
 date: 2024-11-27
 ---
 
-{{< callout "你可以加入本博客的 Telegram 频道「[大脑充血](https://t.me/+gVxBuTa0qSc1ZGY9)」，我会在这里发表一些不成文的想法。" "🧠" >}}
+{{< callout "你可以加入本博客的 Telegram 频道「[大脑充血](https://t.me/geedeapro)」，我会在这里发表一些不成文的想法。" "🧠" >}}
 
 欢迎来访，这里只有真情流露和赤裸的思考。
 
