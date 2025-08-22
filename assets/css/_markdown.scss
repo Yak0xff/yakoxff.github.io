@@ -15,7 +15,16 @@ $em-text-color: #889E73;
   // Nested styles for child elements
   a {
     text-decoration: underline;
+    text-decoration-style: wavy;
+    text-underline-offset: 0.25em;
+    text-decoration-color: $border-color;
     color: $link-color;
+
+    transition: text-decoration-color 0.1s ease-in-out;
+    &:hover {
+        text-decoration-color: $secondary-text-color;
+    }
+
     &.external-link::after {
         content: '';
         display: inline-block;
