@@ -6,19 +6,23 @@
     {{- $pages := $cards.Pages }}
     {{- $featured := first 6 $pages }}
     {{- $rest := after 6 $pages }}
-    <div class="grid! md:grid-cols-2 gap-4 outbox small">
+    <div class="grid md:grid-cols-2 gap-4 my-4">
         {{- range $featured }}
-            {{ partial "items/card" (dict "context" . "summary" true) }}
+            {{ partial "items/card" (dict
+            "context" .
+            "summary" true
+            "summaryClass" "text-base!") }}
         {{- end }}
     </div>
 
-    <ul class="flex gap-4 flex-wrap justify-around list-none text-5">
+    <div class="grid grid-cols-3 gap-4 list-none text-lg">
         {{- range $rest }}
-            <li>
-                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            </li>
+        <a class="border-b-dashed border-b-1 border-b-neutral-300 dark:border-b-neutral-700
+            flex items-end py-1
+            block text-secondary hover:text-unset hover:no-underline transition"
+            href="{{ .RelPermalink }}">{{ .Title }}</a>
         {{- end }}
-    </ul>
+    </div>
 
     {{ partial "footer.html" . }}
 </article>
