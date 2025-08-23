@@ -7,7 +7,8 @@
             {{ $books := first 18 (where .Site.RegularPages "Section" "library") }}
             {{ range $i, $book := $books }}
                 {{ if eq .Date.Year now.Year }}
-                <div class="{{ if gt $i 15 }}hidden md:block{{ end }}">
+                <div class="{{ if gt $i 15 }}hidden md:block{{ end }}"
+                    data-tooltip="{{ $book.Title }}">
                     {{ partial "items/book" $book }}
                 </div>
                 {{ end }}
@@ -39,7 +40,7 @@
         <h2>推荐好书</h2>
         <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
         {{ range where (where .Site.RegularPages "Section" "library") ".Params.rating" "==" 5 }}
-        {{ partial "items/book" . }}
+            <div data-tooltip="{{ .Title }}">{{ partial "items/book" . }}</div>
         {{ end }}
         </div>
     </div>
