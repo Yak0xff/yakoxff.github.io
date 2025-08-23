@@ -7,7 +7,7 @@
             {{ $year := .Title }}
             {{ range where .Site.RegularPages "Section" "library" }}
               {{ if eq (printf "%d" .Date.Year) $year }}
-              {{ partial "items/book" . }}
+                <div data-tooltip="{{ .Title }}">{{ partial "items/book" . }}</div>
               {{ end }}
             {{ end }}
           </div>
