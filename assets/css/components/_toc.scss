@@ -16,6 +16,8 @@
                 display: inline-flex;
                 align-items: center;
                 gap: .5rem;
+                text-overflow: ellipsis;
+                white-space: nowrap;
                 &::before {
                     content: '';
                     display: inline-block;
@@ -24,6 +26,7 @@
                     background-color: var(--block-background-color);
                     border-radius: .2rem;
                     transition: background .3s;
+                    flex-shrink: 0;
                 }
             }
 

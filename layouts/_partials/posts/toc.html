@@ -1,9 +1,9 @@
 {{ if .Params.toc }}
 <div id="toc-container"
-    class="absolute bottom-0 right-[calc(50%_+_var(--page-width)_/_2)] left-auto
-    h-full top-[12rem] hidden xl:block">
+    class="absolute bottom-0 left-[calc(50%_+_var(--page-width)_/_2)] right-auto
+    h-full w-[calc(50%_-_var(--page-width)_/_2)] top-[19rem] hidden lg:block">
     <div id="toc"
-        class="sticky top-12 text-size-sm 2xl:text-size-base px-8"
+        class="sticky top-12 text-size-xs xl:text-size-sm 2xl:text-size-base w-full"
     >{{ .TableOfContents }}</div>
 </div>
 {{ end }}
