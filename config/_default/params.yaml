@@ -17,6 +17,9 @@ footerExternalLinks:
   - name: Travelling
     link: https://www.travellings.cn/go.html
     icon: https://www.travellings.cn/assets/favicon.png
+  - name: Telegram Channel
+    link: https://t.me/geedeapro
+    icon: /img/telegram.svg
 giscus:
   repo: BigCoke233/geek-death-project
   repoId: R_kgDONPoyVw
