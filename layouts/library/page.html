@@ -26,16 +26,32 @@
                 {{- end -}}
             </p>
         </header>
+
         <div class="markdown-body">
             <div class="leading-loose">{{ .Content }}</div>
             {{ partial "posts/endnotes" . }}
         </div>
+
         <div class="text-size-base text-secondary md:flex md:justify-between">
             <p>于 {{ partial "components/date" . }} 读完</p>
             <p>{{ partial "components/tags" . }}</p>
         </div>
+
         {{ partial "components/backlinks" (dict "filename" .File.BaseFileName "type" "library" "context" .) }}
         {{ partial "posts/action-menu.html" . }}
         {{ partial "components/back-to-top.html" . }}
+
+        {{ $books := where (where .Site.RegularPages "Section" "library") ".Params.author" "==" .Params.author }}
+        {{ $thisBookID := .File.UniqueID }}
+        {{ if $books }}
+            <h2>我读过的{{ .Params.author }}的其它书籍</h2>
+            <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
+            {{ range $books }}
+                {{ if ne .File.UniqueID $thisBookID }}
+                <div data-tooltip="{{ .Title }}">{{ partial "items/book" . }}</div>
+                {{ end }}
+            {{ end }}
+            </div>
+        {{ end }}
     </article>
 {{ end }}
