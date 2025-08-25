@@ -80,12 +80,9 @@ date: 2024-11-27
 
 ## 鸣谢
 
-网站的图标来源：
-
-- <a target="_blank" href="https://icons8.com/icon/dFh2MtWbG5FC/skull">Skull</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
-- Skull with flowers, <a href="http://www.freepik.com">designed by Freepik</a>
-- [Halloween Pot Of Horror Food Vector SVG Icon - SVG Repo](https://www.svgrepo.com/svg/11985/halloween-pot-of-horror-food)
-- [Skull Slices SVG Vector](https://www.svgrepo.com/svg/321390/skull-slices)
-- [Gooey Eyed Sun SVG Vector](https://www.svgrepo.com/svg/320884/gooey-eyed-sun)
-
-文章标题中使用的 CSS 扭曲效果来自 [endtimes.dev](https://endtimes.dev)
+- 网站的图标来源
+	- Favicon: [Icons8](https://icons8.com/icon/dFh2MtWbG5FC/skull)
+	- Logo: [Freepik](http://www.freepik.com)
+	- Ohter Icons: [RPG Game Filled Icons Collection](https://www.svgrepo.com/collection/rpg-game-filled-icons/)
+- 文章标题中使用的 CSS 扭曲效果来自 [endtimes.dev](https://endtimes.dev)
+- 网站背景纹理来自 [Hero Patterns](https://heropatterns.com)
