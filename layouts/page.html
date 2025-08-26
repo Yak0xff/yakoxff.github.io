@@ -3,6 +3,7 @@
     <article>
       <div id="post-content" class="post-content markdown-body leading-loose"
           style="view-transition-name: post-content-{{ .File.UniqueID }}">
+        {{ partial "posts/toc" . }}
         {{ .Content }}
       </div>
     </article>

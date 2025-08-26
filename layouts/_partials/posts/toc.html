@@ -1,7 +1,8 @@
+{{ $top := cond (eq .Section "posts") "top-[19rem]" (cond (eq .Section "library") "top-[34rem]" "top-[17rem]") }}
 {{ if .Params.toc }}
 <div id="toc-container"
     class="absolute bottom-0 left-[calc(50%_+_var(--page-width)_/_2)] right-auto
-    h-full w-[calc(50%_-_var(--page-width)_/_2)] top-[19rem] hidden lg:block">
+    h-full w-[calc(50%_-_var(--page-width)_/_2)] {{ $top }} hidden lg:block">
     <div id="toc"
         class="sticky top-12 text-size-xs xl:text-size-sm 2xl:text-size-base w-full"
     >{{ .TableOfContents }}</div>

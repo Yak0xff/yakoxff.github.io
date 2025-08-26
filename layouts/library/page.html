@@ -27,8 +27,9 @@
             </p>
         </header>
 
-        <div class="markdown-body">
-            <div class="leading-loose">{{ .Content }}</div>
+        <div class="markdown-body leading-loose">
+            {{ partial "posts/toc" . }}
+            <div>{{ .Content }}</div>
             {{ partial "posts/endnotes" . }}
         </div>
 
@@ -43,7 +44,7 @@
 
         {{ $books := where (where .Site.RegularPages "Section" "library") ".Params.author" "==" .Params.author }}
         {{ $thisBookID := .File.UniqueID }}
-        {{ if gt (count $books) 1 }}
+        {{ if gt (len $books) 1 }}
             <h2>我读过的{{ .Params.author }}的其它书籍</h2>
             <div class="grid grid-cols-4 md:grid-cols-6 items-center gap-4 my-4">
             {{ range $books }}
