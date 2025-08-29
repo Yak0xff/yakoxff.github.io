@@ -3,11 +3,19 @@
     {{ partial "header" . }}
     {{ partial "home/home-nav" . }}
 
+    <div id="pagefind" class="py-3"></div>
+
+    {{ partial "taxonomy/all-tags.html" . }}
+    <hr />
+
     <h2>文章系列</h2>
     {{ partial "taxonomy/all-categories.html" . }}
-    <hr />
-    <h2>标签</h2>
-    {{ partial "taxonomy/all-tags.html" . }}
 </article>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    new PagefindUI({ element: "#pagefind", showSubResults: true });
+  });
+</script>
 {{ partial "footer.html" . }}
 {{ end }}

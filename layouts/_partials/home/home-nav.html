@@ -20,9 +20,7 @@
                     (strings.HasPrefix $.Page.RelPermalink "/tags/"))
             ) }}
         {{ end }}
-        <li id="search-instruction" class="cursor-pointer text-size-sm text-secondary ml-2">
-            <span>{{ T "searchInstruction" }}</span>
-        </li>
+
         <li class="absolute right-0 dark:invert">
             <a href="{{ .Site.LanguagePrefix }}/stats"
                 data-tooltip="{{ T "statsTooltip" }}"
