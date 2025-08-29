@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', initializeCommentCount);
 
 // 点赞功能初始化
 function initializeLikes(pageId) {
+  if (window.location.host !== 'www.geedea.pro') return;
+
   const elements = {
     count: document.getElementById("like-count-" + pageId),
     btn: document.getElementById("like-btn-" + pageId),
@@ -117,7 +119,14 @@ function initializeLikes(pageId) {
     }
   };
 
-  fetchLikes();
+  // fetch likes when action menu is visible
+  const observer = new IntersectionObserver((entries, obs) => {
+    if (entries[0].isIntersecting) {
+      fetchLikes();
+      obs.disconnect();
+    }
+  });
+  observer.observe(document.getElementById("action-menu"));
 }
 
 // 在 DOM 加载完成后初始化所有功能
