@@ -1,4 +1,13 @@
+/**
+ * ================
+ * Littlefoot CSS
+ * tweaked for geedea.pro
+ * ================
+ */
+
 .littlefoot{
+    position:relative;
+
     --button-background-color:#949494;
     --button-text-color:#fff;
     --button-active-background-color:#3f3f3f;
@@ -25,7 +34,6 @@
     --popover-scroll-indicator-color:#3f3f3f;
     --popover-tooltip-size:0.5rem;
     --popover-z-index: 30;
-    position:relative;
 
     @media (prefers-color-scheme: dark) {
         --button-background-color: #555;
@@ -40,35 +48,37 @@
         --popover-scroll-indicator-color: #aaa;
     }
 }
+
+/**
+ * Button style
+ */
+
 .littlefoot__button{
     background-color:var(--button-background-color);
     border-radius:var(--button-border-radius);
     color:var(--button-text-color);
     cursor:pointer;
     display:inline-block;
-    font-size:12px;
     font-size:var(--button-font-size,12px);
-    font-size:.75rem;
     font-size:var(--button-font-size,.75rem);
-    font-weight:400;
     font-weight:var(--button-font-weight,initial);
     height:var(--button-height);
     margin:var(--button-margin);
     padding:var(--button-padding);
-    -webkit-text-decoration:none;
     text-decoration:none;
     transition:var(--button-transition);
     vertical-align:top;
+
+    &.is-active, &:active, &:focus, &:hover{
+        background-color:var(--button-active-background-color);
+        color:var(--button-active-text-color)
+    }
 }
-.littlefoot__button.is-active,.littlefoot__button:active,.littlefoot__button:focus,.littlefoot__button:hover{
-    background-color:var(--button-active-background-color);
-    color:var(--button-active-text-color)
-}
-.littlefoot__button svg{
-    float:left;
-    height:4.8px;
-    height:.3rem
-}
+
+/**
+ * Popover
+ */
+
 .littlefoot__popover{
     border:var(--popover-border);
     border-radius:var(--popover-border-radius);
@@ -82,36 +92,40 @@
     transition:var(--popover-transition);
     width:var(--popover-width);
     z-index:var(--popover-z-index);
+
+    &.is-above{
+        bottom:0;
+        top:auto
+    }
+
+    &.is-active{
+        transform:var(--popover-active-transform)
+    }
 }
-.littlefoot__popover.is-above{
-    bottom:0;
-    top:auto
-}
-.littlefoot__popover.is-active{
-    transform:var(--popover-active-transform)
-}
+
+/**
+ * Wrapper and Content
+ */
+
 .littlefoot__wrapper{
     position:relative;
     z-index:var(--popover-z-index);
 }
-.littlefoot__content,.littlefoot__wrapper{
+
+.littlefoot__content,
+.littlefoot__wrapper{
     border-radius:var(--popover-border-radius)
 }
+
 .littlefoot__content{
     -webkit-overflow-scrolling:touch;
     background-color:var(--popover-background-color);
     box-sizing:border-box;
     color:var(--popover-text-color);
-    font-family:serif;
-    font-family:initial;
     font-family:var(--popover-font-family,initial);
-    font-size:medium;
     font-size:var(--popover-font-size,initial);
-    font-style:normal;
     font-style:var(--popover-font-style,initial);
-    font-weight:400;
     font-weight:var(--popover-font-weight,initial);
-    line-height:normal;
     line-height:var(--popover-line-height,normal);
     max-height:var(--popover-max-height);
     overflow:auto;
@@ -120,13 +134,18 @@
     p {
         margin:0.75rem 0;
     }
+    img{
+        max-width:100%
+    }
+    &:focus{
+        outline:none
+    }
 }
-.littlefoot__content img{
-    max-width:100%
-}
-.littlefoot__content:focus{
-    outline:none
-}
+
+/**
+ * Scrolling
+ */
+
 .is-scrollable{
     --arrow-x:calc(var(--popover-horizontal-padding)*-1);
     --arrow-y:calc(var(--popover-vertical-padding)/2)
@@ -147,6 +166,11 @@
 .is-scrollable.is-fully-scrolled .littlefoot__content:after{
     opacity:0
 }
+
+/**
+ * Tooltip (the arrow on popover)
+ */
+
 .littlefoot__tooltip{
     --tooltip-margin:calc(var(--popover-tooltip-size)*-1);
     background-color:var(--popover-background-color);
@@ -156,14 +180,17 @@
     margin-left:var(--tooltip-margin);
     position:absolute;
     transform:rotate(45deg);
-    width:calc(var(--popover-tooltip-size)*2)
+    width:calc(var(--popover-tooltip-size)*2);
+
+    .is-below & { top:var(--tooltip-margin) }
+    .is-above & { bottom:var(--tooltip-margin) }
 }
-.is-below .littlefoot__tooltip{
-    top:var(--tooltip-margin)
-}
-.is-above .littlefoot__tooltip{
-    bottom:var(--tooltip-margin)
-}
+
+/**
+ * Printing style
+ * Hide littlefoot elements and show ordinary footnotes
+ */
+
 @media not print{
     .littlefoot--print{
         display:none
