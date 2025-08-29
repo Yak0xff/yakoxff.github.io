@@ -31,24 +31,30 @@ function initializeComments() {
 // 评论数量功能初始化
 function initializeCommentCount() {
   const commentCountEl = document.getElementById('comment-count');
-  const giscusIframe = document.querySelector('iframe.giscus-frame');
-  if (!commentCountEl || !giscusIframe) return;
+  if (!commentCountEl) return;
 
-  commentCountEl.textContent = '0';
-
-  giscusIframe.addEventListener('load', () => {
-    window.addEventListener('message', function(event) {
-      if (event.origin !== 'https://giscus.app') return;
-
-      const giscusData = event.data;
-      if (giscusData.giscus?.discussion) {
-        const discussion = giscusData.giscus.discussion;
-        const totalComments = (discussion.totalCommentCount || 0) + (discussion.totalReplyCount || 0);
-        commentCountEl.textContent = totalComments.toString();
-      }
-    });
+  const observer = new MutationObserver(() => {
+    const giscusIframe = document.querySelector('iframe.giscus-frame');
+    if (giscusIframe) {
+      giscusIframe.addEventListener('load', () => {
+        window.addEventListener('message', function(event) {
+          if (event.origin !== 'https://giscus.app') return;
+          const giscusData = event.data;
+          if (giscusData.giscus?.discussion) {
+            const discussion = giscusData.giscus.discussion;
+            const totalComments = (discussion.totalCommentCount || 0) + (discussion.totalReplyCount || 0);
+            commentCountEl.textContent = totalComments.toString();
+          }
+        });
+      });
+      observer.disconnect();
+    }
   });
+
+  observer.observe(document.body, { childList: true, subtree: true });
 }
+
+document.addEventListener('DOMContentLoaded', initializeCommentCount);
 
 // 点赞功能初始化
 function initializeLikes(pageId) {

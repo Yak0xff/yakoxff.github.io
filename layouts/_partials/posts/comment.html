@@ -32,19 +32,35 @@
     </div>
 
     <!-- giscus script -->
-    <script id="giscus-script"
-            src="https://giscus.app/client.js"
-            data-repo="{{ .Site.Params.giscus.repo }}"
-            data-repo-id="{{ .Site.Params.giscus.repoId }}"
-            data-category="{{ .Site.Params.giscus.category }}"
-            data-category-id="{{ .Site.Params.giscus.categoryId }}"
-            data-mapping="{{ .Site.Params.giscus.mapping }}"
-            data-strict="{{ .Site.Params.giscus.strict }}"
-            data-reactions-enabled="{{ .Site.Params.giscus.reactionsEnabled }}"
-            data-emit-metadata="1"
-            data-input-position="{{ .Site.Params.giscus.inputPosition }}"
-            data-theme="{{ .Site.Params.giscus.theme }}"
-            data-lang="{{ T "lang" }}"
-            crossorigin="anonymous">
+    <script>
+    function loadGiscus() {
+      if (document.querySelector('iframe.giscus-frame')) return; // 防止重复加载
+
+      const script = document.createElement("script");
+      script.src = "https://giscus.app/client.js";
+      script.setAttribute("data-repo", "{{ .Site.Params.giscus.repo }}");
+      script.setAttribute("data-repo-id", "{{ .Site.Params.giscus.repoId }}");
+      script.setAttribute("data-category", "{{ .Site.Params.giscus.category }}");
+      script.setAttribute("data-category-id", "{{ .Site.Params.giscus.categoryId }}");
+      script.setAttribute("data-mapping", "{{ .Site.Params.giscus.mapping }}");
+      script.setAttribute("data-strict", "{{ .Site.Params.giscus.strict }}");
+      script.setAttribute("data-reactions-enabled", "{{ .Site.Params.giscus.reactionsEnabled }}");
+      script.setAttribute("data-emit-metadata", "1");
+      script.setAttribute("data-input-position", "{{ .Site.Params.giscus.inputPosition }}");
+      script.setAttribute("data-theme", "{{ .Site.Params.giscus.theme }}");
+      script.setAttribute("data-lang", "{{ T "lang" }}");
+      script.setAttribute("crossorigin", "anonymous");
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      if (entries[0].isIntersecting) {
+        loadGiscus();
+        obs.disconnect();
+      }
+    });
+
+    observer.observe(document.getElementById("action-menu"));
     </script>
 </div>
