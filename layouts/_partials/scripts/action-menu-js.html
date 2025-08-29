@@ -94,21 +94,19 @@ function initializeLikes(pageId) {
 
   if (!elements.count || !elements.btn || !elements.container) return;
 
-  function updateTooltip() {
-    elements.btn.setAttribute('title',
-      elements.container.classList.contains('liked')
-        ? elements.btn.getAttribute('data-liked-title')
-        : '为这篇文章献上心脏'
-    );
-  }
-
   function setLikedState() {
+    // update classes
     elements.icon?.classList.add('liked-heart');
     elements.icon?.classList.add('animate-heart-beat');
     elements.count?.classList.add('liked-count');
     elements.btn.disabled = true;
     elements.container.classList.add('liked');
-    updateTooltip();
+    // update tooltip
+    elements.btn.setAttribute('title',
+      elements.container.classList.contains('liked')
+        ? elements.btn.getAttribute('data-liked-title')
+        : '为这篇文章献上心脏'
+    );
   }
 
   async function fetchLikes() {
