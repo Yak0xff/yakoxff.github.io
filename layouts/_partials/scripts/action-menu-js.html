@@ -28,13 +28,27 @@ function initializeComments() {
   const commentsToggle = document.getElementById('comments-toggle');
   const commentsSection = document.getElementById('comments-section');
 
-  if (commentsToggle && commentsSection) {
-    commentsToggle.addEventListener('click', function() {
-      const isHidden = commentsSection.style.display === 'none';
-      commentsSection.style.display = isHidden ? 'block' : 'none';
-      this.style.background = isHidden ? 'rgba(0, 0, 0, 0.1)' : 'transparent';
-    });
-  }
+  if (!commentsToggle || !commentsSection) return;
+
+  // click on toggle
+  commentsToggle.addEventListener('click', function() {
+    const isHidden = commentsSection.classList.contains('hidden');
+    const entranceAnimation = 'animate-slide-in-down';
+    const exitAnimation = 'animate-slide-out-up';
+
+    if (isHidden) {
+      // swtich on
+      commentsSection.classList.remove('hidden', exitAnimation);
+      commentsSection.classList.add(entranceAnimation);
+    } else {
+      // switch off
+      commentsSection.classList.remove(entranceAnimation);
+      commentsSection.classList.add(exitAnimation);
+      setTimeout(() => {
+        commentsSection.classList.add('hidden');
+      }, 200);
+    }
+  });
 }
 
 /**

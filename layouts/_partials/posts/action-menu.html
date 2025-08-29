@@ -37,8 +37,10 @@
   </div>
 
   <!-- 评论区域 -->
-  <div class="mt-4" id="comments-section" style="display: none;">
-    {{ partial "posts/comment.html" . }}
+  <div class="overflow-hidden my-4">
+      <div class="mt-4 hidden animate-duration-200" id="comments-section">
+        {{ partial "posts/comment.html" . }}
+      </div>
   </div>
 </div>
 
