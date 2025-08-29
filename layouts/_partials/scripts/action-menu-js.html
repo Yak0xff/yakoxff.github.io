@@ -9,15 +9,6 @@
  * =================
  */
 
-function initializeFeatures() {
-  const pageId = "{{ $pageId }}";
-  if (!pageId) return;
-
-  initializeComments();
-  initializeLikes(pageId);
-  initializeCommentCount();
-}
-
 /**
  * =================
  * Toggle Comment Section
@@ -62,27 +53,28 @@ function initializeCommentCount() {
   if (!commentCountEl) return;
 
   const observer = new MutationObserver(() => {
+    // check if giscus is loaded
     const giscusIframe = document.querySelector('iframe.giscus-frame');
-    if (giscusIframe) {
-      giscusIframe.addEventListener('load', () => {
-        window.addEventListener('message', function(event) {
-          if (event.origin !== 'https://giscus.app') return;
-          const giscusData = event.data;
-          if (giscusData.giscus?.discussion) {
-            const discussion = giscusData.giscus.discussion;
-            const totalComments = (discussion.totalCommentCount || 0) + (discussion.totalReplyCount || 0);
-            commentCountEl.textContent = totalComments.toString();
-          }
-        });
-      });
-      observer.disconnect();
-    }
-  });
+    if (!giscusIframe) return;
 
+    giscusIframe.addEventListener('load', () => {
+      // receive message from giscus iframe
+      window.addEventListener('message', function(event) {
+        if (event.origin !== 'https://giscus.app') return;
+        const giscusData = event.data;
+        if (giscusData.giscus?.discussion) {
+          const discussion = giscusData.giscus.discussion;
+          const totalComments = (discussion.totalCommentCount || 0) + (discussion.totalReplyCount || 0);
+          // set comment count
+          commentCountEl.textContent = totalComments.toString();
+        }
+      });
+    });
+
+    observer.disconnect();
+  });
   observer.observe(document.body, { childList: true, subtree: true });
 }
-
-document.addEventListener('DOMContentLoaded', initializeCommentCount);
 
 /**
  * =================
@@ -168,11 +160,14 @@ function initializeLikes(pageId) {
  * =================
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(initializeFeatures);
-  } else {
-    setTimeout(initializeFeatures, 300);
-  }
-});
+function initializeFeatures() {
+  const pageId = "{{ $pageId }}";
+  if (!pageId) return;
+
+  initializeComments();
+  initializeLikes(pageId);
+  initializeCommentCount();
+}
+
+document.addEventListener('DOMContentLoaded', initializeFeatures);
 </script>
