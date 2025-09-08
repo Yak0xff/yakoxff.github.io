@@ -3,7 +3,10 @@
 <div id="post-endnotes" class="text-secondary text-4">
     <ul class="list-none">
       {{ range .Params.endnotes }}
-      <li class="flex gap-4 pl-4"><span>→</span> {{ . | markdownify }}</li>
+      <li class="flex gap-4 pl-4">
+          <span>→</span>
+          <span>{{ . | markdownify }}</span>
+      </li>
       {{ end }}
     </ul>
 </div>
