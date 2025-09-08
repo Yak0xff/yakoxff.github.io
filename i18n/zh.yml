@@ -32,3 +32,6 @@ emailMe: 如果你偏好一对一的沟通，或者只是想打个招呼，欢�
 termFilterButton:
   hideWeekly: 我帮你解决稻草人
   reverseOrder: 按下以逆转时间
+homePageQuote:
+  content: '除了**爱**，出于任何其他原因而从事艺术创作，都是**卖淫**。'
+  source: '——《[一生之敌](/library/2025/一生之敌/)》'
