@@ -66,8 +66,9 @@ function initializeCommentCount() {
           const discussion = giscusData.giscus.discussion;
           const totalComments = (discussion.totalCommentCount || 0) + (discussion.totalReplyCount || 0);
           // set comment count
-          commentCountEl.textContent = totalComments.toString() || '0';
-        }
+          commentCountEl.textContent = totalComments.toString();
+        // if no discussion found, set to 0
+        } else commentCountEl.textContent = '0';
       });
     });
 
