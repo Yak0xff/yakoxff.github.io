@@ -32,3 +32,6 @@ emailMe: If you prefer one-on-one communication, or just want to say hello, feel
 termFilterButton:
   hideWeekly: I'll deal with scarecrows.
   reverseOrder: Push to reverse time.
+homePageQuote:
+  content: 'To labor in the arts for any reason other than **love** is prostitution.'
+  source: '——《The War of Art》'
