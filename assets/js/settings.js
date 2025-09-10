@@ -44,15 +44,15 @@
         textAlterButtons.forEach(button => {
           // highlight selected button
           if (button.dataset.textSize === localStorage.getItem('geedeapro.ui.fontSize')) {
-            button.classList.add('bg-neutral-200/50');
+            button.classList.add('bg-neutral-200/50', 'dark:bg-neutral-700/50');
           }
 
           // switch font size when clicked
           button.addEventListener('click', () => {
             setFontSize(button.dataset.textSize);
             // highlight selected button
-            textAlterButtons.forEach(btn => btn.classList.remove('bg-neutral-200/50'));
-            button.classList.add('bg-neutral-200/50');
+            textAlterButtons.forEach(btn => btn.classList.remove('bg-neutral-200/50', 'dark:bg-neutral-700/50'));
+            button.classList.add('bg-neutral-200/50', 'dark:bg-neutral-700/50');
           });
         });
       }
