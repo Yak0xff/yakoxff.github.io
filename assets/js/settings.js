@@ -81,7 +81,8 @@
           const element = document.createElement('input');
           element.type = 'checkbox';
           element.id = checkboxOption.id;
-          element.checked = (checkboxOption.default === 'true');
+          element.checked = localStorage.getItem(checkboxOption.storage) === 'true' ||
+            checkboxOption.default === 'true';
 
           // create label
           const label = document.createElement('label');
