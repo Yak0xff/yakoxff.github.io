@@ -1,2 +1,10 @@
 <script src="/js/fancybox.umd.js"></script>
-<script>Fancybox.bind("[data-fancybox]");</script>
+<script>
+Fancybox.bind("[data-fancybox]", {
+  on: {
+    close: () => {
+      umami.track('🖼️ Fancybox Closed');
+    },
+  },
+});
+</script>
