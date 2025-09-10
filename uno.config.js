@@ -44,7 +44,7 @@ export default defineConfig({
   },
   safelist: [
     'text-sm', 'text-md', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl',
-    'text-base!',
+    'text-base!', 'md:text-size-lg', 'md:text-size-xl', 'md:text-size-2xl',
 
     'animate-heart-beat', 'animate-fade-in',
     ...'absolute bottom-full left-1/2 transform -translate-x-1/2 translate-y-1 bg-black/80 text-white px-2.5 py-1.5 rounded text-xs whitespace-nowrap opacity-0 invisible transition-all duration-300 pointer-events-none mb-2 z-1000 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 dark:bg-white/90 dark:text-black'.split(' '),

@@ -19,6 +19,11 @@
                     (strings.HasPrefix $.Page.RelPermalink "/categories/")
                     (strings.HasPrefix $.Page.RelPermalink "/tags/"))
             ) }}
+            {{ partial "home/home-nav-item" (dict
+                "text" (T "postNav.settings")
+                "link" "settings"
+                "active" (strings.HasPrefix $.Page.RelPermalink "/settings/")
+            ) }}
         {{ end }}
 
         <li class="absolute right-0 dark:invert">
