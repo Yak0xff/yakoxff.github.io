@@ -96,7 +96,10 @@
 
           // add event listener to checkbox
           element.addEventListener('change', () => {
-            localStorage.setItem(checkboxOption.storage, element.checked);
+            if (element.checked)
+              localStorage.setItem(checkboxOption.storage, 1);
+            else
+              localStorage.removeItem(checkboxOption.storage);
           });
 
           // append checkbox and label to container
