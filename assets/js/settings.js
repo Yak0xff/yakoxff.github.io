@@ -81,7 +81,7 @@
           const element = document.createElement('input');
           element.type = 'checkbox';
           element.id = checkboxOption.id;
-          element.checked = checkboxOption.default;
+          element.checked = (checkboxOption.default === 'true');
 
           // create label
           const label = document.createElement('label');
