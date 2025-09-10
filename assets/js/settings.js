@@ -60,7 +60,6 @@
 
       // initialize checkbox options
       function initCheckboxes() {
-        const checkboxes = document.querySelectorAll('#checkbox-options input[type="checkbox"]');
         const checkboxOptions = [
           {
             id: 'dontAllowTracking',
@@ -84,6 +83,14 @@
           element.checked = localStorage.getItem(checkboxOption.storage) ||
             checkboxOption.default === 'true';
 
+          // add event listener to checkbox
+          element.addEventListener('change', () => {
+            if (element.checked)
+              localStorage.setItem(checkboxOption.storage, 1);
+            else
+              localStorage.removeItem(checkboxOption.storage);
+          });
+
           // create label
           const label = document.createElement('label');
           label.htmlFor = element.id;
@@ -94,14 +101,6 @@
           wrapper.classList.add('flex', 'items-center', 'mb-2', 'gap-2');
           wrapper.appendChild(element);
           wrapper.appendChild(label);
-
-          // add event listener to checkbox
-          element.addEventListener('change', () => {
-            if (element.checked)
-              localStorage.setItem(checkboxOption.storage, 1);
-            else
-              localStorage.removeItem(checkboxOption.storage);
-          });
 
           // append checkbox and label to container
           const container = document.getElementById('checkbox-options');
