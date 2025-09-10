@@ -31,7 +31,9 @@
             {{ range .Site.Params.footerExternalLinks }}
             <li class="inline-flex items-center">
                 <a href="{{ .link }}" title="{{ .name }}" target="_blank" data-tooltip>
-                    <img class="h-4 w-auto inline-block rounded-full grayscale dark:invert" src="{{ .icon }}" />
+                    <img class="h-4 w-auto inline-block rounded-full grayscale dark:invert"
+                        src="{{ .icon }}" alt="{{ .name }} icon."
+                    />
                 </a>
             </li>
             {{ end }}
