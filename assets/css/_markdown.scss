@@ -1,5 +1,4 @@
 // Variables (can be moved to a separate variables file if needed)
-$font-size: var(--content-font-size);
 $link-color: var(--link-color);
 $secondary-text-color: var(--secondary-text-color);
 $border-color: var(--border-color);
@@ -9,7 +8,6 @@ $em-text-color: #889E73;
 
 // Main styles
 .markdown-body {
-  font-size: $font-size;
   max-width: 100%;
 
   // Nested styles for child elements

@@ -11,10 +11,6 @@
 
     /* fonts */
     --serif-font-family: "Noto Serif", "Noto Serif SC", serif;
-    --content-font-size: 16px;
-    @media screen and (min-width: 768px) {
-        --content-font-size: 20px;
-    }
 
     --page-width: 650px;
     --page-margin-y: 5rem;
