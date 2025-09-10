@@ -58,7 +58,48 @@
       }
       initTextAlterButtons()
 
-      //...
+      // initialize checkbox options
+      function initCheckboxes() {
+        const checkboxes = document.querySelectorAll('#checkbox-options input[type="checkbox"]');
+        const checkboxOptions = [
+          {
+            id: 'dontAllowTracking',
+            label: '禁止网站使用 Web 分析工具跟踪用户行为',
+            storage: 'umami.disabled',
+            default: 'false'
+          },
+          {
+            id: 'hideBatrick',
+            label: '隐藏 Batrick（返回顶部按钮）',
+            storage: 'geedeapro.ui.hideBatrick',
+            default: 'false'
+          }
+        ]
+
+        checkboxOptions.forEach(checkboxOption => {
+          // create checkbox
+          const element = document.createElement('input');
+          element.type = 'checkbox';
+          element.id = checkboxOption.id;
+          element.checked = checkboxOption.default;
+
+          // create label
+          const label = document.createElement('label');
+          label.htmlFor = element.id;
+          label.textContent = checkboxOption.label;
+
+          // add event listener to checkbox
+          element.addEventListener('change', () => {
+            localStorage.setItem(checkboxOption.storage, element.checked);
+          });
+
+          // append checkbox and label to container
+          const container = document.getElementById('checkbox-options');
+          container.appendChild(element);
+          container.appendChild(label);
+        });
+      }
+      initCheckboxes();
     };
 
     initializeSettingsPage();
