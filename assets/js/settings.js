@@ -88,6 +88,12 @@
           label.htmlFor = element.id;
           label.textContent = checkboxOption.label;
 
+          // wrap checkbox and label in a div
+          const wrapper = document.createElement('div');
+          wrapper.classList.add('flex', 'items-center', 'mb-2', 'gap-2');
+          wrapper.appendChild(element);
+          wrapper.appendChild(label);
+
           // add event listener to checkbox
           element.addEventListener('change', () => {
             localStorage.setItem(checkboxOption.storage, element.checked);
@@ -95,8 +101,7 @@
 
           // append checkbox and label to container
           const container = document.getElementById('checkbox-options');
-          container.appendChild(element);
-          container.appendChild(label);
+          container.appendChild(wrapper);
         });
       }
       initCheckboxes();
