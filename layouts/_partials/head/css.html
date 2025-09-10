@@ -12,6 +12,11 @@
 <style>{{ .Content | safeCSS }}</style>
 {{ end }}
 
+<!-- Pagefind -->
+{{ if eq .Kind "taxonomy" }}
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css">
+{{ end }}
+
 <!-- Extra -->
 {{ range .Site.Params.extraCSSFiles -}}
 <link
