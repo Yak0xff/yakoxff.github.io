@@ -3,6 +3,10 @@
         {{ partial "header" . }}
         {{ partial "home/home-nav" . }}
 
+        <div class="text-base">
+            {{ .Content }}
+        </div>
+
         <h3>{{ T "settings.fontSize" . }}</h3>
         <section class="shadow">
             <div id="text-alter-buttons" class="grid grid-cols-3">
