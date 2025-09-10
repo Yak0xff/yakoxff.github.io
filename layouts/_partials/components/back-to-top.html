@@ -22,7 +22,7 @@ if (localStorage.getItem('geedeapro.ui.hideBatrick') === 'true') {
   const backToTop = document.getElementById("back2top")
   const backToTopButton = document.getElementById("back2top-button")
   const backToTopInstruction = document.getElementById("back2top-instruction")
-  const seenAndUsedBat = localStorage.getItem("seenAndUsedBat")
+  const seenAndUsedBat = localStorage.getItem("geedeapro.ui.seenAndUsedBat")
 
   function hideInstruction() {
     backToTopInstruction.remove()
@@ -33,7 +33,7 @@ if (localStorage.getItem('geedeapro.ui.hideBatrick') === 'true') {
   backToTopButton.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
     if (!seenAndUsedBat) {
-      localStorage.setItem("seenAndUsedBat", true);
+      localStorage.setItem("geedeapro.ui.seenAndUsedBat", true);
       hideInstruction();
     }
   })

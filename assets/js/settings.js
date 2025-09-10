@@ -6,8 +6,8 @@
    */
 
    const setFontSize = (size) => {
-     if (size) localStorage.setItem('fontSize', size);
-     const fontSizeSelected = size || localStorage.getItem('fontSize') || 'medium';
+     if (size) localStorage.setItem('geedeapro.ui.fontSize', size);
+     const fontSizeSelected = size || localStorage.getItem('geedeapro.ui.fontSize') || 'medium';
 
      const markdownBodies = document.querySelectorAll('.markdown-body');
 
@@ -43,7 +43,7 @@
         const textAlterButtons = document.querySelectorAll('#text-alter-buttons button');
         textAlterButtons.forEach(button => {
           // highlight selected button
-          if (button.dataset.textSize === localStorage.getItem('fontSize')) {
+          if (button.dataset.textSize === localStorage.getItem('geedeapro.ui.fontSize')) {
             button.classList.add('bg-neutral-200/50');
           }
 
