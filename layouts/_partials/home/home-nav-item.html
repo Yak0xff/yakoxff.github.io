@@ -2,11 +2,11 @@
 {{ $link := .link }}
 {{ $text := .text }}
 
-<li class="flex-shrink-0 flex-grow-0">
+<div class="flex-shrink-0 flex-grow-0">
     <a data-umami-event="🧭 Click postnav link"
         href="{{ .Site.LanguagePrefix }}/{{ $link }}"
         class="small-button {{ if $active }}font-extrabold{{ end }}"
     >
         {{ $text }}
     </a>
-</li>
+</div>
