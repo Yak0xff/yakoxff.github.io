@@ -3,7 +3,7 @@
         {{ partial "header" . }}
         {{ partial "home/home-nav" . }}
 
-        <h2>{{ T "settings.fontSize" . }}</h2>
+        <h3>{{ T "settings.fontSize" . }}</h3>
         <section class="shadow">
             <div id="text-alter-buttons" class="grid grid-cols-3">
                 {{ $buttonClass := "font-extrabold bg-neutral-100 hover:bg-neutral-200/50 rounded py-5" }}
@@ -15,6 +15,12 @@
                 <p class="markdown-body">{{ T "settings.loremIpsum" . }}</p>
             </div>
         </section>
+
+        <hr />
+
+        <h3>{{ T "settings.otherOptions" . }}</h3>
+        <input id="allowTracking" type="checkbox" checked />
+        <label for="allowTracking">{{ T "settings.allowTracking" . }}</label>
     </article>
 {{ partial "footer.html" . }}
 {{ end }}
