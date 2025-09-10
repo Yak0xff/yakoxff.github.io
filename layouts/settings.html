@@ -15,7 +15,8 @@
                 <button data-text-size="medium" class="{{ $buttonClass }} text-base md:text-lg">{{ T "settings.sampleText" }}</button>
                 <button data-text-size="large" class="{{ $buttonClass }} text-lg md:text-xl">{{ T "settings.sampleText" }}</button>
             </div>
-            <div class="leading-relaxed bg-neutral-200/50 py-1 px-4 rounded">
+            <div class="leading-relaxed bg-neutral-200/50 py-1 px-4 rounded
+                h-50 overflow-y-auto">
                 <p class="markdown-body">{{ T "settings.loremIpsum" . }}</p>
             </div>
         </section>
@@ -23,8 +24,7 @@
         <hr />
 
         <h3>{{ T "settings.otherOptions" . }}</h3>
-        <input id="allowTracking" type="checkbox" checked />
-        <label for="allowTracking">{{ T "settings.allowTracking" . }}</label>
+        <section id="checkbox-options" class="text-sm"></section>
     </article>
 {{ partial "footer.html" . }}
 {{ end }}
