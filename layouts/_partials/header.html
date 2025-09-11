@@ -1,23 +1,7 @@
 <header class="pagefind-exclude">
-  <!-- Header Title -->
+  <!-- Logo & Title -->
   <div class="flex flex-col items-center gap-2">
-    <!-- Logo -->
-    <div class="group relative w-full flex flex-col items-center">
-      <div class="group-hover:opacity-30 transition-opacity duration-500">
-          {{ partial "components/logo" (dict "imageClass" "w-[10rem]") }}
-      </div>
-      <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-500
-          w-[20rem] absolute top-0 bottom-0
-          flex flex-col items-center justify-center markdown-body">
-          <p class="text-center text-xl font-extrabold font-italic">
-              {{ T "homePageQuote.content" . | markdownify }}
-          </p>
-          <p class="w-full m-0 text-right text-sm text-secondary">
-              {{ T "homePageQuote.source" . | markdownify }}
-          </p>
-      </div>
-    </div>
-    <!-- Site Name -->
+    {{ partial "header/hoverable-logo" . }}
     <a class="text-8 font-900 text-center tracking-widest
         xerox hover:no-underline"
         href="{{ .Site.LanguagePrefix }}/"
@@ -26,35 +10,8 @@
   </div>
   <!-- Navigation -->
   {{ $navOffset := "pl-6" }}
-  {{ $langButtonSize := "w-4 h-4" }}
   <div class="flex justify-center items-center gap-3 text-size-sm md:text-size-base {{ $navOffset }}">
-      <nav class="my-4 flex justify-center items-center w-fit rounded-4 overflow-hidden">
-        {{ range .Site.Params.nav }}
-        <a class="inline-block py-1 px-[0.35rem] md:px-2 first:pl-3 last:pr-3
-            block hover:no-underline text-nowrap
-            {{ if strings.Contains $.Page.RelPermalink .link }}
-            text-[var(--text-color)] bg-[var(--block-background-color)]
-            {{ else }}
-            text-[var(--background-color)] bg-[var(--text-color)]
-            {{ end }}"
-        href="{{ .link }}" target="{{ .target }}" data-umami-event="💊 Click header navigation">{{ .name }}</a>
-        {{ end }}
-      </nav>
-
-      {{- $lang := .Site.Language.Lang -}}
-      {{- $switch := dict
-        "en" (dict "url" "/zh/" "label" "ZH" "title" "查看中文博客")
-        "zh" (dict "url" "/en/" "label" "EN" "title" "View English Blog") -}}
-      {{- $entry := index $switch $lang -}}
-      <a
-          href="{{ $entry.url }}"
-          data-umami-event="🌍 Switch Language"
-          class="block rounded-full text-center hover:no-underline {{ $langButtonSize }}
-            bg-neutral/10 border-1 border-[var(--text-color)] border-solid
-            bg-[var(--block-background-color)] leading-[0.6rem]"
-            title="{{ $entry.title }}"
-      >
-        <span class="text-size-[0.5rem] font-extrabold">{{ $entry.label }}</span>
-      </a>
+      {{ partial "header/navigation" . }}
+      {{ partial "header/language-switch" . }}
   </div>
 </header>
