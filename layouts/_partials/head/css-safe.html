@@ -8,8 +8,9 @@
 {{ end }}
 
 <!-- Aplayer -->
-{{ with resources.Get "css/aplayer.css" }}
-<style>{{ .Content | safeCSS }}</style>
+{{ $aplayerCSS := resources.Get "css/aplayer.css" }}
+{{ if $aplayerCSS }}
+<style>{{ $aplayerCSS.Content | safeCSS }}</style>
 {{ end }}
 
 <!-- Pagefind -->
@@ -25,15 +26,24 @@
 />
 {{- end }}
 
-<!-- theme css -->
+<!-- UnoCSS -->
 {{ $unoCSS := resources.Get "css/uno.css" }}
 {{ if $unoCSS }}
-{{ $unoCSS = $unoCSS | minify }}
-<style>{{ $unoCSS.Content | safeCSS }}</style>
+  {{ if hugo.IsProduction }}
+    {{ $unoCSS = $unoCSS | minify }}
+  {{ end }}
+  <style>{{ $unoCSS.Content | safeCSS }}</style>
+{{ else }}
+  <!-- 如果 UnoCSS 不存在，尝试从静态文件加载 -->
+  <link rel="stylesheet" href="{{ "css/uno.css" | relURL }}">
 {{ end }}
 
+<!-- Main SCSS -->
 {{ $mainSCSS := resources.Get "css/main.scss" }}
 {{ if $mainSCSS }}
-{{ $mainSCSS = $mainSCSS | css.Sass | minify }}
-<style>{{ $mainSCSS.Content | safeCSS }}</style>
+  {{ $mainSCSS = $mainSCSS | css.Sass }}
+  {{ if hugo.IsProduction }}
+    {{ $mainSCSS = $mainSCSS | minify }}
+  {{ end }}
+  <style>{{ $mainSCSS.Content | safeCSS }}</style>
 {{ end }}
