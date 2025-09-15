@@ -5,7 +5,12 @@ date: 2024-11-27
 toc: true
 ---
 
-{{< callout "你可以加入本博客的 Telegram 频道「[大脑充血](https://t.me/geedeapro)」，我会在这里发表一些不成文的想法。" "🧠" >}}
+<div class="rounded-1 leading-[1.75] py-4 px-5 flex gap-3 my-2" style="background-color: rgba(var(--block-background-color-rgb), 0.5)">
+    <div class="callout-icon">🧠</div>
+    <div class="callout-text">
+        你可以加入本博客的 Telegram 频道「<a href="https://t.me/geedeapro">大脑充血</a>」，我会在这里发表一些不成文的想法。
+    </div>
+</div>
 
 欢迎来访，这里只有真情流露和赤裸的思考。
 
