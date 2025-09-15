@@ -1,3 +1,7 @@
+# geek-death-project
+
+Initial commit.
+
 ![](screenshot.png)
 
 # 极客死亡计划
