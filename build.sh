@@ -30,7 +30,19 @@ else
     echo "⚠️  未找到 UnoCSS 构建脚本，跳过..."
 fi
 
-# 4. 检查关键文件
+# 4. 同步短代码文件
+echo "🔄 同步短代码文件..."
+if [ -f scripts/sync-shortcodes.sh ]; then
+    chmod +x scripts/sync-shortcodes.sh
+    ./scripts/sync-shortcodes.sh
+else
+    # 手动同步
+    mkdir -p layouts/shortcodes layouts/_shortcodes
+    cp -f layouts/_shortcodes/* layouts/shortcodes/ 2>/dev/null || true
+    cp -f layouts/shortcodes/* layouts/_shortcodes/ 2>/dev/null || true
+fi
+
+# 5. 检查关键文件
 echo "🔍 检查关键文件..."
 echo "检查 UnoCSS 文件:"
 ls -la assets/css/uno.css || echo "❌ UnoCSS 文件不存在"

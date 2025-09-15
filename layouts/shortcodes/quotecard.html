@@ -1,0 +1,11 @@
+<div class="text-5 md:text-6 font-italic text-center
+    my-12 md:my-20 mx-4 md:mx-12 p-4
+    border border-solid border-gray-300 rounded-4 shadow-lg
+    rotate-[3deg] bg-[rgba(255,255,255,0.35)] backdrop-blur-md"
+    style="background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)),
+      repeating-radial-gradient(rgba(255,255,255,0.25) 0 0.0001%, rgba(255,255,255,0.04) 0 0.0002%) 50% 0 / 2500px 2500px,
+      repeating-conic-gradient(rgba(255,255,255,0.25) 0 0.0001%, rgba(255,255,255,0.04) 0 0.0002%) 60% 60% / 2500px 2500px;
+    background-blend-mode: normal, difference;"
+    {{ with .Get "rotate" }}style="transform: rotate({{. }}deg)"{{ end }}>
+    {{ .Inner | markdownify }}
+</div>
