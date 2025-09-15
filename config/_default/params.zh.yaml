@@ -1,22 +1,22 @@
 nav:
-  - name: 议叙
+  - name: 长文
     link: /posts/
     target: _self
-  - name: 卡片
+  - name: 摘录
     link: /cards/
     target: _self
-  - name: 书目
+  - name: 阅读
     link: /library/
     target: _self
-  - name: 假想
+  - name: 虚构
     link: /fictions/
     target: _self
-  - name: 自述
+  - name: 关于
     link: /about/
     target: _self
 footerInternalLinks:
-  - name: 林卷
-    link: /linkroll/
+  - name: 侠客
+    link: /xiake/
   - name: 标记
     link: /highlights/
   - name: 赞助
