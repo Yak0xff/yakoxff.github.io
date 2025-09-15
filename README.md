@@ -6,9 +6,9 @@ Initial commit.
 
 # 极客死亡计划
 
-Eltrac 的博客，详情阅读[关于页面](https://www.geedea.pro/about/)。
+Eltrac 的博客，详情阅读[关于页面](https://yakoxff.pages.dev/about/)。
 
-https://www.geedea.pro or https://geek-death-project.pages.dev
+https://yakoxff.pages.dev or https://geek-death-project.pages.dev
 
 ---
 
