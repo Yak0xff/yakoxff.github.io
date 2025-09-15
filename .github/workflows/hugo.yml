@@ -33,7 +33,6 @@ jobs:
     env:
       HUGO_VERSION: 0.134.3
       NODE_VERSION: 18
-      PYTHON_VERSION: 3.11
     
     steps:
       # 1. 安装 Hugo CLI (Extended 版本)
@@ -60,24 +59,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           
-      # 5. 设置 Python 环境（用于脚本）
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
-          
-      # 6. 安装 Python 依赖
-      - name: Install Python dependencies
-        run: |
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            # 安装常用的依赖
-            pip install requests beautifulsoup4 lxml
-          fi
-          
-      # 7. 安装 Node.js 依赖
+      # 5. 安装 Node.js 依赖
       - name: Install Node.js dependencies
         run: |
           if [ -f package-lock.json ]; then
@@ -86,26 +68,19 @@ jobs:
             npm install
           fi
           
-      # 8. 运行 Python 脚本（如果存在）
-      - name: Run Python scripts
-        run: |
-          if [ -f scripts/run_scripts.py ]; then
-            cd scripts && python run_scripts.py
-          fi
-          
-      # 9. 构建 UnoCSS
+      # 6. 构建 UnoCSS
       - name: Build UnoCSS
         run: |
           if [ -f package.json ] && grep -q "build:uno:prod" package.json; then
             npm run build:uno:prod
           fi
           
-      # 10. 设置 Pages
+      # 7. 设置 Pages
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
         
-      # 11. 调试信息
+      # 8. 调试信息
       - name: Debug Hugo setup
         run: |
           echo "=== Hugo Version ==="
@@ -131,13 +106,13 @@ jobs:
           echo "=== Python version ==="
           python --version
           
-      # 12. 清理 Hugo 缓存
+      # 9. 清理 Hugo 缓存
       - name: Clean Hugo cache
         run: |
           hugo mod clean --all || true
           rm -rf resources/_gen || true
           
-      # 13. 使用 Hugo 构建站点
+      # 10. 使用 Hugo 构建站点
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
@@ -151,7 +126,7 @@ jobs:
             --verbose \
             --logLevel info
             
-      # 14. 验证构建结果
+      # 1`. 验证构建结果
       - name: Verify build
         run: |
           echo "=== Build output ==="
@@ -164,7 +139,7 @@ jobs:
           echo "=== Public directory size ==="
           du -sh public/
           
-      # 15. 上传构建产物
+      # 11. 上传构建产物
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -182,7 +157,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         
-      # 16. 部署后验证
+      # 12. 部署后验证
       - name: Verify deployment
         run: |
           echo "🚀 Site deployed successfully!"
