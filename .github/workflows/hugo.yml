@@ -103,14 +103,6 @@ jobs:
           node --version
           npm --version
           echo ""
-          echo "=== Python version ==="
-          python --version
-          
-      # 9. 清理 Hugo 缓存
-      - name: Clean Hugo cache
-        run: |
-          hugo mod clean --all || true
-          rm -rf resources/_gen || true
           
       # 10. 使用 Hugo 构建站点
       - name: Build with Hugo
