@@ -61,8 +61,7 @@ jobs:
           HUGO_ENVIRONMENT: production
         run: |
           hugo \
-            --minify \
-            --verbose
+            --minify
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
