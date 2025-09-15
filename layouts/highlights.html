@@ -6,7 +6,7 @@
             <p>{{ .Content }}</p>
         </div>
         <!-- Highlights -->
-        {{ range shuffle site.Data.highlights }}
+        {{ range shuffle 50 site.Data.highlights }}
         <section class="post-content">
             <h3><a href="{{ .url }}">《{{ .title }}》</a></h3>
             <ul class="list-none">
