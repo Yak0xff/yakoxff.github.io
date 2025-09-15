@@ -1,13 +1,13 @@
 ---
 date: 2025-05-06 11:12:12
-title: 林卷
+title: 侠客
 aliases:
   - /cards/links/
   - /links/
   - /blogroll/
 ---
 
-「林卷」是 Linkroll 的半音译，受到了 [Hsins](https://hsins.me/) 的启发，他把 Blogroll 译作「波卷」。这个页面收录我常看的链接，包括一些博客、播客和有意思的网站，由于内容不限于博客，所以取名 Linkroll。
+本来是准备使用 [Knight](https://zh.wikipedia.org/wiki/%E9%AA%91%E5%A3%AB) 的，但是思来想去，Knight并不能代表想要表达的「侠客」涵义，索性直接使用拼音，更加的直观。
 
 ## 我常读的中文博客
 
@@ -42,5 +42,3 @@ aliases:
 </div>
 
 ---
-
-Check out some cool English sites [here](/en/blogroll).
