@@ -6,7 +6,9 @@
             <p>{{ .Content }}</p>
         </div>
         <!-- Highlights -->
-        {{ range shuffle site.Data.highlights }}
+        {{ $highlights := site.Data.highlights }}
+        {{ if $highlights }}
+        {{ range $highlights }}
         <section class="post-content">
             <h3><a href="{{ .url }}">《{{ .title }}》</a></h3>
             <ul class="list-none">
@@ -20,6 +22,7 @@
                 {{ end }}
             </ul>
         </section>
+        {{ end }}
         {{ end }}
     </article>
 {{ partial "footer.html" . }}
