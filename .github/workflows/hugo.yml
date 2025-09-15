@@ -31,7 +31,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: 0.128.0
+      HUGO_VERSION: 0.134.3
     steps:
       - name: Install Hugo CLI
         run: |
@@ -48,13 +48,21 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install Node.js dependencies
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
+      - name: Debug Hugo setup
+        run: |
+          hugo version
+          echo "Checking shortcodes directory:"
+          ls -la layouts/_shortcodes/
+          echo "Checking config:"
+          ls -la config/_default/
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
           HUGO_ENVIRONMENT: production
         run: |
           hugo \
-            --minify
+            --minify \
+            --verbose
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
