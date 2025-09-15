@@ -1,4 +1,4 @@
-author: Eltrac
+author: Yak0xff
 email: hi@guhub.cn
 mainSections:
   - posts
@@ -9,19 +9,19 @@ externalJSFIles:
   - /js/littlefoot.js
 footerExternalLinks:
   - name: GitHub
-    link: https://github.com/BigCoke233/geek-death-project
-    icon: https://image.guhub.cn/uPic/2025/01/NqL5b5.png
+    link: https://github.com/Yak0xff/yakoxff.github.io
+    icon: /img/github.png
   - name: Travelling
     link: https://www.travellings.cn/go.html
     icon: https://www.travellings.cn/assets/favicon.png
-  - name: Telegram Channel
-    link: https://t.me/geedeapro
-    icon: /img/telegram.svg
+  - name: X
+    link: https://x.com/zh_robin
+    icon: /img/x.png
 giscus:
-  repo: BigCoke233/geek-death-project
-  repoId: R_kgDONPoyVw
+  repo: Yak0xff/yakoxff.github.io
+  repoId: R_kgDOPv9iUg
   category: General
-  categoryId: DIC_kwDONPoyV84Clumc
+  categoryId: DIC_kwDOPv9iUs4Cvcyk
   mapping: og:title
   strict: 1
   reactionsEnabled: 0
