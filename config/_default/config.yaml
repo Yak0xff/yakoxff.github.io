@@ -3,6 +3,12 @@ timeZone: Asia/Shanghai
 hasCJKLanguage: true
 defaultContentLanguage: zh
 defaultContentLanguageInSubdir: true
+
+# 明确指定布局目录
+layoutDir: layouts
+# 确保短代码路径正确
+shortcodeDir: layouts/_shortcodes
+
 outputs:
   home:
     - HTML
@@ -15,3 +21,7 @@ outputFormats:
     baseName: cal-heatmap
     isPlainText: true
     permalinkable: true
+
+# 安全设置，允许内联短代码
+security:
+  enableInlineShortcodes: true
