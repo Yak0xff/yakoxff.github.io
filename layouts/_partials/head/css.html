@@ -26,10 +26,14 @@
 {{- end }}
 
 <!-- theme css -->
-{{ with resources.Get "css/uno.css" | minify }}
-<style>{{ .Content | safeCSS }}</style>
+{{ $unoCSS := resources.Get "css/uno.css" }}
+{{ if $unoCSS }}
+{{ $unoCSS = $unoCSS | minify }}
+<style>{{ $unoCSS.Content | safeCSS }}</style>
 {{ end }}
 
-{{ with resources.Get "css/main.scss" | css.Sass | minify }}
-<style>{{ .Content | safeCSS }}</style>
+{{ $mainSCSS := resources.Get "css/main.scss" }}
+{{ if $mainSCSS }}
+{{ $mainSCSS = $mainSCSS | css.Sass | minify }}
+<style>{{ $mainSCSS.Content | safeCSS }}</style>
 {{ end }}

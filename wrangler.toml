@@ -1,0 +1,18 @@
+# Cloudflare Pages 配置文件
+name = "geek-death-project"
+compatibility_date = "2024-01-01"
+
+[build]
+command = "./build.sh"
+cwd = ""
+watch_dir = ""
+
+[build.environment_variables]
+HUGO_VERSION = "0.134.3"
+NODE_VERSION = "18"
+TZ = "Asia/Shanghai"
+HUGO_ENVIRONMENT = "production"
+
+# Pages 特定配置
+[[pages_build_output_dir]]
+value = "public"
