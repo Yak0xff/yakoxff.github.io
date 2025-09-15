@@ -5,9 +5,3 @@ zh:
   title: 向死而生：人生没有必修课
   weight: 1
   defaultContentLanguageInSubdir: false
-en:
-  contentDir: content/en
-  languageCode: en-US
-  languageName: English
-  title: Living Towards Death
-  weight: 2

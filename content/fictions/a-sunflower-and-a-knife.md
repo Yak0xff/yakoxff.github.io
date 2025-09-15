@@ -1,7 +1,7 @@
 ---
 title: 水果刀与向日葵
 date: 2022-08-28
-draft: false
+draft: true
 ---
 
 今天早上起床的时候，凡在床头柜上发现了一张纸条。<!--more-->

@@ -5,13 +5,9 @@ genre: 实用
 rating: 4
 cover: https://image.guhub.cn//uPic/The_Subtle_Art_of_Not_Giving_a_F*ck_by_Mark_Manson_-_Book_Cover.png
 date: 2025-05-28T19:55:00
-draft: false
+draft: true
 tags:
   - 死亡
-  - English
-  - 内阻力
-  - 自我
-  - 认知
 aliases:
   - /library/2025/The-Subtle-Art-of-Not-Giving-a-Fuck/
 mentioned_books:
