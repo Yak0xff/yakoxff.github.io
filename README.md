@@ -1,14 +1,11 @@
-# geek-death-project
-
-Initial commit.
+# 向死而生：人生没有必修课
 
 ![](screenshot.png)
 
-# 极客死亡计划
 
-Eltrac 的博客，详情阅读[关于页面](https://yakoxff.pages.dev/about/)。
+Yak 的博客，详情阅读[关于页面](https://yakoxff.pages.dev/about/)。
 
-https://yakoxff.pages.dev or https://geek-death-project.pages.dev
+https://yakoxff.pages.dev
 
 ---
 
