@@ -8,9 +8,9 @@ nav:
   - name: 阅读
     link: /library/
     target: _self
-  - name: 虚构
-    link: /fictions/
-    target: _self
+  # - name: 虚构
+  #   link: /fictions/
+  #   target: _self
   - name: 关于
     link: /about/
     target: _self
