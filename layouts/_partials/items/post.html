@@ -15,7 +15,7 @@
                     data-umami-event="🏠 Click post link from index"
                 >
                     {{ if eq .ctx.Section "library" }}
-                        读《{{ .ctx.Title }}》
+                        读{{ .ctx.Title }}
                     {{ else }}
                         {{ .ctx.Title }}
                     {{ end }}
