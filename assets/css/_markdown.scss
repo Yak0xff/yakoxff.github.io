@@ -6,46 +6,117 @@ $block-background-color: var(--block-background-color);
 $strong-text-color: #A94A4A;
 $em-text-color: #889E73;
 
-// Main styles
 .markdown-body {
   max-width: 100%;
 
-  // Nested styles for child elements
+  p {
+    hyphens: auto;
+    text-justify: ideographic;
+    margin-bottom: 1em;
+  }
+
+  strong { color: $strong-text-color; }
+
+  em { color: $em-text-color; }
+
+  img {
+    max-width: 100%;
+    display: block;
+    margin: 1rem auto;
+  }
+
+  ul {
+    list-style-type: square;
+  }
+
+  ul, ol {
+      padding-inline-start: 1.75rem;
+      li {
+          padding-left: 0.25rem;
+      }
+      ::marker {
+        color: var(--secondary-text-color);
+      }
+  }
+
+  mark {
+    background-color: rgba(255, 235, 0, .5)
+  }
+
+  del {
+      opacity: 0.5
+  }
+
+  iframe {
+      max-width: 100%;
+  }
+
   a {
+    // color and underline
     text-decoration: underline;
     text-decoration-style: wavy;
     text-underline-offset: 0.25em;
     text-decoration-color: $border-color;
     color: $link-color;
 
+    // link hover effects
     transition: text-decoration-color 0.1s ease-in-out;
     &:hover {
         text-decoration-color: $secondary-text-color;
     }
 
-    &.external-link::after {
-        content: '';
+    // icons with pseudo-elements
+    &::before, &::after {
         display: inline-block;
-        width: 0.9em;
-        height: 0.9em;
-        background-image: url('/img/external-link.svg');
-        background-size: cover;
+        font-size: 70%;
+        color: var(--secondary-text-color);
+        vertical-align: middle;
+        font-weight: 800;
+    }
+
+    &::after {
+        margin-left: 0.05em;
+    }
+
+    &::before {
+        --size: 1.25em;
+        margin-right: 0.25em;
+        background-size: var(--size);
+        height: var(--size);
+        width: var(--size);
+        border-radius: 3px;
+
+    }
+
+    // external link icon
+    &.external-link::after {
+        content: '↗';
+    }
+
+    // icons for specific domains
+    &[href*="wikipedia.org"]::before {
+        content: '';
+        background-color: #fff;
+        background-image: url('/icons/wikipedia.svg');
+    }
+    &[href*="wiktionary.org"]::before {
+        content: '';
+        background-color: #fff;
+        background-image: url('/icons/enwiktionary.svg');
+    }
+    &[href*="etymonline.com"]::before {
+        content: '';
+        background-image: url('/icons/etymonline.jpg');
+    }
+    &[href*="github.com"]::before {
+        content: '';
+        background-image: url('/icons/github.svg');
         @media (prefers-color-scheme: dark) {
             filter: invert(1);
         }
-    }
-  }
-
-  blockquote {
-    color: var(--secondary-text-color);
-    padding: 0;
-    margin: 0;
-    &:not(blockquote > blockquote) {
-        margin-left: 1em;
-    }
-    & > blockquote {
-        border-left: 2px solid $border-color;
-        padding-left: 1em;
+        .dark & {
+            filter: invert(1);
+        }
     }
   }
 
@@ -97,26 +168,6 @@ $em-text-color: #889E73;
     }
   }
 
-  p {
-    hyphens: auto;
-    text-justify: ideographic;
-    margin-bottom: 1em;
-  }
-
-  strong {
-    color: $strong-text-color;
-  }
-
-  em {
-    color: $em-text-color;
-  }
-
-  img {
-    max-width: 100%;
-    display: block;
-    margin: 1rem auto;
-  }
-
   figure {
     display: block;
     margin: 0;
@@ -130,57 +181,6 @@ $em-text-color: #889E73;
             white-space: normal;
         }
     }
-  }
-
-  ul {
-    list-style-type: square;
-  }
-
-  ul, ol {
-      padding-inline-start: 1.75rem;
-      li {
-          padding-left: 0.25rem;
-      }
-      ::marker {
-        color: var(--secondary-text-color);
-      }
-  }
-
-  mark {
-    background-color: rgba(255, 235, 0, .5)
-  }
-
-  .table-container {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-
-      table {
-          border-collapse: collapse;
-          table-layout: fixed;
-          min-width: 100%;
-          width: max-content;
-
-          border-top: 2px solid var(--border-color);
-
-          tr {
-              border-bottom: 1px solid var(--border-color);
-          }
-          td, th {
-              max-width: 200px;
-              padding: 0.5rem 1rem;
-              line-height: 1.5;
-              white-space: normal;
-              word-wrap: break-word;
-          }
-      }
-  }
-
-  del {
-      opacity: 0.5
-  }
-
-  iframe {
-      max-width: 100%;
   }
 }
 
