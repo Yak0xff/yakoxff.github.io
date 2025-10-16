@@ -32,12 +32,12 @@
       // initialize checkbox options
       function initCheckboxes() {
         const checkboxOptions = [
-          {
-            id: 'dontAllowTracking',
-            label: '禁止网站使用 Web 分析工具跟踪用户行为',
-            storage: 'umami.disabled',
-            default: 'false'
-          },
+          // {
+          //   id: 'dontAllowTracking',
+          //   label: '禁止网站使用 Web 分析工具跟踪用户行为',
+          //   storage: 'umami.disabled',
+          //   default: 'false'
+          // },
           {
             id: 'hideBatrick',
             label: '隐藏 Batrick（返回顶部按钮）',

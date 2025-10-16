@@ -19,5 +19,7 @@ footerInternalLinks:
     link: /xiake/
   - name: 标记
     link: /highlights/
-  - name: 赞助
-    link: /sponsor/
+  - name: 设置
+    link: /settings/
+  # - name: 赞助
+  #   link: /sponsor/
