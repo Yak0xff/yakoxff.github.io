@@ -12,7 +12,6 @@
                 {{ if $showSummary }} style="margin-bottom: 0"{{ end }}>
                 <a
                     href="{{ .ctx.Permalink }}"
-                    data-umami-event="🏠 Click post link from index"
                 >
                     {{ if eq .ctx.Section "library" }}
                         读{{ .ctx.Title }}
@@ -32,7 +31,7 @@
         {{ end }}
     </header>
     {{ if or $showSummary .ctx.Params.description }}
-    <div class="markdown-body text-size-lg! leading-relaxed"
+    <div class="markdown-body text-size-lg md:text-size-xl leading-relaxed"
         style="view-transition-name: post-content-{{ .File.UniqueID }}">
         {{ if $showSummary }}
             {{ .ctx.Summary }}

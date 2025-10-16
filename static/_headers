@@ -1,6 +1,5 @@
 /*
   Content-Security-Policy:
     script-src 'self'
-      https://cloud.umami.is
       'unsafe-inline'
       'unsafe-eval';

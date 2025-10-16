@@ -17,7 +17,6 @@
       border: 1px solid #444;
     }
   </style>
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="297a5367-a675-4a3b-a8e7-3b490231e695"></script>
 </head>
 <body>
   <div id="graph"></div>
@@ -72,7 +71,6 @@
             const node = nodes.get(params.nodes[0]);
             if (node.url) {
               window.open(node.url, "_blank");
-              umami.track('Visit page through Graph')
             }
           }
         });

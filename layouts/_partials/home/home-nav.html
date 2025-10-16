@@ -20,23 +20,13 @@
                     (strings.HasPrefix $.Page.RelPermalink "/categories/")
                     (strings.HasPrefix $.Page.RelPermalink "/tags/"))
             ) }}
-            <div class="relative">
-                {{ partial "home/home-nav-item" (dict
-                    "text" (T "postNav.settings")
-                    "link" "settings"
-                    "active" (strings.HasPrefix $.Page.RelPermalink "/settings/")
-                ) }}
-                <!-- <span class="absolute text-size-[0.6rem] -top-3 -right-2
-                    bg-neutral-500 text-white px-1 rounded">Beta</span> -->
-            </div>
         {{ end }}
 
         <li class="absolute right-0 dark:invert">
             <a href="{{ .Site.LanguagePrefix }}/stats"
                 data-tooltip="{{ T "statsTooltip" }}"
                 class="block opacity-50 transition-opacity duration-300 hover:opacity-100
-                {{ if eq "/stats/" $.Page.RelPermalink }} opacity-100 font-bolder{{ end }}"
-                data-umami-event="📈 Click stats page link">
+                {{ if eq "/stats/" $.Page.RelPermalink }} opacity-100 font-bolder{{ end }}">
                     <img src="/img/graph.svg" class="opacity-50 h-8 w-8" alt="Cthulu-style monster with an eye." />
                 </a>
         <li>
