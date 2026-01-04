@@ -5,9 +5,6 @@ nav:
   - name: 摘录
     link: /cards/
     target: _self
-  - name: 阅读
-    link: /library/
-    target: _self
   # - name: 虚构
   #   link: /fictions/
   #   target: _self
@@ -19,7 +16,5 @@ footerInternalLinks:
     link: /xiake/
   - name: 标记
     link: /highlights/
-  - name: 设置
-    link: /settings/
   # - name: 赞助
   #   link: /sponsor/

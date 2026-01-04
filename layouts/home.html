@@ -1,9 +1,12 @@
 {{ define "main" }}
     <article>
       {{ partial "header" . }}
-      {{ partial "home/home-nav" . }}
+      
+      {{/* 最新文章列表（精选置顶） */}}
       {{ partial "home/latest-posts" . }}
+      
       <!-- {{ partial "home/latest-cards" . }} -->
     </article>
+    
 {{ partial "footer.html" . }}
 {{ end }}

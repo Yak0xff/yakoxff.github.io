@@ -1,0 +1,65 @@
+<!-- 简化版 Header - 用于文章阅读页 -->
+<header class="header-simple pagefind-exclude">
+  <a href="{{ .Site.LanguagePrefix }}/" class="header-simple-brand">
+    <span class="header-simple-back">←</span>
+    <span class="header-simple-title">{{ .Site.Title }}</span>
+  </a>
+  <nav class="header-simple-nav">
+    <a href="/categories/" class="header-simple-link" title="{{ T "nav.search" }}">🔍</a>
+  </nav>
+</header>
+
+<style>
+.header-simple {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  max-width: var(--page-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header-simple-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: opacity 0.2s;
+}
+
+.header-simple-brand:hover {
+  opacity: 0.7;
+}
+
+.header-simple-back {
+  font-size: 1.25rem;
+  opacity: 0.6;
+}
+
+.header-simple-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.header-simple-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-simple-link {
+  font-size: 1rem;
+  color: var(--text-color);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.header-simple-link:hover {
+  opacity: 1;
+}
+</style>

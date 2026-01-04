@@ -1,19 +1,98 @@
 {{ with site.RegularPages.Related . | first 1 }}
-<div class="mt-8 pb-8 relative leading-loose">
-  <h4 class="absolute -z-1 bottom-0 right-0 text-8 m-0 opacity-25 font-italic">{{ T "nowReadThis" }}</h4>
+<div class="now-read-this">
+  <span class="now-read-label">{{ T "nowReadThis" }}</span>
   {{ range . }}
-  <div class="flex justify-between">
-      <a class="font-800" href="{{ .RelPermalink }}">
-          {{ .LinkTitle }}
-          {{ with .Params.subtitle }}
-              <span class="text-secondary font-normal">：{{ . }}</span>
-          {{ end }}
-      </a>
-      <span class="text-secondary">⏱️ {{ .ReadingTime }}min </span>
-  </div>
-  <div class="font-light">
-      <p>{{ .Summary | plainify }}</p>
-  </div>
+  <a class="now-read-link" href="{{ .RelPermalink }}">
+    <div class="now-read-content">
+      <h4 class="now-read-title">
+        {{ .LinkTitle }}
+        {{ with .Params.subtitle }}
+        <span class="now-read-subtitle">{{ . }}</span>
+        {{ end }}
+      </h4>
+      <p class="now-read-summary">{{ .Summary | plainify | truncate 120 }}</p>
+    </div>
+    <span class="now-read-time">{{ .ReadingTime }} 分钟</span>
+  </a>
   {{ end }}
 </div>
+
+<style>
+.now-read-this {
+  margin-top: 2rem;
+  position: relative;
+}
+
+.now-read-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--secondary-text-color);
+  margin-bottom: 0.75rem;
+}
+
+.now-read-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--block-background-color);
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.now-read-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.now-read-content {
+  flex: 1;
+}
+
+.now-read-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-color);
+  line-height: 1.4;
+}
+
+.now-read-subtitle {
+  font-weight: 400;
+  color: var(--secondary-text-color);
+}
+
+.now-read-subtitle::before {
+  content: '：';
+}
+
+.now-read-summary {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--secondary-text-color);
+  line-height: 1.6;
+}
+
+.now-read-time {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: var(--secondary-text-color);
+  opacity: 0.7;
+}
+
+@media (max-width: 640px) {
+  .now-read-link {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .now-read-time {
+    align-self: flex-end;
+  }
+}
+</style>
 {{ end }}
