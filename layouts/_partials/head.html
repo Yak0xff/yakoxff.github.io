@@ -1,6 +1,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- 主题初始化脚本（防止闪烁） -->
+  <script>
+    (function(){
+      var t = localStorage.getItem('theme');
+      var d = document.documentElement;
+      if (t === 'dark') {
+        d.classList.add('dark');
+      } else if (t === 'light') {
+        d.classList.add('light');
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        d.classList.add('dark');
+      } else {
+        d.classList.add('light');
+      }
+    })();
+  </script>
   {{ hugo.Generator }}
   {{ partial "head/siteinfo" . }}
   {{ partial "head/css" . }}

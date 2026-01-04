@@ -9,7 +9,7 @@
       {{ else }} border-white{{ end }}">
     <img class="lazy w-full block" src="{{ .Params.cover }}" />
     {{ if eq .Params.rating 1 }}
-    <div class="absolute z-1 top-[25%] left-[25%] h-[50%] w-[50%]"
+    <div class="absolute z-1 top-[25%] left-[25%] h-[50%] w-[50%] dark:invert"
         style="background-image: url('/img/thumbs-down.png');
         background-size: 100%;
         background-position: center;

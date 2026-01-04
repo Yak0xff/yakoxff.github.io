@@ -10,7 +10,7 @@
     </div>
     <!-- Links -->
     {{ $aTagClasses := "block rounded-full px-3 md:p-4 bg-neutral-200/50 dark:bg-neutral-600/50 hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors no-underline! text-size-xs inline-flex gap-1 items-center" }}
-    {{ $imageClasses := "block w-3 h-3 md:w-5 md:h-5 m-0!" }}
+    {{ $imageClasses := "block w-3 h-3 md:w-5 md:h-5 m-0! dark:invert" }}
     <div class="flex gap-2 items-center">
         {{ with .Get "apple" }}
         <a href="{{ . }}"

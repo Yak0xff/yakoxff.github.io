@@ -171,11 +171,13 @@ $em-text-color: #889E73;
     &[href*="github.com"]::before {
         content: '';
         background-image: url('/icons/github.svg');
-        @media (prefers-color-scheme: dark) {
+        html.dark & {
             filter: invert(1);
         }
-        .dark & {
-            filter: invert(1);
+        @media (prefers-color-scheme: dark) {
+            html:not(.light) & {
+                filter: invert(1);
+            }
         }
     }
   }

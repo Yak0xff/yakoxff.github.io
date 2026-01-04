@@ -1,0 +1,53 @@
+<script>
+(function() {
+  const THEME_KEY = 'theme';
+  const DARK_CLASS = 'dark';
+  const LIGHT_CLASS = 'light';
+  
+  // 获取用户偏好主题
+  function getPreferredTheme() {
+    const stored = localStorage.getItem(THEME_KEY);
+    if (stored) return stored;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  
+  // 应用主题
+  function applyTheme(theme) {
+    const html = document.documentElement;
+    if (theme === 'dark') {
+      html.classList.add(DARK_CLASS);
+      html.classList.remove(LIGHT_CLASS);
+    } else {
+      html.classList.remove(DARK_CLASS);
+      html.classList.add(LIGHT_CLASS);
+    }
+  }
+  
+  // 切换主题
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.classList.contains(DARK_CLASS);
+    const newTheme = isDark ? 'light' : 'dark';
+    localStorage.setItem(THEME_KEY, newTheme);
+    applyTheme(newTheme);
+  }
+  
+  // 初始化
+  applyTheme(getPreferredTheme());
+  
+  // 绑定按钮事件
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', toggleTheme);
+    }
+  });
+  
+  // 监听系统主题变化（仅当用户未手动设置时）
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    if (!localStorage.getItem(THEME_KEY)) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+})();
+</script>

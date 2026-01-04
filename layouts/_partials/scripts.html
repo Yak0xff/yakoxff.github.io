@@ -6,11 +6,12 @@
   <script src="{{ $.Site.Params.staticPrefix }}{{ . | relURL }}"></script>
 {{- end }}
 
-{{ partial "scripts/toc-js" . }}
-{{ partial "scripts/littlefoot-js" . }}
-{{ partial "scripts/libra-js" . }}
-{{ partial "scripts/aplayer-js" . }}
+{{ partial "scripts/theme-toggle-js.html" . }}
+{{ partial "scripts/toc-js.html" . }}
+{{ partial "scripts/littlefoot-js.html" . }}
+{{ partial "scripts/libra-js.html" . }}
+{{ partial "scripts/aplayer-js.html" . }}
 
 {{ if .File }}
-    {{ partial "scripts/action-menu-js" (.File.UniqueID | urlize) }}
+    {{ partial "scripts/action-menu-js.html" (.File.UniqueID | urlize) }}
 {{ end }}

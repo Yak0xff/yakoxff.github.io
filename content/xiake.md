@@ -7,9 +7,8 @@ aliases:
   - /blogroll/
 ---
 
-本来是准备使用 [Knight](https://zh.wikipedia.org/wiki/%E9%AA%91%E5%A3%AB) 的，但是思来想去，Knight并不能代表想要表达的「侠客」涵义，索性直接使用拼音，更加的直观。
+独乐乐不如众乐乐，这里收集记录一些个人认为有意思的网站、博客、公众号等。
 
-## 我常读的中文博客
 
 <div class="flex flex-wrap gap-4">
 {{< link link="https://www.velasx.com/" title="Velas 电波站" >}}
