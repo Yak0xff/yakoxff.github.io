@@ -33,3 +33,16 @@
 .xerox {
     filter: url(#x);
 }
+
+/* featured badge */
+.featured-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.7rem;
+  font-family: inherit;
+  color: var(--background-color);
+  background: var(--text-color);
+  border-radius: 0.25rem;
+  vertical-align: middle;
+}

@@ -1,17 +1,163 @@
 <header class="pagefind-exclude">
   <!-- Logo & Title -->
-  <div class="flex flex-col items-center gap-2">
-    {{ partial "header/hoverable-logo" . }}
-    <a class="text-8 font-900 text-center tracking-widest
-        xerox hover:no-underline"
-        href="{{ .Site.LanguagePrefix }}/"
-      >{{ .Site.Title }}</a
-    >
+  <div class="header-brand">
+    <div class="header-logo">
+      {{ partial "header/hoverable-logo" . }}
+    </div>
+    <div class="header-divider"></div>
+    <div class="header-title">
+      <a class="site-title xerox hover:no-underline"
+          href="{{ .Site.LanguagePrefix }}/"
+        >{{ .Site.Title }}</a>
+      <p class="site-subtitle">{{ T "header.subtitle" }}</p>
+    </div>
   </div>
   <!-- Navigation -->
-  {{ $navOffset := "pl-6" }}
-  <div class="flex justify-center items-center gap-3 text-size-sm md:text-size-base {{ $navOffset }}">
-      {{ partial "header/navigation" . }}
-      <!-- {{ partial "header/language-switch" . }} -->
-  </div>
+  <nav class="header-nav">
+    {{/* 首页 */}}
+    <a href="{{ .Site.LanguagePrefix }}/"
+       class="nav-item {{ if eq .Page.RelPermalink "/" }}active{{ end }}">
+       {{ T "nav.home" }}
+    </a>
+    {{/* 配置的导航项 */}}
+    {{ range .Site.Params.nav }}
+    <a href="{{ .link }}" target="{{ .target }}"
+       class="nav-item {{ if strings.Contains $.Page.RelPermalink .link }}active{{ end }}">
+       {{ .name }}
+    </a>
+    {{ end }}
+    {{/* 搜索按钮 - 跳转到搜索页 */}}
+    <a href="/categories/" class="nav-item nav-search" title="{{ T "nav.search" }}">
+      🔍
+    </a>
+  </nav>
 </header>
+
+<style>
+.header-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+.header-logo {
+  flex-shrink: 0;
+}
+
+.header-divider {
+  width: 1px;
+  height: 4rem;
+  background: var(--border-color);
+}
+
+.header-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.site-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--text-color) 0%, var(--secondary-text-color) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.site-subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--secondary-text-color);
+  letter-spacing: 0.08em;
+  font-style: italic;
+  opacity: 0.85;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.site-subtitle::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.5rem;
+  height: 1px;
+  background: var(--secondary-text-color);
+}
+
+.header-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.nav-item {
+  padding: 0.25rem 0;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  background: none;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  text-decoration: underline;
+}
+
+.nav-item.active {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 640px) {
+  .header-brand {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .header-divider {
+    width: 3rem;
+    height: 1px;
+  }
+  
+  .header-title {
+    align-items: center;
+  }
+  
+  .site-title {
+    font-size: 1.75rem;
+    letter-spacing: 0.1em;
+  }
+  
+  .site-subtitle {
+    padding-left: 0;
+    text-align: center;
+  }
+  
+  .site-subtitle::before {
+    display: none;
+  }
+  
+  .header-nav {
+    gap: 1rem;
+  }
+  
+  .nav-item {
+    font-size: 1rem;
+  }
+}
+</style>
