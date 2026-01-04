@@ -1,8 +1,8 @@
 {{ define "main" }}
     <article>
         {{ partial "header" . }}
-        <h1 class="term-title">{{ .Title }}</h1>
-        <div class="post-content markdown-body text-size-lg md:text-size-xl">
+        <h1 class="term-title" style="color: var(--text-color);">{{ .Title }}</h1>
+        <div class="post-content markdown-body text-size-lg md:text-size-xl" style="color: var(--text-color);">
             <p>{{ .Content }}</p>
         </div>
         <!-- Highlights -->
@@ -10,14 +10,11 @@
         {{ if $highlights }}
         {{ range $highlights }}
         <section class="post-content">
-            <h3><a href="{{ .url }}">《{{ .title }}》</a></h3>
+            <h3 style="color: var(--text-color);"><a href="{{ .url }}" style="color: inherit !important;">《{{ .title }}》</a></h3>
             <ul class="list-none">
                 {{ range .highlights }}
-                    <li class="my-2 text-lg">
-                        <mark class="bg-amber-2 dark:bg-amber-3/50 transition-colors
-                            hover:bg-amber-2/50 dark:hover:bg-amber-3/20">
-                            <a class="hover:no-underline" href="{{ .link }}">{{ .text | markdownify }}</a>
-                        </mark>
+                    <li class="my-2 text-lg highlight-item">
+                        <a class="highlight-link" href="{{ .link }}">{{ .text | markdownify }}</a>
                     </li>
                 {{ end }}
             </ul>
@@ -25,5 +22,38 @@
         {{ end }}
         {{ end }}
     </article>
+
+<style>
+.highlight-item {
+    display: block;
+}
+.highlight-link {
+    display: inline;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    background-color: rgba(251, 191, 36, 0.3);
+    color: var(--text-color) !important;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease;
+}
+.highlight-link:hover {
+    background-color: rgba(251, 191, 36, 0.5);
+    text-decoration: none !important;
+}
+html.dark .highlight-link {
+    background-color: rgba(180, 130, 50, 0.4);
+}
+html.dark .highlight-link:hover {
+    background-color: rgba(180, 130, 50, 0.6);
+}
+@media (prefers-color-scheme: dark) {
+    html:not(.light) .highlight-link {
+        background-color: rgba(180, 130, 50, 0.4);
+    }
+    html:not(.light) .highlight-link:hover {
+        background-color: rgba(180, 130, 50, 0.6);
+    }
+}
+</style>
 {{ partial "footer.html" . }}
 {{ end }}

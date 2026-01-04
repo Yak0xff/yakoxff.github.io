@@ -4,7 +4,9 @@ $secondary-text-color: var(--secondary-text-color);
 $border-color: var(--border-color);
 $block-background-color: var(--block-background-color);
 $strong-text-color: #A94A4A;
+$strong-text-color-dark: #E07070;
 $em-text-color: #889E73;
+$em-text-color-dark: #A8C893;
 
 .markdown-body {
   max-width: 100%;
@@ -29,9 +31,21 @@ $em-text-color: #889E73;
     margin-bottom: 1em;
   }
 
-  strong { color: $strong-text-color; }
+  strong { 
+    color: $strong-text-color;
+    html.dark & { color: $strong-text-color-dark; }
+    @media (prefers-color-scheme: dark) {
+      html:not(.light) & { color: $strong-text-color-dark; }
+    }
+  }
 
-  em { color: $em-text-color; }
+  em { 
+    color: $em-text-color;
+    html.dark & { color: $em-text-color-dark; }
+    @media (prefers-color-scheme: dark) {
+      html:not(.light) & { color: $em-text-color-dark; }
+    }
+  }
 
   img {
     max-width: 100%;
@@ -54,7 +68,11 @@ $em-text-color: #889E73;
   }
 
   mark {
-    background-color: rgba(255, 235, 0, .5)
+    background-color: rgba(255, 235, 0, .5);
+    html.dark & { background-color: rgba(255, 235, 0, .3); }
+    @media (prefers-color-scheme: dark) {
+      html:not(.light) & { background-color: rgba(255, 235, 0, .3); }
+    }
   }
 
   del {
