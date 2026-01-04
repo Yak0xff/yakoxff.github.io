@@ -5,13 +5,13 @@
         class="block hover:no-underline hover:-transform-translate-y-2 transition-transform"
         style="view-transition-name: category-{{ .Page.Title }};">
         <div class="taxonomy-categories-item">
-            <h3 class="category-title my-1">
+            <h3 class="category-title my-1 text-gray-900 dark:text-gray-100">
                 {{ with .Page.Params.icon }}
                 <span class="inline-block">{{ . }}</span>
                 {{ end }}
                 <span class="xerox">{{ .Page.LinkTitle }}</span>
             </h3>
-            <p class="mt-0">{{ .Page.Params.description | markdownify }}</p>
+            <p class="mt-0 text-gray-600 dark:text-gray-400">{{ .Page.Params.description | markdownify }}</p>
         </div>
     </a>
 {{ end }}
