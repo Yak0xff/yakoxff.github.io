@@ -38,12 +38,14 @@ html[lang="en-US"] {
     --bright-background-color: #666;
 }
 
-.dark {
-    @include variablesInDarkMode;
-}
-
+// 系统暗色模式（仅当没有手动设置时生效）
 @media (prefers-color-scheme: dark) {
-    :root {
+    html:not(.light) {
         @include variablesInDarkMode;
     }
+}
+
+// 手动设置暗色模式
+html.dark {
+    @include variablesInDarkMode;
 }

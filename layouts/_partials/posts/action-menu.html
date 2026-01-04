@@ -93,7 +93,13 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.dark .action-btn img {
+html.dark .action-btn img {
   filter: invert(1);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) .action-btn img {
+    filter: invert(1);
+  }
 }
 </style>
