@@ -29,7 +29,7 @@ screenshots:
   - /img/product/example-screenshot-1.jpg
   - /img/product/example-screenshot-2.jpg
 date: 2026-01-05
-draft: false
+draft: true
 ---
 
 ## 关于这个应用
