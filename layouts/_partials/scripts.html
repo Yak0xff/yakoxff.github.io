@@ -1,9 +1,9 @@
 {{ with resources.Get "js/tooltip.js" }}
-<script>{{ .Content | safeJS }}</script>
+<script defer>{{ .Content | safeJS }}</script>
 {{ end }}
 
 {{- range .Site.Params.externalJSFiles }}
-  <script src="{{ $.Site.Params.staticPrefix }}{{ . | relURL }}"></script>
+  <script src="{{ $.Site.Params.staticPrefix }}{{ . | relURL }}" defer></script>
 {{- end }}
 
 {{ partial "scripts/theme-toggle-js.html" . }}

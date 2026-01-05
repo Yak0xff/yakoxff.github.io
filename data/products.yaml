@@ -1,5 +1,5 @@
-# 产品 App ID 管理
-# 添加 App Store 应用的 ID，运行脚本自动生成产品页面
+# 应用 App ID 管理
+# 添加 App Store 应用的 ID，运行脚本自动生成应用页面
 # 获取 App ID：在 App Store 链接中找到数字，如 https://apps.apple.com/cn/app/微信/id414478124
 
 # 默认国家/地区代码（cn/us/jp 等）

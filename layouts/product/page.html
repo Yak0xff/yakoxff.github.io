@@ -5,9 +5,9 @@
     
     <div class="product-header">
         <div class="product-title-section">
-            {{ with .Params.icon }}
-            <img src="{{ . }}" alt="" class="product-icon" />
-            {{ end }}
+        {{ with .Params.icon }}
+        <img src="{{ . }}" alt="" class="product-icon" loading="lazy" />
+        {{ end }}
             <div>
                 <h1 class="product-title">{{ .Title }}</h1>
                 {{ with .Params.tagline }}
@@ -105,12 +105,12 @@
 
     {{ with .Params.screenshots }}
     <div class="product-screenshots">
-        <h2>产品截图</h2>
+        <h2>应用截图</h2>
         <div class="screenshots-carousel">
             <div class="screenshots-track">
                 {{ range $index, $src := . }}
                 <div class="screenshot-item" onclick="openLightbox({{ $index }})">
-                    <img src="{{ $src }}" alt="产品截图" loading="lazy" />
+                    <img src="{{ $src }}" alt="应用截图" loading="lazy" />
                 </div>
                 {{ end }}
             </div>

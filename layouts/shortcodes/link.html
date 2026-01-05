@@ -3,7 +3,7 @@
     class="block w-[calc(25%_-_1rem)] rounded-md overflow-hidden box-border p-0"
     style="background-color: var(--block-background-color);
         color: var(--text-color);text-decoration: none;">
-    <img src="{{ .Get "image" }}" class="block m-0!" alt="{{ .Get "title" }}">
+    <img src="{{ .Get "image" }}" class="block m-0!" alt="{{ .Get "title" }}" loading="lazy">
 </a>
 {{ else }}
 {{ $link := .Get "link" }}
