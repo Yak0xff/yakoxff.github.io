@@ -35,7 +35,7 @@
             <li class="inline-flex items-center">
                 <a href="{{ .link }}" title="{{ .name }}" target="_blank" data-tooltip>
                     <img
-                        class="h-4 w-auto inline-block rounded-full grayscale dark:invert"
+                        class="h-4 w-auto inline-block rounded-full grayscale footer-icon"
                         src="{{ .icon }}"
                         alt="{{ .name }} icon."
                         loading="lazy"
@@ -46,3 +46,14 @@
         </ul>
     </section>
 </footer>
+
+<style>
+html.dark .footer-icon {
+    filter: grayscale(100%) invert(1);
+}
+@media (prefers-color-scheme: dark) {
+    html:not(.light) .footer-icon {
+        filter: grayscale(100%) invert(1);
+    }
+}
+</style>
