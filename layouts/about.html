@@ -39,10 +39,10 @@
         </div>
     </section>
 
-    <!-- 内容发布数据（Hugo 生成，统计 cards 和 posts 两个 section） -->
+    <!-- 内容发布数据（Hugo 生成，统计 posts section） -->
     <script id="posts-data" type="application/json">
     {
-        {{- $allPages := where site.RegularPages "Section" "in" (slice "cards" "posts") -}}
+        {{- $allPages := where site.RegularPages "Section" "posts" -}}
         {{- $dateMap := dict -}}
         {{- range $allPages -}}
             {{- $dateStr := .Date.Format "2006-01-02" -}}
