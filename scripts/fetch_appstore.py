@@ -189,9 +189,11 @@ def generate_product_md(app_info: dict, status: str = "released", custom_slug: s
     if price == "Free" or app_info.get("price", 0) == 0:
         price = "免费"
     
-    # 描述（取第一段或前100字）
+    # 完整描述
     description = app_info.get("description", "")
-    tagline = description.split("\n")[0][:100] if description else name
+    # tagline 取第一段或前100字
+    first_line = description.split("\n")[0] if description else name
+    tagline = first_line[:100] if len(first_line) > 100 else first_line
     if len(tagline) > 80:
         tagline = tagline[:77] + "..."
     
@@ -217,7 +219,7 @@ draft: false
 
 ## 关于 {name}
 
-{description[:500] if description else '暂无描述'}
+{description if description else '暂无描述'}
 
 ---
 

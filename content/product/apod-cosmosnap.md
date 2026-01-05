@@ -34,7 +34,12 @@ Explore the Universe, Every Day！
 
 Daily Cosmic Gems: A stunning, high-resolution APOD each morning with expert explanations.
 Deep Dive Archive: Browse thousands of images across decades.
- Random Adventure: Surprise yourself wi
+ Random Adventure: Surprise yourself with a shuffle of cosmic wonders—perfect for inspiration.
+ Smart Reliability:  Ensure APODs always load, rain or shine.
+
+Join 1M+ Space Enthusiasts who start their day with star clusters, supernovae, and infinite wonder.
+
+ “The universe is under your thumb.” — Update Now to keep the cosmos at your fingertips. let the adventure begin!
 
 ---
 
