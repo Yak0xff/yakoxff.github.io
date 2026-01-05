@@ -2,7 +2,7 @@ nav:
   - name: 归档
     link: /posts/
     target: _self
-  - name: 产品
+  - name: 应用
     link: /product/
     target: _self
   # - name: 虚构

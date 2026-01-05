@@ -13,7 +13,7 @@
     </div>
     {{ end }}
 
-    <!-- 产品列表 -->
+    <!-- 应用列表 -->
     <section class="product-section">
         <div class="product-grid">
         {{- range .Pages }}
@@ -71,7 +71,7 @@
 
     {{ if eq (len .Pages) 0 }}
     <div class="product-empty">
-        <p>暂无产品，敬请期待...</p>
+        <p>暂无应用，敬请期待...</p>
     </div>
     {{ end }}
 </article>
@@ -114,12 +114,12 @@
     line-height: 1.6;
 }
 
-/* 产品区块 */
+/* 应用区块 */
 .product-section {
     margin-bottom: 2rem;
 }
 
-/* 产品网格 */
+/* 应用网格 */
 .product-grid {
     display: flex;
     flex-direction: column;

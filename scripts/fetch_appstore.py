@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-App Store 产品信息获取脚本
+App Store 应用信息获取脚本
 
 用法：
     # 获取单个应用
@@ -149,7 +149,7 @@ def get_platform(devices: list) -> list:
 
 
 def generate_product_md(app_info: dict, status: str = "released", custom_slug: str = None) -> str:
-    """生成产品 Markdown 文件"""
+    """生成应用 Markdown 文件"""
     app_id = str(app_info["trackId"])
     name = app_info.get("trackName", "未知应用")
     slug = custom_slug or slugify(name)
@@ -279,7 +279,7 @@ def load_products_yaml() -> tuple:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="从 App Store 获取应用信息并生成产品页面")
+    parser = argparse.ArgumentParser(description="从 App Store 获取应用信息并生成应用页面")
     parser.add_argument("app_id", nargs="?", help="App Store 应用 ID")
     parser.add_argument("--all", action="store_true", help="从 data/products.yaml 批量获取")
     parser.add_argument("--country", default="cn", help="国家/地区代码（默认：cn）")

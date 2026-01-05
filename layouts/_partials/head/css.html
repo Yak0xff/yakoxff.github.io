@@ -1,11 +1,14 @@
-<!-- Fonts -->
+<!-- Fonts - 优化加载 -->
 {{ if eq .Site.Language.Lang "zh" }}
-<!-- LXGW WenKai 霞鹜文楷 -->
-<link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet">
+<!-- LXGW WenKai 霞鹜文楷 - preconnect + swap -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet"></noscript>
 {{ else }}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"></noscript>
 {{ end }}
 
 <!-- Aplayer -->
@@ -13,9 +16,10 @@
 <style>{{ .Content | safeCSS }}</style>
 {{ end }}
 
-<!-- Pagefind -->
+<!-- Pagefind - 延迟加载 -->
 {{ if eq .Kind "taxonomy" }}
-<link rel="stylesheet" href="/pagefind/pagefind-ui.css">
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/pagefind/pagefind-ui.css"></noscript>
 {{ end }}
 
 <!-- Extra -->
