@@ -258,7 +258,7 @@ description: 这是一个配置示例
 ### 其他页面链接
 ```markdown
 [关于页面](/about/)
-[统计页面](/stats/)
+
 [图谱页面](/graph/)
 ```
 

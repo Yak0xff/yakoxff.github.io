@@ -12,15 +12,9 @@ shortcodeDir: layouts/_shortcodes
 outputs:
   home:
     - HTML
-    - calheatmap
     - RSS
     - Sitemap
-outputFormats:
-  calheatmap:
-    mediaType: application/json
-    baseName: cal-heatmap
-    isPlainText: true
-    permalinkable: true
+
 
 # 安全设置，允许内联短代码
 security:
