@@ -1,0 +1,386 @@
+{{ define "main" }}
+<article class="product-page">
+    {{ partial "header.html" . }}
+    
+    <!-- 页面标题 -->
+    <h1 class="product-title">{{ .Title }}</h1>
+    
+    <!-- 页面描述 -->
+    {{ with .Description }}
+    <div class="product-callout">
+        <span class="callout-icon">📱</span>
+        <p>{{ . }}</p>
+    </div>
+    {{ end }}
+
+    <!-- 产品列表 -->
+    <section class="product-section">
+        <div class="product-grid">
+        {{- range .Pages }}
+        <div class="product-card">
+            <a href="{{ .RelPermalink }}" class="product-card-link">
+                {{- $icon := .Params.icon }}
+                <div class="product-icon">
+                    {{- if $icon }}
+                    <img src="{{ $icon }}" alt="{{ .Title }}" loading="lazy" />
+                    {{- else }}
+                    <div class="product-icon-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="4" />
+                        </svg>
+                    </div>
+                    {{- end }}
+                </div>
+                <div class="product-info">
+                    <div class="product-header">
+                        <h2 class="product-name">{{ .Title }}</h2>
+                        {{ with .Params.status }}
+                        <span class="product-status status-{{ . }}">
+                            {{ if eq . "released" }}已发布
+                            {{ else if eq . "beta" }}公测中
+                            {{ else if eq . "alpha" }}内测中
+                            {{ else if eq . "development" }}开发中
+                            {{ else }}{{ . }}{{ end }}
+                        </span>
+                        {{ end }}
+                    </div>
+                    {{ with .Params.tagline }}
+                    <p class="product-tagline">{{ . }}</p>
+                    {{ end }}
+                    <div class="product-meta">
+                        {{ with .Params.platform }}
+                        <span class="product-platform">
+                            {{ range $i, $p := . }}{{ if $i }} · {{ end }}{{ $p }}{{ end }}
+                        </span>
+                        {{ end }}
+                    </div>
+                </div>
+            </a>
+            {{ with .Params.download }}
+            <a href="{{ . }}" class="product-download-btn" target="_blank" rel="noopener" onclick="event.stopPropagation();">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                下载
+            </a>
+            {{ end }}
+        </div>
+        {{- end }}
+        </div>
+    </section>
+
+    {{ if eq (len .Pages) 0 }}
+    <div class="product-empty">
+        <p>暂无产品，敬请期待...</p>
+    </div>
+    {{ end }}
+</article>
+
+<style>
+/* 页面容器 - 与 about 页面保持一致 */
+.product-page {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* 页面标题 - 与 about-title 一致 */
+.product-title {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+}
+
+/* 页面描述卡片 - 与 about-callout 一致 */
+.product-callout {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--block-background-color);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    align-items: flex-start;
+}
+
+.product-callout .callout-icon {
+    font-size: 1.25rem;
+    line-height: 1.6;
+}
+
+.product-callout p {
+    margin: 0;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* 产品区块 */
+.product-section {
+    margin-bottom: 2rem;
+}
+
+/* 产品网格 */
+.product-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 1.5rem;
+    transition: border-color 0.25s ease;
+}
+
+.product-card:hover {
+    border-color: var(--text-color);
+}
+
+.product-card-link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+}
+
+.product-card-link:hover {
+    text-decoration: none;
+}
+
+.product-icon {
+    flex-shrink: 0;
+    width: 96px;
+    height: 96px;
+    border-radius: 22px;
+    overflow: hidden;
+    background: var(--block-background-color);
+}
+
+.product-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-icon-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--block-background-color);
+}
+
+.product-icon-placeholder svg {
+    width: 48px;
+    height: 48px;
+    color: var(--secondary-text-color);
+    opacity: 0.4;
+}
+
+.product-download-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.2rem;
+    background: var(--link-color);
+    color: #fff;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    margin-left: 1rem;
+}
+
+.product-download-btn:hover {
+    opacity: 0.85;
+    text-decoration: none;
+    color: #fff;
+}
+
+.product-download-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.product-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.3;
+    transition: color 0.25s ease;
+}
+
+.product-card:hover .product-name {
+    color: var(--link-color);
+}
+
+.product-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.product-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.35rem;
+    flex-wrap: wrap;
+}
+
+.product-tagline {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+    margin: 0 0 0.35rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-status {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.product-status.status-released {
+    background: #d4edda;
+    color: #155724;
+}
+
+.product-status.status-beta {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.product-status.status-alpha {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.product-status.status-development {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+html.dark .product-status.status-released {
+    background: #1e4620;
+    color: #9be9a8;
+}
+
+html.dark .product-status.status-beta {
+    background: #4a3f00;
+    color: #ffd93d;
+}
+
+html.dark .product-status.status-alpha {
+    background: #0d3d6e;
+    color: #79c0ff;
+}
+
+html.dark .product-status.status-development {
+    background: #4a1c1c;
+    color: #f97583;
+}
+
+html.dark .product-download-btn {
+    background: #0a84ff;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not(.light) .product-status.status-released {
+        background: #1e4620;
+        color: #9be9a8;
+    }
+    html:not(.light) .product-status.status-beta {
+        background: #4a3f00;
+        color: #ffd93d;
+    }
+    html:not(.light) .product-status.status-alpha {
+        background: #0d3d6e;
+        color: #79c0ff;
+    }
+    html:not(.light) .product-status.status-development {
+        background: #4a1c1c;
+        color: #f97583;
+    }
+    html:not(.light) .product-download-btn {
+        background: #0a84ff;
+    }
+}
+
+.product-meta {
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+}
+
+.product-platform {
+    opacity: 0.8;
+}
+
+.product-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--secondary-text-color);
+}
+
+@media (max-width: 640px) {
+    .product-title {
+        font-size: 1.75rem;
+    }
+    
+    .product-callout {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .product-card {
+        padding: 1.25rem;
+        flex-wrap: wrap;
+    }
+    
+    .product-card-link {
+        gap: 1rem;
+        width: 100%;
+    }
+    
+    .product-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 16px;
+    }
+    
+    .product-name {
+        font-size: 1.1rem;
+    }
+    
+    .product-tagline {
+        font-size: 0.85rem;
+    }
+    
+    .product-download-btn {
+        margin-left: 0;
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+
+{{ partial "footer.html" . }}
+{{ end }}

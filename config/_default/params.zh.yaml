@@ -2,8 +2,8 @@ nav:
   - name: 归档
     link: /posts/
     target: _self
-  - name: 摘录
-    link: /cards/
+  - name: 产品
+    link: /product/
     target: _self
   # - name: 虚构
   #   link: /fictions/
