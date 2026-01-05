@@ -1,0 +1,551 @@
+{{ define "main" }}
+{{ $about := site.Data.about }}
+<article class="about-page">
+    {{ partial "header" . }}
+    
+    <!-- 页面标题 -->
+    <h1 class="about-title">{{ .Title }}</h1>
+    
+    <!-- 致谢提示 -->
+    <div class="about-callout">
+        <span class="callout-icon">🫡</span>
+        <p>由衷的致谢「<a href="https://www.geedea.pro/" target="_blank">極客死亡計劃</a>」。你会发现这个博客和他很像，不可否认这里使用了他的主题。很久没有觉得一个博客主题和内容这么摄人心扉啦，很羡慕<a href="https://www.guhub.cn/" target="_blank">Eltrec</a>如此有学识，自叹不如。</p>
+    </div>
+
+    <!-- 简介 -->
+    {{ with $about.intro }}
+    <section class="about-intro">
+        <p>{{ . | markdownify }}</p>
+    </section>
+    {{ end }}
+
+    <!-- 写作贡献图 -->
+    <section class="about-section">
+        <h2><span class="section-icon">📝</span> 写作记录</h2>
+        <div class="contributions-wrapper">
+            <div class="contributions-graph-monthly" id="contributions-graph"></div>
+            <div class="contrib-legend">
+                <span class="contrib-total" id="contrib-total"></span>
+                <div class="legend-scale">
+                    <span>少</span>
+                    <span class="legend-cell" data-level="0"></span>
+                    <span class="legend-cell" data-level="1"></span>
+                    <span class="legend-cell" data-level="2"></span>
+                    <span class="legend-cell" data-level="3"></span>
+                    <span class="legend-cell" data-level="4"></span>
+                    <span>多</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 内容发布数据（Hugo 生成，统计 cards 和 posts 两个 section） -->
+    <script id="posts-data" type="application/json">
+    {
+        {{- $allPages := where site.RegularPages "Section" "in" (slice "cards" "posts") -}}
+        {{- $dateMap := dict -}}
+        {{- range $allPages -}}
+            {{- $dateStr := .Date.Format "2006-01-02" -}}
+            {{- if isset $dateMap $dateStr -}}
+                {{- $dateMap = merge $dateMap (dict $dateStr (add (index $dateMap $dateStr) 1)) -}}
+            {{- else -}}
+                {{- $dateMap = merge $dateMap (dict $dateStr 1) -}}
+            {{- end -}}
+        {{- end -}}
+        {{- $first := true -}}
+        {{- range $date, $count := $dateMap -}}
+            {{- if not $first }},{{ end -}}
+            "{{ $date }}": {{ $count }}
+            {{- $first = false -}}
+        {{- end -}}
+    }
+    </script>
+
+    <!-- 技能标签 -->
+    {{ with $about.skills }}
+    <section class="about-section">
+        <h2><span class="section-icon">🛠</span> 技术栈</h2>
+        <div class="skills-list">
+            {{ range . }}
+            <span class="skill-tag">
+                {{ with .icon }}<span class="skill-icon">{{ . }}</span>{{ end }}
+                {{ .name }}
+            </span>
+            {{ end }}
+        </div>
+    </section>
+    {{ end }}
+
+    <!-- 鸣谢 -->
+    {{ with $about.credits }}
+    <section class="about-section">
+        <h2><span class="section-icon">🙏</span> 鸣谢</h2>
+        {{ range . }}
+        <div class="credits-group">
+            <h3>{{ .title }}</h3>
+            <ul class="credits-list">
+                {{ range .items }}
+                <li>
+                    <strong>{{ .name }}</strong>: 
+                    <a href="{{ .link }}" target="_blank">{{ .source }}</a>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+        {{ end }}
+    </section>
+    {{ end }}
+
+    <!-- 正文内容 -->
+    {{ with .Content }}
+    <section class="about-content markdown-body">
+        {{ . }}
+    </section>
+    {{ end }}
+</article>
+
+<style>
+.about-page {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.about-title {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+}
+
+.about-callout {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--block-background-color);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    align-items: flex-start;
+}
+
+.callout-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.about-callout p {
+    margin: 0;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.about-callout a {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--border-color);
+}
+
+.about-intro {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 2.5rem;
+    font-family: var(--serif-font-family);
+}
+
+.about-section {
+    margin-bottom: 2.5rem;
+}
+
+.about-section h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-icon {
+    font-size: 1.25rem;
+}
+
+/* 贡献图样式 - 按月分组 */
+.contributions-wrapper {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+.contributions-graph-monthly {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.contrib-month-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contrib-month-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.contrib-month-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+}
+
+.contrib-day-header {
+    font-size: 0.6rem;
+    color: var(--secondary-text-color);
+    text-align: center;
+    padding-bottom: 2px;
+}
+
+.contrib-cell {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: var(--contrib-level-0);
+    cursor: pointer;
+    position: relative;
+}
+
+.contrib-cell.empty {
+    background: transparent;
+    cursor: default;
+}
+
+.contrib-cell:not(.empty):hover {
+    outline: 1px solid var(--secondary-text-color);
+    outline-offset: -1px;
+}
+
+.contrib-cell[data-level="1"] { background: var(--contrib-level-1); }
+.contrib-cell[data-level="2"] { background: var(--contrib-level-2); }
+.contrib-cell[data-level="3"] { background: var(--contrib-level-3); }
+.contrib-cell[data-level="4"] { background: var(--contrib-level-4); }
+
+/* 贡献图颜色 - 浅色模式 */
+:root {
+    --contrib-level-0: #ebedf0;
+    --contrib-level-1: #9be9a8;
+    --contrib-level-2: #40c463;
+    --contrib-level-3: #30a14e;
+    --contrib-level-4: #216e39;
+}
+
+/* 贡献图颜色 - 深色模式 */
+html.dark {
+    --contrib-level-0: #161b22;
+    --contrib-level-1: #0e4429;
+    --contrib-level-2: #006d32;
+    --contrib-level-3: #26a641;
+    --contrib-level-4: #39d353;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not(.light) {
+        --contrib-level-0: #161b22;
+        --contrib-level-1: #0e4429;
+        --contrib-level-2: #006d32;
+        --contrib-level-3: #26a641;
+        --contrib-level-4: #39d353;
+    }
+}
+
+.contrib-legend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--secondary-text-color);
+}
+
+.legend-scale {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.legend-cell {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    background: var(--contrib-level-0);
+}
+
+.legend-cell[data-level="1"] { background: var(--contrib-level-1); }
+.legend-cell[data-level="2"] { background: var(--contrib-level-2); }
+.legend-cell[data-level="3"] { background: var(--contrib-level-3); }
+.legend-cell[data-level="4"] { background: var(--contrib-level-4); }
+
+/* Tooltip */
+.contrib-tooltip {
+    position: fixed;
+    background: var(--text-color);
+    color: var(--background-color);
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    pointer-events: none;
+    z-index: 1000;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.contrib-tooltip.visible {
+    opacity: 1;
+}
+
+/* 技能标签 */
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.skill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--block-background-color);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.skill-icon {
+    font-size: 1rem;
+}
+
+/* 鸣谢 */
+.credits-group {
+    margin-bottom: 1.5rem;
+}
+
+.credits-group h3 {
+    font-size: 1rem;
+    color: var(--secondary-text-color);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.credits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.credits-list li {
+    padding: 0.35rem 0;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.credits-list a {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--border-color);
+}
+
+.about-content {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 响应式 */
+@media (max-width: 640px) {
+    .about-title {
+        font-size: 1.75rem;
+    }
+    
+    .about-callout {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+</style>
+
+<script>
+(function() {
+    // 获取文章发布数据
+    const postsDataEl = document.getElementById('posts-data');
+    const postsData = postsDataEl ? JSON.parse(postsDataEl.textContent) : {};
+    
+    const today = new Date();
+    // 计算过去12个月的起始日期（包括当前月）
+    const startMonth = new Date(today.getFullYear(), today.getMonth() - 11, 1);
+    
+    // 生成月份数据
+    const monthGroups = [];
+    let totalPosts = 0;
+    
+    const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    
+    let current = new Date(startMonth);
+    let prevYear = null;
+    
+    for (let i = 0; i < 12; i++) {
+        const year = current.getFullYear();
+        const month = current.getMonth();
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        
+        // 生成月份标签（如果年份变化，显示年份）
+        let monthLabel = monthNames[month];
+        if (prevYear !== null && prevYear !== year) {
+            monthLabel = `${year}年${monthLabel}`;
+        } else if (i === 0) {
+            // 第一个月份，如果年份不是当前年，显示年份
+            if (year !== today.getFullYear()) {
+                monthLabel = `${year}年${monthLabel}`;
+            }
+        }
+        prevYear = year;
+        
+        // 计算第一天的星期偏移（周一作为第一列）
+        const firstDayOfWeek = firstDay.getDay();
+        const offset = (firstDayOfWeek + 6) % 7; // 0=周一, 1=周二, ..., 6=周日
+        
+        const days = [];
+        
+        // 添加空白格子直到周一
+        for (let j = 0; j < offset; j++) {
+            days.push({ type: 'empty' });
+        }
+        
+        // 添加该月的每一天
+        for (let day = 1; day <= lastDay.getDate(); day++) {
+            const date = new Date(year, month, day);
+            // 如果日期超过今天，留空
+            if (date > today) {
+                days.push({ type: 'empty' });
+                continue;
+            }
+            
+            const dateStr = date.toISOString().split('T')[0];
+            const count = postsData[dateStr] || 0;
+            totalPosts += count;
+            
+            // 计算等级
+            let level = 0;
+            if (count > 0) {
+                if (count === 1) level = 1;
+                else if (count === 2) level = 2;
+                else if (count <= 4) level = 3;
+                else level = 4;
+            }
+            
+            days.push({
+                type: 'day',
+                date: dateStr,
+                count: count,
+                level: level
+            });
+        }
+        
+        // 按每7天分组
+        const rows = [];
+        for (let j = 0; j < days.length; j += 7) {
+            rows.push(days.slice(j, j + 7));
+        }
+        
+        monthGroups.push({
+            label: monthLabel,
+            rows: rows
+        });
+        
+        // 移动到下一个月
+        current.setMonth(current.getMonth() + 1);
+    }
+    
+    // 渲染贡献图
+    const graphEl = document.getElementById('contributions-graph');
+    
+    monthGroups.forEach(group => {
+        const monthGroupEl = document.createElement('div');
+        monthGroupEl.className = 'contrib-month-group';
+        
+        const monthLabelEl = document.createElement('div');
+        monthLabelEl.className = 'contrib-month-label';
+        monthLabelEl.textContent = group.label;
+        monthGroupEl.appendChild(monthLabelEl);
+        
+        const monthGridEl = document.createElement('div');
+        monthGridEl.className = 'contrib-month-grid';
+        
+        group.rows.forEach(row => {
+            row.forEach(day => {
+                const cell = document.createElement('div');
+                cell.className = 'contrib-cell';
+                
+                if (day.type === 'empty') {
+                    cell.classList.add('empty');
+                } else {
+                    cell.dataset.level = day.level;
+                    cell.dataset.date = day.date;
+                    cell.dataset.count = day.count;
+                }
+                
+                monthGridEl.appendChild(cell);
+            });
+        });
+        
+        monthGroupEl.appendChild(monthGridEl);
+        graphEl.appendChild(monthGroupEl);
+    });
+    
+    // 显示总数
+    document.getElementById('contrib-total').textContent = `过去一年共发布 ${totalPosts} 篇内容（摘录+文章）`;
+    
+    // Tooltip
+    const tooltip = document.createElement('div');
+    tooltip.className = 'contrib-tooltip';
+    document.body.appendChild(tooltip);
+    
+    // 事件委托
+    graphEl.addEventListener('mouseover', (e) => {
+        const cell = e.target;
+        if (cell.classList.contains('contrib-cell') && !cell.classList.contains('empty') && cell.dataset.date) {
+            const date = cell.dataset.date;
+            const count = cell.dataset.count;
+            tooltip.textContent = `${date}: ${count} 篇内容`;
+            tooltip.classList.add('visible');
+        }
+    });
+    
+    graphEl.addEventListener('mousemove', (e) => {
+        tooltip.style.left = e.clientX + 10 + 'px';
+        tooltip.style.top = e.clientY + 10 + 'px';
+    });
+    
+    graphEl.addEventListener('mouseout', (e) => {
+        const cell = e.target;
+        if (cell.classList.contains('contrib-cell')) {
+            tooltip.classList.remove('visible');
+        }
+    });
+})();
+</script>
+
+{{ partial "footer.html" . }}
+{{ end }}

@@ -1,0 +1,41 @@
+# 关于页面配置
+
+# 个人简介
+intro: |
+  欢迎来访，这里只有真情流露和赤裸的思考。
+
+# 技能标签
+skills:
+  - name: "iOS"
+    icon: "🍎"
+  - name: "Swift"
+    icon: "🐦"
+  - name: "Objective-C"
+    icon: "📦"
+  - name: "Flutter"
+    icon: "💙"
+
+# 鸣谢列表
+credits:
+  - title: "网站图标来源"
+    items:
+      - name: "Favicon"
+        link: "https://icons8.com/icon/dFh2MtWbG5FC/skull"
+        source: "Icons8"
+      - name: "Logo"
+        link: "http://www.freepik.com"
+        source: "Freepik"
+      - name: "Other Icons"
+        link: "https://www.svgrepo.com/collection/rpg-game-filled-icons/"
+        source: "RPG Game Filled Icons Collection"
+  - title: "设计灵感"
+    items:
+      - name: "CSS 扭曲效果"
+        link: "https://endtimes.dev"
+        source: "endtimes.dev"
+      - name: "网站背景纹理"
+        link: "https://heropatterns.com"
+        source: "Hero Patterns"
+      - name: "主题灵感"
+        link: "https://www.geedea.pro/"
+        source: "極客死亡計劃"
