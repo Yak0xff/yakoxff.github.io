@@ -61,16 +61,19 @@
     }
     </script>
 
-    <!-- 技能标签 -->
-    {{ with $about.skills }}
+    <!-- 正在... -->
+    {{ with $about.currently }}
     <section class="about-section">
-        <h2><span class="section-icon">🛠</span> 技术栈</h2>
-        <div class="skills-list">
-            {{ range . }}
-            <span class="skill-tag">
-                {{ with .icon }}<span class="skill-icon">{{ . }}</span>{{ end }}
-                {{ .name }}
-            </span>
+        <h2><span class="section-icon">✨</span> 正在...</h2>
+        <div class="bento-grid">
+            {{ range $i, $item := . }}
+            <div class="bento-item{{ if eq $i 0 }} bento-featured{{ end }}">
+                <div class="bento-header">
+                    <span class="bento-icon">{{ $item.svg | safeHTML }}</span>
+                    <span class="bento-label">{{ $item.label }}</span>
+                </div>
+                <span class="bento-value">{{ $item.value }}</span>
+            </div>
             {{ end }}
         </div>
     </section>
@@ -312,26 +315,98 @@ html.dark {
     opacity: 1;
 }
 
-/* 技能标签 */
-.skills-list {
-    display: flex;
-    flex-wrap: wrap;
+/* Bento Grid */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.75rem;
 }
 
-.skill-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.4rem 0.8rem;
+.bento-item {
     background: var(--block-background-color);
-    border-radius: 20px;
-    font-size: 0.9rem;
-    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.skill-icon {
-    font-size: 1rem;
+.bento-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+html.dark .bento-item:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* 第一个卡片突出显示 */
+.bento-featured {
+    grid-column: span 2;
+}
+
+.bento-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bento-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-text-color);
+    flex-shrink: 0;
+}
+
+.bento-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.bento-label {
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+    font-weight: 500;
+}
+
+.bento-value {
+    font-size: 1.05rem;
+    color: var(--text-color);
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.bento-featured .bento-value {
+    font-size: 1.2rem;
+}
+
+/* 响应式 */
+@media (max-width: 640px) {
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .bento-featured {
+        grid-column: span 2;
+    }
+    
+    .bento-item {
+        min-height: 100px;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .bento-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .bento-featured {
+        grid-column: span 1;
+    }
 }
 
 /* 鸣谢 */
