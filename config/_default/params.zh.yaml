@@ -1,13 +1,13 @@
 nav:
+  - name: 虚构
+    link: /fictions/
+    target: _self
   - name: 归档
     link: /posts/
     target: _self
   - name: 应用
     link: /product/
     target: _self
-  # - name: 虚构
-  #   link: /fictions/
-  #   target: _self
   - name: 关于
     link: /about/
     target: _self

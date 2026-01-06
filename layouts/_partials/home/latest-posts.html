@@ -1,8 +1,9 @@
 <!-- Latest Posts with Featured on Top -->
 <section class="pagefind-exclude">
     <div class="flex flex-col my-4">
-        {{/* 获取所有文章 */}}
+        {{/* 获取所有文章，排除小说目录 */}}
         {{ $allPosts := where site.RegularPages "Type" "in" site.Params.mainSections }}
+        {{ $allPosts = where $allPosts "Section" "!=" "fictions" }}
         
         {{/* 分离精选和普通文章 */}}
         {{ $featuredPosts := where $allPosts ".Params.featured" true }}

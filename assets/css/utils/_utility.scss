@@ -46,3 +46,30 @@
   border-radius: 0.25rem;
   vertical-align: middle;
 }
+
+/* fiction status badge */
+.fiction-status-badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.7rem;
+  font-family: inherit;
+  border-radius: 0.25rem;
+  vertical-align: middle;
+  letter-spacing: 0.05em;
+
+  &.ongoing {
+    color: var(--background-color);
+    background: var(--text-color);
+  }
+
+  &.completed {
+    color: var(--background-color);
+    background: var(--secondary-text-color);
+  }
+
+  &.paused {
+    color: var(--secondary-text-color);
+    background: transparent;
+    border: 1px solid var(--border-color);
+  }
+}

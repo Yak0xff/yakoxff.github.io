@@ -1,0 +1,84 @@
+{{ define "main" }}
+    <article class="fiction-list-page">
+        {{ partial "header.html" . }}
+        <div id="fiction-section" class="pagefind-exclude">
+            {{/* 简介区域 */}}
+            {{ with .Content }}
+            <div class="mb-12 markdown-body text-size-lg md:text-size-xl leading-loose md:leading-relaxed">
+                {{ . }}
+            </div>
+            {{ end }}
+
+            {{/* 小说列表 - 与首页文章列表风格一致 */}}
+            <div class="flex flex-col">
+                {{- range .Sections }}
+                {{/* 统计章节数和总字数 */}}
+                {{ $chapters := slice }}
+                {{ range .RegularPages }}
+                    {{ if not (hasPrefix .File.LogicalName "_") }}
+                        {{ $chapters = $chapters | append . }}
+                    {{ end }}
+                {{ end }}
+                {{ $chapterCount := len $chapters }}
+                {{ $totalWords := 0 }}
+                {{ range $chapters }}
+                    {{ $totalWords = add $totalWords .WordCount }}
+                {{ end }}
+
+                <div class="posts-item w-full py-4 border-b border-border/20 last:border-b-0"
+                    style="view-transition-name: post-{{ .File.UniqueID }}">
+                    <div class="flex items-center gap-3">
+                        {{/* 状态标记 - featured-badge 风格 */}}
+                        {{ $status := .Params.status | default "连载中" }}
+                        {{ if eq $status "已完结" }}
+                        <span class="fiction-status-badge completed">完结</span>
+                        {{ else if eq $status "暂停" }}
+                        <span class="fiction-status-badge paused">暂停</span>
+                        {{ else }}
+                        <span class="fiction-status-badge ongoing">连载</span>
+                        {{ end }}
+                        <h2 class="xerox">
+                            <a href="{{ .Permalink }}" class="hover:text-primary transition-colors">
+                                《{{ .Title }}》
+                            </a>
+                        </h2>
+                        <span class="text-size-sm text-secondary/40 whitespace-nowrap">
+                            {{ $chapterCount }} 章 · {{ div $totalWords 1000 }}.{{ mod (div $totalWords 100) 10 }}k 字
+                        </span>
+                    </div>
+                    {{ with .Description }}
+                    <p class="mt-2 text-secondary/60 text-size-base md:text-size-lg leading-relaxed">{{ . }}</p>
+                    {{ end }}
+                </div>
+                {{- end }}
+            </div>
+
+            {{/* 最近更新 */}}
+            {{ $allChapters := slice }}
+            {{ range .Sections }}
+                {{ range .RegularPages }}
+                    {{ if not (hasPrefix .File.LogicalName "_") }}
+                        {{ $allChapters = $allChapters | append . }}
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+            {{ $recentChapters := first 3 (sort $allChapters "Date" "desc") }}
+            {{ if $recentChapters }}
+            <div class="mt-16 pt-8 border-t border-border/30">
+                <p class="text-size-sm text-secondary/50 mb-6">最近更新</p>
+                <div class="flex flex-col">
+                    {{ range $recentChapters }}
+                    <div class="py-2 flex items-baseline gap-3 text-size-sm">
+                        <span class="text-secondary/40">{{ .Parent.Title }}</span>
+                        <span class="text-secondary/20">·</span>
+                        <a href="{{ .Permalink }}" class="hover:text-primary transition-colors">{{ .Title }}</a>
+                        <time class="text-secondary/30 ml-auto">{{ .Date.Format "01-02" }}</time>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+            {{ end }}
+        </div>
+    </article>
+    {{ partial "footer.html" . }}
+{{ end }}

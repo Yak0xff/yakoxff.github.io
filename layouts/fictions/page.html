@@ -1,27 +1,199 @@
 {{ define "main" }}
-    <article>
-      <!-- Post Header -->
-      <header class="text-center">
-        {{ partial "components/logo" (dict
-            "link" "fictions/"
-            "src" "/img/potted-skeleton.svg"
-            "imageClass" "block w-[10rem]"
-            "class" "flex justify-center"
-        ) }}
-        <h1
-            class="xerox text-4xl font-900"
-            data-pagefind-meta="title"
-        ><span style="view-transition-name: post-{{ .File.UniqueID }}">{{ .Title }}</span></h1>
-        <div class="text-secondary">{{ partial "components/date" . }}</div>
+    <article class="fiction-page">
+      <!-- 右上角主题切换 -->
+      <div class="fiction-quick-actions">
+        <button id="theme-toggle" class="float-btn theme-toggle" title="{{ T "nav.themeToggle" | default "切换主题" }}">
+          <svg class="theme-icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+          <svg class="theme-icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Minimal Header -->
+      <header class="fiction-header mb-8">
+        <div class="flex items-center justify-between">
+          <!-- 返回目录 -->
+          {{ if .Parent }}
+          <a href="{{ .Parent.RelPermalink }}" class="fiction-back flex items-center gap-2 text-secondary hover:text-primary transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span class="text-sm">{{ .Parent.Title }}</span>
+          </a>
+          {{ end }}
+          <!-- 章节进度 -->
+          {{ $chapters := slice }}
+          {{ if .Parent }}
+            {{ $chapters = .Parent.Pages.ByWeight }}
+          {{ end }}
+          {{ $chapterCount := len $chapters }}
+          {{ $currentIndex := 0 }}
+          {{ range $i, $chapter := $chapters }}
+            {{ if eq $chapter.RelPermalink $.RelPermalink }}
+              {{ $currentIndex = add $i 1 }}
+            {{ end }}
+          {{ end }}
+          {{ if gt $chapterCount 0 }}
+          <span class="text-sm text-secondary/60">{{ $currentIndex }} / {{ $chapterCount }}</span>
+          {{ end }}
+        </div>
       </header>
 
       <!-- Post Content -->
-      <div id="post-content" class="post-content markdown-body text-size-lg md:text-size-xl leading-loose"
+      <div id="post-content" class="post-content markdown-body text-size-lg md:text-size-xl leading-loose md:leading-relaxed"
           style="view-transition-name: post-content-{{ .File.UniqueID }}">
         {{ .Content }}
       </div>
 
-      {{ partial "posts/action-menu.html" . }}
+      <!-- Chapter Navigation -->
+      {{ if and (gt $chapterCount 0) (not .IsSection) }}
+        {{ $prev := false }}
+        {{ $next := false }}
+        {{ range $i, $chapter := $chapters }}
+          {{ if eq $chapter.RelPermalink $.RelPermalink }}
+            {{ if gt $i 0 }}
+              {{ $prev = index $chapters (sub $i 1) }}
+            {{ end }}
+            {{ if lt $i (sub $chapterCount 1) }}
+              {{ $next = index $chapters (add $i 1) }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+        <nav class="chapter-nav mt-16 pt-8 border-t border-secondary/20">
+          <div class="grid grid-cols-2 gap-4">
+            <!-- 上一章 -->
+            <div class="col-span-1">
+              {{ if $prev }}
+              <a href="{{ $prev.RelPermalink }}" class="chapter-nav-link group flex items-center gap-2 p-4 rounded-lg border border-secondary/20 hover:border-primary/40 hover:bg-primary/5 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary group-hover:text-primary transition-colors flex-shrink-0">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span class="font-medium text-primary/80 group-hover:text-primary transition-colors truncate">{{ $prev.Title }}</span>
+              </a>
+              {{ else }}
+              <div class="p-4 rounded-lg border border-dashed border-secondary/10 text-secondary/40 text-center text-sm">
+                已是第一章
+              </div>
+              {{ end }}
+            </div>
+            <!-- 下一章 -->
+            <div class="col-span-1">
+              {{ if $next }}
+              <a href="{{ $next.RelPermalink }}" class="chapter-nav-link group flex items-center justify-end gap-2 p-4 rounded-lg border border-secondary/20 hover:border-primary/40 hover:bg-primary/5 transition-all">
+                <span class="font-medium text-primary/80 group-hover:text-primary transition-colors truncate">{{ $next.Title }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary group-hover:text-primary transition-colors flex-shrink-0">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+              {{ else }}
+              <div class="p-4 rounded-lg border border-dashed border-secondary/10 text-secondary/40 text-center text-sm">
+                已是最后一章
+              </div>
+              {{ end }}
+            </div>
+          </div>
+          <!-- 返回目录按钮 -->
+          {{ if .Parent }}
+          <div class="mt-6 text-center">
+            <a href="{{ .Parent.RelPermalink }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm text-secondary hover:text-primary border border-secondary/20 hover:border-primary/40 rounded-full transition-all">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+              <span>返回目录</span>
+            </a>
+          </div>
+          {{ end }}
+        </nav>
+      {{ end }}
+
       {{ partial "components/back-to-top.html" . }}
     </article>
+
+<style>
+.fiction-quick-actions {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+}
+
+.fiction-quick-actions .float-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    opacity: 0.4;
+    transition: opacity 0.2s ease;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.fiction-quick-actions .float-btn:hover {
+    opacity: 1;
+}
+
+.fiction-quick-actions .theme-toggle {
+    position: relative;
+}
+
+.fiction-quick-actions .theme-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    position: absolute;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    color: var(--text-color);
+}
+
+.fiction-quick-actions .theme-icon.sun {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.fiction-quick-actions .theme-icon.moon {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+
+html.dark .fiction-quick-actions .theme-icon.sun {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+html.dark .fiction-quick-actions .theme-icon.moon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not(.light) .fiction-quick-actions .theme-icon.sun {
+        opacity: 0;
+        transform: rotate(90deg);
+    }
+    html:not(.light) .fiction-quick-actions .theme-icon.moon {
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .fiction-quick-actions {
+        top: auto;
+        bottom: 1.5rem;
+        right: 1rem;
+    }
+}
+</style>
 {{ end }}
