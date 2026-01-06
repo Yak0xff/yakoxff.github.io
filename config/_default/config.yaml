@@ -19,3 +19,9 @@ outputs:
 # 安全设置，允许内联短代码
 security:
   enableInlineShortcodes: true
+
+# 排除以下划线开头的 Markdown 文件
+exclude:
+  - "**/_*.md"
+  - "**/_*.markdown"
+  - "content/fictions/草台班子/_大纲.md"

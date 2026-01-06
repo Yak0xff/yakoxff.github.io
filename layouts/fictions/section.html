@@ -1,32 +1,259 @@
+{{/* 小说简介页模板 - 用于展示单部小说的简介和章节列表 */}}
 {{ define "main" }}
     <article>
         {{ partial "header.html" . }}
         <div class="pagefind-exclude">
-            <div class="my-8 markdown-body text-size-lg md:text-size-xl">
+            {{/* 小说简介内容 */}}
+            <div class="my-8 markdown-body text-size-lg md:text-size-xl leading-loose md:leading-relaxed">
             {{ with .Content }}{{ . }}{{ end }}
             </div>
-            <div class="flex flex-wrap justify-around gap-8">
-                {{- $fictions := .Site.GetPage "section" "fictions" }}
-                {{- range $fictions.Pages }}
-
-                {{ $rotationDeg := add (math.Floor (mul (math.Rand) 7)) -4 }}
-                {{- $deg := int $rotationDeg -}}
-                {{- $rotateClass := cond (ge $deg 0)
-                    (printf "rotate-%d" $deg)
-                    (printf "-rotate-%d" (mul -1 $deg))
-                -}}
-
-                {{ $steps := slice 60 70 80 90 100 }}
-                {{ $opacity := index $steps (int (math.Floor (mul (math.Rand) 5))) }}
-                {{ $opacityClass := printf "opacity-%d" $opacity }}
-
-                <div class="xerox text-center text-2xl font-extrabold {{ $rotateClass }} {{ $opacityClass }}"
-                    style="view-transition-name: post-{{ .File.UniqueID }}">
-                    <a href="{{ .Permalink }}">《{{ .Title }}》</a>
+            
+            {{/* 章节列表 */}}
+            {{ $chapters := .RegularPages.ByWeight }}
+            {{ if $chapters }}
+            <div class="mt-12">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-secondary/15">
+                    <h2 class="text-lg font-semibold text-primary/80">目录</h2>
+                    <button id="export-pdf-btn" class="export-pdf-btn flex items-center gap-2 px-3 py-1.5 text-sm text-secondary/60 hover:text-primary border border-secondary/20 hover:border-primary/40 rounded-full transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>导出 PDF</span>
+                    </button>
                 </div>
-                {{- end }}
+                <div class="chapter-list space-y-2">
+                    {{- range $i, $chapter := $chapters }}
+                    {{/* 过滤掉以 _ 开头的文件（如大纲） */}}
+                    {{ if not (hasPrefix $chapter.File.LogicalName "_") }}
+                    <a href="{{ $chapter.Permalink }}" class="chapter-item group block py-3 px-4 rounded-lg hover:bg-primary/5 transition-all">
+                        <div class="flex items-baseline gap-3">
+                            <span class="text-secondary/40 text-sm font-mono tabular-nums shrink-0">{{ printf "%02d" (add $i 1) }}</span>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-primary/80 group-hover:text-primary transition-colors">{{ $chapter.Title }}</h3>
+                                {{ with $chapter.Params.desc }}
+                                <p class="mt-1.5 text-sm text-secondary/60 line-clamp-2">{{ . }}</p>
+                                {{ end }}
+                            </div>
+                        </div>
+                    </a>
+                    {{ end }}
+                    {{- end }}
+                </div>
             </div>
+            {{ end }}
         </div>
     </article>
     {{ partial "footer.html" . }}
+
+<style>
+/* 导出按钮 */
+.export-pdf-btn:hover svg {
+    transform: translateY(2px);
+    transition: transform 0.2s ease;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const exportBtn = document.getElementById('export-pdf-btn');
+    if (!exportBtn) return;
+    
+    // 直接打开新窗口
+    exportBtn.addEventListener('click', function() {
+        const printWindow = window.open('', '_blank');
+        
+        printWindow.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ .Title }} - 导出预览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "LXGW WenKai", "Noto Serif SC", "Source Han Serif CN", serif;
+            color: #1a1a1a;
+            background: white;
+            line-height: 1.8;
+        }
+        
+        .pdf-cover {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            page-break-after: always;
+        }
+        
+        .pdf-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pdf-desc {
+            font-size: 1rem;
+            color: #666;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+        
+        .pdf-author {
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        .pdf-toc {
+            padding: 3rem 2rem;
+            page-break-after: always;
+        }
+        
+        .pdf-toc h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #1a1a1a;
+        }
+        
+        .pdf-toc ul {
+            list-style: none;
+        }
+        
+        .pdf-toc li {
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed #ddd;
+            font-size: 1rem;
+        }
+        
+        .pdf-toc .toc-num {
+            display: inline-block;
+            width: 2.5rem;
+            color: #999;
+            font-family: monospace;
+        }
+        
+        .pdf-chapter {
+            padding: 2rem;
+            page-break-before: always;
+        }
+        
+        .chapter-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #1a1a1a;
+        }
+        
+        .chapter-content {
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+        
+        .chapter-content p {
+            margin-bottom: 1.25em;
+            text-indent: 2em;
+            text-align: justify;
+        }
+        
+        .chapter-content h1,
+        .chapter-content h2,
+        .chapter-content h3,
+        .chapter-content h4 {
+            text-indent: 0;
+            margin-top: 2em;
+            margin-bottom: 1em;
+            font-weight: 600;
+        }
+        
+        .chapter-content h2 { font-size: 1.4rem; }
+        .chapter-content h3 { font-size: 1.2rem; }
+        
+        .chapter-content blockquote {
+            margin: 1.5em 0;
+            padding: 1em 1.5em;
+            border-left: 3px solid #ddd;
+            background: #f9f9f9;
+            font-style: italic;
+        }
+        
+        .chapter-content hr {
+            margin: 2em 0;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+        
+        .chapter-content em {
+            font-style: italic;
+        }
+        
+        .chapter-content strong {
+            font-weight: 600;
+        }
+        
+        @media print {
+            .pdf-cover {
+                min-height: 100vh;
+            }
+            
+            .pdf-chapter {
+                page-break-before: always;
+                orphans: 3;
+                widows: 3;
+            }
+            
+            .chapter-content p {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    {{/* 封面 */}}
+    <div class="pdf-cover">
+        <h1 class="pdf-title">{{ .Title }}</h1>
+        {{ with .Description }}
+        <p class="pdf-desc">{{ . }}</p>
+        {{ end }}
+        <p class="pdf-author">{{ .Site.Title }}</p>
+    </div>
+    {{/* 目录页 */}}
+    <div class="pdf-toc">
+        <h2>目录</h2>
+        <ul>
+            {{- range $i, $chapter := $chapters }}
+            {{ if not (hasPrefix $chapter.File.LogicalName "_") }}
+            <li><span class="toc-num">{{ printf "%02d" (add $i 1) }}</span> {{ $chapter.Title }}</li>
+            {{ end }}
+            {{- end }}
+        </ul>
+    </div>
+    {{/* 章节内容 */}}
+    {{- range $i, $chapter := $chapters }}
+    {{ if not (hasPrefix $chapter.File.LogicalName "_") }}
+    <div class="pdf-chapter">
+        <h2 class="chapter-title">{{ $chapter.Title }}</h2>
+        <div class="chapter-content">{{ $chapter.Content }}</div>
+    </div>
+    {{ end }}
+    {{- end }}
+</body>
+</html>
+        `);
+        
+        printWindow.document.close();
+    });
+});
+</script>
 {{ end }}
