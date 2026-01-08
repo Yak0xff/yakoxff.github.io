@@ -3,7 +3,41 @@
 {{- $title := cond $isHome .Site.Title .Title -}}
 {{- $description := cond $isHome .Site.Params.description (default .Summary .Description | plainify) -}}
 {{- $ogType := cond $isHome "website" "article" -}}
-{{- $image := cond (isset .Params "banner") .Params.banner .Site.Params.favicon -}}
+
+{{/* 图片逻辑优化 - 优先级：banner > 文章第一张图片 > 默认OG图片 > favicon */}}
+{{- $image := "" -}}
+{{- if isset .Params "banner" -}}
+  {{- $image = .Params.banner | absURL -}}
+{{- else if and (not .IsHome) .Content -}}
+  {{/* 从渲染后的 HTML 内容中提取第一张图片 */}}
+  {{- $content := .Content -}}
+  
+  {{/* 匹配 HTML img 标签 */}}
+  {{- $imgPattern := `<img[^>]+src="([^"]+)"[^>]*>` -}}
+  {{- $matches := findRE $imgPattern $content 1 -}}
+  {{- if $matches -}}
+    {{- $match := index $matches 0 -}}
+    {{- $imgSrc := replaceRE $imgPattern "$1" $match -}}
+    
+    {{/* 处理图片路径 */}}
+    {{- if hasPrefix $imgSrc "http" -}}
+      {{- $image = $imgSrc -}}
+    {{- else if hasPrefix $imgSrc "/" -}}
+      {{- $image = $imgSrc | absURL -}}
+    {{- else -}}
+      {{- $image = (printf "/%s" $imgSrc) | absURL -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* 如果还没有找到图片，使用默认图片 */}}
+{{- if not $image -}}
+  {{- if .Site.Params.default_og_image -}}
+    {{- $image = .Site.Params.default_og_image | absURL -}}
+  {{- else -}}
+    {{- $image = .Site.Params.favicon | absURL -}}
+  {{- end -}}
+{{- end -}}
 
 <title>{{ $title }}</title>
 <link rel="canonical" href="{{ .Permalink }}" />
@@ -20,7 +54,11 @@
 <meta property="og:image" content="{{ $image }}" />
 
 <!-- Twitter Card meta tags -->
-<meta name="twitter:card" content="summary_large_image" />
+{{- $cardType := "summary" -}}
+{{- if or (isset .Params "banner") (and (not .IsHome) .Content (findRE `<img[^>]+src="[^"]+"[^>]*>` .Content 1)) -}}
+  {{- $cardType = "summary_large_image" -}}
+{{- end -}}
+<meta name="twitter:card" content="{{ $cardType }}" />
 {{- if .Site.Params.twitter -}}
 <meta name="twitter:site" content="@{{ .Site.Params.twitter }}" />
 {{- end -}}
