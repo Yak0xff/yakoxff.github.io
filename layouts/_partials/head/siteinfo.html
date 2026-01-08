@@ -9,6 +9,8 @@
 <link rel="canonical" href="{{ .Permalink }}" />
 <meta name="author" content="{{ .Params.author | default .Site.Params.author }}" />
 <link rel="icon" href="/favicon.ico">
+
+<!-- Open Graph meta tags -->
 <meta property="og:url" content="{{ .Permalink }}" />
 <meta property="og:title" content="{{ $title }}" />
 <meta property="og:type" content="{{ $ogType }}" />
@@ -16,6 +18,20 @@
 <meta name="description" content="{{ $description }}" />
 <meta property="og:locale" content="{{ .Site.LanguageCode }}" />
 <meta property="og:image" content="{{ $image }}" />
+
+<!-- Twitter Card meta tags -->
+<meta name="twitter:card" content="summary_large_image" />
+{{- if .Site.Params.twitter -}}
+<meta name="twitter:site" content="@{{ .Site.Params.twitter }}" />
+{{- end -}}
+{{- if .Params.author_twitter -}}
+<meta name="twitter:creator" content="@{{ .Params.author_twitter }}" />
+{{- else if .Site.Params.author_twitter -}}
+<meta name="twitter:creator" content="@{{ .Site.Params.author_twitter }}" />
+{{- end -}}
+<meta name="twitter:title" content="{{ $title }}" />
+<meta name="twitter:description" content="{{ $description }}" />
+<meta name="twitter:image" content="{{ $image }}" />
 
 <!-- RSS -->
 <link rel="alternate" type="application/atom+xml" href="{{.Site.BaseURL}}index.xml" title="{{ .Site.Title }}">
