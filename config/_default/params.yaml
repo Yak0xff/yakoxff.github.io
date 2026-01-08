@@ -3,6 +3,9 @@ email: hi@guhub.cn
 description: "Yak0xff 的个人博客 - 分享技术、思考与生活"
 twitter: zh_robin
 author_twitter: zh_robin
+favicon: /favicon.ico
+# 默认的社交媒体分享图片
+default_og_image: /img/header.png
 mainSections:
   - posts
   - fictions
