@@ -16,22 +16,18 @@
   <nav class="header-nav">
     {{/* 首页 */}}
     <a href="{{ .Site.LanguagePrefix }}/"
-       class="nav-item {{ if eq .Page.RelPermalink "/" }}active{{ end }}"
-       data-umami-event="nav-home">
+       class="nav-item {{ if eq .Page.RelPermalink "/" }}active{{ end }}">
        {{ T "nav.home" }}
     </a>
     {{/* 配置的导航项 */}}
     {{ range .Site.Params.nav }}
     <a href="{{ .link }}" target="{{ .target }}"
-       class="nav-item {{ if strings.Contains $.Page.RelPermalink .link }}active{{ end }}"
-       data-umami-event="nav-{{ .name }}"
-       data-umami-event-section="{{ .name }}">
+       class="nav-item {{ if strings.Contains $.Page.RelPermalink .link }}active{{ end }}">
        {{ .name }}
     </a>
     {{ end }}
     {{/* 搜索按钮 - 跳转到搜索页 */}}
-    <a href="/categories/" class="nav-item nav-search" title="{{ T "nav.search" }}"
-       data-umami-event="nav-search">
+    <a href="/categories/" class="nav-item nav-search" title="{{ T "nav.search" }}">
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"/>
         <path d="M21 21l-4.35-4.35"/>
@@ -40,35 +36,15 @@
   </nav>
 </header>
 
-<!-- 导航跟踪脚本 -->
+<!-- 简化的导航跟踪脚本 -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 跟踪导航点击
-    document.addEventListener('click', function(e) {
-        const navItem = e.target.closest('.nav-item');
-        if (navItem && window.umamiTrack) {
-            const section = navItem.textContent.trim() || navItem.getAttribute('title') || 'unknown';
-            const href = navItem.getAttribute('href');
-            
-            window.umamiTrack('navigation-click', {
-                section: section,
-                url: href,
-                fromPage: window.location.pathname
-            });
-        }
-    });
-    
-    // 跟踪 Logo 点击
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.site-title')) {
-            if (window.umamiTrack) {
-                window.umamiTrack('logo-click', {
-                    fromPage: window.location.pathname
-                });
-            }
-        }
-    });
-});
+document.addEventListener('click', function(e) {
+    const navItem = e.target.closest('.nav-item');
+    if (navItem && window.umamiTrack) {
+        const section = navItem.textContent.trim() || 'search';
+        window.umamiTrack('nav-click', { section: section });
+    }
+}, { passive: true });
 </script>
 
 <style>

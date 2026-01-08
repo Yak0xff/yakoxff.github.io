@@ -55,139 +55,53 @@
 <!-- Umami 文章跟踪脚本 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 文章基本信息
+    // 简化的文章信息
     const articleInfo = {
         title: '{{ .Title }}',
         category: '{{ with .Params.categories }}{{ index . 0 }}{{ end }}',
-        tags: [{{ range .Params.tags }}'{{ . }}',{{ end }}],
         readingTime: {{ .ReadingTime }},
-        wordCount: {{ .WordCount }},
-        publishDate: '{{ .Date.Format "2006-01-02" }}',
         url: window.location.pathname
     };
     
     // 跟踪文章开始阅读
     if (window.umamiTrack) {
-        window.umamiTrack('article-start-reading', articleInfo);
+        window.umamiTrack('article-start', articleInfo);
     }
     
-    // 阅读进度跟踪
-    let readingProgress = {
-        25: false,
-        50: false,
-        75: false,
-        100: false
-    };
+    // 简化的阅读进度跟踪（只跟踪50%和100%）
+    let progress50 = false;
+    let progress100 = false;
     
-    // 阅读时间跟踪
-    const startTime = Date.now();
-    let activeTime = 0;
-    let isActive = true;
-    
-    // 页面可见性检测
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            isActive = false;
-        } else {
-            isActive = true;
-        }
-    });
-    
-    // 每秒更新活跃时间
-    setInterval(function() {
-        if (isActive) {
-            activeTime += 1000;
-        }
-    }, 1000);
-    
-    // 滚动进度跟踪
-    function trackReadingProgress() {
-        const article = document.getElementById('post-content');
-        if (!article) return;
-        
-        const articleTop = article.offsetTop;
-        const articleHeight = article.offsetHeight;
-        const windowHeight = window.innerHeight;
-        const scrollTop = window.pageYOffset;
-        
-        const progress = Math.min(100, Math.max(0, 
-            ((scrollTop + windowHeight - articleTop) / articleHeight) * 100
-        ));
-        
-        // 跟踪阅读里程碑
-        Object.keys(readingProgress).forEach(milestone => {
-            if (progress >= parseInt(milestone) && !readingProgress[milestone]) {
-                readingProgress[milestone] = true;
-                if (window.umamiTrack) {
-                    window.umamiTrack('reading-progress', {
-                        ...articleInfo,
-                        milestone: milestone + '%',
-                        timeSpent: Math.round(activeTime / 1000)
-                    });
-                }
-            }
-        });
-    }
-    
-    // 监听滚动事件
+    // 节流的滚动处理
     let scrollTimeout;
-    window.addEventListener('scroll', function() {
+    function handleScroll() {
         clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(trackReadingProgress, 100);
-    });
-    
-    // 跟踪代码块复制（如果有）
-    document.addEventListener('click', function(e) {
-        if (e.target.matches('.copy-button, [data-copy]')) {
-            if (window.umamiTrack) {
-                window.umamiTrack('code-copy', {
-                    ...articleInfo,
-                    element: e.target.textContent || 'code-block'
-                });
+        scrollTimeout = setTimeout(function() {
+            const article = document.getElementById('post-content');
+            if (!article) return;
+            
+            const articleTop = article.offsetTop;
+            const articleHeight = article.offsetHeight;
+            const windowHeight = window.innerHeight;
+            const scrollTop = window.pageYOffset;
+            
+            const progress = Math.min(100, Math.max(0, 
+                ((scrollTop + windowHeight - articleTop) / articleHeight) * 100
+            ));
+            
+            if (progress >= 50 && !progress50 && window.umamiTrack) {
+                progress50 = true;
+                window.umamiTrack('reading-progress', { milestone: '50%' });
             }
-        }
-    });
-    
-    // 跟踪图片点击/查看
-    document.addEventListener('click', function(e) {
-        if (e.target.tagName === 'IMG') {
-            if (window.umamiTrack) {
-                window.umamiTrack('image-click', {
-                    ...articleInfo,
-                    imageSrc: e.target.src,
-                    imageAlt: e.target.alt || 'no-alt'
-                });
+            
+            if (progress >= 90 && !progress100 && window.umamiTrack) {
+                progress100 = true;
+                window.umamiTrack('reading-progress', { milestone: '100%' });
             }
-        }
-    });
+        }, 500);
+    }
     
-    // 页面离开时跟踪完整阅读数据
-    window.addEventListener('beforeunload', function() {
-        const totalTime = Math.round(activeTime / 1000);
-        const completionRate = Math.max(...Object.keys(readingProgress).filter(k => readingProgress[k]).map(Number));
-        
-        if (window.umamiTrack && totalTime > 5) { // 只跟踪停留超过5秒的访问
-            window.umamiTrack('article-reading-complete', {
-                ...articleInfo,
-                totalTimeSpent: totalTime,
-                completionRate: completionRate + '%',
-                engagementScore: Math.min(100, (totalTime / (articleInfo.readingTime * 60)) * 100)
-            });
-        }
-    });
-    
-    // 跟踪目录点击（如果有目录）
-    document.addEventListener('click', function(e) {
-        if (e.target.matches('.toc a, #toc a, [class*="toc"] a')) {
-            if (window.umamiTrack) {
-                window.umamiTrack('toc-navigation', {
-                    ...articleInfo,
-                    tocItem: e.target.textContent.trim(),
-                    href: e.target.getAttribute('href')
-                });
-            }
-        }
-    });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 });
 </script>
 

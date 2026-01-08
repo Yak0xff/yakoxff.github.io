@@ -1,110 +1,16 @@
-<!-- Umami Analytics 配置 -->
+<!-- Umami Analytics 轻量配置 -->
 <script>
-// Umami 全局配置
+// 简化的全局配置
 window.umamiConfig = {
-    // 网站基本信息
-    siteInfo: {
-        name: '{{ .Site.Title }}',
-        url: '{{ .Site.BaseURL }}',
-        language: '{{ .Site.Language.Lang }}',
-        author: '{{ .Site.Params.author }}'
-    },
-    
-    // 跟踪设置
-    trackingSettings: {
-        // 是否跟踪外部链接
-        trackExternalLinks: true,
-        // 是否跟踪文件下载
-        trackFileDownloads: true,
-        // 是否跟踪滚动深度
-        trackScrollDepth: true,
-        // 是否跟踪阅读进度
-        trackReadingProgress: true,
-        // 是否跟踪搜索行为
-        trackSearch: true,
-        // 是否跟踪评论互动
-        trackComments: true,
-        // 最小跟踪时间（秒）
-        minTrackingTime: 5
-    },
-    
-    // 文件类型配置
-    fileTypes: {
-        documents: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'],
-        archives: ['zip', 'rar', '7z', 'tar', 'gz'],
-        media: ['mp3', 'mp4', 'avi', 'mov', 'wav']
-    },
-    
-    // 阅读进度里程碑
-    readingMilestones: [25, 50, 75, 100],
-    
-    // 滚动深度里程碑
-    scrollMilestones: [25, 50, 75, 90]
+    trackingEnabled: window.location.hostname !== 'localhost'
 };
 
-// 辅助函数：获取页面类型
+// 轻量级辅助函数
 window.getPageType = function() {
     const path = window.location.pathname;
     if (path === '/' || path === '/zh/') return 'home';
     if (path.includes('/posts/')) return 'article';
     if (path.includes('/fictions/')) return 'fiction';
-    if (path.includes('/product/')) return 'product';
-    if (path.includes('/about/')) return 'about';
-    if (path.includes('/categories/')) return 'category';
-    if (path.includes('/tags/')) return 'tag';
     return 'other';
 };
-
-// 辅助函数：获取内容分类
-window.getContentCategory = function() {
-    {{ if .Params.categories }}
-    return '{{ index .Params.categories 0 }}';
-    {{ else }}
-    return 'uncategorized';
-    {{ end }}
-};
-
-// 辅助函数：获取设备类型
-window.getDeviceType = function() {
-    const width = window.innerWidth;
-    if (width < 768) return 'mobile';
-    if (width < 1024) return 'tablet';
-    return 'desktop';
-};
-
-// 辅助函数：检测是否为搜索引擎来源
-window.getTrafficSource = function() {
-    const referrer = document.referrer;
-    if (!referrer) return 'direct';
-    
-    const searchEngines = [
-        'google.com', 'bing.com', 'baidu.com', 'yahoo.com', 
-        'duckduckgo.com', 'yandex.com', 'sogou.com'
-    ];
-    
-    for (const engine of searchEngines) {
-        if (referrer.includes(engine)) {
-            return 'search';
-        }
-    }
-    
-    if (referrer.includes('github.com')) return 'github';
-    if (referrer.includes('twitter.com') || referrer.includes('x.com')) return 'twitter';
-    if (referrer.includes('weibo.com')) return 'weibo';
-    
-    return 'referral';
-};
-
-// 页面加载时的基础跟踪
-document.addEventListener('DOMContentLoaded', function() {
-    if (window.umamiTrack) {
-        // 跟踪页面访问
-        window.umamiTrack('page-view', {
-            pageType: window.getPageType(),
-            deviceType: window.getDeviceType(),
-            trafficSource: window.getTrafficSource(),
-            language: navigator.language || 'unknown'
-        });
-    }
-});
 </script>
