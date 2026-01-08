@@ -8,83 +8,73 @@
     script.dataset.websiteId = '297a5367-a675-4a3b-a8e7-3b490231e695';
     document.head.appendChild(script);
     
-    // 等待 Umami 加载完成后初始化自定义事件跟踪
-    script.onload = function() {
-      // 初始化 Umami 事件跟踪函数
-      window.umamiTrack = function(eventName, eventData = {}) {
-        if (typeof umami !== 'undefined') {
+    // 简化的跟踪函数
+    window.umamiTrack = function(eventName, eventData = {}) {
+      if (typeof umami !== 'undefined') {
+        try {
           umami.track(eventName, eventData);
+        } catch (e) {
+          // 静默处理错误，避免影响用户体验
         }
-      };
-      
-      // 自动跟踪外部链接点击
-      document.addEventListener('click', function(e) {
-        const link = e.target.closest('a');
-        if (link && link.href) {
-          const url = new URL(link.href, window.location.origin);
-          if (url.hostname !== window.location.hostname) {
-            window.umamiTrack('external-link', {
-              url: link.href,
-              text: link.textContent.trim()
-            });
-          }
-        }
-      });
-      
-      // 跟踪文档下载
-      document.addEventListener('click', function(e) {
-        const link = e.target.closest('a');
-        if (link && link.href) {
-          const fileExtensions = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|7z|tar|gz)$/i;
-          if (fileExtensions.test(link.href)) {
-            window.umamiTrack('file-download', {
-              file: link.href,
-              type: link.href.split('.').pop().toLowerCase()
-            });
-          }
-        }
-      });
-      
-      // 跟踪搜索行为（如果有搜索功能）
-      const searchInputs = document.querySelectorAll('input[type="search"], input[name*="search"], input[placeholder*="搜索"], input[placeholder*="search"]');
-      searchInputs.forEach(input => {
-        input.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' && this.value.trim()) {
-            window.umamiTrack('search', {
-              query: this.value.trim()
-            });
-          }
-        });
-      });
-      
-      // 跟踪页面滚动深度
-      let maxScroll = 0;
-      let scrollTracked = false;
-      window.addEventListener('scroll', function() {
-        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-        if (scrollPercent > maxScroll) {
-          maxScroll = scrollPercent;
-        }
-        
-        // 当用户滚动到 75% 时跟踪一次
-        if (scrollPercent >= 75 && !scrollTracked) {
-          scrollTracked = true;
-          window.umamiTrack('scroll-depth', {
-            depth: '75%',
-            page: window.location.pathname
-          });
-        }
-      });
-      
-      // 页面离开时跟踪最大滚动深度
-      window.addEventListener('beforeunload', function() {
-        if (maxScroll > 0) {
-          window.umamiTrack('page-engagement', {
-            maxScroll: maxScroll + '%',
-            timeOnPage: Math.round((Date.now() - performance.timing.navigationStart) / 1000)
-          });
-        }
-      });
+      }
     };
+    
+    // 节流函数
+    function throttle(func, limit) {
+      let inThrottle;
+      return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+          func.apply(context, args);
+          inThrottle = true;
+          setTimeout(() => inThrottle = false, limit);
+        }
+      }
+    }
+    
+    // 等待 Umami 加载完成后初始化
+    script.onload = function() {
+      // 优化的滚动跟踪（节流到每2秒最多一次）
+      let scrollTracked = false;
+      const handleScroll = throttle(function() {
+        if (scrollTracked) return;
+        
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        if (scrollPercent >= 75) {
+          scrollTracked = true;
+          window.umamiTrack('scroll-depth', { depth: '75%' });
+        }
+      }, 2000);
+      
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      
+      // 简化的点击跟踪（使用事件委托）
+      document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (!link || !link.href) return;
+        
+        try {
+          const url = new URL(link.href, window.location.origin);
+          
+          // 外部链接跟踪
+          if (url.hostname !== window.location.hostname) {
+            window.umamiTrack('external-link', { url: link.href });
+            return;
+          }
+          
+          // 文件下载跟踪
+          const fileExtensions = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|7z)$/i;
+          if (fileExtensions.test(link.href)) {
+            window.umamiTrack('file-download', { type: link.href.split('.').pop() });
+          }
+        } catch (e) {
+          // 忽略 URL 解析错误
+        }
+      }, { passive: true });
+    };
+  } else {
+    // 本地环境提供空函数
+    window.umamiTrack = function() {};
   }
 </script>

@@ -55,12 +55,9 @@ function loadGiscus() {
     script.async = true;
     document.body.appendChild(script);
     
-    // Umami 跟踪：评论区加载
+    // 简化的评论跟踪
     if (window.umamiTrack) {
-        window.umamiTrack('comment-section-loaded', {
-            page: window.location.pathname,
-            title: document.title
-        });
+        window.umamiTrack('comment-loaded');
     }
 }
 
@@ -72,22 +69,4 @@ const observer = new IntersectionObserver((entries, obs) => {
 });
 
 observer.observe(document.getElementById("action-menu"));
-
-// 监听 Giscus 评论事件
-window.addEventListener('message', function(event) {
-    if (event.origin !== 'https://giscus.app') return;
-    
-    const giscusData = event.data;
-    if (giscusData.giscus) {
-        if (window.umamiTrack) {
-            // 跟踪评论相关事件
-            if (giscusData.giscus.discussion) {
-                window.umamiTrack('comment-discussion-loaded', {
-                    page: window.location.pathname,
-                    discussionId: giscusData.giscus.discussion.id
-                });
-            }
-        }
-    }
-});
 </script>
