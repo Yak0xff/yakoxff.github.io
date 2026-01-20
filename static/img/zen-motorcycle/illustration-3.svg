@@ -1,25 +1,19 @@
-<svg width="400" height="180" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <style type="text/css">
-      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&amp;display=swap');
-      text { font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    </style>
-  </defs>
-  
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="300" viewBox="0 0 600 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
-  <rect width="400" height="180" fill="#fafafa"/>
+  <rect width="600" height="300" fill="#f8f8f8"/>
   
   <!-- Work / Motorcycle (curve) -->
-  <path d="M100 70 Q200 10 300 70" fill="none" stroke="#333" stroke-width="2"/>
-  <text x="200" y="55" text-anchor="middle" font-size="14" fill="#333">工作 / 摩托车</text>
+  <path d="M150 120 Q300 30 450 120" fill="none" stroke="#333" stroke-width="2"/>
+  <text x="300" y="70" text-anchor="middle" font-size="16" fill="#333" font-family="system-ui, -apple-system, sans-serif">工作 / 摩托车</text>
   
   <!-- Mirror lines -->
-  <path d="M140 110 L260 110" stroke="#333" stroke-width="2" stroke-linecap="round"/>
-  <path d="M160 130 L240 130" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  <path d="M200 180 L400 180" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  <path d="M230 210 L370 210" stroke="#333" stroke-width="2" stroke-linecap="round"/>
   
   <!-- Reflection arrow -->
-  <path d="M200 75 L200 105" stroke="#333" stroke-width="1" stroke-dasharray="4,4"/>
+  <path d="M300 125 L300 170" stroke="#333" stroke-width="1.5" stroke-dasharray="6,6"/>
   
   <!-- Self label -->
-  <text x="200" y="160" text-anchor="middle" font-size="16" font-weight="bold" fill="#000">镜子 (Self)</text>
+  <text x="300" y="260" text-anchor="middle" font-size="18" font-weight="bold" fill="#000" font-family="system-ui, -apple-system, sans-serif">镜子 (Self)</text>
 </svg>
