@@ -1,0 +1,18 @@
+<svg width="400" height="180" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="180" fill="#fafafa"/>
+  
+  <!-- Work / Motorcycle (infinity-like curve) -->
+  <path d="M100 70 Q200 10 300 70" fill="none" stroke="#333" stroke-width="2"/>
+  <text x="200" y="55" text-anchor="middle" font-size="14" fill="#333" font-family="-apple-system, BlinkMacSystemFont, sans-serif">工作 / 摩托车</text>
+  
+  <!-- Mirror lines -->
+  <path d="M140 110 L260 110" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  <path d="M160 130 L240 130" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Reflection arrow -->
+  <path d="M200 75 L200 105" stroke="#333" stroke-width="1" stroke-dasharray="4,4"/>
+  
+  <!-- Self label -->
+  <text x="200" y="160" text-anchor="middle" font-size="16" font-weight="bold" fill="#000" font-family="-apple-system, BlinkMacSystemFont, sans-serif">镜子 (Self)</text>
+</svg>
