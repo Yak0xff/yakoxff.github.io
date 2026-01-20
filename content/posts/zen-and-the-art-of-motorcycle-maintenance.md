@@ -46,7 +46,7 @@ John 觉得这些东西是"反人性"的。他追求的是骑行时的自由感�
 
 Pirsig 说，这就是问题所在。
 
-![图 1：现代人被割裂的两种认知方式](/img/zen-motorcycle/illustration-1.svg)
+![图 1：现代人被割裂的两种认知方式](/img/zen-motorcycle/illustration-1.png)
 
 ## 二、两种人，两种世界观
 
@@ -94,7 +94,7 @@ Pirsig 花了整本书的篇幅，去追问一个问题：
 
 Pirsig 说，Quality 不在主体（人）里，也不在客体（物）里。**它在两者相遇的那个瞬间。**
 
-![图 2：良质是缝合世界的唯一黏合剂](/img/zen-motorcycle/illustration-2.svg)
+![图 2：良质是缝合世界的唯一黏合剂](/img/zen-motorcycle/illustration-2.png)
 
 这听起来很玄，但你仔细想想，其实很日常。
 
@@ -156,7 +156,7 @@ Pirsig 说，当你愿意慢下来，诚实地面对自己的状态，Quality �
 
 它不是一种要去"追求"的东西。它一直在那里。你只需要安静下来，听到它。
 
-![图 3：你对事物的态度，本质是你的投影](/img/zen-motorcycle/illustration-3.svg)
+![图 3：你对事物的态度，本质是你的投影](/img/zen-motorcycle/illustration-3.png)
 
 ## 六、这和我有什么关系？
 
