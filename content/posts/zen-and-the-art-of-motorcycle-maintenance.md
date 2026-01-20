@@ -1,14 +1,14 @@
 ---
-title: "为什么我们把“活着”这件事搞得这么拧巴？"
+title: "为什么我们把"活着"这件事搞得这么拧巴？"
 date: 2026-01-20T10:00:00
 draft: false
 tags: ["读书", "哲学", "生活方式", "心智模型"]
 toc: true
-description: 我们活在一个被标准和 KPI 割裂的世界：一边是冷冰冰的逻辑，一边是飘忽不定的情绪。Robert Pirsig 用一辆摩托车告诉我们：真正的“好生活”既不在理性里，也不在感性里，而在于找回那份被遗忘的“良质”。记住，修摩托车的真正目的，是修你自己。
+description: 我们活在一个被标准和 KPI 割裂的世界：一边是冷冰冰的逻辑，一边是飘忽不定的情绪。Robert Pirsig 用一辆摩托车告诉我们：真正的"好生活"既不在理性里，也不在感性里，而在于找回那份被遗忘的"良质"。记住，修摩托车的真正目的，是修你自己。
 ---
 
 
-![为什么我们把“活着”这件事搞得这么拧巴](/img/zen-motorcycle/cover.svg)
+![为什么我们把"活着"这件事搞得这么拧巴](/img/zen-motorcycle/cover.svg)
 
 你有没有过这种感觉——
 
@@ -46,21 +46,7 @@ John 觉得这些东西是"反人性"的。他追求的是骑行时的自由感�
 
 Pirsig 说，这就是问题所在。
 
-
-<div align="center">
-<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
-  <!-- Gap Illustration -->
-  <circle cx="100" cy="80" r="40" fill="none" stroke="currentColor" stroke-width="2"/>
-  <text x="100" y="145" text-anchor="middle" font-size="14" fill="currentColor">浪漫 (感性体验)</text>
-  
-  <path d="M180 30 L220 130" stroke="currentColor" stroke-width="2" stroke-dasharray="8,8"/>
-  <text x="200" y="165" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.6">认知鸿沟</text>
-  
-  <rect x="260" y="40" width="80" height="80" fill="none" stroke="currentColor" stroke-width="2"/>
-  <text x="300" y="145" text-anchor="middle" font-size="14" fill="currentColor">古典 (理性逻辑)</text>
-</svg>
-<p style="font-size: 0.9em; color: #666;">图 1：现代人被割裂的两种认知方式</p>
-</div>
+![图 1：现代人被割裂的两种认知方式](/img/zen-motorcycle/illustration-1.svg)
 
 ## 二、两种人，两种世界观
 
@@ -108,17 +94,7 @@ Pirsig 花了整本书的篇幅，去追问一个问题：
 
 Pirsig 说，Quality 不在主体（人）里，也不在客体（物）里。**它在两者相遇的那个瞬间。**
 
-<div align="center">
-<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
-  <!-- Quality Integration -->
-  <circle cx="160" cy="80" r="65" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.3"/>
-  <circle cx="240" cy="80" r="65" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.3"/>
-  <circle cx="200" cy="80" r="30" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="2"/>
-  <text x="200" y="85" text-anchor="middle" font-size="16" font-weight="bold" fill="currentColor">良质</text>
-  <text x="200" y="160" text-anchor="middle" font-size="14" fill="currentColor">当“主体”与“客体”不再分离</text>
-</svg>
-<p style="font-size: 0.9em; color: #666;">图 2：良质是缝合世界的唯一黏合剂</p>
-</div>
+![图 2：良质是缝合世界的唯一黏合剂](/img/zen-motorcycle/illustration-2.svg)
 
 这听起来很玄，但你仔细想想，其实很日常。
 
@@ -180,18 +156,7 @@ Pirsig 说，当你愿意慢下来，诚实地面对自己的状态，Quality �
 
 它不是一种要去"追求"的东西。它一直在那里。你只需要安静下来，听到它。
 
-<div align="center">
-<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
-  <!-- Repairing Self -->
-  <path d="M100 80 Q200 10 300 80 T100 80" fill="none" stroke="currentColor" stroke-width="2" />
-  <text x="200" y="75" text-anchor="middle" font-size="14" fill="currentColor">工作 / 摩托车</text>
-  <path d="M150 110 L250 110" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-  <path d="M170 130 L230 130" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-  <text x="200" y="160" text-anchor="middle" font-size="16" font-weight="bold" fill="currentColor">镜子 (Self)</text>
-  <path d="M200 85 L200 105" stroke="currentColor" stroke-width="1" stroke-dasharray="4,4"/>
-</svg>
-<p style="font-size: 0.9em; color: #666;">图 3：你对事物的态度，本质是你的投影</p>
-</div>
+![图 3：你对事物的态度，本质是你的投影](/img/zen-motorcycle/illustration-3.svg)
 
 ## 六、这和我有什么关系？
 
