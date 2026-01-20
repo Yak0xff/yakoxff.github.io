@@ -1,0 +1,21 @@
+<svg width="900" height="383" viewBox="0 0 900 383" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background: Deep Charcoal -->
+    <rect width="900" height="383" fill="#121212"/>
+    
+    <!-- Central Graphic: A minimalist wrench forming a Zen Circle (Enso) -->
+    <path d="M450 80 A80 80 0 1 1 449.9 80" stroke="#FFFFFF" stroke-width="2" fill="none" stroke-opacity="0.2"/>
+    <path d="M450 60 L450 100 M430 80 L470 80" stroke="#00E5FF" stroke-width="4" stroke-linecap="round"/>
+    
+    <!-- Title -->
+    <text x="450" y="210" text-anchor="middle" font-family="Source Han Sans CN, sans-serif" font-weight="900" font-size="42" fill="#FFFFFF">
+        为什么我们把“活着”这件事搞得这么拧巴？
+    </text>
+    
+    <!-- Subtitle -->
+    <text x="450" y="270" text-anchor="middle" font-family="Source Han Sans CN, sans-serif" font-weight="300" font-size="20" fill="#AAAAAA" letter-spacing="4">
+        修摩托车的真正目的，是修你自己
+    </text>
+    
+    <!-- Decorative Accents -->
+    <rect x="420" y="310" width="60" height="2" fill="#00E5FF"/>
+</svg>
