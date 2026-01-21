@@ -1,0 +1,447 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 5200">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      .title { font: 700 28px 'Inter', system-ui, sans-serif; fill: #fff; }
+      .subtitle { font: 500 15px 'Inter', system-ui, sans-serif; fill: rgba(255,255,255,0.7); }
+      .section-title { font: 700 15px 'Inter', system-ui, sans-serif; fill: #fff; letter-spacing: 0.5px; }
+      .card-title { font: 600 14px 'Inter', system-ui, sans-serif; fill: #1a1a2e; }
+      .card-subtitle { font: 600 12px 'Inter', system-ui, sans-serif; fill: #555; }
+      .item { font: 400 11.5px 'Inter', system-ui, sans-serif; fill: #374151; line-height: 1.4; }
+      .quote { font: italic 500 11px 'Inter', system-ui, sans-serif; fill: #6366f1; }
+      .highlight { font: 600 11.5px 'Inter', system-ui, sans-serif; fill: #1f2937; }
+      .connector { stroke: #e5e7eb; stroke-width: 2; fill: none; stroke-dasharray: 6,4; }
+      .number { font: 700 24px 'Inter', system-ui, sans-serif; fill: rgba(0,0,0,0.08); }
+    </style>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.08"/>
+    </filter>
+    <filter id="shadow-sm" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="grad-title" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="grad-red" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#f97316"/>
+    </linearGradient>
+    <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#d946ef"/>
+    </linearGradient>
+    <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+    <linearGradient id="grad-orange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="grad-teal" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#14b8a6"/>
+      <stop offset="100%" style="stop-color:#22d3ee"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="5200" fill="#f8fafc"/>
+
+  <!-- ==================== HEADER ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="40" width="1280" height="180" rx="20" fill="url(#grad-title)"/>
+  </g>
+  <text x="700" y="105" text-anchor="middle" class="title">How to Fix Your Entire Life in 1 Day</text>
+  <text x="700" y="135" text-anchor="middle" class="subtitle">7 Ideas on Behavior Change, Psychology &amp; Productivity</text>
+  <rect x="200" y="160" width="1000" height="40" rx="8" fill="rgba(255,255,255,0.1)"/>
+  <text x="700" y="186" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.9)" font-style="italic">"If you want a specific outcome in life, you must have the lifestyle that creates that outcome long before you reach it."</text>
+
+  <!-- Connector -->
+  <path d="M700 220 L700 270" class="connector"/>
+
+  <!-- ==================== IDEA I ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="270" width="1280" height="380" rx="16" fill="#fff"/>
+    <rect x="60" y="270" width="1280" height="50" rx="16" fill="url(#grad-red)"/>
+    <rect x="60" y="300" width="1280" height="20" fill="url(#grad-red)"/>
+  </g>
+  <text x="100" y="302" class="section-title">I — YOU AREN'T WHERE YOU WANT TO BE BECAUSE YOU AREN'T THE PERSON WHO WOULD BE THERE</text>
+
+  <text x="90" y="355" class="number">01</text>
+  <text x="90" y="355" class="card-title">Two Requirements for Success</text>
+  <text x="90" y="380" class="item">• Changing your actions to make progress toward the goal (least important, second order)</text>
+  <text x="90" y="400" class="item">• Changing who you are so that your behavior naturally follows (most important, first order)</text>
+
+  <rect x="90" y="420" width="580" height="100" rx="8" fill="#fef2f2" filter="url(#shadow-sm)"/>
+  <text x="110" y="445" class="card-subtitle">The Bodybuilder Example</text>
+  <text x="110" y="468" class="item">Does the bodybuilder have to "grind" to eat healthy?</text>
+  <text x="110" y="488" class="item">The truth is they can't see themselves living any other way.</text>
+  <text x="110" y="508" class="item">The bodybuilder has to grind to eat unhealthily.</text>
+
+  <rect x="710" y="420" width="600" height="100" rx="8" fill="#fef2f2" filter="url(#shadow-sm)"/>
+  <text x="730" y="445" class="card-subtitle">The CEO Example</text>
+  <text x="730" y="468" class="item">Does the CEO have to discipline themselves to show up and lead?</text>
+  <text x="730" y="488" class="item">They have to force themselves to lie in bed past their alarm clock,</text>
+  <text x="730" y="508" class="item">and they hate every second of it.</text>
+
+  <rect x="90" y="540" width="1220" height="50" rx="8" fill="rgba(239,68,68,0.1)"/>
+  <text x="700" y="572" text-anchor="middle" class="highlight">"If I weren't having fun, why would I be doing what I'm doing?"</text>
+
+  <text x="90" y="620" class="quote">"If someone says they want to lose 30 pounds... but they say 'I can't wait until I'm done losing weight</text>
+  <text x="90" y="638" class="quote">so I can start to enjoy life again' — they will go straight back to where they started."</text>
+
+  <!-- Connector -->
+  <path d="M700 650 L700 700" class="connector"/>
+
+  <!-- ==================== IDEA II ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="700" width="1280" height="340" rx="16" fill="#fff"/>
+    <rect x="60" y="700" width="1280" height="50" rx="16" fill="url(#grad-blue)"/>
+    <rect x="60" y="730" width="1280" height="20" fill="url(#grad-blue)"/>
+  </g>
+  <text x="100" y="732" class="section-title">II — YOU AREN'T WHERE YOU WANT TO BE BECAUSE YOU DON'T WANT TO BE THERE</text>
+
+  <text x="90" y="785" class="number">02</text>
+  <rect x="90" y="770" width="1220" height="45" rx="8" fill="#eff6ff"/>
+  <text x="110" y="800" class="quote">"Trust only movement. Life happens at the level of events, not of words. Trust movement." — Alfred Adler</text>
+
+  <text x="90" y="850" class="card-title">All Behavior is Goal-Oriented (Teleological)</text>
+  <text x="90" y="875" class="item">• You take a step forward because you want to reach a certain location</text>
+  <text x="90" y="895" class="item">• You scratch your nose because you want to make the itch go away</text>
+  <text x="90" y="915" class="item">• Most of the time, your goals are unconscious</text>
+
+  <rect x="90" y="940" width="580" height="80" rx="8" fill="#dbeafe" filter="url(#shadow-sm)"/>
+  <text x="110" y="965" class="card-subtitle">Procrastination Example</text>
+  <text x="110" y="988" class="item">You may justify it as "lacking discipline" but in reality you are</text>
+  <text x="110" y="1008" class="item">pursuing a goal: protecting yourself from judgment.</text>
+
+  <rect x="710" y="940" width="600" height="80" rx="8" fill="#dbeafe" filter="url(#shadow-sm)"/>
+  <text x="730" y="965" class="card-subtitle">Dead-End Job Example</text>
+  <text x="730" y="988" class="item">You pursue the goal of safety, predictability, and an excuse</text>
+  <text x="730" y="1008" class="item">to not look like a failure to everyone else.</text>
+
+  <!-- Connector -->
+  <path d="M700 1040 L700 1090" class="connector"/>
+
+  <!-- ==================== IDEA III ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="1090" width="1280" height="520" rx="16" fill="#fff"/>
+    <rect x="60" y="1090" width="1280" height="50" rx="16" fill="url(#grad-purple)"/>
+    <rect x="60" y="1120" width="1280" height="20" fill="url(#grad-purple)"/>
+  </g>
+  <text x="100" y="1122" class="section-title">III — YOU AREN'T WHERE YOU WANT TO BE BECAUSE YOU'RE AFRAID TO BE THERE</text>
+
+  <text x="90" y="1175" class="number">03</text>
+  <text x="90" y="1175" class="card-title">The Anatomy of Identity</text>
+
+  <rect x="90" y="1195" width="1220" height="250" rx="12" fill="#faf5ff" filter="url(#shadow-sm)"/>
+  <text x="110" y="1225" class="highlight">1. You want to achieve a goal</text>
+  <text x="110" y="1250" class="highlight">2. You perceive reality through the lens of that goal</text>
+  <text x="110" y="1275" class="highlight">3. You only notice "important" information that allows you to achieve that goal (learning)</text>
+  <text x="110" y="1300" class="highlight">4. You act toward that goal and receive feedback that you are progressing toward it</text>
+  <text x="110" y="1325" class="highlight">5. You repeat that behavior until it becomes automatic and unconscious (conditioning)</text>
+  <text x="110" y="1350" class="highlight">6. That behavior becomes a part of who you think you are ("I am the type of person who...")</text>
+  <text x="110" y="1375" class="highlight">7. You defend your identity to maintain psychological consistency</text>
+  <text x="110" y="1400" class="highlight">8. Your identity shapes new goals, restarting the cycle</text>
+  <rect x="110" y="1415" width="400" height="22" rx="4" fill="rgba(139,92,246,0.2)"/>
+  <text x="120" y="1432" font-size="11" fill="#7c3aed" font-weight="600">→ Break the cycle between steps 6 and 7</text>
+
+  <rect x="90" y="1460" width="1220" height="70" rx="8" fill="rgba(139,92,246,0.08)"/>
+  <text x="110" y="1485" class="item">When your body feels threatened, you go into fight or flight.</text>
+  <text x="110" y="1505" class="item">When your identity feels threatened, the same thing happens.</text>
+  <text x="110" y="1525" class="quote">"You literally feel the stress. You feel, emotionally, like you were just slapped in the face."</text>
+
+  <rect x="90" y="1545" width="1220" height="50" rx="8" fill="rgba(139,92,246,0.15)"/>
+  <text x="700" y="1577" text-anchor="middle" class="quote" font-size="12">"If you were raised in a religious household, and did not think for yourself, you will fight and attack others who threaten your psychological safety."</text>
+
+  <!-- Connector -->
+  <path d="M700 1610 L700 1660" class="connector"/>
+
+  <!-- ==================== IDEA IV ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="1660" width="1280" height="500" rx="16" fill="#fff"/>
+    <rect x="60" y="1660" width="1280" height="50" rx="16" fill="url(#grad-green)"/>
+    <rect x="60" y="1690" width="1280" height="20" fill="url(#grad-green)"/>
+  </g>
+  <text x="100" y="1692" class="section-title">IV — THE LIFE YOU WANT LIES WITHIN A SPECIFIC LEVEL OF MIND</text>
+
+  <text x="90" y="1745" class="number">04</text>
+  <text x="90" y="1745" class="card-title">9 Stages of Ego Development</text>
+
+  <!-- Stage cards - Left column -->
+  <rect x="90" y="1770" width="380" height="60" rx="8" fill="#f0fdf4" filter="url(#shadow-sm)"/>
+  <text x="110" y="1795" class="card-subtitle" fill="#059669">1. Impulsive</text>
+  <text x="110" y="1815" class="item">No separation between impulse and action. Black and white thinking.</text>
+
+  <rect x="90" y="1840" width="380" height="60" rx="8" fill="#f0fdf4" filter="url(#shadow-sm)"/>
+  <text x="110" y="1865" class="card-subtitle" fill="#059669">2. Self-Protective</text>
+  <text x="110" y="1885" class="item">The world is dangerous and you learn to look out for yourself.</text>
+
+  <rect x="90" y="1910" width="380" height="60" rx="8" fill="#f0fdf4" filter="url(#shadow-sm)"/>
+  <text x="110" y="1935" class="card-subtitle" fill="#059669">3. Conformist</text>
+  <text x="110" y="1955" class="item">You are your group and its rules feel like reality itself.</text>
+
+  <rect x="90" y="1980" width="380" height="60" rx="8" fill="#f0fdf4" filter="url(#shadow-sm)"/>
+  <text x="110" y="2005" class="card-subtitle" fill="#059669">4. Self-Aware</text>
+  <text x="110" y="2025" class="item">You notice you have an inner life that doesn't match the exterior.</text>
+
+  <rect x="90" y="2050" width="380" height="60" rx="8" fill="#dcfce7" filter="url(#shadow-sm)"/>
+  <text x="110" y="2075" class="card-subtitle" fill="#16a34a">5. Conscientious</text>
+  <text x="110" y="2095" class="item">You build your own system of principles and hold yourself accountable.</text>
+
+  <!-- Stage cards - Right column -->
+  <rect x="510" y="1770" width="380" height="60" rx="8" fill="#dcfce7" filter="url(#shadow-sm)"/>
+  <text x="530" y="1795" class="card-subtitle" fill="#16a34a">6. Individualist</text>
+  <text x="530" y="1815" class="item">Your principles were shaped by context, hold them more loosely.</text>
+
+  <rect x="510" y="1840" width="380" height="60" rx="8" fill="#dcfce7" filter="url(#shadow-sm)"/>
+  <text x="530" y="1865" class="card-subtitle" fill="#16a34a">7. Strategist</text>
+  <text x="530" y="1885" class="item">Work with systems while aware of your own involvement in them.</text>
+
+  <rect x="510" y="1910" width="380" height="60" rx="8" fill="#dcfce7" filter="url(#shadow-sm)"/>
+  <text x="530" y="1935" class="card-subtitle" fill="#16a34a">8. Construct-Aware</text>
+  <text x="530" y="1955" class="item">All frameworks, including your identity, as useful fictions.</text>
+
+  <rect x="510" y="1980" width="380" height="60" rx="8" fill="#bbf7d0" filter="url(#shadow-sm)"/>
+  <text x="530" y="2005" class="card-subtitle" fill="#15803d">9. Unitive</text>
+  <text x="530" y="2025" class="item">Separation between self and life dissolves. Just presence responding.</text>
+
+  <!-- Note box -->
+  <rect x="930" y="1770" width="380" height="280" rx="12" fill="rgba(16,185,129,0.1)"/>
+  <text x="950" y="1800" class="card-subtitle" fill="#059669">Key Insight</text>
+  <text x="950" y="1830" class="item">For most people reading this, I would</text>
+  <text x="950" y="1850" class="item">assume you hover between 4 and 8.</text>
+  <text x="950" y="1890" class="item">The good thing is, it doesn't really matter</text>
+  <text x="950" y="1910" class="item">what stage you are in, because moving</text>
+  <text x="950" y="1930" class="item">through any of them follows a pattern.</text>
+  <text x="950" y="1970" class="quote">"Work, rest, and play feel like the</text>
+  <text x="950" y="1990" class="quote">same thing. There's no one left who</text>
+  <text x="950" y="2010" class="quote">needs to become something, just</text>
+  <text x="950" y="2030" class="quote">presence responding to what arises."</text>
+
+  <!-- Connector -->
+  <path d="M700 2160 L700 2210" class="connector"/>
+
+  <!-- ==================== IDEA V ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="2210" width="1280" height="420" rx="16" fill="#fff"/>
+    <rect x="60" y="2210" width="1280" height="50" rx="16" fill="url(#grad-orange)"/>
+    <rect x="60" y="2240" width="1280" height="20" fill="url(#grad-orange)"/>
+  </g>
+  <text x="100" y="2242" class="section-title">V — INTELLIGENCE IS THE ABILITY TO GET WHAT YOU WANT OUT OF LIFE</text>
+
+  <text x="90" y="2295" class="number">05</text>
+  <rect x="90" y="2280" width="1220" height="45" rx="8" fill="#fffbeb"/>
+  <text x="110" y="2310" class="quote">"The only real test of intelligence is if you get what you want out of life." — Naval Ravikant</text>
+
+  <text x="90" y="2360" class="card-title">Formula for Success</text>
+  <text x="90" y="2385" class="item">• Agency — the likelihood to act toward a goal</text>
+  <text x="90" y="2405" class="item">• Opportunity — which many people like to mistake as "privilege"</text>
+  <text x="90" y="2425" class="item">• Intelligence — understanding cybernetics: "the art of getting what you want"</text>
+
+  <rect x="90" y="2450" width="580" height="160" rx="12" fill="#fef3c7" filter="url(#shadow-sm)"/>
+  <text x="110" y="2480" class="card-subtitle" fill="#d97706">Cybernetics: The Intelligent System</text>
+  <text x="110" y="2505" class="item">1. To have a goal</text>
+  <text x="110" y="2525" class="item">2. Act toward that goal</text>
+  <text x="110" y="2545" class="item">3. Sense where you are</text>
+  <text x="110" y="2565" class="item">4. Compare it to the goal</text>
+  <text x="110" y="2585" class="item">5. And act again based on that feedback</text>
+
+  <rect x="710" y="2450" width="600" height="160" rx="12" fill="#fef3c7" filter="url(#shadow-sm)"/>
+  <text x="730" y="2480" class="card-subtitle" fill="#d97706">To Become More Intelligent</text>
+  <text x="730" y="2505" class="item">• Reject the known path</text>
+  <text x="730" y="2525" class="item">• Dive into the unknown</text>
+  <text x="730" y="2545" class="item">• Set new, higher goals to expand your mind</text>
+  <text x="730" y="2565" class="item">• Embrace the chaos and allow for growth</text>
+  <text x="730" y="2585" class="item">• Study generalized principles, become a deep generalist</text>
+
+  <!-- Connector -->
+  <path d="M700 2630 L700 2680" class="connector"/>
+
+  <!-- ==================== IDEA VI: THE PROTOCOL ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="2680" width="1280" height="1400" rx="16" fill="#fff"/>
+    <rect x="60" y="2680" width="1280" height="50" rx="16" fill="url(#grad-teal)"/>
+    <rect x="60" y="2710" width="1280" height="20" fill="url(#grad-teal)"/>
+  </g>
+  <text x="100" y="2712" class="section-title">VI — HOW TO LAUNCH INTO A COMPLETELY NEW LIFE (IN 1 DAY)</text>
+
+  <text x="90" y="2765" class="number">06</text>
+  <text x="90" y="2765" class="card-title">3 Phases of Identity Flip</text>
+
+  <!-- Three phases -->
+  <rect x="90" y="2790" width="380" height="80" rx="12" fill="#f0fdfa" filter="url(#shadow-sm)"/>
+  <text x="110" y="2820" class="card-subtitle" fill="#0d9488">1. Dissonance</text>
+  <text x="110" y="2845" class="item">They feel like they don't belong in their current life,</text>
+  <text x="110" y="2862" class="item">become sufficiently fed up with their lack of progress.</text>
+
+  <rect x="510" y="2790" width="380" height="80" rx="12" fill="#f0fdfa" filter="url(#shadow-sm)"/>
+  <text x="530" y="2820" class="card-subtitle" fill="#0d9488">2. Uncertainty</text>
+  <text x="530" y="2845" class="item">They don't know what comes next, so they either</text>
+  <text x="530" y="2862" class="item">experiment or get lost and feel worse.</text>
+
+  <rect x="930" y="2790" width="380" height="80" rx="12" fill="#ccfbf1" filter="url(#shadow-sm)"/>
+  <text x="950" y="2820" class="card-subtitle" fill="#0f766e">3. Discovery</text>
+  <text x="950" y="2845" class="item">They discover what they want to pursue and</text>
+  <text x="950" y="2862" class="item">make 6 years of progress in 6 months.</text>
+
+  <!-- MORNING SECTION -->
+  <rect x="90" y="2900" width="1220" height="480" rx="12" fill="#fdf4ff" filter="url(#shadow-sm)"/>
+  <rect x="90" y="2900" width="1220" height="35" rx="12" fill="#d946ef"/>
+  <rect x="90" y="2920" width="1220" height="15" fill="#d946ef"/>
+  <text x="110" y="2925" font-size="13" fill="#fff" font-weight="600">🌅 PART 1: MORNING — PSYCHOLOGICAL EXCAVATION — VISION &amp; ANTI-VISION</text>
+
+  <text x="110" y="2965" class="card-subtitle">Questions to Uncover Pain</text>
+  <text x="110" y="2990" class="item">• What is the dull and persistent dissatisfaction you've learned to live with?</text>
+  <text x="110" y="3010" class="item">• What do you complain about repeatedly but never actually change?</text>
+  <text x="110" y="3030" class="item">• What truth about your current life would be unbearable to admit to someone you deeply respect?</text>
+
+  <text x="110" y="3065" class="card-subtitle">Create Anti-Vision (The Life You Don't Want)</text>
+  <text x="110" y="3090" class="item">• If absolutely nothing changes for the next 5 years, describe an average Tuesday.</text>
+  <text x="110" y="3110" class="item">• Now do it for 10 years. What have you missed? What opportunities closed?</text>
+  <text x="110" y="3130" class="item">• You're at the end of your life. You lived the safe version. What was the cost?</text>
+  <text x="110" y="3150" class="item">• Who in your life is already living the future you just described?</text>
+  <text x="110" y="3170" class="item">• What identity would you have to give up to actually change?</text>
+  <text x="110" y="3190" class="item">• What is the most embarrassing reason you haven't changed?</text>
+
+  <text x="110" y="3225" class="card-subtitle">Create Vision MVP</text>
+  <text x="110" y="3250" class="item">• Forget practicality. If you could snap your fingers and be living a different life in 3 years, what does an average Tuesday look like?</text>
+  <text x="110" y="3270" class="item">• What would you have to believe about yourself for that life to feel natural?</text>
+  <text x="110" y="3290" class="item">• Write the identity statement: "I am the type of person who..."</text>
+  <text x="110" y="3310" class="item">• What is one thing you would do this week if you were already that person?</text>
+
+  <rect x="110" y="3330" width="1180" height="40" rx="6" fill="rgba(217,70,239,0.15)"/>
+  <text x="700" y="3357" text-anchor="middle" class="quote" font-size="11">"The best periods of my life always came after a period of getting absolutely fed up with the lack of progress I was making."</text>
+
+  <!-- THROUGHOUT DAY SECTION -->
+  <rect x="90" y="3400" width="1220" height="280" rx="12" fill="#ecfeff" filter="url(#shadow-sm)"/>
+  <rect x="90" y="3400" width="1220" height="35" rx="12" fill="#06b6d4"/>
+  <rect x="90" y="3420" width="1220" height="15" fill="#06b6d4"/>
+  <text x="110" y="3425" font-size="13" fill="#fff" font-weight="600">☀️ PART 2: THROUGHOUT THE DAY — INTERRUPTING AUTOPILOT — BREAKING UNCONSCIOUS PATTERNS</text>
+
+  <text x="110" y="3465" class="card-subtitle">Set Calendar Reminders with These Questions</text>
+  <text x="110" y="3495" class="item">11:00am: What am I avoiding right now by doing what I'm doing?</text>
+  <text x="110" y="3515" class="item">1:30pm: If someone filmed the last two hours, what would they conclude that I want from my life?</text>
+  <text x="110" y="3535" class="item">3:15pm: Am I moving toward the life I hate or the life I want?</text>
+  <text x="110" y="3555" class="item">5:00pm: What's the most important thing I'm pretending isn't important?</text>
+  <text x="110" y="3575" class="item">7:30pm: What did I do today out of identity protection rather than genuine desire?</text>
+  <text x="110" y="3595" class="item">9:00pm: When did I feel most alive today? When did I feel most dead?</text>
+
+  <text x="110" y="3635" class="card-subtitle">Deeper Questions (Schedule During Commuting or Walking)</text>
+  <text x="110" y="3660" class="item">• What would change if I stopped needing people to see me as [identity]?  • Where am I trading aliveness for safety?</text>
+
+  <!-- EVENING SECTION -->
+  <rect x="90" y="3700" width="1220" height="340" rx="12" fill="#fef9c3" filter="url(#shadow-sm)"/>
+  <rect x="90" y="3700" width="1220" height="35" rx="12" fill="#eab308"/>
+  <rect x="90" y="3720" width="1220" height="15" fill="#eab308"/>
+  <text x="110" y="3725" font-size="13" fill="#fff" font-weight="600">🌙 PART 3: EVENING — SYNTHESIZING INSIGHT — ENTERING A SEASON OF PROGRESS</text>
+
+  <text x="110" y="3770" class="card-subtitle">Synthesis Questions</text>
+  <text x="110" y="3795" class="item">• After today, what feels most true about why you've been stuck?</text>
+  <text x="110" y="3815" class="item">• What is the actual enemy? Name it clearly. Not circumstances. Not other people. The internal pattern or belief.</text>
+  <text x="110" y="3835" class="item">• Write a single sentence that captures what you refuse to let your life become. (Anti-vision compressed)</text>
+  <text x="110" y="3855" class="item">• Write a single sentence that captures what you're building toward. (Vision MVP)</text>
+
+  <text x="110" y="3890" class="card-subtitle">Create Goals (As Lenses, Not Finish Lines)</text>
+  <text x="110" y="3915" class="item">• One-year lens: What would have to be true in one year for you to know you've broken the old pattern?</text>
+  <text x="110" y="3935" class="item">• One-month lens: What would have to be true in one month for the one-year lens to remain possible?</text>
+  <text x="110" y="3955" class="item">• Daily lens: What are 2-3 actions you can timeblock tomorrow that the person you're becoming would simply do?</text>
+
+  <rect x="110" y="3980" width="1180" height="45" rx="6" fill="rgba(234,179,8,0.2)"/>
+  <text x="700" y="4010" text-anchor="middle" class="quote" font-size="11">"Think of goals as a point of view. A lens that you can exchange to enter the right state of mind to perform the action."</text>
+
+  <!-- Connector -->
+  <path d="M700 4080 L700 4130" class="connector"/>
+
+  <!-- ==================== IDEA VII ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="4130" width="1280" height="520" rx="16" fill="#fff"/>
+    <rect x="60" y="4130" width="1280" height="50" rx="16" fill="url(#grad-title)"/>
+    <rect x="60" y="4160" width="1280" height="20" fill="url(#grad-title)"/>
+  </g>
+  <text x="100" y="4162" class="section-title">VII — TURN YOUR LIFE INTO A VIDEO GAME</text>
+
+  <text x="90" y="4215" class="number">07</text>
+  <rect x="90" y="4200" width="1220" height="50" rx="8" fill="#eef2ff"/>
+  <text x="110" y="4225" class="quote">"The optimal state of inner experience is one in which there is order in consciousness. This happens when psychic energy</text>
+  <text x="110" y="4242" class="quote">— or attention — is invested in realistic goals, and when skills match the opportunities for action." — Mihaly Csikszentmihalyi</text>
+
+  <text x="90" y="4290" class="card-title">6 Components of Your Life Game</text>
+
+  <!-- Game component table -->
+  <rect x="90" y="4310" width="400" height="35" rx="6" fill="#4f46e5"/>
+  <text x="290" y="4335" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Life Component</text>
+  <rect x="490" y="4310" width="400" height="35" rx="6" fill="#4f46e5"/>
+  <text x="690" y="4335" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Game Element</text>
+  <rect x="890" y="4310" width="420" height="35" rx="6" fill="#4f46e5"/>
+  <text x="1100" y="4335" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Description</text>
+
+  <rect x="90" y="4350" width="400" height="35" rx="4" fill="#f5f3ff"/>
+  <text x="290" y="4373" text-anchor="middle" class="item" font-weight="500">Anti-Vision</text>
+  <rect x="490" y="4350" width="400" height="35" rx="4" fill="#f5f3ff"/>
+  <text x="690" y="4373" text-anchor="middle" class="item">What's at stake if you lose</text>
+  <rect x="890" y="4350" width="420" height="35" rx="4" fill="#f5f3ff"/>
+  <text x="1100" y="4373" text-anchor="middle" class="item">The bane of your existence</text>
+
+  <rect x="90" y="4390" width="400" height="35" rx="4" fill="#eef2ff"/>
+  <text x="290" y="4413" text-anchor="middle" class="item" font-weight="500">Vision</text>
+  <rect x="490" y="4390" width="400" height="35" rx="4" fill="#eef2ff"/>
+  <text x="690" y="4413" text-anchor="middle" class="item">How you win</text>
+  <rect x="890" y="4390" width="420" height="35" rx="4" fill="#eef2ff"/>
+  <text x="1100" y="4413" text-anchor="middle" class="item">The ideal life you can improve as you work toward it</text>
+
+  <rect x="90" y="4430" width="400" height="35" rx="4" fill="#f5f3ff"/>
+  <text x="290" y="4453" text-anchor="middle" class="item" font-weight="500">1 Year Goal</text>
+  <rect x="490" y="4430" width="400" height="35" rx="4" fill="#f5f3ff"/>
+  <text x="690" y="4453" text-anchor="middle" class="item">The mission</text>
+  <rect x="890" y="4430" width="420" height="35" rx="4" fill="#f5f3ff"/>
+  <text x="1100" y="4453" text-anchor="middle" class="item">Your sole priority in life</text>
+
+  <rect x="90" y="4470" width="400" height="35" rx="4" fill="#eef2ff"/>
+  <text x="290" y="4493" text-anchor="middle" class="item" font-weight="500">1 Month Project</text>
+  <rect x="490" y="4470" width="400" height="35" rx="4" fill="#eef2ff"/>
+  <text x="690" y="4493" text-anchor="middle" class="item">The boss fight</text>
+  <rect x="890" y="4470" width="420" height="35" rx="4" fill="#eef2ff"/>
+  <text x="1100" y="4493" text-anchor="middle" class="item">How you gain XP and acquire loot</text>
+
+  <rect x="90" y="4510" width="400" height="35" rx="4" fill="#f5f3ff"/>
+  <text x="290" y="4533" text-anchor="middle" class="item" font-weight="500">Daily Levers</text>
+  <rect x="490" y="4510" width="400" height="35" rx="4" fill="#f5f3ff"/>
+  <text x="690" y="4533" text-anchor="middle" class="item">The quests</text>
+  <rect x="890" y="4510" width="420" height="35" rx="4" fill="#f5f3ff"/>
+  <text x="1100" y="4533" text-anchor="middle" class="item">The daily process that unlocks new opportunities</text>
+
+  <rect x="90" y="4550" width="400" height="35" rx="4" fill="#eef2ff"/>
+  <text x="290" y="4573" text-anchor="middle" class="item" font-weight="500">Constraints</text>
+  <rect x="490" y="4550" width="400" height="35" rx="4" fill="#eef2ff"/>
+  <text x="690" y="4573" text-anchor="middle" class="item">The rules</text>
+  <rect x="890" y="4550" width="420" height="35" rx="4" fill="#eef2ff"/>
+  <text x="1100" y="4573" text-anchor="middle" class="item">Limitations that encourage creativity</text>
+
+  <rect x="90" y="4600" width="1220" height="40" rx="8" fill="rgba(79,70,229,0.1)"/>
+  <text x="700" y="4627" text-anchor="middle" class="quote">"The more you play the game, the stronger this force becomes, and soon enough it becomes who you are."</text>
+
+  <!-- Connector -->
+  <path d="M700 4650 L700 4700" class="connector"/>
+
+  <!-- ==================== KEY TAKEAWAY ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="4700" width="1280" height="200" rx="16" fill="#1e1b4b"/>
+  </g>
+  <text x="700" y="4745" text-anchor="middle" class="title" font-size="20">💎 KEY TAKEAWAY</text>
+
+  <rect x="150" y="4770" width="1100" height="55" rx="8" fill="rgba(255,255,255,0.05)"/>
+  <text x="700" y="4800" text-anchor="middle" font-size="14" fill="#e0e7ff" font-style="italic">"Real change requires changing your goals — not setting surface-level goals,</text>
+  <text x="700" y="4820" text-anchor="middle" font-size="14" fill="#e0e7ff" font-style="italic">but changing your point of view. A goal is a lens of perception."</text>
+
+  <rect x="200" y="4840" width="1000" height="40" rx="8" fill="rgba(99,102,241,0.3)"/>
+  <text x="700" y="4867" text-anchor="middle" font-size="14" fill="#c7d2fe" font-weight="600">"You will not see anything else as an option."</text>
+
+  <!-- Footer -->
+  <text x="700" y="4950" text-anchor="middle" font-size="12" fill="#94a3b8">Source: "How to Fix Your Entire Life in 1 Day" by Dan Koe | Mindmap Design by Yak0xff</text>
+</svg>
