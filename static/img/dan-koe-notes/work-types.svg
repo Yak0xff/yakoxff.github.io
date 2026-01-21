@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 220" width="650" height="220" preserveAspectRatio="xMidYMid meet">
+  <style>text { font-family: system-ui, -apple-system, sans-serif; }</style>
+  <!-- 三个方块 -->
+  <rect x="30" y="50" width="180" height="100" rx="8" fill="rgba(0,212,170,0.15)" stroke="#00d4aa" stroke-width="2"/>
+  <rect x="235" y="50" width="180" height="100" rx="8" fill="rgba(100,100,100,0.1)" stroke="#666" stroke-width="2"/>
+  <rect x="440" y="50" width="180" height="100" rx="8" fill="rgba(100,100,100,0.1)" stroke="#666" stroke-width="2"/>
+  <!-- 标签 -->
+  <text x="120" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#00d4aa">Building</text>
+  <text x="120" y="110" text-anchor="middle" font-size="12" fill="#333">建设</text>
+  <text x="120" y="130" text-anchor="middle" font-size="11" fill="#666">创造新事物</text>
+  <text x="325" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#555">Maintenance</text>
+  <text x="325" y="110" text-anchor="middle" font-size="12" fill="#333">维护</text>
+  <text x="325" y="130" text-anchor="middle" font-size="11" fill="#666">保持运转</text>
+  <text x="530" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#555">Recovery</text>
+  <text x="530" y="110" text-anchor="middle" font-size="12" fill="#333">恢复</text>
+  <text x="530" y="130" text-anchor="middle" font-size="11" fill="#666">让灵感浮现</text>
+  <!-- 底部说明 -->
+  <text x="325" y="190" text-anchor="middle" font-size="12" fill="#888">每天 1 小时 Building，直到能全职追求目标</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350" width="800" height="350" preserveAspectRatio="xMidYMid meet">
+  <style>text { font-family: system-ui, -apple-system, sans-serif; }</style>
+  <rect width="800" height="350" fill="#0a0a0a"/>
+  <circle cx="400" cy="140" r="60" fill="none" stroke="#00d4aa" stroke-width="3"/>
+  <line x1="400" y1="140" x2="400" y2="95" stroke="#00d4aa" stroke-width="4" stroke-linecap="round"/>
+  <line x1="400" y1="140" x2="440" y2="155" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="400" cy="140" r="5" fill="#00d4aa"/>
+  <text x="400" y="250" text-anchor="middle" font-size="28" font-weight="bold" fill="#fff">1 Hour × 365 Days</text>
+  <text x="400" y="290" text-anchor="middle" font-size="16" fill="#666">一天一小时，一个项目，一个愿景</text>
+  <text x="400" y="330" text-anchor="middle" font-size="14" fill="#444">— Dan Koe 深度生产力笔记 —</text>
+</svg>

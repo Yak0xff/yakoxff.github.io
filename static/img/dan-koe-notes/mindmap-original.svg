@@ -1,0 +1,580 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 4200">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      .title { font: 700 28px 'Inter', system-ui, sans-serif; fill: #fff; }
+      .subtitle { font: 500 15px 'Inter', system-ui, sans-serif; fill: rgba(255,255,255,0.7); }
+      .section-title { font: 700 15px 'Inter', system-ui, sans-serif; fill: #fff; letter-spacing: 0.5px; }
+      .card-title { font: 600 14px 'Inter', system-ui, sans-serif; fill: #1a1a2e; }
+      .card-subtitle { font: 600 12px 'Inter', system-ui, sans-serif; fill: #555; }
+      .item { font: 400 11.5px 'Inter', system-ui, sans-serif; fill: #374151; line-height: 1.4; }
+      .quote { font: italic 500 11px 'Inter', system-ui, sans-serif; fill: #6366f1; }
+      .highlight { font: 600 11.5px 'Inter', system-ui, sans-serif; fill: #1f2937; }
+      .connector { stroke: #e5e7eb; stroke-width: 2; fill: none; stroke-dasharray: 6,4; }
+      .number { font: 700 24px 'Inter', system-ui, sans-serif; fill: rgba(0,0,0,0.08); }
+    </style>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.08"/>
+    </filter>
+    <filter id="shadow-sm" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="grad-title" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="grad-red" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#f97316"/>
+    </linearGradient>
+    <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#d946ef"/>
+    </linearGradient>
+    <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+    <linearGradient id="grad-orange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="grad-teal" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#14b8a6"/>
+      <stop offset="100%" style="stop-color:#2dd4bf"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1400" height="4200" fill="#f8fafc"/>
+  
+  <!-- Subtle grid pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+  </pattern>
+  <rect width="1400" height="4200" fill="url(#grid)" opacity="0.5"/>
+  
+  <!-- ==================== CENTRAL TITLE ==================== -->
+  <rect x="350" y="40" width="700" height="100" rx="50" fill="url(#grad-title)" filter="url(#shadow)"/>
+  <text x="700" y="85" text-anchor="middle" class="title">How to Unlock Extreme Focus</text>
+  <text x="700" y="115" text-anchor="middle" class="subtitle">on Command — Dan Koe</text>
+  
+  <!-- Connector -->
+  <path d="M700 140 L700 190" class="connector"/>
+  
+  <!-- ==================== SECTION I ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="190" width="1280" height="480" rx="16" fill="#fff"/>
+    <rect x="60" y="190" width="1280" height="52" rx="16" fill="url(#grad-red)"/>
+    <rect x="60" y="226" width="1280" height="16" fill="url(#grad-red)"/>
+  </g>
+  <text x="700" y="224" text-anchor="middle" class="section-title">I. WHY IT'S SO HARD TO SIT DOWN AND DO THE WORK</text>
+  <text x="100" y="300" class="number">01</text>
+  
+  <!-- Card 1: The Attention Crisis -->
+  <rect x="90" y="270" width="380" height="380" rx="12" fill="#fef2f2" filter="url(#shadow-sm)"/>
+  <text x="280" y="300" text-anchor="middle" class="card-title">🧠 The Attention Crisis</text>
+  <line x1="180" y1="312" x2="380" y2="312" stroke="#fecaca" stroke-width="2"/>
+  <text x="110" y="340" class="item">• You have a finite attention budget each day</text>
+  <text x="110" y="362" class="item">• Modern world hijacks attention for profit</text>
+  <text x="110" y="384" class="item">• Every distraction has a hidden opportunity cost</text>
+  <text x="110" y="406" class="item">• Mental entropy increases without active effort</text>
+  <text x="110" y="438" class="card-subtitle">The Attention Economy:</text>
+  <text x="110" y="460" class="item">• Companies spend billions to capture your focus</text>
+  <text x="110" y="482" class="item">• Algorithms optimized for engagement, not value</text>
+  <text x="110" y="504" class="item">• You are the product being sold to advertisers</text>
+  <text x="110" y="536" class="card-subtitle">The Result:</text>
+  <text x="110" y="558" class="item">• Scattered thinking becomes the default</text>
+  <text x="110" y="580" class="item">• Deep focus feels increasingly impossible</text>
+  <text x="110" y="612" class="quote">"Your attention is your most valuable asset."</text>
+  
+  <!-- Card 2: Law of Entropy -->
+  <rect x="510" y="270" width="380" height="380" rx="12" fill="#fef2f2" filter="url(#shadow-sm)"/>
+  <text x="700" y="300" text-anchor="middle" class="card-title">⚡ Law of Entropy</text>
+  <line x1="600" y1="312" x2="800" y2="312" stroke="#fecaca" stroke-width="2"/>
+  <text x="530" y="340" class="item">• All systems naturally tend toward disorder</text>
+  <text x="530" y="362" class="item">• Your consciousness is no exception</text>
+  <text x="530" y="384" class="item">• Without effort, mind drifts to chaos</text>
+  <text x="530" y="406" class="item">• Focus requires constant active maintenance</text>
+  <text x="530" y="438" class="card-subtitle">Practical Implications:</text>
+  <text x="530" y="460" class="item">• Default state is distraction, not focus</text>
+  <text x="530" y="482" class="item">• Order must be actively created daily</text>
+  <text x="530" y="504" class="item">• Systems beat willpower every time</text>
+  <text x="530" y="536" class="card-subtitle">The Science:</text>
+  <text x="530" y="558" class="item">• 2nd Law of Thermodynamics applies to mind</text>
+  <text x="530" y="580" class="item">• Energy required to maintain order</text>
+  <text x="530" y="612" class="quote">"Order doesn't happen by accident."</text>
+  
+  <!-- Card 3: The Solution Preview -->
+  <rect x="930" y="270" width="380" height="380" rx="12" fill="#fef2f2" filter="url(#shadow-sm)"/>
+  <text x="1120" y="300" text-anchor="middle" class="card-title">🎯 The Path Forward</text>
+  <line x1="1020" y1="312" x2="1220" y2="312" stroke="#fecaca" stroke-width="2"/>
+  <text x="950" y="340" class="item">• Treat attention as your scarcest resource</text>
+  <text x="950" y="362" class="item">• Build systems that protect your focus</text>
+  <text x="950" y="384" class="item">• Design environment for deep work</text>
+  <text x="950" y="406" class="item">• Train focus like a muscle</text>
+  <text x="950" y="438" class="card-subtitle">Mindset Shift Required:</text>
+  <text x="950" y="460" class="item">• From reactive → proactive</text>
+  <text x="950" y="482" class="item">• From busy → productive</text>
+  <text x="950" y="504" class="item">• From scattered → intentional</text>
+  <text x="950" y="536" class="card-subtitle">Key Insight:</text>
+  <text x="950" y="558" class="item">• 4 hours of deep work beats 12 hours of shallow</text>
+  <text x="950" y="580" class="item">• Quality of attention &gt; quantity of time</text>
+  <text x="950" y="612" class="quote">"Less but better."</text>
+  
+  <!-- Connector -->
+  <path d="M700 670 L700 720" class="connector"/>
+  
+  <!-- ==================== SECTION II ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="720" width="1280" height="520" rx="16" fill="#fff"/>
+    <rect x="60" y="720" width="1280" height="52" rx="16" fill="url(#grad-blue)"/>
+    <rect x="60" y="756" width="1280" height="16" fill="url(#grad-blue)"/>
+  </g>
+  <text x="700" y="754" text-anchor="middle" class="section-title">II. HOW TO UNLOCK INSANE FOCUS — The Focus Triangle</text>
+  <text x="100" y="830" class="number">02</text>
+  
+  <!-- Card 1: Clarity -->
+  <rect x="90" y="800" width="380" height="420" rx="12" fill="#eff6ff" filter="url(#shadow-sm)"/>
+  <text x="280" y="830" text-anchor="middle" class="card-title">💎 CLARITY</text>
+  <text x="280" y="850" text-anchor="middle" class="card-subtitle">Knowing Exactly What to Do</text>
+  <line x1="180" y1="862" x2="380" y2="862" stroke="#bfdbfe" stroke-width="2"/>
+  <text x="110" y="890" class="highlight">Why It Matters:</text>
+  <text x="110" y="912" class="item">• Confusion is the #1 cause of procrastination</text>
+  <text x="110" y="934" class="item">• Ambiguity creates mental friction</text>
+  <text x="110" y="956" class="item">• You can't hit a target you can't see</text>
+  <text x="110" y="988" class="highlight">How to Achieve Clarity:</text>
+  <text x="110" y="1010" class="item">• Define your vision with extreme specificity</text>
+  <text x="110" y="1032" class="item">• Break goals into single, actionable tasks</text>
+  <text x="110" y="1054" class="item">• Write down the exact next physical action</text>
+  <text x="110" y="1076" class="item">• Define "done" before you start</text>
+  <text x="110" y="1108" class="highlight">Daily Practice:</text>
+  <text x="110" y="1130" class="item">• Plan tomorrow's #1 task tonight</text>
+  <text x="110" y="1152" class="item">• Remove all ambiguity before starting</text>
+  <text x="110" y="1184" class="quote">"Clarity is the absence of anxiety."</text>
+  
+  <!-- Card 2: Interest -->
+  <rect x="510" y="800" width="380" height="420" rx="12" fill="#eff6ff" filter="url(#shadow-sm)"/>
+  <text x="700" y="830" text-anchor="middle" class="card-title">🔥 INTEREST</text>
+  <text x="700" y="850" text-anchor="middle" class="card-subtitle">Genuine Curiosity &amp; Engagement</text>
+  <line x1="600" y1="862" x2="800" y2="862" stroke="#bfdbfe" stroke-width="2"/>
+  <text x="530" y="890" class="highlight">Why It Matters:</text>
+  <text x="530" y="912" class="item">• Interest sustains attention naturally</text>
+  <text x="530" y="934" class="item">• Passion fuels persistence through difficulty</text>
+  <text x="530" y="956" class="item">• Forced work drains energy 3x faster</text>
+  <text x="530" y="988" class="highlight">How to Cultivate Interest:</text>
+  <text x="530" y="1010" class="item">• Work on problems you genuinely care about</text>
+  <text x="530" y="1032" class="item">• Connect every task to personal meaning</text>
+  <text x="530" y="1054" class="item">• Find the interesting angle in boring tasks</text>
+  <text x="530" y="1076" class="item">• Ask "why does this matter to me?"</text>
+  <text x="530" y="1108" class="highlight">Pro Tip:</text>
+  <text x="530" y="1130" class="item">• Gamify necessary but uninteresting work</text>
+  <text x="530" y="1152" class="item">• Stack intrinsic motivators (growth + impact)</text>
+  <text x="530" y="1184" class="quote">"Curiosity is the engine of achievement."</text>
+  
+  <!-- Card 3: Challenge -->
+  <rect x="930" y="800" width="380" height="420" rx="12" fill="#eff6ff" filter="url(#shadow-sm)"/>
+  <text x="1120" y="830" text-anchor="middle" class="card-title">⚔️ CHALLENGE</text>
+  <text x="1120" y="850" text-anchor="middle" class="card-subtitle">Optimal Difficulty Level</text>
+  <line x1="1020" y1="862" x2="1220" y2="862" stroke="#bfdbfe" stroke-width="2"/>
+  <text x="950" y="890" class="highlight">The Flow Formula:</text>
+  <text x="950" y="912" class="item">• Challenge ≈ Skill Level + 4%</text>
+  <text x="950" y="934" class="item">• Too easy → boredom, mind wanders</text>
+  <text x="950" y="956" class="item">• Too hard → anxiety, gives up</text>
+  <text x="950" y="988" class="highlight">How to Calibrate:</text>
+  <text x="950" y="1010" class="item">• Set time constraints to create pressure</text>
+  <text x="950" y="1032" class="item">• Increase complexity incrementally</text>
+  <text x="950" y="1054" class="item">• Add constraints to easy tasks</text>
+  <text x="950" y="1076" class="item">• Break hard tasks into smaller chunks</text>
+  <text x="950" y="1108" class="highlight">The Sweet Spot:</text>
+  <text x="950" y="1130" class="item">• Slight stretch creates full engagement</text>
+  <text x="950" y="1152" class="item">• Flow state emerges at the edge of ability</text>
+  <text x="950" y="1184" class="quote">"The zone between comfort and panic."</text>
+  
+  <!-- Connector -->
+  <path d="M700 1240 L700 1290" class="connector"/>
+  
+  <!-- ==================== THREE TYPES OF WORK ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="1290" width="1280" height="340" rx="16" fill="#fff"/>
+    <rect x="60" y="1290" width="1280" height="52" rx="16" fill="url(#grad-purple)"/>
+    <rect x="60" y="1326" width="1280" height="16" fill="url(#grad-purple)"/>
+  </g>
+  <text x="700" y="1324" text-anchor="middle" class="section-title">THREE TYPES OF WORK — All Essential for Sustainable Performance</text>
+  
+  <!-- Building Work -->
+  <rect x="90" y="1370" width="380" height="240" rx="12" fill="#faf5ff" filter="url(#shadow-sm)"/>
+  <text x="280" y="1400" text-anchor="middle" class="card-title">🔨 BUILDING WORK</text>
+  <text x="280" y="1420" text-anchor="middle" class="card-subtitle">Creating New Value</text>
+  <line x1="180" y1="1432" x2="380" y2="1432" stroke="#e9d5ff" stroke-width="2"/>
+  <text x="110" y="1458" class="item">• Writing, designing, coding, creating</text>
+  <text x="110" y="1480" class="item">• Highest cognitive demand</text>
+  <text x="110" y="1502" class="item">• Requires uninterrupted deep focus</text>
+  <text x="110" y="1524" class="item">• Where real progress happens</text>
+  <text x="110" y="1556" class="highlight">Best Time: Morning (peak cognition)</text>
+  <text x="110" y="1578" class="highlight">Duration: 1-4 hours maximum</text>
+  
+  <!-- Maintenance Work -->
+  <rect x="510" y="1370" width="380" height="240" rx="12" fill="#faf5ff" filter="url(#shadow-sm)"/>
+  <text x="700" y="1400" text-anchor="middle" class="card-title">🔧 MAINTENANCE WORK</text>
+  <text x="700" y="1420" text-anchor="middle" class="card-subtitle">Managing Existing Systems</text>
+  <line x1="600" y1="1432" x2="800" y2="1432" stroke="#e9d5ff" stroke-width="2"/>
+  <text x="530" y="1458" class="item">• Emails, meetings, admin tasks</text>
+  <text x="530" y="1480" class="item">• Lower cognitive load required</text>
+  <text x="530" y="1502" class="item">• Necessary but not transformative</text>
+  <text x="530" y="1524" class="item">• Batch together for efficiency</text>
+  <text x="530" y="1556" class="highlight">Best Time: Afternoon (energy dip)</text>
+  <text x="530" y="1578" class="highlight">Duration: Batch into 1-2 blocks</text>
+  
+  <!-- Recovery Work -->
+  <rect x="930" y="1370" width="380" height="240" rx="12" fill="#faf5ff" filter="url(#shadow-sm)"/>
+  <text x="1120" y="1400" text-anchor="middle" class="card-title">🧘 RECOVERY WORK</text>
+  <text x="1120" y="1420" text-anchor="middle" class="card-subtitle">Rest &amp; Regeneration</text>
+  <line x1="1020" y1="1432" x2="1220" y2="1432" stroke="#e9d5ff" stroke-width="2"/>
+  <text x="950" y="1458" class="item">• Exercise, sleep, meditation, nature</text>
+  <text x="950" y="1480" class="item">• Not optional — absolutely essential</text>
+  <text x="950" y="1502" class="item">• Enables sustained high performance</text>
+  <text x="950" y="1524" class="item">• Where insights emerge unconsciously</text>
+  <text x="950" y="1556" class="highlight">Best Time: Evening + micro-breaks</text>
+  <text x="950" y="1578" class="highlight">Duration: As needed for balance</text>
+  
+  <!-- Connector -->
+  <path d="M700 1630 L700 1680" class="connector"/>
+  
+  <!-- ==================== SECTION III ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="1680" width="1280" height="480" rx="16" fill="#fff"/>
+    <rect x="60" y="1680" width="1280" height="52" rx="16" fill="url(#grad-green)"/>
+    <rect x="60" y="1716" width="1280" height="16" fill="url(#grad-green)"/>
+  </g>
+  <text x="700" y="1714" text-anchor="middle" class="section-title">III. ROUTINES OF HIGHLY SUCCESSFUL CREATIVES</text>
+  <text x="100" y="1790" class="number">03</text>
+  
+  <!-- USE Mornings -->
+  <rect x="90" y="1760" width="380" height="380" rx="12" fill="#ecfdf5" filter="url(#shadow-sm)"/>
+  <text x="280" y="1790" text-anchor="middle" class="card-title">☀️ USE Your Mornings</text>
+  <text x="280" y="1810" text-anchor="middle" class="card-subtitle">Peak Cognitive Hours</text>
+  <line x1="180" y1="1822" x2="380" y2="1822" stroke="#a7f3d0" stroke-width="2"/>
+  <text x="110" y="1850" class="highlight">The Science:</text>
+  <text x="110" y="1872" class="item">• Willpower is highest after sleep</text>
+  <text x="110" y="1894" class="item">• Decision fatigue builds throughout day</text>
+  <text x="110" y="1916" class="item">• Cortisol peaks support focus</text>
+  <text x="110" y="1948" class="highlight">Morning Protocol:</text>
+  <text x="110" y="1970" class="item">• Wake → hydrate → deep work immediately</text>
+  <text x="110" y="1992" class="item">• No email, no social media first</text>
+  <text x="110" y="2014" class="item">• No input until output is done</text>
+  <text x="110" y="2036" class="item">• 1-4 hours of focused creation</text>
+  <text x="110" y="2068" class="highlight">Key Rule:</text>
+  <text x="110" y="2090" class="item">• Protect morning time ruthlessly</text>
+  <text x="110" y="2112" class="quote">"Win the morning, win the day."</text>
+  
+  <!-- FILL Afternoons -->
+  <rect x="510" y="1760" width="380" height="380" rx="12" fill="#ecfdf5" filter="url(#shadow-sm)"/>
+  <text x="700" y="1790" text-anchor="middle" class="card-title">📝 FILL Your Afternoons</text>
+  <text x="700" y="1810" text-anchor="middle" class="card-subtitle">Lighter Tasks, Lower Energy</text>
+  <line x1="600" y1="1822" x2="800" y2="1822" stroke="#a7f3d0" stroke-width="2"/>
+  <text x="530" y="1850" class="highlight">The Science:</text>
+  <text x="530" y="1872" class="item">• Post-lunch energy dip is natural</text>
+  <text x="530" y="1894" class="item">• Cognitive resources depleted</text>
+  <text x="530" y="1916" class="item">• Match task difficulty to energy</text>
+  <text x="530" y="1948" class="highlight">Afternoon Protocol:</text>
+  <text x="530" y="1970" class="item">• Process all communications</text>
+  <text x="530" y="1992" class="item">• Handle meetings and calls</text>
+  <text x="530" y="2014" class="item">• Administrative tasks</text>
+  <text x="530" y="2036" class="item">• Plan tomorrow's deep work session</text>
+  <text x="530" y="2068" class="highlight">Key Rule:</text>
+  <text x="530" y="2090" class="item">• Don't force deep work when depleted</text>
+  <text x="530" y="2112" class="quote">"Work with your biology, not against it."</text>
+  
+  <!-- EMPTY Evenings -->
+  <rect x="930" y="1760" width="380" height="380" rx="12" fill="#ecfdf5" filter="url(#shadow-sm)"/>
+  <text x="1120" y="1790" text-anchor="middle" class="card-title">🌙 EMPTY Your Evenings</text>
+  <text x="1120" y="1810" text-anchor="middle" class="card-subtitle">Recovery &amp; Unconscious Processing</text>
+  <line x1="1020" y1="1822" x2="1220" y2="1822" stroke="#a7f3d0" stroke-width="2"/>
+  <text x="950" y="1850" class="highlight">The Science (DMN):</text>
+  <text x="950" y="1872" class="item">• Default Mode Network activates at rest</text>
+  <text x="950" y="1894" class="item">• Unconscious problem-solving occurs</text>
+  <text x="950" y="1916" class="item">• Memory consolidation during sleep</text>
+  <text x="950" y="1948" class="highlight">Evening Protocol:</text>
+  <text x="950" y="1970" class="item">• Clear shutdown ritual (defined end time)</text>
+  <text x="950" y="1992" class="item">• Disconnect from work completely</text>
+  <text x="950" y="2014" class="item">• No screens 1 hour before sleep</text>
+  <text x="950" y="2036" class="item">• Let mind wander freely</text>
+  <text x="950" y="2068" class="highlight">Key Rule:</text>
+  <text x="950" y="2090" class="item">• Rest is productive, not lazy</text>
+  <text x="950" y="2112" class="quote">"Solutions emerge from stillness."</text>
+  
+  <!-- Connector -->
+  <path d="M700 2160 L700 2210" class="connector"/>
+  
+  <!-- ==================== SECTION IV ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="2210" width="1280" height="500" rx="16" fill="#fff"/>
+    <rect x="60" y="2210" width="1280" height="52" rx="16" fill="url(#grad-orange)"/>
+    <rect x="60" y="2246" width="1280" height="16" fill="url(#grad-orange)"/>
+  </g>
+  <text x="700" y="2244" text-anchor="middle" class="section-title">IV. YOU NEED TO BE EXTREME — Or Distraction Wins</text>
+  <text x="100" y="2320" class="number">04</text>
+  
+  <!-- Neuroplasticity -->
+  <rect x="90" y="2290" width="380" height="400" rx="12" fill="#fffbeb" filter="url(#shadow-sm)"/>
+  <text x="280" y="2320" text-anchor="middle" class="card-title">🧠 Neuroplasticity</text>
+  <text x="280" y="2340" text-anchor="middle" class="card-subtitle">Your Brain is Always Being Shaped</text>
+  <line x1="180" y1="2352" x2="380" y2="2352" stroke="#fde68a" stroke-width="2"/>
+  <text x="110" y="2380" class="highlight">The Science:</text>
+  <text x="110" y="2402" class="item">• "Neurons that fire together, wire together"</text>
+  <text x="110" y="2424" class="item">• Brain physically rewires based on use</text>
+  <text x="110" y="2446" class="item">• Repeated actions strengthen neural pathways</text>
+  <text x="110" y="2468" class="item">• You become what you repeatedly do</text>
+  <text x="110" y="2500" class="highlight">The Stakes:</text>
+  <text x="110" y="2522" class="item">• Every focus session builds capacity</text>
+  <text x="110" y="2544" class="item">• Every distraction weakens focus muscle</text>
+  <text x="110" y="2566" class="item">• Both habits compound over time</text>
+  <text x="110" y="2598" class="highlight">The Implication:</text>
+  <text x="110" y="2620" class="item">• Focus is trainable like any skill</text>
+  <text x="110" y="2642" class="item">• But distraction also gets trained</text>
+  <text x="110" y="2664" class="quote">"You're always training something."</text>
+  
+  <!-- Stacking Motivators -->
+  <rect x="510" y="2290" width="380" height="400" rx="12" fill="#fffbeb" filter="url(#shadow-sm)"/>
+  <text x="700" y="2320" text-anchor="middle" class="card-title">📚 Stacking Intrinsic Motivators</text>
+  <text x="700" y="2340" text-anchor="middle" class="card-subtitle">Build Resilient Motivation</text>
+  <line x1="600" y1="2352" x2="800" y2="2352" stroke="#fde68a" stroke-width="2"/>
+  <text x="530" y="2380" class="highlight">The Problem:</text>
+  <text x="530" y="2402" class="item">• Single motivation source is fragile</text>
+  <text x="530" y="2424" class="item">• When it fades, work stops</text>
+  <text x="530" y="2456" class="highlight">The Solution — Stack Multiple "Whys":</text>
+  <text x="530" y="2478" class="item">• Personal growth and mastery</text>
+  <text x="530" y="2500" class="item">• Financial freedom and security</text>
+  <text x="530" y="2522" class="item">• Impact on others and legacy</text>
+  <text x="530" y="2544" class="item">• Creative expression and autonomy</text>
+  <text x="530" y="2566" class="item">• Curiosity and intellectual challenge</text>
+  <text x="530" y="2598" class="highlight">Key Strategy:</text>
+  <text x="530" y="2620" class="item">• Connect daily tasks to ALL motivators</text>
+  <text x="530" y="2642" class="item">• When one fades, others sustain you</text>
+  <text x="530" y="2664" class="quote">"Stack reasons, not just goals."</text>
+  
+  <!-- Cognitive Filtering -->
+  <rect x="930" y="2290" width="380" height="400" rx="12" fill="#fffbeb" filter="url(#shadow-sm)"/>
+  <text x="1120" y="2320" text-anchor="middle" class="card-title">🎯 Cognitive Filtering</text>
+  <text x="1120" y="2340" text-anchor="middle" class="card-subtitle">Strong Goals Filter Out Noise</text>
+  <line x1="1020" y1="2352" x2="1220" y2="2352" stroke="#fde68a" stroke-width="2"/>
+  <text x="950" y="2380" class="highlight">How It Works:</text>
+  <text x="950" y="2402" class="item">• Clear vision = built-in decision filter</text>
+  <text x="950" y="2424" class="item">• Irrelevant options automatically fade</text>
+  <text x="950" y="2446" class="item">• Important things become obvious</text>
+  <text x="950" y="2468" class="item">• Reduces daily decision fatigue</text>
+  <text x="950" y="2500" class="highlight">Practical Application:</text>
+  <text x="950" y="2522" class="item">• Define your top 3 priorities clearly</text>
+  <text x="950" y="2544" class="item">• Everything else is a distraction</text>
+  <text x="950" y="2566" class="item">• Review weekly for alignment</text>
+  <text x="950" y="2598" class="highlight">The Power:</text>
+  <text x="950" y="2620" class="item">• Enables automatic "no" to distractions</text>
+  <text x="950" y="2642" class="item">• Clarity enables automatic filtering</text>
+  <text x="950" y="2664" class="quote">"Say no to good to make room for great."</text>
+  
+  <!-- Connector -->
+  <path d="M700 2710 L700 2760" class="connector"/>
+  
+  <!-- ==================== SECTION V ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="2760" width="1280" height="560" rx="16" fill="#fff"/>
+    <rect x="60" y="2760" width="1280" height="52" rx="16" fill="url(#grad-red)"/>
+    <rect x="60" y="2796" width="1280" height="16" fill="url(#grad-red)"/>
+  </g>
+  <text x="700" y="2794" text-anchor="middle" class="section-title">V. THE DEEP WORK PROTOCOL — 4-Step System</text>
+  <text x="100" y="2870" class="number">05</text>
+  
+  <!-- Step 1: PRIME -->
+  <rect x="90" y="2840" width="280" height="460" rx="12" fill="#fef2f2" filter="url(#shadow-sm)"/>
+  <circle cx="130" cy="2875" r="20" fill="#ef4444"/>
+  <text x="130" y="2882" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">1</text>
+  <text x="230" y="2880" text-anchor="middle" class="card-title">PRIME</text>
+  <text x="230" y="2900" text-anchor="middle" class="card-subtitle">Prepare Mind &amp; Environment</text>
+  <line x1="140" y1="2912" x2="320" y2="2912" stroke="#fecaca" stroke-width="2"/>
+  <text x="110" y="2940" class="highlight">Actions:</text>
+  <text x="110" y="2962" class="item">• Clear physical workspace</text>
+  <text x="110" y="2984" class="item">• Close all browser tabs</text>
+  <text x="110" y="3006" class="item">• Phone in another room</text>
+  <text x="110" y="3028" class="item">• Define single task clearly</text>
+  <text x="110" y="3050" class="item">• Set timer (50-90 min)</text>
+  <text x="110" y="3082" class="highlight">Why It Works:</text>
+  <text x="110" y="3104" class="item">• Removes friction to start</text>
+  <text x="110" y="3126" class="item">• Signals brain: focus time</text>
+  <text x="110" y="3148" class="item">• Creates consistent ritual</text>
+  <text x="110" y="3180" class="highlight">Duration: 5-10 minutes</text>
+  <text x="110" y="3220" class="quote">"Preparation is</text>
+  <text x="110" y="3238" class="quote">half the battle."</text>
+  
+  <!-- Arrow 1→2 -->
+  <path d="M370 3070 L395 3070" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/></marker></defs>
+  
+  <!-- Step 2: FOCUS -->
+  <rect x="400" y="2840" width="280" height="460" rx="12" fill="#fef2f2" filter="url(#shadow-sm)"/>
+  <circle cx="440" cy="2875" r="20" fill="#f97316"/>
+  <text x="440" y="2882" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">2</text>
+  <text x="540" y="2880" text-anchor="middle" class="card-title">FOCUS</text>
+  <text x="540" y="2900" text-anchor="middle" class="card-subtitle">Execute with Full Concentration</text>
+  <line x1="450" y1="2912" x2="630" y2="2912" stroke="#fed7aa" stroke-width="2"/>
+  <text x="420" y="2940" class="highlight">Actions:</text>
+  <text x="420" y="2962" class="item">• Single-task only (no switching)</text>
+  <text x="420" y="2984" class="item">• Note distractions, return</text>
+  <text x="420" y="3006" class="item">• Push through resistance</text>
+  <text x="420" y="3028" class="item">• Stay in discomfort zone</text>
+  <text x="420" y="3050" class="item">• No checking anything</text>
+  <text x="420" y="3082" class="highlight">Why It Works:</text>
+  <text x="420" y="3104" class="item">• Deep work happens here</text>
+  <text x="420" y="3126" class="item">• Compound progress builds</text>
+  <text x="420" y="3148" class="item">• Focus muscle strengthens</text>
+  <text x="420" y="3180" class="highlight">Duration: 50-90 minutes</text>
+  <text x="420" y="3220" class="quote">"Attention is the</text>
+  <text x="420" y="3238" class="quote">currency of achievement."</text>
+  
+  <!-- Arrow 2→3 -->
+  <path d="M680 3070 L705 3070" stroke="#f97316" stroke-width="2" marker-end="url(#arrow2)"/>
+  <defs><marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#f97316"/></marker></defs>
+  
+  <!-- Step 3: REST -->
+  <rect x="710" y="2840" width="280" height="460" rx="12" fill="#ecfdf5" filter="url(#shadow-sm)"/>
+  <circle cx="750" cy="2875" r="20" fill="#10b981"/>
+  <text x="750" y="2882" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">3</text>
+  <text x="850" y="2880" text-anchor="middle" class="card-title">REST</text>
+  <text x="850" y="2900" text-anchor="middle" class="card-subtitle">Recover &amp; Regenerate</text>
+  <line x1="760" y1="2912" x2="940" y2="2912" stroke="#a7f3d0" stroke-width="2"/>
+  <text x="730" y="2940" class="highlight">Actions:</text>
+  <text x="730" y="2962" class="item">• Step away completely</text>
+  <text x="730" y="2984" class="item">• Move your body</text>
+  <text x="730" y="3006" class="item">• No screens at all</text>
+  <text x="730" y="3028" class="item">• Hydrate, light snack</text>
+  <text x="730" y="3050" class="item">• Let mind wander freely</text>
+  <text x="730" y="3082" class="highlight">Why It Works:</text>
+  <text x="730" y="3104" class="item">• Consolidates learning</text>
+  <text x="730" y="3126" class="item">• Prevents burnout</text>
+  <text x="730" y="3148" class="item">• Enables next session</text>
+  <text x="730" y="3180" class="highlight">Duration: 10-20 minutes</text>
+  <text x="730" y="3220" class="quote">"Rest is part of</text>
+  <text x="730" y="3238" class="quote">the work."</text>
+  
+  <!-- Arrow 3→4 -->
+  <path d="M990 3070 L1015 3070" stroke="#10b981" stroke-width="2" marker-end="url(#arrow3)"/>
+  <defs><marker id="arrow3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#10b981"/></marker></defs>
+  
+  <!-- Step 4: REPEAT -->
+  <rect x="1020" y="2840" width="290" height="460" rx="12" fill="#eff6ff" filter="url(#shadow-sm)"/>
+  <circle cx="1060" cy="2875" r="20" fill="#3b82f6"/>
+  <text x="1060" y="2882" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">4</text>
+  <text x="1165" y="2880" text-anchor="middle" class="card-title">REPEAT</text>
+  <text x="1165" y="2900" text-anchor="middle" class="card-subtitle">Cycle Until Complete</text>
+  <line x1="1070" y1="2912" x2="1260" y2="2912" stroke="#bfdbfe" stroke-width="2"/>
+  <text x="1040" y="2940" class="highlight">Actions:</text>
+  <text x="1040" y="2962" class="item">• Return to Step 1</text>
+  <text x="1040" y="2984" class="item">• 2-4 cycles per day</text>
+  <text x="1040" y="3006" class="item">• Adjust timing as needed</text>
+  <text x="1040" y="3028" class="item">• Track your sessions</text>
+  <text x="1040" y="3050" class="item">• Celebrate completion</text>
+  <text x="1040" y="3082" class="highlight">Why It Works:</text>
+  <text x="1040" y="3104" class="item">• Builds consistency</text>
+  <text x="1040" y="3126" class="item">• Creates momentum</text>
+  <text x="1040" y="3148" class="item">• Results compound daily</text>
+  <text x="1040" y="3180" class="highlight">Daily Goal: 4 hrs deep work</text>
+  <text x="1040" y="3220" class="quote">"Small daily actions</text>
+  <text x="1040" y="3238" class="quote">create massive change."</text>
+  
+  <!-- Connector -->
+  <path d="M700 3320 L700 3370" class="connector"/>
+  
+  <!-- ==================== SECTION VI ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="3370" width="1280" height="420" rx="16" fill="#fff"/>
+    <rect x="60" y="3370" width="1280" height="52" rx="16" fill="url(#grad-teal)"/>
+    <rect x="60" y="3406" width="1280" height="16" fill="url(#grad-teal)"/>
+  </g>
+  <text x="700" y="3404" text-anchor="middle" class="section-title">VI. EMBRACE UNCERTAINTY — The Failure Portfolio</text>
+  <text x="100" y="3480" class="number">06</text>
+  
+  <!-- The Problem -->
+  <rect x="90" y="3450" width="380" height="320" rx="12" fill="#f0fdfa" filter="url(#shadow-sm)"/>
+  <text x="280" y="3480" text-anchor="middle" class="card-title">😰 The Problem: Fear of Failure</text>
+  <line x1="180" y1="3492" x2="380" y2="3492" stroke="#99f6e4" stroke-width="2"/>
+  <text x="110" y="3520" class="highlight">Common Traps:</text>
+  <text x="110" y="3542" class="item">• Perfectionism paralyzes action</text>
+  <text x="110" y="3564" class="item">• Fear of judgment prevents starting</text>
+  <text x="110" y="3586" class="item">• Waiting for the "right time"</text>
+  <text x="110" y="3608" class="item">• Analysis paralysis (overthinking)</text>
+  <text x="110" y="3640" class="highlight">The Truth:</text>
+  <text x="110" y="3662" class="item">• No one succeeds without failing first</text>
+  <text x="110" y="3684" class="item">• Failure is feedback, not final verdict</text>
+  <text x="110" y="3706" class="item">• Inaction is the biggest risk of all</text>
+  <text x="110" y="3738" class="quote">"Uncertainty is a signal you're growing,</text>
+  <text x="110" y="3756" class="quote">not a sign to stop."</text>
+  
+  <!-- The Solution -->
+  <rect x="510" y="3450" width="380" height="320" rx="12" fill="#f0fdfa" filter="url(#shadow-sm)"/>
+  <text x="700" y="3480" text-anchor="middle" class="card-title">💼 The Solution: Failure Portfolio</text>
+  <line x1="600" y1="3492" x2="800" y2="3492" stroke="#99f6e4" stroke-width="2"/>
+  <text x="530" y="3520" class="highlight">The Concept:</text>
+  <text x="530" y="3542" class="item">• Treat failures as investments</text>
+  <text x="530" y="3564" class="item">• Diversify your experiments</text>
+  <text x="530" y="3586" class="item">• Some fail, some succeed — net positive</text>
+  <text x="530" y="3608" class="item">• Overall portfolio grows over time</text>
+  <text x="530" y="3640" class="highlight">How to Apply:</text>
+  <text x="530" y="3662" class="item">• Start before you feel ready</text>
+  <text x="530" y="3684" class="item">• Launch fast, learn, iterate</text>
+  <text x="530" y="3706" class="item">• Document lessons from every failure</text>
+  <text x="530" y="3738" class="quote">"Your failure portfolio is your</text>
+  <text x="530" y="3756" class="quote">greatest hidden asset."</text>
+  
+  <!-- The Mindset -->
+  <rect x="930" y="3450" width="380" height="320" rx="12" fill="#f0fdfa" filter="url(#shadow-sm)"/>
+  <text x="1120" y="3480" text-anchor="middle" class="card-title">🧪 The Mindset: Experimental Living</text>
+  <line x1="1020" y1="3492" x2="1220" y2="3492" stroke="#99f6e4" stroke-width="2"/>
+  <text x="950" y="3520" class="highlight">Core Principles:</text>
+  <text x="950" y="3542" class="item">• Life is a series of experiments</text>
+  <text x="950" y="3564" class="item">• Remove emotional weight from outcomes</text>
+  <text x="950" y="3586" class="item">• Curiosity over certainty</text>
+  <text x="950" y="3608" class="item">• Action over endless planning</text>
+  <text x="950" y="3640" class="highlight">The Result:</text>
+  <text x="950" y="3662" class="item">• More attempts = more success</text>
+  <text x="950" y="3684" class="item">• Faster learning cycles</text>
+  <text x="950" y="3706" class="item">• Reduced anxiety about outcomes</text>
+  <text x="950" y="3738" class="quote">"The cost of inaction always exceeds</text>
+  <text x="950" y="3756" class="quote">the cost of failure."</text>
+  
+  <!-- Connector -->
+  <path d="M700 3790 L700 3840" class="connector"/>
+  
+  <!-- ==================== KEY QUOTES ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="3840" width="1280" height="300" rx="16" fill="#1e1b4b"/>
+  </g>
+  <text x="700" y="3885" text-anchor="middle" class="title" font-size="20">💎 KEY QUOTES</text>
+  
+  <rect x="90" y="3910" width="590" height="50" rx="8" fill="rgba(255,255,255,0.05)"/>
+  <text x="110" y="3942" font-size="13" fill="#e0e7ff" font-style="italic">"You don't need 12 hours of productivity. You need 1 hour of extreme focus."</text>
+  
+  <rect x="710" y="3910" width="600" height="50" rx="8" fill="rgba(255,255,255,0.05)"/>
+  <text x="730" y="3942" font-size="13" fill="#e0e7ff" font-style="italic">"Clarity is the absence of anxiety. Know what to do, resistance dissolves."</text>
+  
+  <rect x="90" y="3970" width="590" height="50" rx="8" fill="rgba(255,255,255,0.05)"/>
+  <text x="110" y="4002" font-size="13" fill="#e0e7ff" font-style="italic">"Your attention is being sold to the highest bidder. Take it back."</text>
+  
+  <rect x="710" y="3970" width="600" height="50" rx="8" fill="rgba(255,255,255,0.05)"/>
+  <text x="730" y="4002" font-size="13" fill="#e0e7ff" font-style="italic">"The brain changes based on how you use it. Train focus or train distraction."</text>
+  
+  <rect x="90" y="4030" width="590" height="50" rx="8" fill="rgba(255,255,255,0.05)"/>
+  <text x="110" y="4062" font-size="13" fill="#e0e7ff" font-style="italic">"Uncertainty is information. It tells you where growth is possible."</text>
+  
+  <rect x="710" y="4030" width="600" height="50" rx="8" fill="rgba(255,255,255,0.05)"/>
+  <text x="730" y="4062" font-size="13" fill="#e0e7ff" font-style="italic">"Most people confuse being busy with being productive. They're not the same."</text>
+  
+  <rect x="350" y="4090" width="700" height="40" rx="8" fill="rgba(99,102,241,0.3)"/>
+  <text x="700" y="4117" text-anchor="middle" font-size="14" fill="#c7d2fe" font-weight="600">"Less but better. Deep over shallow. Quality over quantity."</text>
+  
+  <!-- Footer -->
+  <text x="700" y="4175" text-anchor="middle" font-size="12" fill="#94a3b8">Source: "How to Unlock Extreme Focus on Command" by Dan Koe | Mindmap Design by Yak0xff</text>
+</svg>

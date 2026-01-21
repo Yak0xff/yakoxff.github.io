@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" width="600" height="180" preserveAspectRatio="xMidYMid meet">
+  <style>text { font-family: system-ui, -apple-system, sans-serif; }</style>
+  <!-- 时间轴 -->
+  <line x1="50" y1="90" x2="550" y2="90" stroke="#333" stroke-width="2"/>
+  <!-- 三个节点 -->
+  <circle cx="120" cy="90" r="25" fill="#00d4aa"/>
+  <circle cx="300" cy="90" r="25" fill="#666"/>
+  <circle cx="480" cy="90" r="25" fill="#444"/>
+  <!-- 标签 -->
+  <text x="120" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">USE</text>
+  <text x="300" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">FILL</text>
+  <text x="480" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">EMPTY</text>
+  <text x="120" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">早晨</text>
+  <text x="120" y="140" text-anchor="middle" font-size="11" fill="#666">使用大脑</text>
+  <text x="120" y="155" text-anchor="middle" font-size="10" fill="#888">创造/输出</text>
+  <text x="300" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">下午</text>
+  <text x="300" y="140" text-anchor="middle" font-size="11" fill="#666">填充大脑</text>
+  <text x="300" y="155" text-anchor="middle" font-size="10" fill="#888">阅读/学习</text>
+  <text x="480" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">晚上</text>
+  <text x="480" y="140" text-anchor="middle" font-size="11" fill="#666">清空大脑</text>
+  <text x="480" y="155" text-anchor="middle" font-size="10" fill="#888">日记/计划</text>
+</svg>
