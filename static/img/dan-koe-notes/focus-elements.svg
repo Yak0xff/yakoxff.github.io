@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200" preserveAspectRatio="xMidYMid meet">
+  <style>text { font-family: system-ui, -apple-system, sans-serif; }</style>
+  <!-- 三个圆圈 -->
+  <circle cx="100" cy="100" r="50" fill="none" stroke="#00d4aa" stroke-width="2"/>
+  <circle cx="300" cy="100" r="50" fill="none" stroke="#00d4aa" stroke-width="2"/>
+  <circle cx="500" cy="100" r="50" fill="none" stroke="#00d4aa" stroke-width="2"/>
+  <!-- 连接线 -->
+  <line x1="155" y1="100" x2="245" y2="100" stroke="#333" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="355" y1="100" x2="445" y2="100" stroke="#333" stroke-width="1" stroke-dasharray="4,4"/>
+  <!-- 标签 -->
+  <text x="100" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">清晰度</text>
+  <text x="100" y="115" text-anchor="middle" font-size="11" fill="#666">做什么</text>
+  <text x="300" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">重要性</text>
+  <text x="300" y="115" text-anchor="middle" font-size="11" fill="#666">为什么做</text>
+  <text x="500" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">紧迫性</text>
+  <text x="500" y="115" text-anchor="middle" font-size="11" fill="#666">为什么是现在</text>
+  <!-- 底部说明 -->
+  <text x="300" y="180" text-anchor="middle" font-size="12" fill="#888">三者齐备 → 深度专注</text>
+</svg>

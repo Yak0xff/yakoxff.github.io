@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300" preserveAspectRatio="xMidYMid meet">
+  <style>text { font-family: system-ui, -apple-system, sans-serif; }</style>
+  <!-- 倒三角层级 -->
+  <rect x="50" y="30" width="400" height="40" rx="4" fill="rgba(0,212,170,0.25)" stroke="#00d4aa" stroke-width="1"/>
+  <rect x="80" y="80" width="340" height="40" rx="4" fill="rgba(0,212,170,0.18)" stroke="#00d4aa" stroke-width="1"/>
+  <rect x="110" y="130" width="280" height="40" rx="4" fill="rgba(100,100,100,0.12)" stroke="#666" stroke-width="1"/>
+  <rect x="140" y="180" width="220" height="40" rx="4" fill="rgba(100,100,100,0.08)" stroke="#666" stroke-width="1"/>
+  <rect x="170" y="230" width="160" height="40" rx="4" fill="rgba(100,100,100,0.05)" stroke="#666" stroke-width="1"/>
+  <!-- 标签 -->
+  <text x="250" y="55" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">10 年目标 — 我想成为什么人</text>
+  <text x="250" y="105" text-anchor="middle" font-size="13" fill="#333">1 年目标 — 今年完成什么</text>
+  <text x="250" y="155" text-anchor="middle" font-size="13" fill="#333">1 月目标 — 这月的里程碑</text>
+  <text x="250" y="205" text-anchor="middle" font-size="13" fill="#333">1 周目标 — 这周做成什么</text>
+  <text x="250" y="255" text-anchor="middle" font-size="13" fill="#333">今天 — 这 1 小时做什么</text>
+  <!-- 左右标注 -->
+  <text x="20" y="55" font-size="11" fill="#00d4aa">方向 ↓</text>
+  <text x="20" y="255" font-size="11" fill="#666">清晰 ↑</text>
+</svg>
