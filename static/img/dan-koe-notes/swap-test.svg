@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 200" width="550" height="200" preserveAspectRatio="xMidYMid meet">
+  <style>text { font-family: system-ui, -apple-system, sans-serif; }</style>
+  
+  <!-- 左边：你 -->
+  <rect x="40" y="50" width="140" height="100" rx="6" fill="rgba(0,212,170,0.1)" stroke="#00d4aa" stroke-width="1.5"/>
+  <text x="110" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">你</text>
+  <text x="110" y="115" text-anchor="middle" font-size="20" fill="#00d4aa">👤</text>
+  <text x="110" y="140" text-anchor="middle" font-size="10" fill="#666">当前岗位</text>
+  
+  <!-- 中间：VS -->
+  <text x="275" y="105" text-anchor="middle" font-size="18" font-weight="bold" fill="#888">VS</text>
+  
+  <!-- 右边：AI + 初级员工 -->
+  <rect x="370" y="50" width="140" height="100" rx="6" fill="rgba(255,100,100,0.1)" stroke="#ff6b6b" stroke-width="1.5"/>
+  <text x="440" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">AI + 初级</text>
+  <text x="420" y="115" text-anchor="middle" font-size="18" fill="#666">🤖</text>
+  <text x="460" y="115" text-anchor="middle" font-size="18" fill="#666">👶</text>
+  <text x="440" y="140" text-anchor="middle" font-size="10" fill="#666">替代方案</text>
+  
+  <!-- 问号 -->
+  <text x="275" y="140" text-anchor="middle" font-size="24" fill="#ff6b6b">?</text>
+  
+  <!-- 底部问题 -->
+  <text x="275" y="180" text-anchor="middle" font-size="12" fill="#333">雇主会选择右边吗？如果会，你就处于危险区。</text>
+</svg>
