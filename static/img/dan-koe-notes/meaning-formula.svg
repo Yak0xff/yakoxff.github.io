@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200" width="500" height="200" preserveAspectRatio="xMidYMid meet">
+  <style>text { font-family: system-ui, -apple-system, sans-serif; }</style>
+  
+  <!-- 公式背景 -->
+  <rect x="50" y="50" width="400" height="100" rx="8" fill="rgba(0,212,170,0.08)" stroke="#00d4aa" stroke-width="1.5"/>
+  
+  <!-- 公式 -->
+  <text x="250" y="95" text-anchor="middle" font-size="22" font-weight="bold" fill="#333">
+    意义 = 进步 + 贡献
+  </text>
+  
+  <!-- 解释 -->
+  <text x="145" y="125" text-anchor="middle" font-size="12" fill="#666">朝目标前进的感觉</text>
+  <text x="355" y="125" text-anchor="middle" font-size="12" fill="#666">对他人有用的感觉</text>
+  
+  <!-- 底部警告 -->
+  <text x="250" y="175" text-anchor="middle" font-size="11" fill="#888">AI 正在同时威胁这两个来源</text>
+</svg>
