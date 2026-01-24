@@ -1,0 +1,875 @@
+{{ define "main" }}
+<article class="product-detail product-web">
+    {{ partial "header-simple.html" . }}
+
+    <!-- Web产品封面区域 -->
+    <div class="web-hero">
+        {{- $cover := .Params.cover }}
+        {{- if $cover }}
+        <div class="web-hero-cover">
+            <img src="{{ $cover }}" alt="{{ .Title }}" loading="lazy" />
+            <div class="web-hero-overlay">
+                <div class="web-hero-content">
+                    <div class="web-hero-badges">
+                        {{ with .Params.status }}
+                        <span class="web-badge status-{{ . }}">
+                            {{ if eq . "released" }}已发布
+                            {{ else if eq . "beta" }}公测中
+                            {{ else if eq . "alpha" }}内测中
+                            {{ else if eq . "development" }}开发中
+                            {{ else }}{{ . }}{{ end }}
+                        </span>
+                        {{ end }}
+                    </div>
+                    <h1 class="web-hero-title">{{ .Title }}</h1>
+                    {{ with .Params.tagline }}
+                    <p class="web-hero-tagline">{{ . }}</p>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+        {{- else }}
+        <div class="web-hero-placeholder">
+            <div class="web-hero-content">
+                <h1 class="web-hero-title">{{ .Title }}</h1>
+                {{ with .Params.tagline }}
+                <p class="web-hero-tagline">{{ . }}</p>
+                {{ end }}
+            </div>
+        </div>
+        {{- end }}
+    </div>
+
+    <!-- 操作按钮区域 -->
+    <div class="web-actions">
+        {{ with .Params.website }}
+        <a href="{{ . }}" class="web-btn web-btn-primary" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            在线访问
+        </a>
+        {{ end }}
+        {{ with .Params.github }}
+        <a href="{{ . }}" class="web-btn web-btn-secondary" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            GitHub
+        </a>
+        {{ end }}
+    </div>
+
+    <!-- 产品信息栏 -->
+    <div class="web-meta-bar">
+        {{ with .Params.stack }}
+        <div class="meta-item">
+            <span class="meta-label">技术栈</span>
+            <div class="tech-stack">
+                {{ range $i, $s := . }}{{ if $i }} · {{ end }}<span class="tech-item">{{ $s }}</span>{{ end }}
+            </div>
+        </div>
+        {{ end }}
+        {{ with .Params.version }}
+        <div class="meta-item">
+            <span class="meta-label">版本</span>
+            <span class="meta-value">{{ . }}</span>
+        </div>
+        {{ end }}
+        {{ with .Params.price }}
+        <div class="meta-item">
+            <span class="meta-label">定价</span>
+            <span class="meta-value">{{ . }}</span>
+        </div>
+        {{ end }}
+        {{ with .Date }}
+        <div class="meta-item">
+            <span class="meta-label">更新</span>
+            <span class="meta-value">{{ .Format "2006-01-02" }}</span>
+        </div>
+        {{ end }}
+    </div>
+
+    {{ with .Params.features }}
+    <div class="web-features">
+        <h2>核心特性</h2>
+        <div class="features-grid">
+            {{ range . }}
+            <div class="feature-item">
+                {{ with .icon }}<span class="feature-icon">{{ . }}</span>{{ end }}
+                <h3>{{ .title }}</h3>
+                {{ with .desc }}<p>{{ . }}</p>{{ end }}
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    {{ with .Params.screenshots }}
+    <div class="web-screenshots">
+        <h2>产品截图</h2>
+        <div class="screenshots-grid">
+            {{ range . }}
+            <div class="screenshot-item" onclick="openLightbox('{{ . }}')">
+                <img src="{{ . }}" alt="产品截图" loading="lazy" />
+            </div>
+            {{ end }}
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+        <button class="lightbox-nav lightbox-prev" onclick="navigateLightbox(event, -1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+        </button>
+        <img id="lightbox-img" src="" alt="预览图" />
+        <button class="lightbox-nav lightbox-next" onclick="navigateLightbox(event, 1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"/>
+            </svg>
+        </button>
+        <div class="lightbox-counter">
+            <span id="lightbox-current">1</span> / <span id="lightbox-total">{{ len . }}</span>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const screenshots = [{{ range $i, $src := . }}{{ if $i }},{{ end }}"{{ $src }}"{{ end }}];
+        let currentIndex = 0;
+
+        window.openLightbox = function(src) {
+            const index = screenshots.indexOf(src);
+            if (index !== -1) currentIndex = index;
+
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            const current = document.getElementById('lightbox-current');
+
+            img.src = screenshots[currentIndex];
+            current.textContent = currentIndex + 1;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeLightbox = function(e) {
+            if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) {
+                document.getElementById('lightbox').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        };
+
+        window.navigateLightbox = function(e, direction) {
+            e.stopPropagation();
+            currentIndex = (currentIndex + direction + screenshots.length) % screenshots.length;
+            const img = document.getElementById('lightbox-img');
+            const current = document.getElementById('lightbox-current');
+            img.src = screenshots[currentIndex];
+            current.textContent = currentIndex + 1;
+        };
+
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (!lightbox.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            } else if (e.key === 'ArrowLeft') {
+                navigateLightbox(e, -1);
+            } else if (e.key === 'ArrowRight') {
+                navigateLightbox(e, 1);
+            }
+        });
+    })();
+    </script>
+    {{ end }}
+
+    {{ with .Content }}
+    <div class="web-content markdown-body">
+        {{ . }}
+    </div>
+    {{ end }}
+
+    <div class="web-back">
+        <a href="{{ .Parent.RelPermalink }}" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12"/>
+                <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            返回产品列表
+        </a>
+    </div>
+</article>
+
+<style>
+.product-web {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 1rem 3rem;
+}
+
+/* Web产品封面 */
+.web-hero {
+    margin: 0 -1rem 2rem;
+    position: relative;
+}
+
+.web-hero-cover {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+.web-hero-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.web-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 2rem;
+}
+
+.web-hero-placeholder {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, var(--link-color), #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.web-hero-content {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    width: 100%;
+}
+
+.web-hero-badges {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.web-badge {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.web-badge.status-released {
+    background: #22c55e;
+}
+
+.web-badge.status-beta {
+    background: #f59e0b;
+}
+
+.web-badge.status-alpha {
+    background: #3b82f6;
+}
+
+.web-badge.status-development {
+    background: #ef4444;
+}
+
+.web-hero-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+}
+
+.web-hero-tagline {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Web产品操作按钮 */
+.web-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.web-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.web-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.web-btn-primary {
+    background: var(--link-color);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.web-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    color: #fff;
+}
+
+.web-btn-secondary {
+    background: #24292e;
+    color: #fff;
+}
+
+.web-btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    color: #fff;
+}
+
+/* 深色模式按钮 */
+html.dark .web-btn-primary {
+    background: #fff;
+    color: #24292e;
+}
+
+html.dark .web-btn-primary:hover {
+    background: #e1e4e8;
+}
+
+html.dark .web-btn-secondary {
+    background: #fff;
+    color: #24292e;
+}
+
+html.dark .web-btn-secondary:hover {
+    background: #e1e4e8;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not(.light) .web-btn-primary {
+        background: #fff;
+        color: #24292e;
+    }
+    html:not(.light) .web-btn-primary:hover {
+        background: #e1e4e8;
+    }
+    html:not(.light) .web-btn-secondary {
+        background: #fff;
+        color: #24292e;
+    }
+    html:not(.light) .web-btn-secondary:hover {
+        background: #e1e4e8;
+    }
+}
+
+/* 产品信息栏 */
+.web-meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--block-background-color);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.web-meta-bar .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.web-meta-bar .meta-label {
+    font-size: 0.75rem;
+    color: var(--secondary-text-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.web-meta-bar .meta-value {
+    font-size: 0.95rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tech-item {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* 产品特性 */
+.web-features {
+    margin-bottom: 2rem;
+}
+
+.web-features h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+}
+
+.feature-item {
+    padding: 1.25rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.feature-item:hover {
+    border-color: var(--link-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.feature-item h3 {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+}
+
+.feature-item p {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* 产品截图 */
+.web-screenshots {
+    margin-bottom: 2rem;
+}
+
+.web-screenshots h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+}
+
+.screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+}
+
+.screenshot-item {
+    cursor: pointer;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    background: var(--card-bg);
+}
+
+.screenshot-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-color: var(--link-color);
+}
+
+.screenshot-item img {
+    display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+/* 产品内容 */
+.web-content {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+/* Markdown 内容样式 */
+.web-content.markdown-body {
+    color: var(--text-color);
+    line-height: 1.7;
+}
+
+.web-content.markdown-body h1,
+.web-content.markdown-body h2,
+.web-content.markdown-body h3,
+.web-content.markdown-body h4,
+.web-content.markdown-body h5,
+.web-content.markdown-body h6 {
+    color: var(--text-color);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.web-content.markdown-body h1 {
+    font-size: 1.75rem;
+}
+
+.web-content.markdown-body h2 {
+    font-size: 1.5rem;
+}
+
+.web-content.markdown-body h3 {
+    font-size: 1.25rem;
+}
+
+.web-content.markdown-body h4 {
+    font-size: 1.1rem;
+}
+
+.web-content.markdown-body h5 {
+    font-size: 1rem;
+}
+
+.web-content.markdown-body h6 {
+    font-size: 0.9rem;
+}
+
+.web-content.markdown-body p {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+}
+
+.web-content.markdown-body ul,
+.web-content.markdown-body ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.web-content.markdown-body ul li,
+.web-content.markdown-body ol li {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.web-content.markdown-body ul {
+    list-style-type: disc;
+}
+
+.web-content.markdown-body ol {
+    list-style-type: decimal;
+}
+
+.web-content.markdown-body blockquote {
+    margin: 1rem 0;
+    padding: 0.75rem 1.25rem;
+    border-left: 4px solid var(--link-color);
+    background: var(--block-background-color);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.95rem;
+    color: var(--secondary-text-color);
+}
+
+.web-content.markdown-body code {
+    background: var(--block-background-color);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 0.9em;
+    color: var(--text-color);
+}
+
+.web-content.markdown-body pre {
+    background: var(--block-background-color);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    border: 1px solid var(--border-color);
+}
+
+.web-content.markdown-body pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.9rem;
+}
+
+.web-content.markdown-body a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.web-content.markdown-body a:hover {
+    text-decoration: underline;
+}
+
+.web-content.markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+}
+
+.web-content.markdown-body th,
+.web-content.markdown-body td {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.web-content.markdown-body th {
+    background: var(--block-background-color);
+    font-weight: 600;
+}
+
+.web-content.markdown-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+/* 返回按钮 */
+.web-back {
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--secondary-text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: var(--link-color);
+}
+
+.back-link svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Lightbox */
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 3rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    line-height: 1;
+}
+
+.lightbox-close:hover {
+    opacity: 1;
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.2s, background 0.2s;
+}
+
+.lightbox-nav:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-nav svg {
+    width: 24px;
+    height: 24px;
+}
+
+.lightbox-prev {
+    left: 2rem;
+}
+
+.lightbox-next {
+    right: 2rem;
+}
+
+.lightbox-counter {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+/* 移动端适配 */
+@media (max-width: 640px) {
+    .web-hero-cover {
+        height: 300px;
+    }
+
+    .web-hero-overlay {
+        padding: 1.5rem;
+    }
+
+    .web-hero-title {
+        font-size: 1.5rem;
+    }
+
+    .web-hero-tagline {
+        font-size: 1rem;
+    }
+
+    .web-actions {
+        flex-direction: column;
+    }
+
+    .web-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .web-meta-bar {
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .screenshots-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .screenshot-item img {
+        height: 200px;
+    }
+
+    .lightbox-close {
+        top: 1rem;
+        right: 1rem;
+        font-size: 2rem;
+    }
+
+    .lightbox-nav {
+        width: 48px;
+        height: 48px;
+    }
+
+    .lightbox-prev {
+        left: 1rem;
+    }
+
+    .lightbox-next {
+        right: 1rem;
+    }
+
+    .web-content.markdown-body h1 {
+        font-size: 1.5rem;
+    }
+
+    .web-content.markdown-body h2 {
+        font-size: 1.25rem;
+    }
+
+    .web-content.markdown-body h3 {
+        font-size: 1.1rem;
+    }
+}
+</style>
+
+{{ partial "footer.html" . }}
+{{ end }}

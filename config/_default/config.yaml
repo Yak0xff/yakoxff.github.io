@@ -9,6 +9,10 @@ layoutDir: layouts
 # 确保短代码路径正确
 shortcodeDir: layouts/_shortcodes
 
+# 自定义 URL 路径
+permalinks:
+  web: /web/:slug/
+
 outputs:
   home:
     - HTML
