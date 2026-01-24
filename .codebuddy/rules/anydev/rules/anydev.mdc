@@ -1,8 +1,7 @@
 ---
-description: To use the AnyDev 云研发 integration, you must first read this rule to fully implement the integration.
-alwaysApply: false
+# Please note: Do not modify the header of this document. If modified, CodeBuddy (Internal Edition) will apply the default logic settings.
+alwaysApply: true
 ---
-
 Connect the current project to Anydev
 
 <workflow>
