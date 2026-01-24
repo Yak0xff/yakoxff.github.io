@@ -16,7 +16,96 @@
     <!-- 应用列表 -->
     <section class="product-section">
         <div class="product-grid">
-        {{- range .Pages }}
+        {{- $pinnedPages := where .Pages "Params.pinned" true }}
+        {{- $regularPages := where .Pages "Params.pinned" "ne" true }}
+
+        {{- if $pinnedPages }}
+        {{- range $pinnedPages }}
+        <div class="product-card product-card-pinned">
+            <a href="{{ .RelPermalink }}" class="product-card-link">
+                {{- $cover := .Params.cover }}
+                <div class="product-cover">
+                    {{- if $cover }}
+                    <img src="{{ $cover }}" alt="{{ .Title }}" loading="lazy" />
+                    {{- else }}
+                    <div class="product-cover-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="4" />
+                        </svg>
+                    </div>
+                    {{- end }}
+                </div>
+                <div class="product-info-container">
+                    <div class="product-info">
+                        <div class="product-header">
+                            <span class="product-pinned-badge">置顶</span>
+                            <h2 class="product-name">{{ .Title }}</h2>
+                            {{ with .Params.status }}
+                            <span class="product-status status-{{ . }}">
+                                {{ if eq . "released" }}已发布
+                                {{ else if eq . "beta" }}公测中
+                                {{ else if eq . "alpha" }}内测中
+                                {{ else if eq . "development" }}开发中
+                                {{ else }}{{ . }}{{ end }}
+                            </span>
+                            {{ end }}
+                        </div>
+                        {{ with .Params.tagline }}
+                        <p class="product-tagline">{{ . }}</p>
+                        {{ end }}
+                        <div class="product-meta">
+                            {{ with .Params.platform }}
+                            <span class="product-platform">
+                                {{ range $i, $p := . }}{{ if $i }} · {{ end }}{{ $p }}{{ end }}
+                            </span>
+                            {{ end }}
+                        </div>
+                    </div>
+                    {{- $isWeb := .Params.platform }}
+                    {{- $hasWeb := false }}
+                    {{- if $isWeb }}
+                        {{- range $isWeb }}
+                            {{- if eq . "Web" }}{{ $hasWeb = true }}{{- end }}
+                        {{- end }}
+                    {{- end }}
+                    {{- if $hasWeb }}
+                    <div class="product-actions-wrapper">
+                        {{ with .Params.website }}
+                        <a href="{{ . }}" class="product-action-btn product-visit-btn" target="_blank" rel="noopener" onclick="event.stopPropagation();">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                            </svg>
+                            访问
+                        </a>
+                        {{ end }}
+                        {{ with .Params.github }}
+                        <a href="{{ . }}" class="product-action-btn product-github-btn" target="_blank" rel="noopener" onclick="event.stopPropagation();">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                            GitHub
+                        </a>
+                        {{ end }}
+                    </div>
+                    {{- else }}
+                    {{ with .Params.download }}
+                    <div class="product-actions-wrapper">
+                        <a href="{{ . }}" class="product-download-btn" target="_blank" rel="noopener" onclick="event.stopPropagation();">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                            </svg>
+                            下载
+                        </a>
+                    </div>
+                    {{ end }}
+                    {{- end }}
+                </div>
+            </a>
+        </div>
+        {{- end }}
+        {{- end }}
+
+        {{- range $regularPages }}
         <div class="product-card">
             <a href="{{ .RelPermalink }}" class="product-card-link">
                 {{- $icon := .Params.icon }}
@@ -55,15 +144,45 @@
                         {{ end }}
                     </div>
                 </div>
+                {{- $isWeb := .Params.platform }}
+                {{- $hasWeb := false }}
+                {{- if $isWeb }}
+                    {{- range $isWeb }}
+                        {{- if eq . "Web" }}{{ $hasWeb = true }}{{- end }}
+                    {{- end }}
+                {{- end }}
+                {{- if $hasWeb }}
+                <div class="product-actions product-actions-inline">
+                    {{ with .Params.website }}
+                    <a href="{{ . }}" class="product-action-btn product-visit-btn" target="_blank" rel="noopener" onclick="event.stopPropagation();">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
+                        访问
+                    </a>
+                    {{ end }}
+                    {{ with .Params.github }}
+                    <a href="{{ . }}" class="product-action-btn product-github-btn" target="_blank" rel="noopener" onclick="event.stopPropagation();">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                    {{ end }}
+                </div>
+                {{- else }}
+                {{ with .Params.download }}
+                <div class="product-actions product-actions-inline">
+                    <a href="{{ . }}" class="product-download-btn" target="_blank" rel="noopener" onclick="event.stopPropagation();">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                        </svg>
+                        下载
+                    </a>
+                </div>
+                {{ end }}
+                {{- end }}
             </a>
-            {{ with .Params.download }}
-            <a href="{{ . }}" class="product-download-btn" target="_blank" rel="noopener" onclick="event.stopPropagation();">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                </svg>
-                下载
-            </a>
-            {{ end }}
         </div>
         {{- end }}
         </div>
@@ -141,6 +260,109 @@
     border-color: var(--text-color);
 }
 
+/* 置顶产品卡片 - 大图展示 */
+.product-card-pinned {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    overflow: hidden;
+}
+
+.product-card-pinned .product-card-link {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+}
+
+.product-card-pinned .product-cover {
+    width: 100%;
+    height: 320px;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    background: var(--block-background-color);
+}
+
+.product-card-pinned .product-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-card-pinned .product-cover-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--block-background-color);
+}
+
+.product-card-pinned .product-cover-placeholder svg {
+    width: 80px;
+    height: 80px;
+    color: var(--secondary-text-color);
+    opacity: 0.4;
+}
+
+/* 置顶产品信息容器 */
+.product-card-pinned .product-info-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+.product-card-pinned .product-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.product-card-pinned .product-header {
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.product-card-pinned .product-tagline {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.product-card-pinned .product-name {
+    font-size: 1.5rem;
+}
+
+/* 置顶产品按钮组容器 */
+.product-card-pinned .product-actions-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    align-self: flex-start;
+}
+
+.product-card-pinned .product-actions-wrapper .product-action-btn,
+.product-card-pinned .product-actions-wrapper .product-download-btn {
+    margin-left: 0;
+}
+
+/* 置顶徽章 */
+.product-pinned-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: linear-gradient(135deg, #ff6b6b, #ffa502);
+    color: #fff;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+html.dark .product-pinned-badge {
+    background: linear-gradient(135deg, #ff8787, #ffc107);
+    box-shadow: 0 2px 8px rgba(255, 135, 135, 0.3);
+}
+
 .product-card-link {
     display: flex;
     flex-direction: row;
@@ -199,7 +421,6 @@
     font-weight: 600;
     text-decoration: none;
     transition: opacity 0.2s ease;
-    margin-left: 1rem;
 }
 
 .product-download-btn:hover {
@@ -211,6 +432,90 @@
 .product-download-btn svg {
     width: 18px;
     height: 18px;
+}
+
+/* Web产品按钮组 */
+.product-actions {
+    flex-shrink: 0;
+    display: flex;
+    gap: 0.6rem;
+}
+
+/* 普通产品卡片内的按钮组 - 内联样式 */
+.product-actions-inline {
+    flex-shrink: 0;
+    display: flex;
+    gap: 0.6rem;
+    align-self: center;
+}
+
+.product-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.2rem;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.product-action-btn:hover {
+    opacity: 0.85;
+    text-decoration: none;
+    color: #fff;
+}
+
+.product-action-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.product-visit-btn {
+    background: var(--link-color);
+}
+
+.product-github-btn {
+    background: #24292e;
+}
+
+.product-download-btn {
+    background: var(--link-color);
+}
+
+/* 深色模式 - GitHub 按钮 */
+html.dark .product-github-btn {
+    background: #fff;
+    color: #24292e;
+}
+
+html.dark .product-github-btn:hover {
+    background: #e1e4e8;
+    color: #24292e;
+}
+
+/* 深色模式 - 访问按钮 */
+html.dark .product-visit-btn {
+    background: #fff;
+    color: #24292e;
+}
+
+html.dark .product-visit-btn:hover {
+    background: #e1e4e8;
+    color: #24292e;
+}
+
+/* 深色模式 - 下载按钮 */
+html.dark .product-download-btn {
+    background: #fff;
+    color: #24292e;
+}
+
+html.dark .product-download-btn:hover {
+    background: #e1e4e8;
+    color: #24292e;
 }
 
 .product-name {
@@ -343,41 +648,87 @@ html.dark .product-download-btn {
     .product-title {
         font-size: 1.75rem;
     }
-    
+
     .product-callout {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     .product-card {
         padding: 1.25rem;
         flex-wrap: wrap;
     }
-    
+
     .product-card-link {
         gap: 1rem;
         width: 100%;
     }
-    
+
     .product-icon {
         width: 72px;
         height: 72px;
         border-radius: 16px;
     }
-    
+
     .product-name {
         font-size: 1.1rem;
     }
-    
+
     .product-tagline {
         font-size: 0.85rem;
     }
-    
+
     .product-download-btn {
-        margin-left: 0;
         margin-top: 1rem;
         width: 100%;
         justify-content: center;
+    }
+
+    /* 置顶产品移动端适配 */
+    .product-card-pinned .product-cover {
+        height: 240px;
+    }
+
+    .product-card-pinned .product-info-container {
+        flex-direction: column;
+        padding: 1.25rem;
+        gap: 1rem;
+    }
+
+    .product-card-pinned .product-name {
+        font-size: 1.25rem;
+    }
+
+    .product-card-pinned .product-tagline {
+        font-size: 0.9rem;
+    }
+
+    .product-card-pinned .product-actions-wrapper {
+        flex-direction: row;
+        width: 100%;
+        align-self: stretch;
+    }
+
+    .product-card-pinned .product-actions-wrapper .product-action-btn,
+    .product-card-pinned .product-actions-wrapper .product-download-btn {
+        flex: 1;
+        justify-content: center;
+        margin-left: 0;
+    }
+
+    /* Web产品按钮移动端适配 */
+    .product-actions-inline,
+    .product-card-pinned .product-actions-wrapper {
+        margin-top: 1rem;
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .product-action-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
     }
 }
 </style>

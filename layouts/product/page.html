@@ -257,6 +257,7 @@
     font-size: 1.1rem;
     color: var(--secondary-text-color);
     margin: 0.25rem 0 0;
+    line-height: 1.5;
 }
 
 .product-actions {
@@ -428,6 +429,7 @@ html.dark .product-btn-secondary:hover {
     color: var(--secondary-text-color);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    font-weight: 600;
 }
 
 .meta-value {
@@ -444,6 +446,7 @@ html.dark .product-btn-secondary:hover {
     font-size: 1.5rem;
     color: var(--text-color);
     margin-bottom: 1.25rem;
+    font-weight: 700;
 }
 
 .features-grid {
@@ -469,6 +472,7 @@ html.dark .product-btn-secondary:hover {
     font-size: 1rem;
     color: var(--text-color);
     margin: 0 0 0.5rem;
+    font-weight: 600;
 }
 
 .feature-item p {
@@ -486,6 +490,7 @@ html.dark .product-btn-secondary:hover {
     font-size: 1.5rem;
     color: var(--text-color);
     margin-bottom: 1.25rem;
+    font-weight: 700;
 }
 
 .screenshots-carousel {
@@ -641,6 +646,143 @@ html.dark .product-btn-secondary:hover {
     margin-bottom: 2rem;
 }
 
+/* Markdown 内容样式 */
+.product-content.markdown-body {
+    color: var(--text-color);
+    line-height: 1.7;
+}
+
+.product-content.markdown-body h1,
+.product-content.markdown-body h2,
+.product-content.markdown-body h3,
+.product-content.markdown-body h4,
+.product-content.markdown-body h5,
+.product-content.markdown-body h6 {
+    color: var(--text-color);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.product-content.markdown-body h1 {
+    font-size: 1.75rem;
+}
+
+.product-content.markdown-body h2 {
+    font-size: 1.5rem;
+}
+
+.product-content.markdown-body h3 {
+    font-size: 1.25rem;
+}
+
+.product-content.markdown-body h4 {
+    font-size: 1.1rem;
+}
+
+.product-content.markdown-body h5 {
+    font-size: 1rem;
+}
+
+.product-content.markdown-body h6 {
+    font-size: 0.9rem;
+}
+
+.product-content.markdown-body p {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+}
+
+.product-content.markdown-body ul,
+.product-content.markdown-body ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.product-content.markdown-body ul li,
+.product-content.markdown-body ol li {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.product-content.markdown-body ul {
+    list-style-type: disc;
+}
+
+.product-content.markdown-body ol {
+    list-style-type: decimal;
+}
+
+.product-content.markdown-body blockquote {
+    margin: 1rem 0;
+    padding: 0.75rem 1.25rem;
+    border-left: 4px solid var(--link-color);
+    background: var(--block-background-color);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.95rem;
+    color: var(--secondary-text-color);
+}
+
+.product-content.markdown-body code {
+    background: var(--block-background-color);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 0.9em;
+    color: var(--text-color);
+}
+
+.product-content.markdown-body pre {
+    background: var(--block-background-color);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    border: 1px solid var(--border-color);
+}
+
+.product-content.markdown-body pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.9rem;
+}
+
+.product-content.markdown-body a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.product-content.markdown-body a:hover {
+    text-decoration: underline;
+}
+
+.product-content.markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+}
+
+.product-content.markdown-body th,
+.product-content.markdown-body td {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.product-content.markdown-body th {
+    background: var(--block-background-color);
+    font-weight: 600;
+}
+
+.product-content.markdown-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
 .product-back {
     padding-top: 2rem;
     border-top: 1px solid var(--border-color);
@@ -699,6 +841,18 @@ html.dark .product-btn-secondary:hover {
     
     .features-grid {
         grid-template-columns: 1fr;
+    }
+
+    .product-content.markdown-body h1 {
+        font-size: 1.5rem;
+    }
+
+    .product-content.markdown-body h2 {
+        font-size: 1.25rem;
+    }
+
+    .product-content.markdown-body h3 {
+        font-size: 1.1rem;
     }
 }
 </style>
