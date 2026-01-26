@@ -32,12 +32,18 @@
 {{- end }}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 {{- printf "<?xml-stylesheet type=\"text/xsl\" href=\"/atom.xsl.xml\"?>" | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:fc="https://yakoxff.pages.dev/follow-challenge">
   <channel>
     <title>{{ if eq  .Title  .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{.}} ｜ {{ end }}{{ .Site.Title }}{{ end }}</title>
     <link>{{ .Permalink }}</link>
     <description>{{ .Site.Title }}{{ if ne  .Title  .Site.Title }}{{ with .Title }}：在「{{.}}」分区下的最新内容{{ end }}{{ end }}</description>
     <generator>Hugo</generator>
+    {{- with site.Params.follow_challenge }}
+    <fc:follow_challenge>
+      <fc:feedId>{{ .feedId }}</fc:feedId>
+      <fc:userId>{{ .userId }}</fc:userId>
+    </fc:follow_challenge>
+    {{- end }}
     <language>{{ site.Language.LanguageCode }}</language>{{ with $authorEmail }}
     <managingEditor>{{.}}{{ with $authorName }} ({{ . }}){{ end }}</managingEditor>{{ end }}{{ with $authorEmail }}
     <webMaster>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</webMaster>{{ end }}{{ with .Site.Copyright }}
