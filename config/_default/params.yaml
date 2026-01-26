@@ -34,3 +34,7 @@ giscus:
   emitMetadata: 0
   inputPosition: top
   theme: "https://yakoxff.pages.dev/css/giscus_noborder.css"
+# RSS follow_challenge 标识数据
+follow_challenge:
+  feedId: "230551927030110208"
+  userId: "100422391776036864"
