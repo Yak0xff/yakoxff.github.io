@@ -1,7 +1,7 @@
 ---
 title: 第十一章 拒利守义择正道
 date: 2026-01-27T15:30:00
-draft: true
+draft: false
 weight: 12
 desc: 周六晚好友辩论去留，林浩选择第三条路——留下改革并支持老张创业。
 ---

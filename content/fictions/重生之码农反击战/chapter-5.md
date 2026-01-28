@@ -1,7 +1,7 @@
 ---
 title: 第五章 技压群雄定风波
 date: 2026-01-27T12:30:00
-draft: true
+draft: false
 weight: 6
 desc: 支付系统突发P0故障，林浩远程技术碾压解决危机，揭露小李技术无能。
 ---

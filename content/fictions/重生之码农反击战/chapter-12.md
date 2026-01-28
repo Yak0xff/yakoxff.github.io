@@ -1,7 +1,7 @@
 ---
 title: 第十二章 创业开篇展宏图
 date: 2026-01-27T16:00:00
-draft: true
+draft: false
 weight: 13
 desc: 三个月后，林浩离开公司创办工作室，迎来新生与投资机会。
 ---

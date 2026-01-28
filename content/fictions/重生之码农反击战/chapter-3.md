@@ -1,7 +1,7 @@
 ---
 title: 第三章 预言bug试深浅
 date: 2026-01-27T11:30:00
-draft: true
+draft: false
 weight: 4
 desc: 周二站会王总和小李试探林浩，林浩巧妙应对，埋下伏笔。
 ---
