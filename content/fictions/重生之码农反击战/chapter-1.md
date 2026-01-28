@@ -1,7 +1,7 @@
 ---
 title: 第一章 林浩魂归七日身
 date: 2026-01-27T10:30:00
-draft: true
+draft: false
 weight: 1
 desc: 程序员林浩猝死重生，回到死前一周，决心改变命运。
 ---
