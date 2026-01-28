@@ -1,7 +1,7 @@
 ---
 title: 第四章 智夺项目证清白
 date: 2026-01-27T12:00:00
-draft: true
+draft: false
 weight: 5
 desc: 周三项目评审会，林浩夺回被抢项目，技术方案碾压对手。
 ---
