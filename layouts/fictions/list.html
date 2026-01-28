@@ -11,7 +11,7 @@
 
             {{/* 小说列表 - 与首页文章列表风格一致 */}}
             <div class="flex flex-col">
-                {{- range .Sections }}
+                {{- range sort .Sections "Date" "desc" }}
                 {{/* 统计章节数和总字数 */}}
                 {{ $chapters := slice }}
                 {{ range .RegularPages }}
