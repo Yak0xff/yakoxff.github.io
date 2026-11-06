@@ -1,13 +1,19 @@
 {{/*
   阅读层脚本包 —— 按 features 开关选择性打包，单个文件、defer 加载
-  关闭任一开关即不打包对应模块，回退到重构前行为
+  · 读程 / 目录抽屉 / 阅读偏好 / 快捷键：只有文章内页（.IsPage）才渲染对应 DOM，
+    首页与列表页不再为它们付字节；
+  · 滚动进场（reveal）：全站列表都要用，始终打包。
+  关闭任一开关即不打包对应模块，回退到重构前行为。
 */}}
 {{- $f := site.Params.features.reader -}}
+{{- $isPage := .IsPage -}}
 {{- $files := slice -}}
-{{- if $f.progress -}}{{- $files = $files | append "js/reader-progress.js" -}}{{- end -}}
-{{- if $f.tocDrawer -}}{{- $files = $files | append "js/toc-drawer.js" -}}{{- end -}}
-{{- if $f.preferences -}}{{- $files = $files | append "js/reading-prefs.js" -}}{{- end -}}
-{{- if $f.shortcuts -}}{{- $files = $files | append "js/shortcuts.js" -}}{{- end -}}
+{{- if $isPage -}}
+  {{- if $f.progress -}}{{- $files = $files | append "js/reader-progress.js" -}}{{- end -}}
+  {{- if $f.tocDrawer -}}{{- $files = $files | append "js/toc-drawer.js" -}}{{- end -}}
+  {{- if $f.preferences -}}{{- $files = $files | append "js/reading-prefs.js" -}}{{- end -}}
+  {{- if $f.shortcuts -}}{{- $files = $files | append "js/shortcuts.js" -}}{{- end -}}
+{{- end -}}
 {{- if site.Params.features.revealOnScroll -}}{{- $files = $files | append "js/reveal.js" -}}{{- end -}}
 
 {{- $res := slice -}}
@@ -16,6 +22,9 @@
 {{- end -}}
 
 {{- with $res -}}
-  {{- $bundle := . | resources.Concat "js/reader.js" | minify | fingerprint -}}
+  {{- /* 输出名必须区分变体：resources.Concat 以输出名为键缓存，
+         同一名字在本轮构建里只会保留第一份内容 */ -}}
+  {{- $name := printf "js/reader-%s.js" (cond $isPage "page" "list") -}}
+  {{- $bundle := . | resources.Concat $name | minify | fingerprint -}}
   <script src="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" defer></script>
 {{- end -}}

@@ -23,7 +23,7 @@
 <div class="pagefind-hint" role="note">
     <p>本地预览未生成搜索索引。生产构建后执行 <code>pagefind --site public</code> 即可启用站内搜索。</p>
 </div>
-{{ else }}
+{{ else if (os.FileExists "public/pagefind/pagefind-ui.js") }}
 <script src="/pagefind/pagefind-ui.js"></script>
 <script>
   window.addEventListener('DOMContentLoaded', () => {

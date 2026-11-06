@@ -11,8 +11,9 @@ mainSections:
   - fictions
   - library
 favicon: /favicon.png
-externalJSFIles:
-  - /js/littlefoot.js
+# 需要从 static 引入的外部脚本（键名沿用历史拼写，Hugo 不区分大小写）
+# littlefoot 已移除：全站没有脚注用法，却每页加载 10KB 脚本
+externalJSFiles: []
 footerExternalLinks:
   - name: GitHub
     link: https://github.com/Yak0xff/

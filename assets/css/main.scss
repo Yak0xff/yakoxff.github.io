@@ -3,13 +3,12 @@
 @import "utils/utility";
 @import "markdown";
 
-@import "components/littlefoot";
 @import "components/libra";
 @import "components/toc";
 
 /* 从模板内联 <style> 外迁的既有样式
-   V10：header / header-simple / quick-actions / footer 四个文件对应的
-   模板已被全站顶栏与新页脚取代，导入已移除（文件保留备查） */
+   V10：header / header-simple / quick-actions / footer 四个文件对应的模板已被
+   全站顶栏与新页脚取代；littlefoot（脚注库）全站无脚注用法，也已一并移除。 */
 @import "legacy/toc";
 @import "legacy/action-menu";
 @import "legacy/now-read-this";
@@ -22,7 +21,6 @@
 @import "components/fiction";
 @import "components/archive";
 @import "components/product";
-@import "components/about";
 @import "components/links";
 @import "components/devbadge";
 @import "components/web";

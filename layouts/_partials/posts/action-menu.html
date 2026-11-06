@@ -1,8 +1,8 @@
 {{/*
   文末操作条（V10.3）
   评论 / 复制链接 / 分享 / 赞助，图标改为内联 SVG（随主题变色），按钮 ≥ 44px。
-  评论脚本（scripts/action-menu-js.html）依赖的三个 ID 不变：
-    #comments-toggle  #comment-count  #comments-section
+  评论脚本随模板一起加载（assets/js/action-menu.js，只在有操作条的页面出现），
+  依赖的三个 ID 不变：#comments-toggle  #comment-count  #comments-section
   复制 / 分享由 assets/js/reading.js 接管（data-rd-copy / data-rd-share）。
 */}}
 <div id="action-menu" class="action-menu rd-actions">
@@ -32,3 +32,8 @@
     </div>
   </div>
 </div>
+
+{{- /* 评论展开 / 评论数：脚本跟着操作条走，不需要它的页面不会再下载 */ -}}
+{{ with resources.Get "js/action-menu.js" | minify | fingerprint }}
+<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>
+{{ end }}

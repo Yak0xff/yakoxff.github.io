@@ -27,7 +27,7 @@
   var W = 0, H = 0, dots = [], ripples = [];
   var pointer = { x: -1e4, y: -1e4, on: false };
   var ink = [22, 19, 15], zhu = [217, 67, 31];
-  var visible = true, raf = 0, lastAuto = 0;
+  var visible = true, raf = 0, lastAuto = 0, lastInput = 0, idleTimer = 0;
 
   function parseColor(v) {
     v = (v || '').trim();
@@ -85,14 +85,15 @@
 
       if (still) {
         // 静态：朱砂点周围一圈柔和的晕
-        var ds = Math.hypot(x - o.x, y - o.y);
+        var dsx = x - o.x, dsy = y - o.y;
+        var ds = Math.sqrt(dsx * dsx + dsy * dsy);
         e = Math.max(0, 1 - ds / 150) * 0.7;
       } else {
         for (var k = 0; k < ripples.length; k++) {
           var r = ripples[k];
           var age = (now - r.t) / 1000;
           var rx = x - r.x, ry = y - r.y;
-          var d = Math.hypot(rx, ry) || 1;
+          var d = Math.sqrt(rx * rx + ry * ry) || 1;
           var band = d - age * SPEED;
           var amp = Math.exp(-(band * band) / (2 * BAND * BAND)) * (1 - age / LIFE);
           if (amp > e) e = amp;
@@ -101,7 +102,8 @@
           dx += (rx / d) * push; dy += (ry / d) * push;
         }
         if (pointer.on) {
-          var dp = Math.hypot(x - pointer.x, y - pointer.y);
+          var pdx = x - pointer.x, pdy = y - pointer.y;
+          var dp = Math.sqrt(pdx * pdx + pdy * pdy);
           var kp = Math.max(0, 1 - dp / 140);
           if (kp * kp > e) e = kp * kp;
         }
@@ -118,19 +120,41 @@
     }
   }
 
+  // 画面静止时用定时器排队下一次自动涟漪，不再空转 rAF
+  function scheduleAuto() {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(function () {
+      raf = 0;
+      kick();
+    }, AUTO);
+  }
+
   function loop(now) {
     raf = 0;
     if (!visible || document.hidden || motionQuery.matches) return;
+
     if (now - lastAuto > AUTO) {
       var o = origin();
-      ripple(o.x, o.y, now);
+      ripples.push({ x: o.x, y: o.y, t: now });
+      if (ripples.length > 5) ripples.shift();
       lastAuto = now;
     }
+
     frame(now);
-    raf = requestAnimationFrame(loop);
+
+    // 没有波纹、指针也停下来了：收工，最后一帧留在画布上，
+    // 等下一次交互或自动涟漪再唤醒 —— 首页静止时 CPU 归零
+    var busy = ripples.length > 0 || (pointer.on && now - lastInput < 600);
+    if (busy) {
+      raf = requestAnimationFrame(loop);
+    } else {
+      pointer.on = false;
+      scheduleAuto();
+    }
   }
 
   function kick() {
+    clearTimeout(idleTimer);
     if (!raf && visible && !document.hidden && !motionQuery.matches) raf = requestAnimationFrame(loop);
   }
 
@@ -138,6 +162,7 @@
   host.addEventListener('pointermove', function (e) {
     var b = canvas.getBoundingClientRect();
     pointer.x = e.clientX - b.left; pointer.y = e.clientY - b.top; pointer.on = true;
+    lastInput = performance.now();
     kick();
   }, { passive: true });
   host.addEventListener('pointerleave', function () { pointer.on = false; });

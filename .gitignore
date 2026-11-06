@@ -16,3 +16,6 @@ static/link-graph.json
 data/externallinks.json
 assets/css/uno.css
 data/highlights.json
+
+# Hugo 运行时锁文件，不需要入库
+/.hugo_build.lock
