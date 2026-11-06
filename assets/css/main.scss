@@ -1,3 +1,6 @@
+/* 字体声明放最前：@font-face 先于任何使用方，避免首帧匹配不到字族 */
+@import "fonts";
+
 @import "utils/variables";
 @import "utils/reset";
 @import "utils/utility";

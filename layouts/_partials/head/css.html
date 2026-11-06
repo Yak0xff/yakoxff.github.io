@@ -1,13 +1,13 @@
-<!-- Fonts - 全站唯一正文字体：LXGW WenKai 霞鹜文楷（preconnect + swap） -->
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet"></noscript>
+{{/*
+  主样式包：UnoCSS + 主 SCSS，经 Hugo Pipes 合并压缩并加指纹。
+  外链后可被浏览器长期缓存，避免每页重复内联样式。
 
-<!-- Pagefind - 延迟加载 -->
-{{ if eq .Kind "taxonomy" }}
-<link rel="stylesheet" href="/pagefind/pagefind-ui.css" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="/pagefind/pagefind-ui.css"></noscript>
-{{ end }}
+  字体：正文字体已自托管（static/fonts/*.woff2，@font-face 在 assets/css/_fonts.scss），
+  不再请求 jsdelivr：
+    · 原方案 6 个字体族样式共 ≈630KB CSS / 582 条 @font-face，实际只用到 1 个族；
+    · 现在按全站用字裁成 2 个 woff2，一次请求、长期缓存、不依赖第三方域名。
+  Aplayer 样式只在用到 aplayer 短代码的页面需要，已改为由短代码按需加载。
+*/}}
 
 <!-- Extra -->
 {{ range .Site.Params.extraCSSFiles -}}
@@ -17,18 +17,21 @@
 />
 {{- end }}
 
-{{/*
-  主样式包：UnoCSS + 主 SCSS + Aplayer，经 Hugo Pipes 合并压缩并加指纹。
-  外链后可被浏览器长期缓存，避免每页重复内联约 66KB 样式。
-*/}}
 {{- $bundle := slice -}}
 {{- with resources.Get "css/uno.css" -}}{{- $bundle = $bundle | append . -}}{{- end -}}
 {{- with resources.Get "css/main.scss" -}}
   {{- $bundle = $bundle | append (css.Sass .) -}}
 {{- end -}}
-{{- with resources.Get "css/aplayer.css" -}}{{- $bundle = $bundle | append . -}}{{- end -}}
+
+{{- $hasPlayer := .HasShortcode "aplayer" -}}
+{{- if $hasPlayer -}}
+  {{- with resources.Get "css/aplayer.css" -}}{{- $bundle = $bundle | append . -}}{{- end -}}
+{{- end -}}
 
 {{- with $bundle -}}
-  {{- $main := . | resources.Concat "css/main.css" | minify | fingerprint -}}
+  {{- /* 有 aplayer 的页面样式不同，输出名必须区分：resources.Concat 按输出名缓存，
+         同名在一轮构建里只会保留第一份内容 */ -}}
+  {{- $name := printf "css/main%s.css" (cond $hasPlayer "-player" "") -}}
+  {{- $main := . | resources.Concat $name | minify | fingerprint -}}
   <link rel="stylesheet" href="{{ $main.RelPermalink }}" integrity="{{ $main.Data.Integrity }}" crossorigin="anonymous">
 {{- end -}}

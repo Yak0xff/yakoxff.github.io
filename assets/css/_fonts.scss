@@ -1,0 +1,27 @@
+/* ===================================================================
+   自托管正文字体：LXGW WenKai（霞鹜文楷，SIL OFL 1.1）
+   -------------------------------------------------------------------
+   由 scripts/build-font-subset.sh 按全站实际用字（约 3100 字符）裁剪，
+   两个字重各一个 woff2，替代原先从 jsdelivr 拉的 6 个字体族样式
+   （≈630KB CSS / 582 条 @font-face，其中 4 个族全站从未使用）。
+
+   · 400  —— Regular
+   · 500-700 —— Medium 承载（官方 1.330 之后不再单独发布 Bold）
+   两档上下行度量一致，混排不会跳行；只保留 woff2，省掉旧格式体积。
+   =================================================================== */
+
+@font-face {
+  font-family: "LXGW WenKai";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/lxgw-wenkai-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "LXGW WenKai";
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url("../fonts/lxgw-wenkai-medium.woff2") format("woff2");
+}
