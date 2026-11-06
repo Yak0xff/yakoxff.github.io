@@ -1,0 +1,53 @@
+{{/*
+  V10 界面行为（约 1KB，无依赖）
+  · 顶栏：滚过 8px 出现底线（is-scrolled）；
+          下滑超过一屏顶栏高度时收起、上滑立即出现（is-hidden），
+          顶栏 / 标签栏同步——阅读时把整块屏幕还给正文。
+          焦点在顶栏内时从不收起，保证键盘可达。
+  · 列表错峰：给同组 .reveal 写入 --i，进场依次落下。
+*/}}
+<script>
+(function () {
+  var root = document.documentElement;
+  var bar = document.querySelector('[data-topbar]');
+  if (!bar) return;
+  var lastY = window.scrollY, ticking = false;
+
+  function update() {
+    var y = window.scrollY;
+    var dy = y - lastY;
+    root.classList.toggle('is-scrolled', y > 8);
+    if (Math.abs(dy) > 6) {
+      var hide = dy > 0 && y > bar.offsetHeight * 2 && !bar.contains(document.activeElement);
+      root.classList.toggle('chrome-hidden', hide);
+      lastY = y;
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function () {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  bar.addEventListener('focusin', function () { root.classList.remove('chrome-hidden'); });
+  update();
+
+  // 「一点」笔墨标记：.mk--view 进入视口时才开始书写
+  var marks = document.querySelectorAll('.mk--view');
+  if (marks.length) {
+    if ('IntersectionObserver' in window) {
+      var mo = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-in'); mo.unobserve(e.target); }
+        });
+      }, { threshold: 0.6 });
+      marks.forEach(function (m) { mo.observe(m); });
+    } else {
+      marks.forEach(function (m) { m.classList.add('is-in'); });
+    }
+  }
+
+  document.querySelectorAll('[data-stagger]').forEach(function (group) {
+    group.querySelectorAll('.reveal').forEach(function (el, i) { el.style.setProperty('--i', i); });
+  });
+})();
+</script>

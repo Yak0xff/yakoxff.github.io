@@ -6,6 +6,7 @@
   <script src="{{ $.Site.Params.staticPrefix }}{{ . | relURL }}" defer></script>
 {{- end }}
 
+{{ partial "scripts/reader.html" . }}
 {{ partial "scripts/theme-toggle-js.html" . }}
 {{ partial "scripts/toc-js.html" . }}
 {{ partial "scripts/littlefoot-js.html" . }}

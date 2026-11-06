@@ -1,0 +1,21 @@
+{{/*
+  阅读层脚本包 —— 按 features 开关选择性打包，单个文件、defer 加载
+  关闭任一开关即不打包对应模块，回退到重构前行为
+*/}}
+{{- $f := site.Params.features.reader -}}
+{{- $files := slice -}}
+{{- if $f.progress -}}{{- $files = $files | append "js/reader-progress.js" -}}{{- end -}}
+{{- if $f.tocDrawer -}}{{- $files = $files | append "js/toc-drawer.js" -}}{{- end -}}
+{{- if $f.preferences -}}{{- $files = $files | append "js/reading-prefs.js" -}}{{- end -}}
+{{- if $f.shortcuts -}}{{- $files = $files | append "js/shortcuts.js" -}}{{- end -}}
+{{- if site.Params.features.revealOnScroll -}}{{- $files = $files | append "js/reveal.js" -}}{{- end -}}
+
+{{- $res := slice -}}
+{{- range $files -}}
+  {{- with resources.Get . -}}{{- $res = $res | append . -}}{{- end -}}
+{{- end -}}
+
+{{- with $res -}}
+  {{- $bundle := . | resources.Concat "js/reader.js" | minify | fingerprint -}}
+  <script src="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" defer></script>
+{{- end -}}

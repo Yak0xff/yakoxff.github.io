@@ -5,19 +5,47 @@
   const LIGHT_CLASS = 'light';
   
   // 切换主题
-  function toggleTheme() {
+  function applyTheme() {
     const html = document.documentElement;
     const isDark = html.classList.contains(DARK_CLASS);
     const newTheme = isDark ? 'light' : 'dark';
     localStorage.setItem(THEME_KEY, newTheme);
     html.classList.toggle(DARK_CLASS, !isDark);
     html.classList.toggle(LIGHT_CLASS, isDark);
+    syncToggleState();
   }
-  
+
+  // V10：从按钮位置圆形扩散切换（View Transitions API）；
+  // 不支持或用户偏好减少动效时直接切换，不做任何过渡
+  function toggleTheme(e) {
+    const html = document.documentElement;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduce) { applyTheme(); return; }
+    const r = e && e.currentTarget ? e.currentTarget.getBoundingClientRect() : null;
+    const x = r ? r.left + r.width / 2 : innerWidth / 2;
+    const y = r ? r.top + r.height / 2 : 0;
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    html.style.setProperty('--vt-x', x + 'px');
+    html.style.setProperty('--vt-y', y + 'px');
+    html.style.setProperty('--vt-r', radius + 'px');
+    html.classList.add('is-theme-switching');
+    const t = document.startViewTransition(applyTheme);
+    t.finished.finally(function () { html.classList.remove('is-theme-switching'); });
+  }
+
+  // 同步 aria-pressed，让读屏软件能播报当前是深色还是浅色
+  function syncToggleState() {
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (!toggleBtn) return;
+    const isDark = document.documentElement.classList.contains(DARK_CLASS);
+    toggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+  }
+
   // 绑定按钮事件
   document.addEventListener('DOMContentLoaded', function() {
     const toggleBtn = document.getElementById('theme-toggle');
     if (toggleBtn) toggleBtn.addEventListener('click', toggleTheme);
+    syncToggleState();
   });
   
   // 监听系统主题变化（仅当用户未手动设置时）
