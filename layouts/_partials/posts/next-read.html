@@ -1,0 +1,43 @@
+{{/*
+  文末「接下来读什么」—— 由 1 篇升级为 N 篇，并标注推荐理由
+  开关：features.reader.related（0 表示关闭，回退到旧的 now-read-this）
+
+  推荐来源优先级：
+    1. Hugo Related（依赖 config.related 的 tags/categories 权重）
+    2. 兜底：同 section 最新文章（保证永不为空）
+*/}}
+{{- $want := site.Params.features.reader.related | default 3 -}}
+{{- if gt $want 0 -}}
+  {{- $self := .RelPermalink -}}
+  {{- $myTags := .Params.tags | default slice -}}
+  {{- if eq (printf "%T" $myTags) "string" -}}{{- $myTags = slice $myTags -}}{{- end -}}
+
+  {{- $rel := where (site.RegularPages.Related .) "RelPermalink" "!=" $self -}}
+  {{- $fallback := where (sort (where site.RegularPages "Section" "posts") "Date" "desc") "RelPermalink" "!=" $self -}}
+  {{- $list := first $want (union $rel $fallback) -}}
+
+  {{- with $list -}}
+  <section class="next-read pagefind-exclude" aria-labelledby="next-read-heading">
+    <div class="v-section-head">
+      <span class="v-section-no" aria-hidden="true">→</span>
+      <h2 class="v-section-title" id="next-read-heading">接下来读什么</h2>
+    </div>
+    <ul class="next-read-list">
+      {{ range . }}
+      {{- $shared := intersect $myTags (.Params.tags | default slice) -}}
+      <li class="next-read-item">
+        <a href="{{ .RelPermalink }}">
+          <span class="next-reason">
+            {{ with $shared }}同主题 · {{ index . 0 }}{{ else }}延伸阅读{{ end }}
+          </span>
+          <span class="next-title">{{ .Title }}</span>
+          <span class="next-meta">{{ .ReadingTime }} 分钟 · {{ .Date.Format "2006-01-02" }}</span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{- end -}}
+{{- else -}}
+  {{ partial "posts/now-read-this.html" . }}
+{{- end -}}

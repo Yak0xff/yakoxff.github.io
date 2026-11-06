@@ -1,0 +1,63 @@
+{{/*
+  程序化排版封面
+  ----------------
+  零素材依赖：按主题 + 日期派生种子，从 5 色调色板取沉稳底色，
+  以「超大衬线首字 + 刊名小字 + 内衬细线」构成排版封面。
+  3 种字位布局提供变化，全部依赖排版而非几何图形。
+  遵循明暗主题（调色板变量随 dark mode 切换）。
+
+  用法：{{ partial "components/cover" . }}
+  可选：{{ partial "components/cover" (dict "ctx" . "ratio" "16:9") }}
+*/}}
+{{- $ctx := .ctx -}}
+{{- $ratio := .ratio | default "16:9" -}}
+
+{{- $title := printf "%v" $ctx.Title -}}
+{{- $key := $ctx.Section | default "misc" -}}
+
+{{/* categories / tags 可能是切片，也可能是标量字符串，用 first-term 统一取首项 */}}
+{{- $term := partial "components/first-term" $ctx.Params.categories -}}
+{{- if not $term -}}{{- $term = partial "components/first-term" $ctx.Params.tags -}}{{- end -}}
+{{- with $term -}}{{- $key = . -}}{{- end -}}
+{{- $key = printf "%v" $key -}}
+
+{{- $day := 1 -}}
+{{- with $ctx.Date -}}{{- $day = int (.Format "2") -}}{{- end -}}
+{{- $seed := mod (add (len $key) $day) 5 -}}
+{{- $variant := mod (len $title) 3 -}}
+{{- $char := "·" -}}
+{{- if gt (len $title) 0 -}}{{- $char = slicestr $title 0 1 -}}{{- end -}}
+
+{{- $w := 320 -}}
+{{- $h := 180 -}}
+{{- if eq $ratio "1:1" -}}{{- $w = 240 -}}{{- $h = 240 -}}{{- end -}}
+{{- if eq $ratio "4:3" -}}{{- $w = 320 -}}{{- $h = 240 -}}{{- end -}}
+{{- if eq $ratio "21:9" -}}{{- $w = 420 -}}{{- $h = 180 -}}{{- end -}}
+
+{{/* 超大字位置：variant 0 右下 / variant 1 左下 / variant 2 居中偏右 */}}
+{{- $gx := sub $w 18 -}}
+{{- $gy := sub $h 30 -}}
+{{- $anchor := "end" -}}
+{{- if eq $variant 1 -}}{{- $gx = 22 -}}{{- $anchor = "start" -}}
+{{- else if eq $variant 2 -}}{{- $gx = add (div $w 2) 40 -}}{{- $anchor = "middle" -}}{{- end -}}
+
+<svg class="cover-svg" viewBox="0 0 {{ $w }} {{ $h }}" width="100%" height="100%"
+     preserveAspectRatio="xMidYMid slice" role="img" aria-label="{{ $title }} 封面">
+  <rect width="{{ $w }}" height="{{ $h }}" fill="var(--cover-{{ add $seed 1 }})"/>
+
+  {{/* 内衬细线框：印刷书衣的边界感 */}}
+  <rect x="10" y="10" width="{{ sub $w 20 }}" height="{{ sub $h 20 }}"
+        fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1"/>
+
+  {{/* 超大衬线首字：低透明度，作为封面的排版主体 */}}
+  <text x="{{ $gx }}" y="{{ $gy }}" text-anchor="{{ $anchor }}"
+        font-family="var(--serif-font-family)" font-size="{{ mul $h 1.15 }}"
+        font-weight="700" fill="rgba(255,255,255,.16)" letter-spacing="-0.04em">{{ $char }}</text>
+
+  {{/* 刊名小字：mono 字距拉开的编辑式署名 */}}
+  <text x="26" y="44" font-family="var(--font-mono, ui-monospace, monospace)"
+        font-size="11" letter-spacing="0.32em" fill="rgba(255,255,255,.62)">{{ $key }}</text>
+
+  {{/* 刊名下细线 */}}
+  <line x1="26" y1="52" x2="86" y2="52" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
+</svg>

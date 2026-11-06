@@ -1,0 +1,30 @@
+{{/*
+  移动端目录抽屉（≤1199px 时显示悬浮按钮）
+  开关：features.reader.tocDrawer
+  目录内容由 Hugo 直接渲染，不依赖 JS，无 JS 时按钮不出现也能正常阅读
+*/}}
+{{- $f := site.Params.features.reader -}}
+{{ if and $f.tocDrawer .Params.toc .TableOfContents }}
+<button type="button" id="toc-fab" class="toc-fab" aria-expanded="false" aria-controls="toc-drawer">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+    <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
+    <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+  </svg>
+  目录
+</button>
+
+<div id="toc-backdrop" class="toc-backdrop" data-open="false"></div>
+
+<aside id="toc-drawer" class="toc-drawer" data-open="false" aria-hidden="true" aria-label="文章目录">
+  <div class="toc-drawer-head">
+    <h2 class="toc-drawer-title">目录</h2>
+    <button type="button" class="toc-drawer-close" aria-label="关闭目录">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <nav class="toc-drawer-body">{{ .TableOfContents }}</nav>
+</aside>
+{{ end }}

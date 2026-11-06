@@ -1,56 +1,136 @@
 {{ define "main" }}
-    {{ partial "header-simple" . }}
-    <article class="post-article">
-      <!-- Post Header -->
-      <header class="post-header" style="view-transition-name: post-{{ .File.UniqueID }}">
-        <!-- Banner -->
-        {{ partial "posts/banner" . }}
-        
-        <!-- Title -->
-        <h1 class="post-title xerox">
-          <span data-pagefind-meta="title">{{ .Title }}</span>
-        </h1>
-        
-        <!-- Subtitle -->
-        {{ with .Params.subtitle }}
-        <p class="post-subtitle">{{ . }}</p>
-        {{ end }}
-        
-        <!-- Meta -->
-        <div class="post-meta">
-          <span class="meta-date">{{ partial "components/date" . }}</span>
-          {{ with .Params.categories }}
-          <span class="meta-divider">·</span>
-          {{ end }}
-          {{ partial "components/category-pill" . }}
-          <span class="meta-reading-time">{{ .ReadingTime }} 分钟</span>
-        </div>
-        
-        <!-- Tags -->
-        {{ with .Params.tags }}
-        <div class="post-tags">
-          {{ partial "components/tags" $ }}
-        </div>
-        {{ end }}
-      </header>
+{{/*
+  文章阅读页（V10.3 完整重做）——「一章书页 · 一点为引」
+  ---------------------------------------------------------------
+  · 扉页：居中的章首页——眉题 / 大标题 / 导语 / 账页式元信息，
+          一条墨线自中间向两侧写出，线尾落下一枚朱砂点，正文由此开始。
+  · 正文：楷体长文；首字下沉；二级标题编号悬挂在左页边；
+          图片外扩出血；引文为大字引句；表格横向滚动。
+  · 读程：右页边「点线目录」——每章一个点，按章节在全文中的真实
+          位置排布；一颗朱砂珠随阅读下行（assets/js/reading.js）。
+          窄屏改为底部胶囊（进度环 + 当前章），点开为目录面板。
+  · 摘句：选中正文即可「复制摘句 / 分享」。
+  · 落款：「一点」笔墨标记写出 → 全文完 → 实际用时；上下篇 / 延伸阅读。
+  依赖 ID 保持不变：#post-content #prefs-toggle #reader-prefs #toc-fab
+                   #comments-toggle #comment-count #comments-section
+*/}}
+{{ partial "posts/reader-tools" . }}
 
-      <!-- Post Content -->
-      <div class="post-body" style="view-transition-name: post-content-{{ .File.UniqueID }}">
-        {{ partial "posts/toc" . }}
-        <div id="post-content" class="markdown-body">
-          {{ .Content }}
-        </div>
-        {{ partial "posts/endnotes" . }}
+{{- /* 眉题：分类 → 首个标签 → 中文栏目名；尽量给出可点的落地页 */ -}}
+{{- $kicker := "" -}}{{- $kickerURL := "" -}}
+{{- with .Params.categories -}}
+  {{- $kicker = partial "components/first-term" . -}}
+  {{- $kickerURL = printf "/categories/%s/" (urlize (lower $kicker)) -}}
+{{- end -}}
+{{- if not $kicker -}}{{- with .Params.tags -}}
+  {{- $kicker = index . 0 -}}{{- $kickerURL = printf "/tags/%s/" (urlize (lower $kicker)) -}}
+{{- end -}}{{- end -}}
+{{- if not $kicker -}}{{- $kicker = index (dict "posts" "随笔" "library" "书房" "fictions" "虚构") .Section | default .Section -}}{{- end -}}
+{{- $chapters := len (findRE `<h2[\s>]` .Content) -}}
+{{- $lede := .Params.subtitle | default .Params.description -}}
+
+<article class="post-article rd">
+  {{/* ---------- 扉页 ---------- */}}
+  <header class="rd-head" style="view-transition-name: post-{{ .File.UniqueID }}">
+    {{ partial "posts/banner" . }}
+
+    <p class="rd-kicker">
+      {{ with $kickerURL }}<a href="{{ . }}">{{ $kicker }}</a>{{ else }}<span>{{ $kicker }}</span>{{ end }}
+    </p>
+
+    <h1 class="rd-title"><span data-pagefind-meta="title">{{ .Title }}</span></h1>
+
+    {{ with $lede }}<p class="rd-lede">{{ . }}</p>{{ end }}
+
+    <dl class="rd-ledger">
+      <div class="rd-ledger-date"><dt>写于</dt><dd>{{ partial "components/date" . }}</dd></div>
+      <div><dt>篇幅</dt><dd class="num">{{ lang.FormatNumber 0 .WordCount }} 字</dd></div>
+      <div><dt>阅读</dt><dd class="num">约 {{ .ReadingTime }} 分钟</dd></div>
+      {{ if gt $chapters 1 }}<div><dt>章节</dt><dd class="num">{{ $chapters }} 章</dd></div>{{ end }}
+      {{ if site.Params.features.reader.preferences }}
+      <div class="rd-ledger-tool">
+        <dt class="sr-only">阅读设置</dt>
+        <dd>
+          <button type="button" id="prefs-toggle" class="rd-aa" aria-expanded="false" aria-controls="reader-prefs" title="阅读设置">
+            <span aria-hidden="true">Aa</span><span class="sr-only">阅读设置</span>
+          </button>
+        </dd>
       </div>
+      {{ end }}
+    </dl>
 
-      <!-- Post Footer -->
-      <footer class="post-footer">
-        {{ partial "posts/action-menu.html" . }}
-        {{ partial "posts/now-read-this.html" . }}
-      </footer>
-      
-      {{ partial "components/back-to-top.html" . }}
-    </article>
+    {{/* 墨线自中向两侧写出，线尾落一枚朱砂点：正文由此开始 */}}
+    <div class="rd-rule" aria-hidden="true"><i></i><b></b><i></i></div>
+  </header>
+
+  {{/* ---------- 正文 ---------- */}}
+  <div class="post-body rd-body" style="view-transition-name: post-content-{{ .File.UniqueID }}">
+    <div id="post-content" class="markdown-body rd-prose">
+      {{ .Content }}
+    </div>
+    {{ partial "posts/endnotes" . }}
+  </div>
+
+  {{/* ---------- 落款 ---------- */}}
+  <footer class="rd-end pagefind-exclude">
+    <div class="rd-fin" data-rd-fin>
+      {{ partial "components/mark" (dict "id" "mk-fin" "size" "5.5rem" "play" "view") }}
+      <p class="rd-fin-title">全文完</p>
+      <p class="rd-fin-stats num">
+        <span>{{ lang.FormatNumber 0 .WordCount }} 字</span>
+        <span aria-hidden="true">·</span>
+        <span>预计 {{ .ReadingTime }} 分钟</span>
+        <span class="rd-fin-spent" data-rd-spent hidden></span>
+      </p>
+      {{ if and .Lastmod (gt (.Lastmod.Sub .Date).Hours 24.0) }}
+      <p class="rd-fin-updated num">最后修订于 {{ .Lastmod.Format "2006.01.02" }}</p>
+      {{ end }}
+    </div>
+
+    {{ with .Params.tags }}
+    <nav class="rd-tags" aria-label="本文标签">
+      <span class="eyebrow">归入</span>
+      <ul>
+        {{ range . }}<li><a href="{{ site.LanguagePrefix }}/tags/{{ lower . | urlize }}/"><span aria-hidden="true">#</span>{{ . }}</a></li>{{ end }}
+      </ul>
+    </nav>
+    {{ end }}
+
+    {{ partial "posts/action-menu.html" . }}
+
+    {{/* 上一篇 / 下一篇：按日期判定新旧，避免 Prev/Next 语义歧义 */}}
+    {{- $older := "" -}}{{- $newer := "" -}}
+    {{- range slice .PrevInSection .NextInSection -}}
+      {{- with . -}}
+        {{- if .Date.Before $.Date -}}{{- $older = . -}}{{- else -}}{{- $newer = . -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{ if or $older $newer }}
+    <nav class="rd-pager" aria-label="上一篇与下一篇">
+      {{ with $older }}
+      <a class="rd-pager-link rd-pager-prev" href="{{ .RelPermalink }}" rel="prev">
+        <span class="eyebrow"><span aria-hidden="true">←</span> 上一篇</span>
+        <span class="rd-pager-title">{{ .Title }}</span>
+        <span class="rd-pager-meta num">{{ .Date.Format "2006.01.02" }}</span>
+      </a>
+      {{ else }}<span class="rd-pager-link rd-pager-empty" aria-hidden="true"></span>{{ end }}
+      {{ with $newer }}
+      <a class="rd-pager-link rd-pager-next" href="{{ .RelPermalink }}" rel="next">
+        <span class="eyebrow">下一篇 <span aria-hidden="true">→</span></span>
+        <span class="rd-pager-title">{{ .Title }}</span>
+        <span class="rd-pager-meta num">{{ .Date.Format "2006.01.02" }}</span>
+      </a>
+      {{ end }}
+    </nav>
+    {{ end }}
+
+    {{ partial "posts/next-read.html" . }}
+  </footer>
+</article>
+
+{{ with resources.Get "js/reading.js" | minify | fingerprint }}
+<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>
+{{ end }}
 
 <!-- Umami 文章跟踪脚本 -->
 <script>
@@ -58,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 简化的文章信息
     const articleInfo = {
         title: '{{ .Title }}',
-        category: '{{ with .Params.categories }}{{ index . 0 }}{{ end }}',
+        category: '{{ partial "components/first-term" .Params.categories }}',
         readingTime: {{ .ReadingTime }},
         url: window.location.pathname
     };
@@ -105,116 +185,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<style>
-.post-article {
-  max-width: var(--page-width);
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-/* Header */
-.post-header {
-  margin-bottom: 3rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.post-title {
-  font-size: 2.25rem;
-  font-weight: bold;
-  line-height: 1.2;
-  margin: 0.83em 0;
-}
-
-.post-subtitle {
-  font-size: 1.25rem;
-  color: var(--secondary-text-color);
-  font-style: italic;
-  margin: 0 0 1.25rem;
-  line-height: 1.5;
-}
-
-.post-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--secondary-text-color);
-}
-
-.meta-divider {
-  opacity: 0.5;
-}
-
-.meta-reading-time {
-  margin-left: auto;
-  font-size: 0.85rem;
-  opacity: 0.7;
-}
-
-.post-tags {
-  margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.post-tags .tag {
-  font-size: 0.85rem;
-  padding: 0.2rem 0.5rem;
-  background: var(--block-background-color);
-  border-radius: 0.25rem;
-  transition: opacity 0.2s;
-}
-
-.post-tags .tag:hover {
-  opacity: 0.7;
-}
-
-/* Body */
-.post-body {
-  min-height: 60vh;
-  font-family: var(--serif-font-family);
-  line-height: 1.85;
-  font-size: 1.1rem;
-}
-
-@media (min-width: 768px) {
-  .post-body {
-    font-size: 1.15rem;
-    line-height: 1.9;
-  }
-}
-
-/* Footer */
-.post-footer {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border-color);
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-  .post-title {
-    font-size: 1.75rem;
-  }
-  
-  .post-subtitle {
-    font-size: 1rem;
-  }
-  
-  .meta-reading-time {
-    margin-left: 0;
-    width: 100%;
-    margin-top: 0.5rem;
-  }
-  
-  .post-body {
-    font-size: 1.05rem;
-    line-height: 1.8;
-  }
-}
-</style>
 {{ partial "footer" . }}
 {{ end }}

@@ -1,0 +1,52 @@
+{{/*
+  阅读工具：顶部进度条 + 阅读偏好面板 + 快捷键提示
+  开关：features.reader.progress / preferences / shortcuts
+*/}}
+{{- $f := site.Params.features.reader -}}
+
+{{ if $f.progress }}
+<div class="reader-progress" role="progressbar" aria-label="阅读进度"
+     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+  <div class="reader-progress-bar"></div>
+</div>
+{{ end }}
+
+{{ if $f.preferences }}
+<aside id="reader-prefs" class="reader-prefs" hidden aria-label="阅读偏好设置">
+  <h2>阅读设置</h2>
+
+  <div class="pref-row" data-pref="fontSize">
+    <label id="pref-fontsize-label">字号</label>
+    <div class="pref-segmented" role="group" aria-labelledby="pref-fontsize-label">
+      <button type="button" data-value="sm" aria-pressed="false">小</button>
+      <button type="button" data-value="md" aria-pressed="true">标准</button>
+      <button type="button" data-value="lg" aria-pressed="false">大</button>
+      <button type="button" data-value="xl" aria-pressed="false">特大</button>
+    </div>
+  </div>
+
+  <div class="pref-row" data-pref="leading">
+    <label id="pref-leading-label">行距</label>
+    <div class="pref-segmented" role="group" aria-labelledby="pref-leading-label">
+      <button type="button" data-value="tight" aria-pressed="false">紧凑</button>
+      <button type="button" data-value="normal" aria-pressed="true">标准</button>
+      <button type="button" data-value="loose" aria-pressed="false">宽松</button>
+    </div>
+  </div>
+
+  <div class="pref-row" data-pref="width">
+    <label id="pref-width-label">栏宽</label>
+    <div class="pref-segmented" role="group" aria-labelledby="pref-width-label">
+      <button type="button" data-value="narrow" aria-pressed="false">窄</button>
+      <button type="button" data-value="normal" aria-pressed="true">标准</button>
+      <button type="button" data-value="wide" aria-pressed="false">宽</button>
+    </div>
+  </div>
+
+  <button type="button" class="pref-reset">恢复默认</button>
+</aside>
+{{ end }}
+
+{{ if $f.shortcuts }}
+<div id="shortcut-hint" class="shortcut-hint" role="status" aria-live="polite" data-show="false"></div>
+{{ end }}

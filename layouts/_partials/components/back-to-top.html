@@ -1,9 +1,10 @@
 <div id="back2top" class="fixed -top-25 left-0 right-0 z-30
     flex justify-center items-center transition-all animate-head-shake
     bg-linear-to-t  bg-gradient-from-transparent bg-gradient-to-zinc">
-    <button id="back2top-button"
-        class="block bg-transparent mt-5 flex flex-col items-center">
-        <img src="/img/bat.svg"
+    <button id="back2top-button" type="button"
+        class="block bg-transparent mt-5 flex flex-col items-center"
+        aria-label="{{ T "back2top" . | plainify }}">
+        <img src="/img/bat.svg" alt="" aria-hidden="true" loading="lazy"
             class="block w-8 h-8 dark:invert-100 drop-shadow-xl"
         />
         <p id="back2top-instruction"
