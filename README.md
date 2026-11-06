@@ -254,7 +254,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 生产构建参数与 CI 一致：`--gc --minify --cleanDestinationDir`，`HUGO_ENVIRONMENT=production`（会注入 Umami、去掉标题里的 `[本地]`）。
 
 - **Cloudflare Pages**：构建命令填 `npm run build:uno:prod && npm run build`，产物目录 `public`。仓库根目录的 `static/_headers` 在这里生效——HTML 每次回源校验，指纹化的 `/css/main.min.*`、`/js/*.min.*` 永久 immutable，字体 7 天、图片 30 天，同时带一条 CSP（目前只约束 `script-src`）。
-- **GitHub Pages**：`.github/workflows/hugo.yml` 在推送 `main` 时用同一套参数构建并发布，`_headers` 不生效。
+- **GitHub Pages**：`.github/workflows/hugo.yml` 在推送 `main` 时用同一套参数构建、上传产物并尝试部署；但仓库的 Pages 站点目前没启用（见[已知限制](#已知限制)），`_headers` 在这条线上也不生效。
 
 两边都只跑 `build:uno:prod` 和 `hugo`，**不会跑** `scripts/highlights.py` 与 `scripts/optimize-images.py`——涉及这两步的改动要在本地做完再提交（见[已知限制](#已知限制)）。
 
@@ -278,6 +278,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 - **搜索索引是旧的**：`static/pagefind/` 里存着提交进库的 Pagefind 产物，但只索引了 28 页（内容页现在 135 页）。加新文章不会自动进索引，要手动 `pagefind --site public` 重新生成再提交。模板已改成「文件存在才输出脚本」，所以索引缺失也不会 404，只是搜不到。
 - **`data/highlights.json` 不入库**：它由 `scripts/highlights.py` 生成。本地有这份文件时 `/highlights/` 正常，CI 构建时它缺失——Hugo 不会报错（实测 `exit 0`），但页面会缩成一个空壳（34KB → 14KB）。要修就把脚本加进构建命令，或把 JSON 一起入库。同目录的 `data/externallinks.json` 是另一回事：**没有任何模板引用它**，删掉后产出字节级一致，纯属残留。
+- **GitHub Pages 其实没上线**：workflow 每次推送都在跑，但 `https://yakoxff.github.io/` 返回的是 GitHub 的「Site not found」——仓库 Settings → Pages 的 Source 没设成 GitHub Actions。真正对外的是 Cloudflare Pages 那条线。
 - **`static/_headers` 只对 Cloudflare Pages 生效**，GitHub Pages 的缓存策略与 CSP 走默认值，两份部署并不等价。
 - **`static/img/product/*/icon.png` 实际是 JPEG**（历史遗留，512×512）。脚本识别到扩展名与真实格式不符会跳过，不影响显示，但会误导后来的人。
 - **`layouts/shortcodes/` 是历史副本**：配置里 `shortcodeDir` 指向 `layouts/_shortcodes/`，前者已不参与渲染，可以删。
