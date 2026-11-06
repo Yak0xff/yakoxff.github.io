@@ -1,0 +1,41 @@
+{{/*
+  「一点」笔墨标记（V10.2，替代方印）
+  ---------------------------------------------------------------
+  站名「一点记」拆开写：一笔横画「一」+ 一枚朱砂「、」= 一点。
+  动画三拍：① 横画从左向右运笔写出（起笔顿、收笔提）
+           ② 朱砂点从上方落下、压扁回弹
+           ③ 点落处荡开一圈涟漪（与首页「一点入水」同一母题）
+  墨色边缘用 feTurbulence 做轻微洇散，像宣纸上的笔触。
+  参数：
+    .id    必填且同页唯一（mask / filter 引用需要）
+    .size  宽度，默认 6rem（高为宽的一半）
+    .play  "load"（默认，载入即写）/ "view"（进入视口再写，需 ui-js）
+  无障碍：纯装饰，aria-hidden；reduced-motion 下直接呈现终态。
+*/}}
+{{- $id := .id | default "mk" -}}
+{{- $size := .size | default "6rem" -}}
+<span class="mk{{ if eq .play "view" }} mk--view{{ end }}" style="--mk-w: {{ $size }}" aria-hidden="true">
+  <svg viewBox="0 0 120 60" focusable="false">
+    <defs>
+      <filter id="{{ $id }}-ink" x="-10%" y="-30%" width="120%" height="160%">
+        <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <mask id="{{ $id }}-wipe" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="60">
+        <rect class="mk-wipe" x="2" y="10" width="90" height="40" fill="#fff"/>
+      </mask>
+    </defs>
+
+    {{/* 一：起笔重按（左端厚 16）→ 行笔提细略上扬（9）→ 收笔顿住回锋（圆头） */}}
+    <g filter="url(#{{ $id }}-ink)">
+      <path class="mk-stroke" mask="url(#{{ $id }}-wipe)"
+        d="M7 31C6 25.5 11 22.5 17 23.5C21 24.2 24 26 28 26.6C42 28.4 60 27.6 76 24.8C81 24 86 24.6 87.5 27.6C89 31 85.5 33.5 80 34.2C64 36.2 45 37.2 30 38.4C22 39 15 41.5 10.5 39.5C7.8 38.3 7.4 34.5 7 31Z"/>
+      {{/* 、：略斜的水滴，上尖下圆 */}}
+      <g class="mk-dot-wrap">
+        <path class="mk-dot"
+          d="M100 17C106.5 17.5 113 25 112 33C111.2 39.5 105 42.4 100 39.8C95.6 37.6 94.6 31.8 95.4 26.4C96 22 97.6 16.9 100 17Z"/>
+      </g>
+    </g>
+    <circle class="mk-ring" cx="103.5" cy="30" r="8"/>
+  </svg>
+</span>

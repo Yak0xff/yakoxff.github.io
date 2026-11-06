@@ -1,0 +1,524 @@
+/* ===================================================================
+   V10.1 关于页：宣言 + 写作年轮 / 此刻 / 版权页 / 在别处
+   类名统一 ab- 前缀，与旧 components/_about.scss 完全隔离
+   =================================================================== */
+
+article.ab {
+  box-sizing: border-box;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ---------- 1. 首屏 ---------- */
+.ab-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: #{"clamp(2rem, 1rem + 4vw, 5rem)"};
+  padding: #{"clamp(1rem, 2vw, 2rem) 0 clamp(2rem, 1rem + 3vw, 3.5rem)"};
+  border-bottom: 2px solid var(--line-ink);
+}
+
+.ab-statement {
+  margin: 1.25rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.ab-statement-lead {
+  display: block;
+  margin-bottom: .5rem;
+  font-size: var(--step-2);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ink-2);
+}
+
+.ab-statement-main {
+  display: block;
+  font-size: var(--step-4);
+  line-height: 1.18;
+  letter-spacing: var(--tracking-display);
+  text-wrap: pretty;
+
+  /* 马克笔划线：载入后从左向右扫过主句 */
+  mark {
+    color: inherit;
+    background-color: transparent;   /* 去掉浏览器默认的亮黄底 */
+    padding: 0 .04em;
+    background-image: linear-gradient(transparent 62%, var(--zhu-line) 62%, var(--zhu-line) 92%, transparent 92%);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    animation: ab-marker 1100ms var(--ease-out) 450ms forwards;
+  }
+}
+
+@keyframes ab-marker {
+  to { background-size: 100% 100%; }
+}
+
+/* 落款：方印「盖」下来——放大、倾斜、透明 → 回弹落定 */
+.ab-sign {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: #{"clamp(1.5rem, 1rem + 1.5vw, 2.25rem)"};
+}
+
+/* 署名：「一点」先写，名字在点落定后浮现 */
+.ab-sign .mk { --mk-delay: 900ms; }
+
+.ab-sign-text {
+  opacity: 0;
+  transform: translateX(-6px);
+  animation: ab-sign-in 600ms var(--ease-out) 2000ms forwards;
+}
+
+@keyframes ab-sign-in {
+  to { opacity: 1; transform: none; }
+}
+
+.ab-sign-text {
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  margin: 0;
+}
+
+.ab-sign-name {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ab-sign-since {
+  font-size: var(--step--2);
+  color: var(--ink-3);
+}
+
+.ab-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: #{"clamp(1.75rem, 1rem + 2vw, 2.75rem)"} 0 0;
+  border-top: 1px solid var(--line);
+
+  div {
+    margin: 0;
+    padding: .9rem 0 0;
+  }
+
+  div + div {
+    padding-left: 1rem;
+    border-left: 1px solid var(--line);
+  }
+
+  dt {
+    font-family: var(--font-ui);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-meta);
+    color: var(--ink-3);
+  }
+
+  dd {
+    margin: .2rem 0 0;
+    font-size: var(--step-3);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ink);
+  }
+}
+
+/* ---------- 写作年轮 ---------- */
+.ab-rings { margin: 0; }
+
+.rings {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+}
+
+.rings-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.rings-grid line {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.rings-month {
+  font-family: var(--font-num);
+  font-size: 11px;
+  fill: var(--ink-3);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.rings-year {
+  font-family: var(--font-num);
+  font-size: 10.5px;
+  fill: var(--ink-3);
+}
+
+.rings-days circle {
+  fill: var(--ink);
+  opacity: 0;
+  transition: opacity 500ms var(--ease-out);
+  transition-delay: var(--d);
+}
+
+.rings.is-drawn .rings-days circle { opacity: .2; }
+
+.ring-post {
+  cursor: pointer;
+  outline: none;
+
+  circle {
+    fill: var(--zhu);
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0);
+    transition:
+      transform 520ms cubic-bezier(.3, 1.7, .5, 1) var(--d),
+      fill var(--t-1) var(--ease-ui);
+  }
+
+  &:hover circle,
+  &:focus-visible circle {
+    transform: scale(1.7);
+    transition-delay: 0s;
+  }
+
+  &:focus-visible circle {
+    stroke: var(--ink);
+    stroke-width: 1.5;
+  }
+}
+
+.rings.is-drawn .ring-post circle { transform: scale(1); }
+.rings.is-drawn .ring-post:hover circle,
+.rings.is-drawn .ring-post:focus-visible circle { transform: scale(1.7); }
+
+.rings-today circle { fill: var(--ink); }
+
+.rings-today .rings-today-halo {
+  fill: none;
+  stroke: var(--zhu);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ab-halo 2.4s var(--ease-ui) infinite;
+}
+
+@keyframes ab-halo {
+  0% { opacity: .9; transform: scale(.5); }
+  100% { opacity: 0; transform: scale(1.8); }
+}
+
+.rings-core circle { fill: var(--paper-2); }
+
+.rings-core-num {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 800;
+  fill: var(--ink);
+  text-anchor: middle;
+}
+
+.rings-core-label {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  fill: var(--ink-3);
+  text-anchor: middle;
+}
+
+.rings-tip {
+  position: absolute;
+  z-index: 5;
+  min-width: 10rem;
+  max-width: 16rem;
+  padding: .65rem .85rem;
+  pointer-events: none;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-lift);
+  opacity: 0;
+  transform: #{"translate(-50%, calc(-100% - 6px))"};
+  transition: opacity var(--t-1) var(--ease-ui), transform var(--t-2) var(--ease-out);
+
+  &.is-on {
+    opacity: 1;
+    transform: #{"translate(-50%, calc(-100% - 12px))"};
+  }
+}
+
+.rings-tip-date {
+  margin: 0 0 .3rem;
+  font-family: var(--font-num);
+  font-size: var(--step--2);
+  color: var(--zhu);
+}
+
+.rings-tip-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.rings-tip-title + .rings-tip-title { margin-top: .3rem; }
+
+.ab-rings-cap {
+  max-width: 30em;
+  margin: 1rem auto 0;
+  font-size: var(--step--1);
+  line-height: 1.7;
+  color: var(--ink-3);
+  text-align: center;
+
+  .eyebrow { display: block; margin-bottom: .25rem; color: var(--ink-2); }
+}
+
+/* ---------- 2. 此刻 ---------- */
+.ab-now-pulse {
+  width: 8px;
+  height: 8px;
+  margin-left: .25rem;
+  border-radius: 50%;
+  background: var(--zhu);
+  align-self: center;
+  animation: v-pulse 2.6s var(--ease-ui) infinite;
+}
+
+.ab-now-list {
+  display: grid;
+  /* 宽屏两列、窄屏一列：长书名「《思考，快与慢》— 丹尼尔·卡尼曼」需要横向空间 */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: #{"clamp(1.5rem, 4vw, 4rem)"};
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.ab-now-item {
+  display: grid;
+  grid-template-columns: 2.75rem 4.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: .75rem;
+  padding: 1.1rem .5rem 1.1rem 0;
+  border-bottom: 1px solid var(--line);
+  transition: background-color var(--t-2) var(--ease-ui);
+
+  &:hover { background: var(--zhu-wash); }
+  &:hover .ab-now-icon { color: var(--on-zhu); background: var(--zhu); border-color: var(--zhu); }
+}
+
+.ab-now-icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--zhu-ink);
+  border: 1px solid var(--zhu-line);
+  border-radius: 50%;
+  transition: background-color var(--t-2) var(--ease-ui), color var(--t-2) var(--ease-ui), border-color var(--t-2) var(--ease-ui);
+
+  svg { width: 18px; height: 18px; }
+}
+
+.ab-now-label {
+  font-family: var(--font-num);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-meta);
+  color: var(--ink-3);
+}
+
+.ab-now-value {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+/* ---------- 3. 版权页 ---------- */
+.ab-colophon {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: #{"clamp(2rem, 1.25rem + 3vw, 3.25rem) clamp(1.25rem, .75rem + 3vw, 3rem)"};
+  background: var(--surface);
+  border-top: 3px double var(--line-ink);
+  border-bottom: 3px double var(--line-ink);
+  text-align: center;
+}
+
+.ab-colophon-kicker {
+  margin: 0;
+  font-size: var(--step--2);
+  letter-spacing: .3em;
+  color: var(--ink-3);
+}
+
+.ab-colophon-book {
+  margin: .5rem 0 1.75rem;
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 800;
+  letter-spacing: .12em;
+  color: var(--ink);
+}
+
+.ab-colophon-list {
+  margin: 0;
+  text-align: left;
+
+  div {
+    display: grid;
+    grid-template-columns: 6.5em minmax(0, 1fr);
+    gap: 1rem;
+    padding: .5rem 0;
+    border-top: 1px dotted var(--line-2);
+  }
+
+  dt {
+    font-family: var(--font-read);
+    font-size: .9375rem;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+
+  dd {
+    margin: 0;
+    font-family: var(--font-read);
+    font-size: .9375rem;
+    line-height: 1.65;
+    color: var(--ink-1);
+  }
+}
+
+.ab-sep { color: var(--ink-3); }
+
+.ab-colophon-thanks {
+  margin: 1.75rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-read);
+  font-size: .9375rem;
+  line-height: 1.85;
+  color: var(--ink-2);
+  text-align: left;
+}
+
+/* 社标：压在底部双线正中，纸色底把线「断开」，像书末的出版社标志 */
+.ab-colophon-device {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  padding: 0 .9rem;
+  /* 上半截在卡片内（surface 色），下半截在卡片外（纸色）；
+     分界 45% 与下方 translateY(55%) 对应，正好落在双线上 */
+  background: linear-gradient(var(--surface) 45%, var(--paper) 45%);
+  transform: translate(-50%, 55%);
+  line-height: 0;
+}
+
+/* ---------- 4. 在别处 ---------- */
+.ab-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.ab-link {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: #{"clamp(1rem, .8rem + 1vw, 1.5rem) 0"};
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+
+  /* 悬停：朱砂淡底从左扫入 */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--zhu-wash);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--t-3) var(--ease-out);
+  }
+
+  &:hover { text-decoration: none; }
+  &:hover::before { transform: scaleX(1); }
+  &:hover .ab-link-name { transform: translateX(.75rem); color: var(--zhu-ink); }
+  &:hover .ab-link-arrow { transform: translate(3px, -3px); color: var(--zhu-ink); }
+}
+
+.ab-link-name {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 700;
+  letter-spacing: var(--tracking-title);
+  transition: transform var(--t-2) var(--ease-out), color var(--t-1) var(--ease-ui);
+}
+
+.ab-link-host {
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+.ab-link-arrow {
+  font-size: var(--step-2);
+  color: var(--ink-3);
+  transition: transform var(--t-2) var(--ease-out), color var(--t-1) var(--ease-ui);
+}
+
+.ab-content { max-width: var(--measure); }
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 900px) {
+  .ab-hero { grid-template-columns: 1fr; }
+  .ab-now-list { grid-template-columns: 1fr; }
+  .ab-rings { margin-top: .5rem; }
+  .rings { max-width: 440px; }
+}
+
+@media (max-width: 600px) {
+  .ab-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ab-stats div:nth-child(3) { padding-left: 0; border-left: 0; }
+  .ab-now-item { grid-template-columns: 2.75rem minmax(0, 1fr); }
+  .ab-now-label { grid-column: 2; }
+  .ab-now-value { grid-column: 2; margin-top: -.5rem; }
+  .ab-now-icon { grid-row: span 2; }
+  .ab-link-host { display: none; }
+  .ab-colophon-list div { grid-template-columns: 5.5em minmax(0, 1fr); gap: .75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ab-statement-main mark { background-size: 100% 100%; }
+  .ab-sign-text { animation: none; opacity: 1; transform: none; }
+  .rings .rings-days circle { opacity: .2; transition: none; }
+  .rings .ring-post circle { transform: scale(1); transition: none; }
+}

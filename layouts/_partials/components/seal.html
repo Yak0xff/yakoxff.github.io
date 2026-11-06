@@ -1,0 +1,5 @@
+{{/*
+  V10.2：方印设计已下线，统一改为「一点」笔墨标记 components/mark.html。
+  保留此文件仅为兼容旧调用：参数 .size 视作标记宽度。
+*/}}
+{{- partial "components/mark" (dict "id" (printf "mk-legacy-%d" (len (.size | default "x"))) "size" (.size | default "6rem")) -}}

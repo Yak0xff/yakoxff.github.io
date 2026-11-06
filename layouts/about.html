@@ -1,626 +1,162 @@
 {{ define "main" }}
-{{ $about := site.Data.about }}
-<article class="about-page">
-    {{ partial "header" . }}
-    
-    <!-- 页面标题 -->
-    <h1 class="about-title">{{ .Title }}</h1>
-    
-    <!-- 致谢提示 -->
-    <div class="about-callout">
-        <span class="callout-icon">🫡</span>
-        <p>由衷的致谢「<a href="https://www.geedea.pro/" target="_blank">極客死亡計劃</a>」。你会发现这个博客和他很像，不可否认这里使用了他的主题。很久没有觉得一个博客主题和内容这么摄人心扉啦，很羡慕<a href="https://www.guhub.cn/" target="_blank">Eltrec</a>如此有学识，自叹不如。</p>
+{{/*
+  关于页（V10.1 完整重做）
+  ---------------------------------------------------------------
+  旧版是「致谢框 + 简介 + GitHub 式热力图 + 正在卡片 + 鸣谢列表」五个
+  等重的盒子，读完不知道这个人是谁、写了什么。新版只讲三件事：
+    1. 我是谁      宣言大字 + 方印落款 + 一行数字
+    2. 我写了什么  「写作年轮」：所有文章按日排在螺线上，一圈一年
+    3. 我在哪      此刻 / 版权页（鸣谢）/ 在别处
+  署名与社标使用「一点」笔墨标记（components/mark.html），不再用方印
+  数据：data/about.yaml（intro / currently / credits）+ 站点统计 + params
+*/}}
+{{- $about := site.Data.about -}}
+{{- $posts := sort (where site.RegularPages "Section" "posts") "Date" -}}
+{{- $first := index $posts 0 -}}
+{{- $words := 0 -}}
+{{- $days := dict -}}
+{{- range $posts -}}
+  {{- $words = add $words .WordCount -}}
+  {{- $k := .Date.Format "2006-01-02" -}}
+  {{- $list := index $days $k | default slice -}}
+  {{- $days = merge $days (dict $k ($list | append (dict "t" .Title "u" .RelPermalink))) -}}
+{{- end -}}
+
+{{/* 宣言：按第一个逗号拆成「引子」与「主句」，主句做大字 */}}
+{{- $intro := trim ($about.intro | default site.Params.description) " \n" -}}
+{{- $parts := split $intro "，" -}}
+{{- $lead := "" -}}{{- $main := $intro -}}
+{{- if gt (len $parts) 1 -}}
+  {{- $lead = printf "%s，" (index $parts 0) -}}
+  {{- $main = delimit (after 1 $parts) "，" -}}
+{{- end -}}
+
+<article class="ab">
+  {{ partial "header" . }}
+
+  {{/* ---------- 1. 首屏：宣言 + 年轮 ---------- */}}
+  <section class="ab-hero" aria-labelledby="ab-title">
+    <div class="ab-hero-text">
+      <p class="eyebrow eyebrow--zhu"><span class="v-dot" aria-hidden="true"></span>{{ .Title }} · About</p>
+      <h1 class="ab-statement" id="ab-title">
+        {{ with $lead }}<span class="ab-statement-lead">{{ . }}</span>{{ end }}
+        <span class="ab-statement-main"><mark>{{ $main }}</mark></span>
+      </h1>
+
+      <div class="ab-sign">
+        {{ partial "components/mark" (dict "id" "mk-sign" "size" "7.5rem") }}
+        <p class="ab-sign-text">
+          <span class="ab-sign-name">{{ site.Params.author | default "Yak" }}</span>
+          {{ with $first }}<span class="ab-sign-since num">自 {{ .Date.Format "2006.01" }} 起，记录至今</span>{{ end }}
+        </p>
+      </div>
+
+      <dl class="ab-stats">
+        <div><dt>文章</dt><dd class="num">{{ len $posts }}</dd></div>
+        <div><dt>万字</dt><dd class="num">{{ lang.FormatNumber 1 (div (float $words) 10000) }}</dd></div>
+        <div><dt>写作日</dt><dd class="num">{{ len $days }}</dd></div>
+        <div><dt>主题</dt><dd class="num">{{ len site.Taxonomies.tags }}</dd></div>
+      </dl>
     </div>
 
-    <!-- 简介 -->
-    {{ with $about.intro }}
-    <section class="about-intro">
-        <p>{{ . | markdownify }}</p>
-    </section>
-    {{ end }}
+    <figure class="ab-rings">
+      <div class="rings" data-rings></div>
+      <figcaption class="ab-rings-cap">
+        <span class="eyebrow">写作年轮</span>
+        每一圈是一年，从正上方的一月开始顺时针转一周；朱砂点是写下文章的日子，悬停或聚焦可看标题，点击直达。
+      </figcaption>
+      <noscript><p class="ab-rings-cap">年轮需要 JavaScript 绘制，可前往 <a href="/posts/">归档</a> 查看全部文章。</p></noscript>
+    </figure>
+    <script type="application/json" id="rings-data">{{ $days | jsonify | safeJS }}</script>
+  </section>
 
-    <!-- 写作贡献图 -->
-    <section class="about-section">
-        <h2><span class="section-icon">📝</span> 写作记录</h2>
-        <div class="contributions-wrapper">
-            <div class="contributions-graph-monthly" id="contributions-graph"></div>
-            <div class="contrib-legend">
-                <span class="contrib-total" id="contrib-total"></span>
-                <div class="legend-scale">
-                    <span>少</span>
-                    <span class="legend-cell" data-level="0"></span>
-                    <span class="legend-cell" data-level="1"></span>
-                    <span class="legend-cell" data-level="2"></span>
-                    <span class="legend-cell" data-level="3"></span>
-                    <span class="legend-cell" data-level="4"></span>
-                    <span>多</span>
-                </div>
-            </div>
-        </div>
-    </section>
+  {{/* ---------- 2. 此刻 ---------- */}}
+  {{ with $about.currently }}
+  <section class="v-section ab-now" aria-labelledby="ab-now-title">
+    <div class="v-section-head">
+      <span class="v-section-no" aria-hidden="true">01</span>
+      <h2 class="v-section-title" id="ab-now-title">此刻</h2>
+      <span class="ab-now-pulse" aria-hidden="true"></span>
+    </div>
+    <ul class="ab-now-list" data-stagger>
+      {{ range . }}
+      <li class="ab-now-item reveal">
+        <span class="ab-now-icon" aria-hidden="true">{{ .svg | safeHTML }}</span>
+        <span class="ab-now-label">{{ .label }}</span>
+        <span class="ab-now-value">{{ replaceRE `\s*-{2,}\s*` " — " .value }}</span>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
 
-    <!-- 内容发布数据（Hugo 生成，统计 posts section） -->
-    <script id="posts-data" type="application/json">
-    {
-        {{- $allPages := where site.RegularPages "Section" "posts" -}}
-        {{- $dateMap := dict -}}
-        {{- range $allPages -}}
-            {{- $dateStr := .Date.Format "2006-01-02" -}}
-            {{- if isset $dateMap $dateStr -}}
-                {{- $dateMap = merge $dateMap (dict $dateStr (add (index $dateMap $dateStr) 1)) -}}
-            {{- else -}}
-                {{- $dateMap = merge $dateMap (dict $dateStr 1) -}}
-            {{- end -}}
-        {{- end -}}
-        {{- $first := true -}}
-        {{- range $date, $count := $dateMap -}}
-            {{- if not $first }},{{ end -}}
-            "{{ $date }}": {{ $count }}
-            {{- $first = false -}}
-        {{- end -}}
-    }
-    </script>
+  {{/* ---------- 3. 版权页：把鸣谢写成一本书的最后一页 ---------- */}}
+  <section class="v-section ab-colophon-wrap" aria-labelledby="ab-colophon-title">
+    <div class="v-section-head">
+      <span class="v-section-no" aria-hidden="true">02</span>
+      <h2 class="v-section-title" id="ab-colophon-title">版权页</h2>
+    </div>
 
-    <!-- 正在... -->
-    {{ with $about.currently }}
-    <section class="about-section">
-        <h2><span class="section-icon">✨</span> 正在...</h2>
-        <div class="bento-grid">
-            {{ range $i, $item := . }}
-            <div class="bento-item{{ if eq $i 0 }} bento-featured{{ end }}">
-                <div class="bento-header">
-                    <span class="bento-icon">{{ $item.svg | safeHTML }}</span>
-                    <span class="bento-label">{{ $item.label }}</span>
-                </div>
-                <span class="bento-value">{{ $item.value }}</span>
-            </div>
-            {{ end }}
-        </div>
-    </section>
-    {{ end }}
-
-    <!-- 鸣谢 -->
-    {{ with $about.credits }}
-    <section class="about-section">
-        <h2><span class="section-icon">🙏</span> 鸣谢</h2>
-        {{ range . }}
-        <div class="credits-group">
-            <h3>{{ .title }}</h3>
-            <ul class="credits-list">
-                {{ range .items }}
-                <li>
-                    <strong>{{ .name }}</strong>: 
-                    <a href="{{ .link }}" target="_blank">{{ .source }}</a>
-                </li>
-                {{ end }}
-            </ul>
+    <div class="ab-colophon reveal">
+      <p class="ab-colophon-kicker num">COLOPHON</p>
+      <p class="ab-colophon-book">{{ site.Title }}</p>
+      <dl class="ab-colophon-list">
+        <div><dt>著　者</dt><dd>{{ site.Params.author | default "Yak" }}</dd></div>
+        <div><dt>字　体</dt><dd>标题 苹方 / 思源黑体　正文 霞鹜文楷　数字 等宽</dd></div>
+        <div><dt>印　制</dt><dd>Hugo {{ hugo.Version }} 静态生成</dd></div>
+        <div><dt>检　索</dt><dd>Pagefind</dd></div>
+        <div><dt>评　论</dt><dd>Giscus</dd></div>
+        <div><dt>统　计</dt><dd>Umami</dd></div>
+        {{ range $about.credits }}
+        <div>
+          <dt>{{ .title }}</dt>
+          <dd>{{ range $i, $c := .items }}{{ if $i }}<span class="ab-sep" aria-hidden="true"> · </span>{{ end }}<a class="v-link" href="{{ $c.link }}" target="_blank" rel="noopener" title="{{ $c.name }}">{{ $c.source }}</a>{{ end }}</dd>
         </div>
         {{ end }}
-    </section>
-    {{ end }}
+        {{ with $first }}<div><dt>版　次</dt><dd class="num">{{ .Date.Format "2006 年 1 月" }} 第 1 版</dd></div>{{ end }}
+        <div><dt>印　次</dt><dd class="num">{{ now.Format "2006 年 1 月" }} 第 {{ len $posts }} 次印刷</dd></div>
+        <div><dt>定　价</dt><dd>免费。以 <a class="v-link" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> 授权，欢迎转载</dd></div>
+      </dl>
+      <p class="ab-colophon-thanks">
+        特别致谢「<a class="v-link" href="https://www.geedea.pro/" target="_blank" rel="noopener">極客死亡計劃</a>」。你会发现这个博客和他很像，不可否认这里使用了他的主题。很久没有觉得一个博客主题和内容这么摄人心扉啦，很羡慕 <a class="v-link" href="https://www.guhub.cn/" target="_blank" rel="noopener">Eltrec</a> 如此有学识，自叹不如。
+      </p>
+      {{/* 出版社社标：「一点」标记压在版权页底部双线上 */}}
+      <span class="ab-colophon-device">{{ partial "components/mark" (dict "id" "mk-device" "size" "4.5rem" "play" "view") }}</span>
+    </div>
+  </section>
 
-    <!-- 正文内容 -->
-    {{ with .Content }}
-    <section class="about-content markdown-body">
-        {{ . }}
-    </section>
-    {{ end }}
+  {{/* ---------- 4. 在别处 ---------- */}}
+  <section class="v-section ab-elsewhere" aria-labelledby="ab-else-title">
+    <div class="v-section-head">
+      <span class="v-section-no" aria-hidden="true">03</span>
+      <h2 class="v-section-title" id="ab-else-title">在别处</h2>
+    </div>
+    <ul class="ab-links" data-stagger>
+      <li class="reveal">
+        <a class="ab-link" href="/rss/">
+          <span class="ab-link-name">RSS 订阅</span>
+          <span class="ab-link-host num">/rss</span>
+          <span class="ab-link-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      {{ range site.Params.footerExternalLinks }}
+      <li class="reveal">
+        <a class="ab-link" href="{{ .link }}" target="_blank" rel="noopener">
+          <span class="ab-link-name">{{ .name }}</span>
+          <span class="ab-link-host num">{{ (urls.Parse .link).Host }}</span>
+          <span class="ab-link-arrow" aria-hidden="true">↗</span>
+          <span class="sr-only">（新窗口打开）</span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+
+  {{ with .Content }}
+  <section class="v-section ab-content markdown-body">{{ . }}</section>
+  {{ end }}
 </article>
 
-<style>
-.about-page {
-    max-width: var(--page-width);
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-.about-title {
-    font-size: 2.25rem;
-    font-weight: bold;
-    color: var(--text-color);
-    margin-bottom: 1.5rem;
-}
-
-.about-callout {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    background: var(--block-background-color);
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    align-items: flex-start;
-}
-
-.callout-icon {
-    font-size: 1.5rem;
-    flex-shrink: 0;
-}
-
-.about-callout p {
-    margin: 0;
-    color: var(--text-color);
-    line-height: 1.6;
-}
-
-.about-callout a {
-    color: var(--link-color);
-    text-decoration: underline;
-    text-decoration-style: wavy;
-    text-underline-offset: 0.2em;
-    text-decoration-color: var(--border-color);
-}
-
-.about-intro {
-    font-size: 1.15rem;
-    line-height: 1.8;
-    color: var(--text-color);
-    margin-bottom: 2.5rem;
-    font-family: var(--serif-font-family);
-}
-
-.about-section {
-    margin-bottom: 2.5rem;
-}
-
-.about-section h2 {
-    font-size: 1.5rem;
-    color: var(--text-color);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.section-icon {
-    font-size: 1.25rem;
-}
-
-/* 贡献图样式 - 按月分组 */
-.contributions-wrapper {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 1rem;
-    overflow-x: auto;
-}
-
-.contributions-graph-monthly {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.contrib-month-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.contrib-month-label {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--text-color);
-    margin-bottom: 4px;
-    text-align: center;
-}
-
-.contrib-month-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
-}
-
-.contrib-day-header {
-    font-size: 0.6rem;
-    color: var(--secondary-text-color);
-    text-align: center;
-    padding-bottom: 2px;
-}
-
-.contrib-cell {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-    background: var(--contrib-level-0);
-    cursor: pointer;
-    position: relative;
-}
-
-.contrib-cell.empty {
-    background: transparent;
-    cursor: default;
-}
-
-.contrib-cell:not(.empty):hover {
-    outline: 1px solid var(--secondary-text-color);
-    outline-offset: -1px;
-}
-
-.contrib-cell[data-level="1"] { background: var(--contrib-level-1); }
-.contrib-cell[data-level="2"] { background: var(--contrib-level-2); }
-.contrib-cell[data-level="3"] { background: var(--contrib-level-3); }
-.contrib-cell[data-level="4"] { background: var(--contrib-level-4); }
-
-/* 贡献图颜色 - 浅色模式 */
-:root {
-    --contrib-level-0: #ebedf0;
-    --contrib-level-1: #9be9a8;
-    --contrib-level-2: #40c463;
-    --contrib-level-3: #30a14e;
-    --contrib-level-4: #216e39;
-}
-
-/* 贡献图颜色 - 深色模式 */
-html.dark {
-    --contrib-level-0: #161b22;
-    --contrib-level-1: #0e4429;
-    --contrib-level-2: #006d32;
-    --contrib-level-3: #26a641;
-    --contrib-level-4: #39d353;
-}
-
-@media (prefers-color-scheme: dark) {
-    html:not(.light) {
-        --contrib-level-0: #161b22;
-        --contrib-level-1: #0e4429;
-        --contrib-level-2: #006d32;
-        --contrib-level-3: #26a641;
-        --contrib-level-4: #39d353;
-    }
-}
-
-.contrib-legend {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.75rem;
-    font-size: 0.75rem;
-    color: var(--secondary-text-color);
-}
-
-.legend-scale {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-}
-
-.legend-cell {
-    width: 11px;
-    height: 11px;
-    border-radius: 2px;
-    background: var(--contrib-level-0);
-}
-
-.legend-cell[data-level="1"] { background: var(--contrib-level-1); }
-.legend-cell[data-level="2"] { background: var(--contrib-level-2); }
-.legend-cell[data-level="3"] { background: var(--contrib-level-3); }
-.legend-cell[data-level="4"] { background: var(--contrib-level-4); }
-
-/* Tooltip */
-.contrib-tooltip {
-    position: fixed;
-    background: var(--text-color);
-    color: var(--background-color);
-    padding: 0.4rem 0.6rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    pointer-events: none;
-    z-index: 1000;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.15s;
-}
-
-.contrib-tooltip.visible {
-    opacity: 1;
-}
-
-/* Bento Grid */
-.bento-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
-}
-
-.bento-item {
-    background: var(--block-background-color);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.bento-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-}
-
-html.dark .bento-item:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-}
-
-/* 第一个卡片突出显示 */
-.bento-featured {
-    grid-column: span 2;
-}
-
-.bento-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.bento-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--secondary-text-color);
-    flex-shrink: 0;
-}
-
-.bento-icon svg {
-    width: 18px;
-    height: 18px;
-}
-
-.bento-label {
-    font-size: 0.8rem;
-    color: var(--secondary-text-color);
-    font-weight: 500;
-}
-
-.bento-value {
-    font-size: 1.05rem;
-    color: var(--text-color);
-    font-weight: 600;
-    line-height: 1.4;
-}
-
-.bento-featured .bento-value {
-    font-size: 1.2rem;
-}
-
-/* 响应式 */
-@media (max-width: 640px) {
-    .bento-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .bento-featured {
-        grid-column: span 2;
-    }
-    
-    .bento-item {
-        min-height: 100px;
-        padding: 1rem;
-    }
-}
-
-@media (max-width: 400px) {
-    .bento-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .bento-featured {
-        grid-column: span 1;
-    }
-}
-
-/* 鸣谢 */
-.credits-group {
-    margin-bottom: 1.5rem;
-}
-
-.credits-group h3 {
-    font-size: 1rem;
-    color: var(--secondary-text-color);
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-
-.credits-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.credits-list li {
-    padding: 0.35rem 0;
-    color: var(--text-color);
-    font-size: 0.95rem;
-}
-
-.credits-list a {
-    color: var(--link-color);
-    text-decoration: underline;
-    text-decoration-style: wavy;
-    text-underline-offset: 0.2em;
-    text-decoration-color: var(--border-color);
-}
-
-.about-content {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
-}
-
-/* 响应式 */
-@media (max-width: 640px) {
-    .about-title {
-        font-size: 1.75rem;
-    }
-    
-    .about-callout {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-}
-</style>
-
-<script>
-(function() {
-    // 获取文章发布数据
-    const postsDataEl = document.getElementById('posts-data');
-    const postsData = postsDataEl ? JSON.parse(postsDataEl.textContent) : {};
-    
-    const today = new Date();
-    // 计算过去12个月的起始日期（包括当前月）
-    const startMonth = new Date(today.getFullYear(), today.getMonth() - 11, 1);
-    
-    // 生成月份数据
-    const monthGroups = [];
-    let totalPosts = 0;
-    
-    const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-    
-    let current = new Date(startMonth);
-    let prevYear = null;
-    
-    for (let i = 0; i < 12; i++) {
-        const year = current.getFullYear();
-        const month = current.getMonth();
-        const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
-        
-        // 生成月份标签（如果年份变化，显示年份）
-        let monthLabel = monthNames[month];
-        if (prevYear !== null && prevYear !== year) {
-            monthLabel = `${year}年${monthLabel}`;
-        } else if (i === 0) {
-            // 第一个月份，如果年份不是当前年，显示年份
-            if (year !== today.getFullYear()) {
-                monthLabel = `${year}年${monthLabel}`;
-            }
-        }
-        prevYear = year;
-        
-        // 计算第一天的星期偏移（周一作为第一列）
-        const firstDayOfWeek = firstDay.getDay();
-        const offset = (firstDayOfWeek + 6) % 7; // 0=周一, 1=周二, ..., 6=周日
-        
-        const days = [];
-        
-        // 添加空白格子直到周一
-        for (let j = 0; j < offset; j++) {
-            days.push({ type: 'empty' });
-        }
-        
-        // 添加该月的每一天
-        for (let day = 1; day <= lastDay.getDate(); day++) {
-            const date = new Date(year, month, day);
-            // 如果日期超过今天，留空
-            if (date > today) {
-                days.push({ type: 'empty' });
-                continue;
-            }
-            
-            const dateStr = `${year}-${String(month+1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const count = postsData[dateStr] || 0;
-            totalPosts += count;
-            
-            // 计算等级
-            let level = 0;
-            if (count > 0) {
-                if (count === 1) level = 1;
-                else if (count === 2) level = 2;
-                else if (count <= 4) level = 3;
-                else level = 4;
-            }
-            
-            days.push({
-                type: 'day',
-                date: dateStr,
-                count: count,
-                level: level
-            });
-        }
-        
-        // 按每7天分组
-        const rows = [];
-        for (let j = 0; j < days.length; j += 7) {
-            rows.push(days.slice(j, j + 7));
-        }
-        
-        monthGroups.push({
-            label: monthLabel,
-            rows: rows
-        });
-        
-        // 移动到下一个月
-        current.setMonth(current.getMonth() + 1);
-    }
-    
-    // 渲染贡献图
-    const graphEl = document.getElementById('contributions-graph');
-    
-    monthGroups.forEach(group => {
-        const monthGroupEl = document.createElement('div');
-        monthGroupEl.className = 'contrib-month-group';
-        
-        const monthLabelEl = document.createElement('div');
-        monthLabelEl.className = 'contrib-month-label';
-        monthLabelEl.textContent = group.label;
-        monthGroupEl.appendChild(monthLabelEl);
-        
-        const monthGridEl = document.createElement('div');
-        monthGridEl.className = 'contrib-month-grid';
-        
-        group.rows.forEach(row => {
-            row.forEach(day => {
-                const cell = document.createElement('div');
-                cell.className = 'contrib-cell';
-                
-                if (day.type === 'empty') {
-                    cell.classList.add('empty');
-                } else {
-                    cell.dataset.level = day.level;
-                    cell.dataset.date = day.date;
-                    cell.dataset.count = day.count;
-                }
-                
-                monthGridEl.appendChild(cell);
-            });
-        });
-        
-        monthGroupEl.appendChild(monthGridEl);
-        graphEl.appendChild(monthGroupEl);
-    });
-    
-    // 显示总数
-    document.getElementById('contrib-total').textContent = `过去一年共发布 ${totalPosts} 篇内容`;
-    
-    // Tooltip
-    const tooltip = document.createElement('div');
-    tooltip.className = 'contrib-tooltip';
-    document.body.appendChild(tooltip);
-    
-    // 事件委托
-    graphEl.addEventListener('mouseover', (e) => {
-        const cell = e.target;
-        if (cell.classList.contains('contrib-cell') && !cell.classList.contains('empty') && cell.dataset.date) {
-            const date = cell.dataset.date;
-            const count = cell.dataset.count;
-            tooltip.textContent = `${date}: ${count} 篇内容`;
-            tooltip.classList.add('visible');
-        }
-    });
-    
-    graphEl.addEventListener('mousemove', (e) => {
-        tooltip.style.left = e.clientX + 10 + 'px';
-        tooltip.style.top = e.clientY + 10 + 'px';
-    });
-    
-    graphEl.addEventListener('mouseout', (e) => {
-        const cell = e.target;
-        if (cell.classList.contains('contrib-cell')) {
-            tooltip.classList.remove('visible');
-        }
-    });
-})();
-</script>
-
+{{ with resources.Get "js/rings.js" | minify }}<script>{{ .Content | safeJS }}</script>{{ end }}
 {{ partial "footer.html" . }}
 {{ end }}
