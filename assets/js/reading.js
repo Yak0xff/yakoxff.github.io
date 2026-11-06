@@ -21,7 +21,15 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var titleEl = document.querySelector('.rd-title');
   var pageTitle = titleEl ? titleEl.textContent.trim() : document.title;
-  var t0 = Date.now();
+  doc.classList.add('rd-ready');
+
+  // 实际阅读时长：只累计标签页可见的时间，切走不计
+  var readMs = 0, since = document.hidden ? 0 : Date.now();
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { if (since) readMs += Date.now() - since; since = 0; }
+    else since = Date.now();
+  });
+  function readMinutes() { return Math.max(1, Math.round((readMs + (since ? Date.now() - since : 0)) / 60000)); }
 
   function h(tag, cls, text) {
     var e = document.createElement(tag);
@@ -286,6 +294,9 @@
   var selTimer = 0;
   document.addEventListener('selectionchange', function () { clearTimeout(selTimer); selTimer = setTimeout(showQuote, 220); });
   window.addEventListener('scroll', hideQuote, { passive: true });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && quote.classList.contains('is-on')) hideQuote();
+  });
   quote.addEventListener('mousedown', function (e) { e.preventDefault(); });
   qCopy.addEventListener('click', function () {
     copy('「' + picked + '」\n——《' + pageTitle + '》 ' + baseURL(), '摘句已复制');
@@ -302,13 +313,22 @@
   if (fin && spent && 'IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (es) {
       if (!es[0].isIntersecting) return;
-      var min = Math.max(1, Math.round((Date.now() - t0) / 60000));
+      var min = readMinutes();
       spent.textContent = '· 此次用时 ' + min + ' 分钟';
       spent.hidden = false;
       fin.classList.add('is-in');
       io.disconnect();
     }, { threshold: 0.5 });
     io.observe(fin);
+  }
+
+  // 评论按钮：与阅读设置按钮一致，用 aria-expanded 播报展开状态
+  var cToggle = document.getElementById('comments-toggle');
+  var cSection = document.getElementById('comments-section');
+  if (cToggle && cSection) {
+    var syncC = function () { cToggle.setAttribute('aria-expanded', cSection.classList.contains('hidden') ? 'false' : 'true'); };
+    new MutationObserver(syncC).observe(cSection, { attributes: true, attributeFilter: ['class'] });
+    syncC();
   }
 
   var copyBtn = document.querySelector('[data-rd-copy]');

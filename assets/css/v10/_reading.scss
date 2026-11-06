@@ -9,19 +9,21 @@
 /* 旧 TOC 侧栏为正文预留的右通道不再需要：正文回到页面正中 */
 body.is-posts.is-single main { padding-right: 0; }
 
+/* 正文栏宽：定义在 html 上——点线目录挂在 body 下，必须能读到同一个值 */
+:root { --rd-measure: var(--measure); }
+html[data-width="narrow"] { --rd-measure: 600px; }
+html[data-width="wide"] { --rd-measure: 860px; }
+
 article.post-article.rd,
 html[data-width] article.post-article.rd {
   --rd-wide: min(960px, 100vw - 3rem);
-  --rd-measure: var(--measure);
   box-sizing: border-box;
   max-width: calc(var(--container) + var(--gutter) * 2);
   margin: 0 auto;
   padding: 0 var(--gutter);
 }
 
-/* 阅读偏好「栏宽」改为作用在正文栏，而不是整篇（扉页保持宽版） */
-html[data-width="narrow"] .rd { --rd-measure: 600px; }
-html[data-width="wide"] .rd { --rd-measure: 860px; }
+/* 阅读偏好「栏宽」只作用在正文栏（--rd-measure，见上），扉页保持宽版 */
 
 /* ===================================================================
    1. 扉页
@@ -485,18 +487,19 @@ html[data-width="wide"] .rd { --rd-measure: 860px; }
    3. 读程：点线目录（宽屏）
    =================================================================== */
 .rd-rail {
-  --rail-left: calc(50% + var(--rd-measure, 700px) / 2 + var(--gutter) + 2rem);
+  --rail-left: calc(50% + var(--rd-measure) / 2 + var(--gutter) + 2rem);
   position: fixed;
   z-index: 40;
   top: calc(var(--topbar-h) + 14vh);
   bottom: 16vh;
   left: var(--rail-left);
-  width: calc(50vw - var(--rd-measure, 700px) / 2 - var(--gutter) - 4rem);
+  width: calc(50vw - var(--rd-measure) / 2 - var(--gutter) - 4rem);
   max-width: 250px;
   display: none;
   opacity: 0;
+  visibility: hidden;
   transform: translateX(8px);
-  transition: opacity var(--t-2) var(--ease-ui), transform var(--t-3) var(--ease-out);
+  transition: opacity var(--t-2) var(--ease-ui), transform var(--t-3) var(--ease-out), visibility var(--t-2);
   pointer-events: none;
 }
 
@@ -505,14 +508,17 @@ html[data-width="wide"] .rd { --rd-measure: 860px; }
 
   html.rd-in-body .rd-rail {
     opacity: 1;
+    visibility: visible;
     transform: none;
     pointer-events: auto;
   }
 
-  /* 有点线目录时，顶部进度条与胶囊都退场，读程只保留一处 */
-  html.rd-has-rail .reader-progress,
-  html.rd-has-rail .rd-pill { display: none; }
+  /* 点线目录在场时胶囊退场；栏宽设为「宽」时目录不显示，由胶囊接替 */
+  html.rd-has-rail:not([data-width="wide"]) .rd-pill { display: none; }
 }
+
+/* 读程只保留一处：阅读层脚本就绪后，顶部进度条交给胶囊进度环 / 点线目录 */
+html.rd-ready .reader-progress { display: none; }
 
 html[data-width="wide"] .rd-rail { display: none !important; }
 
@@ -520,6 +526,7 @@ html[data-width="wide"] .rd-rail { display: none !important; }
 html.rd-past-body .rd-rail,
 html.rd-past-body .rd-pill {
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 
@@ -668,18 +675,21 @@ html.rd-past-body .rd-pill { transform: translate(-50%, 16px); }
   box-shadow: var(--shadow-lift);
   cursor: pointer;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   transform: translate(-50%, 16px);
   transition:
     opacity var(--t-2) var(--ease-ui),
     transform var(--t-3) var(--ease-out),
-    bottom var(--t-2) var(--ease-out);
+    bottom var(--t-2) var(--ease-out),
+    visibility var(--t-2);
 
   &:active { transform: translate(-50%, 0) scale(.97); }
 }
 
 html.rd-in-body .rd-pill {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: translate(-50%, 0);
 }
@@ -880,10 +890,11 @@ html.rd-in-body .rd-pill {
   border-radius: 10px;
   box-shadow: var(--shadow-lift);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity var(--t-1) var(--ease-ui);
+  transition: opacity var(--t-1) var(--ease-ui), visibility var(--t-1);
 
-  &.is-on { opacity: 1; pointer-events: auto; }
+  &.is-on { opacity: 1; visibility: visible; pointer-events: auto; }
 }
 
 .rd-quote-btn {
@@ -899,10 +910,9 @@ html.rd-in-body .rd-pill {
   cursor: pointer;
 
   &:first-child::before { content: "「」"; margin-right: .35em; color: var(--zhu); font-weight: 700; }
-  &:hover { background: rgba(255, 255, 255, .12); }
+  /* 底色是 --ink、字是 --paper：用 --paper 调出悬停层，系统暗色 / 手动暗色都成立 */
+  &:hover { background: color-mix(in srgb, var(--paper) 16%, transparent); }
 }
-
-html.dark .rd-quote-btn:hover { background: rgba(0, 0, 0, .1); }
 
 .rd-toast {
   position: fixed;
