@@ -1,12 +1,20 @@
+{{- /*
+  正文图片：补上真实宽高，图片加载完不会把正文往下顶（CLS）。
+  尺寸来自 data/imgmeta.json（scripts/optimize-images.py 生成）——
+  静态站拿不到 static/ 下图片的尺寸，所以预先算好放进 data。命中不了就退化为无尺寸。
+  loading=lazy + decoding=async：首屏之外的图不抢带宽。
+*/ -}}
 {{- $src := .Destination -}}
 {{- $alt := .Text | default "" -}}
 {{- $caption := .Title | default "" -}}
 {{- $class := .Attributes.class | default "" -}}
+{{- $meta := index site.Data.imgmeta $src -}}
 
 <figure>
     <img
-        class="lazy {{ $class }}" loading="lazy"
+        class="lazy {{ $class }}" loading="lazy" decoding="async"
         src="{{ $src }}" alt="{{ $alt }}"
+        {{- with $meta }} width="{{ .w }}" height="{{ .h }}"{{ end }}
         data-libra
     />
     {{- if $caption }}
