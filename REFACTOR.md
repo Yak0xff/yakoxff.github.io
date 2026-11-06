@@ -607,3 +607,70 @@ CDP 量化探针（1440 视口）量出两个叠加原因：
 | 落款 | 评论按钮无展开状态，读屏无法得知评论区是否打开 | `aria-expanded` 与评论区显隐同步（与 Aa 阅读设置按钮一致） |
 
 验证：4 篇 × 360/390/768/1280/1920 无溢出、单 h1、读程恰好一处；明暗对比度 0 失败；生产 207 页 / sitemap 零差异。
+
+## 二十、V10.4：性能收敛与资源清理
+
+设计定稿之后回头清账：把「每页都在付，但其实没用上」的资源一次性摘掉。
+
+### 20.1 清掉的东西
+
+| 对象 | 情况 | 处理 |
+|---|---|---|
+| `static/img/how-to-articulate/venv/` | 误提交进静态目录的 Python 虚拟环境，1195 个文件 / 16MB，全部会被发布到线上 | 删除（纯垃圾，无任何引用） |
+| `assets/css/components/_littlefoot.scss` + `static/js/littlefoot.js` + 初始化脚本 | 全站没有一处脚注（`[^1]`），却每页加载 10.8KB 脚本 + 5.5KB 样式 | 全部删除 |
+| `static/css/uno.css`、根目录 `uno.css` | 与 `assets/css/uno.css`（真正的打包源）重复的两份历史副本 | 删除 |
+| `assets/css/legacy/{_footer,_header,_header-simple,_quick-actions}.scss` | 对应模板早被顶栏 / 新页脚取代，导入早已移除 | 删除 |
+| `assets/css/components/_about.scss` | 旧版关于页（Bento / 贡献图）样式，现行关于页已全部改用 `ab-` 前缀 | 删除（6.5KB） |
+| `layouts/_partials/scripts/action-menu-js.html` | 内联 4.5KB × 每个文章页，其中一大段是 `location.host === 'www.geedea.pro'` 的点赞逻辑 —— 本站永远不成立 | 重写为 `assets/js/action-menu.js`（0.9KB，外链 + SRI），只在有操作条的页面加载；顺手补上 `aria-expanded` 同步 |
+| `static/graph.html`、`static/css/uno.css`、`.hugo_build.lock` | 无引用 / 空锁文件 | 删除 |
+| Aplayer 样式与初始化 | 全站 0 篇使用 aplayer 短代码，12KB CSS 却跟着主样式包发给每页 | 改由 `HasShortcode "aplayer"` 控制，无使用即零成本 |
+
+### 20.2 字体：从「6 个族 · 630KB CSS」到「2 个文件 · 自托管」
+
+原方案从 jsdelivr 拉 `lxgw-wenkai-webfont` 的 `style.css`，它 `@import` 了 6 个子样式表
+（regular / light / bold × 常规 / 等宽），合计 582 条 `@font-face`、≈630KB CSS。
+实际全站只用到 `LXGW WenKai` 一个字族的 400 与粗体两个档位。
+
+- `scripts/build-font-subset.sh`：扫全站（content / layouts / i18n / data / config）得到 3125 个字符，
+  用 `pyftsubset` 裁成 `lxgw-wenkai-regular.woff2` 与 `lxgw-wenkai-medium.woff2`（各 ≈683KB），
+  放在 `static/fonts/`，`@font-face` 写在 `assets/css/_fonts.scss` 并随主样式包下发 —— 浏览器只需 1 个 CSS、1~2 个 woff2。
+- 粗体：官方 1.330 之后不再单独发布 Bold（且那份 Bold.ttf 缺 cmap，无法子集化），改用同版本 Medium 承载
+  `font-weight: 500 700`。两档 hhea / OS/2 度量完全一致（upem 1000、928/-256、1032/285），混排不跳行，
+  也不会出现浏览器合成假粗体。
+- 校验：拿构建产物里所有页面的文本字符逐个比 cmap，只缺 emoji（本就该由系统 emoji 字体接住）。
+- 新文章若出现子集外的生僻字，重跑脚本即可（回退时是系统宋体，不会出现方块）。
+
+### 20.3 图片：无损压缩 + 真实宽高
+
+- `scripts/optimize-images.py`：PNG 走 `oxipng -o4 --strip safe`、JPG 走 `jpegtran -optimize`，
+  逐张解码比对 RGBA 像素，有任何差异就跳过。32 张图 12.8MB → 10.5MB（最大一张 3.1MB → 2.1MB），像素逐张比对与改动前完全一致。
+- 同时把每张图的宽高写进 `data/imgmeta.json`，`_markup/render-image.html` 据此输出 `width` / `height`
+  （静态站渲染期拿不到 `static/` 下图片尺寸），图片位置在下载完成前就占好，正文不再被顶下去。
+
+### 20.4 按页粒度加载
+
+| 资源 | 之前 | 现在 |
+|---|---|---|
+| 阅读层脚本包 | 全站一个包（读程 / 目录 / 偏好 / 快捷键 / 进场） | 拆成 `reader-page`（文章内页）与 `reader-list`（其余页面，只剩 0.6KB 的进场动画） |
+| 评论脚本 | 内联在每个 `.File` 页面 | 外链，仅随文末操作条出现 |
+| aplayer | CSS 进主包、初始化脚本每页内联 | 都随短代码按需 |
+| 首页涟漪场 | 可见即持续 rAF | 无波纹且指针静止 600ms 后停表，只留最后一帧；下一次交互或自动涟漪（定时器）再唤醒 |
+| 字体预热 | 6 个 CSS 请求到第三方 | 0 次外部请求；`dns-prefetch` 只留 giscus 与 umami |
+
+另外给 `static/_headers` 补了缓存策略：带指纹的 `/css/main.min.*`、`/js/*.min.*` 永久 immutable，
+字体 7 天、图片 30 天，HTML 每次回源校验。
+
+### 20.5 实测
+
+| 指标 | 改动前 | 改动后 |
+|---|---|---|
+| 构建产物 | 33.6MB / 1422 文件 | 17.5MB / 348 文件 |
+| 首页请求数 | 12（其中 7 个来自字体 CDN） | 5 |
+| 首页 CSS | 198KB | 171KB |
+| 首页 HTML | 34.2KB | 32.8KB |
+| 字体请求 | 6 个 CSS（≈630KB）+ N 个 woff2 分片 | 1 个 woff2（683KB），永久缓存 |
+| 列表页 JS | 5.6KB（读程全套） | 0.6KB |
+| 文章页 CLS | 图片无尺寸 | 0.001（图片有宽高占位） |
+
+验证：138 个页面控制台 0 报错；文章页读程 / 偏好面板 / 目录通道 / 评论展开 / 摘句弹层实测正常；
+关于页、首页、文章页在 390 / 1400 宽度、明暗两色下版式无变化。
