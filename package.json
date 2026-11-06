@@ -10,6 +10,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "sh scripts/dev-server.sh",
+    "build": "sh scripts/build-prod.sh",
     "build:uno": "unocss \"{layouts,content}/**/*.{html,md}\" -o assets/css/uno.css --watch",
     "build:uno:prod": "unocss \"{layouts,content}/**/*.{html,md}\" -o assets/css/uno.css"
   },

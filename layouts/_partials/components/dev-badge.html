@@ -1,0 +1,12 @@
+{{/* 本地预览角标：仅在 hugo server（hugo.IsServer）下渲染，
+     用于一眼区分「本地」与「线上」，避免误以为线上内容有问题。
+     baseURL 由 config/development 提供（http://localhost:1313/）。 */}}
+{{- $host := "" -}}
+{{- with urls.Parse site.BaseURL -}}
+  {{- $host = .Host -}}
+{{- end -}}
+<aside class="dev-badge" role="status" aria-label="本地预览环境，非线上站点">
+  <span class="dev-badge-dot" aria-hidden="true"></span>
+  <span class="dev-badge-label">本地预览</span>
+  {{ with $host }}<span class="dev-badge-host">{{ . }}</span>{{ end }}
+</aside>

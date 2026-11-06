@@ -1,1 +1,6 @@
+# 本地预览环境（hugo server --environment development）
+# 与线上（config/_default/config.yaml → https://yakoxff.pages.dev/）严格区分：
+#   · baseURL 为 localhost，alias / canonical 等绝对 URL 不会指向线上
+#   · 统计脚本不注入、giscus 评论不请求（模板按 site.IsServer 判断）
+#   · 页面右下角渲染「本地预览」角标、浏览器标签 title 带 [本地] 前缀
 baseURL: http://localhost:1313/

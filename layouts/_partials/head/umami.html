@@ -1,6 +1,10 @@
 <!-- Umami Analytics -->
 <script>
-  if (window.location.hostname !== 'localhost') {
+  // 本地判定：localhost / 127.* / 0.0.0.0 / [::1] / *.local / file:// 均视为本地
+  var isLocal = window.location.protocol === 'file:' ||
+    /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(window.location.hostname) ||
+    /(^|\.)local$/.test(window.location.hostname);
+  if (!isLocal) {
     // 加载 Umami 跟踪脚本
     const script = document.createElement('script');
     script.defer = true;

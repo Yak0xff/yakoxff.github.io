@@ -29,11 +29,16 @@
 <!-- giscus container -->
 <div class="giscus">
     <p style="text-align:center">
+        {{ if hugo.IsServer }}
+        本地预览：评论（giscus）仅在正式环境加载
+        {{ else }}
         {{ T "postPage.commentNotLoaded" }}
+        {{ end }}
     </p>
 </div>
 
-<!-- giscus script -->
+<!-- giscus script（本地预览不注入，避免请求线上评论服务） -->
+{{ if not hugo.IsServer }}
 <script>
 function loadGiscus() {
     if (document.querySelector('iframe.giscus-frame')) return; // 防止重复加载
@@ -70,3 +75,4 @@ const observer = new IntersectionObserver((entries, obs) => {
 
 observer.observe(document.getElementById("action-menu"));
 </script>
+{{ end }}

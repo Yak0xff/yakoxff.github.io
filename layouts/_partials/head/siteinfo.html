@@ -39,7 +39,7 @@
   {{- end -}}
 {{- end -}}
 
-<title>{{ $title }}</title>
+<title>{{ if hugo.IsServer }}[本地] {{ end }}{{ $title }}</title>
 <link rel="canonical" href="{{ .Permalink }}" />
 <meta name="author" content="{{ .Params.author | default .Site.Params.author }}" />
 <link rel="icon" href="/favicon.ico">

@@ -1,8 +1,12 @@
 <!-- Umami Analytics 轻量配置 -->
 <script>
 // 简化的全局配置
+var isLocalHost = window.location.protocol === 'file:' ||
+    /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(window.location.hostname) ||
+    /(^|\.)local$/.test(window.location.hostname);
+
 window.umamiConfig = {
-    trackingEnabled: window.location.hostname !== 'localhost'
+    trackingEnabled: !isLocalHost
 };
 
 // 轻量级辅助函数
