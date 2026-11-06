@@ -1,0 +1,92 @@
+/* ===================================================================
+   V10 页脚：刊语落款 + 三栏索引 + 版权
+   与顶栏同宽同边距，全站所有页面一致（不再随页面类型变宽变窄）
+   =================================================================== */
+
+.site-footer {
+  margin: var(--section-gap) 0 0;
+  padding: 0;
+  width: auto;
+  max-width: none;
+  font-family: var(--font-ui);
+}
+
+.site-footer-inner {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: #{"2rem clamp(2rem, 5vw, 5rem)"};
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin: 0 auto;
+  padding: #{"clamp(1.75rem, 1rem + 2.5vw, 3rem) var(--gutter) 0"};
+  position: relative;
+
+  /* 顶线画在内容宽度内（与区块标题的粗线同一语言） */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: var(--gutter);
+    right: var(--gutter);
+    border-top: 2px solid var(--line-ink);
+  }
+}
+
+.footer-motto {
+  display: flex;
+  align-items: baseline;
+  gap: .6em;
+  max-width: 15em;
+  margin: 0;
+  font-family: var(--font-read);
+  font-size: var(--step-2);
+  line-height: 1.45;
+  color: var(--ink);
+
+  .v-dot { transform: translateY(-.15em); }
+}
+
+.footer-cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.footer-col ul {
+  margin: .6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-col a {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  min-height: 36px;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+.footer-col .ext {
+  font-size: .8em;
+  color: var(--ink-3);
+}
+
+.footer-legal {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .5rem 1.5rem;
+  margin: 0;
+  padding: 1.25rem 0 1rem;
+  border-top: 1px solid var(--line);
+  font-size: var(--step--2);
+  color: var(--ink-3);
+
+  a { color: var(--ink-2); }
+}
+
+@media (max-width: 760px) {
+  .site-footer-inner { grid-template-columns: 1fr; }
+}

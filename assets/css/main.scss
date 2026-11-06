@@ -6,3 +6,36 @@
 @import "components/littlefoot";
 @import "components/libra";
 @import "components/toc";
+
+/* 从模板内联 <style> 外迁的既有样式
+   V10：header / header-simple / quick-actions / footer 四个文件对应的
+   模板已被全站顶栏与新页脚取代，导入已移除（文件保留备查） */
+@import "legacy/toc";
+@import "legacy/action-menu";
+@import "legacy/now-read-this";
+@import "legacy/post";
+
+/* 重构新增的模块化样式（可整段移除回退） */
+@import "components/a11y";
+@import "components/home";
+@import "components/reader";
+@import "components/fiction";
+@import "components/archive";
+@import "components/product";
+@import "components/about";
+@import "components/links";
+@import "components/devbadge";
+@import "components/web";
+@import "components/404";
+
+/* ===================================================================
+   V10「一点」设计系统 —— 必须最后导入：令牌覆盖旧值、组件覆盖旧样式
+   =================================================================== */
+@import "v10/tokens";
+@import "v10/base";
+@import "v10/chrome";
+@import "v10/home";
+@import "v10/entries";
+@import "v10/footer";
+@import "v10/article";
+@import "v10/pages";

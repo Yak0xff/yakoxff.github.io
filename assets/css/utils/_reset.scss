@@ -1,6 +1,11 @@
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 3rem;
+
+    /* 装饰性 SVG、hover tooltip 等贴边元素会撑出几像素横向滚动条。
+       在根层裁掉横向溢出（纵向滚动不受影响），页面不再左右晃。 */
+    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 @view-transition {
@@ -9,6 +14,10 @@ html {
 
 body {
     font-family: var(--serif-font-family);
+    /* 显式基准：此前 body 未声明字号与行高，UI 元素全靠浏览器默认值，
+       是界面行距不一致的根因；正文由 _markdown 覆盖为更松的 --lh-base */
+    font-size: var(--fs-base);
+    line-height: var(--lh-snug);
     -webkit-font-smoothing: antialiased;
     color: var(--text-color);
     position: relative;
@@ -58,7 +67,7 @@ button {
     border: none;
     outline: none;
     color: var(--text-color);
-    font-size: 1rem;
+    font-size: var(--fs-base);
     font-family: var(--serif-font-family);
     cursor: pointer
 }

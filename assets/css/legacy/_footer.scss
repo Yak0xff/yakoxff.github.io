@@ -1,0 +1,80 @@
+/* =================================================================
+   页脚
+   -----------------------------------------------------------------
+   原先样式全写在 footer.html 的内联 UnoCSS 工具类里（my-8 mx-auto
+   font-mono px-4 …），无法统一维护、也和全站点线语言脱节。
+   外迁到这里：顶部点线分隔 + mono 小字，左右两端对齐。
+   ================================================================= */
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-6);
+  width: 100%;
+  max-width: var(--shell-width, 100%);
+  margin: var(--sp-12) auto var(--sp-8);
+  padding: var(--sp-5) 0 0;
+  border-top: 1px dotted var(--dot);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-3);
+}
+
+.site-footer a {
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color var(--tr-fast);
+}
+
+.site-footer a:hover {
+  color: var(--accent);
+}
+
+.site-footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+
+.site-footer-section p {
+  margin: 0;
+}
+
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 外链图标：灰度圆形，hover 恢复 */
+.footer-icon {
+  height: 1rem;
+  width: auto;
+  border-radius: 999px;
+  filter: grayscale(100%);
+}
+
+html.dark .footer-icon {
+  filter: grayscale(100%) invert(1);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) .footer-icon {
+    filter: grayscale(100%) invert(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    margin-top: var(--sp-10);
+    padding-left: var(--sp-4);
+    padding-right: var(--sp-4);
+  }
+}

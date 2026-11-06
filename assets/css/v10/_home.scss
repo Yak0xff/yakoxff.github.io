@@ -1,0 +1,431 @@
+/* ===================================================================
+   V10 首页：刊头 → 头条 + 此刻 → 最近发表 → 按主题读
+   旧版 Bento 的问题是「所有盒子一样重」：宣言、统计、正在、特稿、
+   主题，全是同色同描边同圆角的格子，眼睛不知道先看哪。
+   新版取消盒子，层级完全由字号阶梯表达：
+     站名 step-5 > 头条 step-4 > 区块标题 step-2 > 条目 step-1
+   =================================================================== */
+
+body { margin: 0; }
+
+/* 通用页面外壳：与顶栏同宽同内边距，左右边缘全站对齐 */
+.home {
+  box-sizing: border-box;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* 全局 article 规则（max-width:页宽 + padding）不能作用到首页组件 */
+.home article {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- 1. 刊头 ---------- */
+.masthead-dateline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .55rem 0;
+  border-top: 2px solid var(--line-ink);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-meta);
+  color: var(--ink-3);
+
+  span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+
+.masthead-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: end;
+  gap: #{"clamp(1.5rem, 4vw, 4.5rem)"};
+  padding: #{"clamp(2.25rem, 1rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3.5rem)"};
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- 「一点入水」涟漪点阵场（assets/js/field.js） ----------
+   画布铺在刊头网格之下，左右各出血一个 gutter 到版心外；
+   遮罩以站名为圆心向外渐隐，右侧刊语区域只留极淡的点，不抢阅读。 */
+.masthead-grid {
+  position: relative;
+  isolation: isolate;
+  touch-action: manipulation;
+}
+
+.masthead-grid > :not(.masthead-field) {
+  position: relative;
+  z-index: 1;
+}
+
+.masthead-field {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: #{"calc(var(--gutter) * -1)"};
+  width: #{"calc(100% + var(--gutter) * 2)"};
+  height: 100%;
+  pointer-events: none;
+  /* 椭圆以站名为心，横向收在版心 60% 以内：右侧刊语区只剩极淡余韵 */
+  -webkit-mask-image: radial-gradient(72% 125% at 22% 70%, #000 28%, rgba(0, 0, 0, .3) 56%, transparent 78%);
+  mask-image: radial-gradient(72% 125% at 22% 70%, #000 28%, rgba(0, 0, 0, .3) 56%, transparent 78%);
+  opacity: 0;
+  animation: v-field-in 1200ms var(--ease-out) 120ms forwards;
+}
+
+@keyframes v-field-in {
+  to { opacity: 1; }
+}
+
+@media (max-width: 860px) {
+  .masthead-field {
+    -webkit-mask-image: radial-gradient(130% 75% at 30% 28%, #000 25%, transparent 80%);
+    mask-image: radial-gradient(130% 75% at 30% 28%, #000 25%, transparent 80%);
+  }
+}
+
+.masthead-title {
+  display: flex;
+  align-items: flex-end;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-5);
+  font-weight: 800;
+  line-height: .92;
+  letter-spacing: -.045em;
+  color: var(--ink);
+}
+
+/* 句末朱砂点：入场时「点」一下（缩放过冲），之后静止 */
+.masthead-dot {
+  width: .19em;
+  height: .19em;
+  margin: 0 0 .06em .08em;
+  border-radius: 50%;
+  background: var(--zhu);
+  animation: v-dot-in 900ms var(--ease-out) 240ms both;
+}
+
+@keyframes v-dot-in {
+  0% { transform: scale(0); }
+  55% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.masthead-claim {
+  margin: 0;
+  font-family: var(--font-read);
+  font-size: var(--step-2);
+  line-height: 1.45;
+  color: var(--ink);
+  /* 中文逐字可断，balance 会切出「写下 / 来」式断行；pretty 只避免孤字 */
+  text-wrap: pretty;
+}
+
+.masthead-note {
+  margin: .9rem 0 0;
+  font-size: var(--step-0);
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.masthead-stats {
+  display: flex;
+  gap: #{"clamp(1.5rem, 3vw, 2.75rem)"};
+  margin: 1.5rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+
+  div { margin: 0; }
+
+  dt {
+    font-family: var(--font-ui);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-meta);
+    color: var(--ink-3);
+  }
+
+  dd {
+    margin: .15rem 0 0;
+    font-size: var(--step-2);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+}
+
+/* ---------- 2. 头条 + 此刻 ---------- */
+.front {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  gap: #{"clamp(1.75rem, 4vw, 4.5rem)"};
+  padding-top: #{"clamp(2rem, 1rem + 3vw, 3.5rem)"};
+}
+
+.lead-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+
+  &:hover { text-decoration: none; }
+  &:hover .lead-title { color: var(--zhu-ink); }
+  &:hover .v-arrow { transform: translateX(5px); }
+}
+
+.lead-title {
+  margin: .9rem 0 0;
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: var(--tracking-display);
+  color: var(--ink);
+  text-wrap: balance;
+  transition: color var(--t-2) var(--ease-ui);
+}
+
+.lead-desc {
+  max-width: 34em;
+  margin: 1.1rem 0 0;
+  font-size: var(--step-1);
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.lead-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .4rem .75rem;
+  margin: 1.5rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+.lead-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-left: .75rem;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--ink);
+  border-bottom: 1px solid currentColor;
+
+  .v-arrow { transition: transform var(--t-2) var(--ease-out); }
+}
+
+.now {
+  align-self: start;
+  padding-left: #{"clamp(1.25rem, 2.5vw, 2rem)"};
+  border-left: 1px solid var(--line);
+}
+
+/* 「此刻」呼吸点：唯一一个持续动画，表示内容是活的 */
+.now-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--zhu);
+  animation: v-pulse 2.6s var(--ease-ui) infinite;
+}
+
+@keyframes v-pulse {
+  0% { box-shadow: 0 0 0 0 var(--zhu-line); }
+  70% { box-shadow: 0 0 0 9px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.now-list { margin: .9rem 0 0; }
+
+.now-item {
+  padding: .85rem 0;
+  border-top: 1px solid var(--line);
+
+  dt {
+    font-family: var(--font-ui);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-meta);
+    color: var(--ink-3);
+  }
+
+  dd {
+    margin: .2rem 0 0;
+    font-size: var(--step-0);
+    line-height: 1.55;
+    color: var(--ink-1);
+  }
+
+  dd p { margin: 0; display: inline; }
+}
+
+/* ---------- 4. 按主题读 ---------- */
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: #{"clamp(1.75rem, 3vw, 3rem) clamp(1.5rem, 3vw, 3rem)"};
+}
+
+.topic {
+  padding-top: 1rem;
+  border-top: 1px solid var(--line-2);
+}
+
+.topic-head {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+}
+
+.topic-no {
+  font-size: var(--step--2);
+  color: var(--zhu-ink);
+}
+
+.topic-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.topic-count {
+  margin-left: auto;
+  font-size: var(--step--2);
+  color: var(--ink-3);
+}
+
+.topic-list {
+  margin: .6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topic-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: .6rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-1);
+  text-decoration: none;
+
+  time {
+    flex-shrink: 0;
+    font-size: var(--step--2);
+    color: var(--ink-3);
+  }
+
+  &:hover { text-decoration: none; }
+  &:hover .topic-item-title { color: var(--zhu-ink); }
+}
+
+.topic-item-title {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  font-size: .95rem;
+  line-height: 1.5;
+  transition: color var(--t-1) var(--ease-ui);
+}
+
+/* ---------- 收尾按钮 ---------- */
+.home-more { margin: var(--section-gap) 0 0; }
+
+.v-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--paper);
+  background: var(--ink);
+  border-radius: var(--r-pill);
+  text-decoration: none;
+  transition:
+    background-color var(--t-2) var(--ease-ui),
+    transform var(--t-1) var(--ease-ui);
+
+  .v-arrow { transition: transform var(--t-2) var(--ease-out); }
+
+  &:hover {
+    color: var(--on-zhu);
+    background: var(--zhu);
+    text-decoration: none;
+    .v-arrow { transform: translateX(4px); }
+  }
+
+  &:active { transform: scale(.97); }
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 1023px) {
+  .topic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 860px) {
+  .masthead-grid { grid-template-columns: 1fr; align-items: start; }
+  .front { grid-template-columns: 1fr; }
+
+  .now {
+    padding: 1.25rem 0 0;
+    border-left: 0;
+    border-top: 2px solid var(--line-ink);
+  }
+
+  /* 移动端「此刻」改两列，压缩首屏到头条的距离 */
+  .now-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .masthead-dateline span:nth-child(2) { display: none; }
+  .topic-grid { grid-template-columns: 1fr; }
+  .home-more .v-button { width: 100%; justify-content: center; }
+  .lead-cta { margin-left: 0; }
+}
+
+/* ---------- 中和旧 Bento 首页（components/_home.scss）的同名规则 ----------
+   旧文件仍被关于 / 应用 / 精选等页面使用，不能整体移除；
+   这里只把与新首页组件重名、且新层未声明的属性归位。 */
+.home {
+  .now-item {
+    display: block;
+    font-size: inherit;
+    border-bottom: 0;
+
+    &::before { content: none; }
+    &:last-child { padding-bottom: .85rem; }
+  }
+
+  .lead-desc {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+  }
+
+  .lead-cta {
+    margin-top: 0;
+    padding-top: 0;
+    letter-spacing: normal;
+  }
+
+  .lead-meta { letter-spacing: 0; }
+  .topic-name { display: block; }
+}

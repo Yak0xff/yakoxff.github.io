@@ -1,0 +1,354 @@
+/* ---------------------------------------------------------------
+   沉浸式阅读层（进度条 / TOC 抽屉 / 偏好面板 / 推荐）
+   开关：features.reader.*
+   --------------------------------------------------------------- */
+
+/* ---------- 顶部阅读进度条 ---------- */
+.reader-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  z-index: 150;
+  background: transparent;
+  pointer-events: none;
+}
+
+.reader-progress-bar {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transform-origin: left center;
+  transition: width .1s linear;
+}
+
+/* ---------- 移动端 TOC 抽屉 ---------- */
+.toc-fab {
+  position: fixed;
+  right: 1rem;
+  bottom: 4.25rem;
+  z-index: 140;
+  display: none;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: .55rem var(--sp-4);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: var(--block-background-color);
+  color: var(--text-color);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+}
+
+.toc-fab svg {
+  width: 14px;
+  height: 14px;
+}
+
+.toc-drawer {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 160;
+  display: none;
+  max-height: 72vh;
+  padding: var(--sp-4) var(--sp-5) var(--sp-6);
+  background: var(--background-color);
+  border-top: 1px solid var(--border-color);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: var(--shadow-lift);
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform var(--tr-base);
+}
+
+.toc-drawer[data-open="true"] {
+  transform: translateY(0);
+}
+
+.toc-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-3);
+}
+
+.toc-drawer-title {
+  margin: 0;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-mid);
+  text-transform: uppercase;
+  color: var(--secondary-text-color);
+}
+
+.toc-drawer-close {
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-color);
+  border-radius: 999px;
+  width: 1.75rem;
+  height: 1.75rem;
+  line-height: var(--lh-flat);
+  cursor: pointer;
+}
+
+.toc-drawer-body ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-drawer-body li a {
+  display: block;
+  padding: .55rem var(--sp-1);
+  font-size: var(--fs-base);
+  color: var(--secondary-text-color);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.toc-drawer-body li a[aria-current="true"] {
+  color: var(--accent);
+  font-weight: var(--fw-medium);
+}
+
+.toc-drawer-body ul ul a {
+  padding-left: var(--sp-5);
+  font-size: var(--fs-sm);
+}
+
+.toc-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 155;
+  display: none;
+  background: rgba(0, 0, 0, .35);
+}
+
+.toc-backdrop[data-open="true"] {
+  display: block;
+}
+
+@media (max-width: 1199px) {
+  .toc-fab {
+    display: inline-flex;
+  }
+}
+
+/* ---------- 阅读偏好入口 ---------- */
+.prefs-toggle {
+  padding: var(--sp-1) var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--secondary-text-color);
+  cursor: pointer;
+  transition: color var(--tr-fast), border-color var(--tr-fast);
+}
+
+.prefs-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+
+/* ---------- 阅读偏好面板 ---------- */
+.reader-prefs {
+  position: fixed;
+  right: 1rem;
+  bottom: 7.5rem;
+  z-index: 140;
+  width: 15rem;
+  padding: var(--sp-4) var(--sp-4);
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lift);
+}
+
+.reader-prefs[hidden] {
+  display: none;
+}
+
+.reader-prefs h2 {
+  margin: 0 0 .85rem;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-mid);
+  text-transform: uppercase;
+  color: var(--secondary-text-color);
+}
+
+.pref-row {
+  margin-bottom: var(--sp-4);
+}
+
+.pref-row:last-of-type {
+  margin-bottom: var(--sp-3);
+}
+
+.pref-row label {
+  display: block;
+  margin-bottom: var(--sp-2);
+  font-size: var(--fs-xs);
+  color: var(--secondary-text-color);
+}
+
+.pref-segmented {
+  display: flex;
+  gap: var(--sp-1);
+}
+
+.pref-segmented button {
+  flex: 1;
+  padding: .3rem 0;
+  font-size: var(--fs-xs);
+  background: var(--block-background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background var(--tr-fast), border-color var(--tr-fast);
+}
+
+.pref-segmented button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.pref-reset {
+  width: 100%;
+  padding: var(--sp-2) 0;
+  font-size: var(--fs-xs);
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--secondary-text-color);
+  cursor: pointer;
+}
+
+.pref-reset:hover {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+/* 偏好生效：属性由 reading-prefs.js 写在 <html> 上 */
+html[data-fontsize="sm"] .post-body { font-size: var(--fs-base); }
+html[data-fontsize="md"] .post-body { font-size: var(--fs-md); }
+html[data-fontsize="lg"] .post-body { font-size: var(--fs-lg); }
+html[data-fontsize="xl"] .post-body { font-size: var(--fs-lg); }
+
+html[data-leading="tight"] .post-body { line-height: var(--lh-snug); }
+html[data-leading="normal"] .post-body { line-height: var(--lh-base); }
+html[data-leading="loose"] .post-body { line-height: var(--lh-loose); }
+
+html[data-width="narrow"] .post-article { max-width: 42rem; }
+html[data-width="normal"] .post-article { max-width: var(--page-width); }
+html[data-width="wide"] .post-article { max-width: 68rem; }
+
+@media (max-width: 760px) {
+  .reader-prefs {
+    right: .75rem;
+    left: .75rem;
+    bottom: 5.5rem;
+    width: auto;
+  }
+}
+
+/* ---------- 相关推荐升级（Bento 盒式，与首页盒子同语言） ---------- */
+.next-read {
+  margin-top: var(--sp-10);
+}
+
+.next-read-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(#{"min(100%, 15rem)"}, 1fr));
+  gap: var(--bento-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.next-read-item a {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  height: 100%;
+  padding: var(--bento-pad);
+  @include cell-box;
+  @include cell-crop;
+  text-decoration: none;
+  transition: border-color var(--tr-base), background-color var(--tr-base);
+}
+
+
+
+.next-read-item a:hover {
+  border-color: var(--accent-line);
+}
+
+.next-reason {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-widest);
+  color: var(--ink-3);
+}
+
+.next-reason::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.next-title {
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--text-color);
+  line-height: var(--lh-tight);
+}
+
+.next-meta {
+  margin-top: auto;
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+  color: var(--secondary-text-color);
+}
+
+/* ---------- 快捷键帮助 ---------- */
+.shortcut-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 2rem;
+  z-index: 170;
+  transform: translateX(-50%);
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--text-color);
+  color: var(--background-color);
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--tr-base);
+}
+
+.shortcut-hint[data-show="true"] {
+  opacity: 1;
+}
+
+@media print {
+  .reader-progress,
+  .toc-fab,
+  .toc-drawer,
+  .toc-backdrop,
+  .reader-prefs,
+  .shortcut-hint {
+    display: none !important;
+  }
+}

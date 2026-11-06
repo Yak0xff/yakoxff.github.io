@@ -1,0 +1,49 @@
+/* =================================================================
+   404 页
+   -------------------------------------------------------------------
+   从 layouts/404.html 的内联 <style> 外迁：原为每页重复输出的
+   页面级样式，外迁后随主样式包缓存，并统一到排版 token。
+   ================================================================= */
+.page-404 {
+  position: relative;
+  height: calc(100dvh - var(--page-margin-y) * 2);
+}
+
+.page-404 .title-404 {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  /* 404 数字：随视口缩放，避免小屏溢出（原固定 5rem 在窄屏过满） */
+  font-size: clamp(4rem, 16vw, 7rem);
+  font-style: italic;
+  filter: url(#x);
+  color: var(--secondary-text-color);
+  margin: 0;
+}
+
+.image-404 {
+  width: 10rem;
+  filter: url(#xs);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) .image-404 {
+    filter: url(#xs) invert(1);
+  }
+}
+
+html.dark .image-404 {
+  filter: url(#xs) invert(1);
+}
+
+@media screen and (min-width: 768px) {
+  .page-404 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-12);
+  }
+  .image-404 {
+    width: 15rem;
+  }
+}

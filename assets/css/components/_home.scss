@@ -1,0 +1,719 @@
+/* ---------------------------------------------------------------
+   首页：Bento 盒式布局 + 点线视觉语言
+   盒子：12 列网格，统一 gap / 圆角 / 内边距，靠 hairline 描边成盒
+   点线：点阵场（dot-field）、角标（crop mark）、节点圆点、
+         目录点线（leader dots）、点状分隔
+   删除本文件即可回退旧观感
+   --------------------------------------------------------------- */
+
+/* 页脚在 <article> 之外，拿不到 .home-page 的变量，
+   因此在 body 作用域统一覆盖外壳宽度，使页头 / 内容 / 页脚左右边界一致
+   （旧版页脚固定 850px，在 1080 的内容区里会内缩 115px）。 */
+/* 页脚在 <article> 之外，拿不到 .home-page 的变量。
+   外壳宽度统一在 _variables.scss 的 body.is-index 规则里处理
+   （首页 / 归档 / 标签 / 分类等目录页共用 --bento-width）。 */
+.home-page {
+  --shell-width: var(--bento-width);
+  max-width: var(--bento-width);
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
+}
+
+/* ---------- 通用栏目标题 ----------
+   杂志编排：栏目之间靠一条 hairline 细线分隔，不再靠盒子；
+   标题同时放大一档，与正文拉开对比。 */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin: var(--sp-12) 0 var(--sp-5);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.section-title {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin: 0;
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-tight);
+  color: var(--text-color);
+}
+
+/* 点线语言：区块标题的实心节点 */
+.section-title::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-2px);
+}
+
+.section-more {
+  flex-shrink: 0;
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color var(--tr-fast);
+}
+
+.section-more:hover {
+  color: var(--accent);
+}
+
+/* =================================================================
+   1. Bento 网格容器
+   ================================================================= */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--bento-gap);
+}
+
+/* ---------- 格子基类（点阵 + 盒子）----------
+   全站统一的「格」：暖白底色 + hairline 描边 + 圆角 + 四角 crop mark，
+   角落可挂点阵场（.dot-field）。各页面的卡片/区块统一复用这套语言。 */
+.bento-cell {
+  min-width: 0;
+  padding: var(--bento-pad);
+  @include cell-box;
+  @include cell-crop;
+}
+
+/* ---------- 点线语言：点阵场 ---------- */
+.dot-field {
+  position: absolute;
+  pointer-events: none;
+  background-image: radial-gradient(circle at center, var(--dot-soft) 1px, transparent 1.1px);
+  background-size: var(--dot-size) var(--dot-size);
+  z-index: 0;
+}
+
+.dot-field--hero {
+  right: -12px;
+  bottom: -12px;
+  width: 220px;
+  height: 150px;
+  -webkit-mask-image: radial-gradient(circle at 100% 100%, #000 0%, transparent 72%);
+  mask-image: radial-gradient(circle at 100% 100%, #000 0%, transparent 72%);
+}
+
+.dot-field--lead {
+  left: -10px;
+  top: -10px;
+  width: 160px;
+  height: 120px;
+  -webkit-mask-image: radial-gradient(circle at 0 0, #000 0%, transparent 76%);
+  mask-image: radial-gradient(circle at 0 0, #000 0%, transparent 76%);
+}
+
+/* ---------- 点线语言：格子编号标签（实心 / 空心节点） ---------- */
+.cell-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-widest);
+  color: var(--ink-3);
+}
+
+.cell-tag::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.cell-tag--hollow::before {
+  background: transparent;
+  border: 1px solid var(--dot);
+}
+
+/* 元信息型标签：字距收紧，避免日期被拉散 */
+.cell-tag--meta {
+  letter-spacing: var(--ls-mid);
+}
+
+/* ---------- 点线语言：目录点线（leader dots） ---------- */
+.leader {
+  flex: 1 1 auto;
+  min-width: .9rem;
+  height: .85em;
+  border-bottom: 1px dotted var(--dot);
+  opacity: .55;
+}
+
+/* =================================================================
+   2. Hero 盒：宣言
+   ================================================================= */
+.cell-hero {
+  grid-column: span 7;
+  grid-row: span 2;
+  display: flex;
+  flex-direction: column;
+  /* 恢复盒子后左右内边距必须回来（去盒期间曾被改成上下 only） */
+  padding: var(--bento-pad-lg);
+}
+
+/* 大标题：杂志编排的主视觉，与正文拉开最大字号对比 */
+.hero-claim {
+  margin: var(--sp-4) 0 0;
+  font-family: var(--serif-font-family);
+  font-size: #{"clamp(2.1rem, 5vw, 3.4rem)"};
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--text-color);
+  text-wrap: balance;
+}
+
+.hero-note {
+  margin: var(--sp-4) 0 0;
+  max-width: 44ch;
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  color: var(--ink-2);
+}
+
+/* 点线语言：底部点状延长线 */
+.hero-rule {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: auto;
+  padding-top: var(--sp-6);
+}
+
+.hero-rule-text {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-widest);
+  color: var(--ink-3);
+}
+
+.hero-rule::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 7px;
+  background-image: radial-gradient(circle at center, var(--dot) 1px, transparent 1.1px);
+  background-size: 7px 7px;
+  background-repeat: repeat-x;
+  background-position: 0 center;
+}
+
+/* =================================================================
+   3. 统计盒
+   ================================================================= */
+.cell-stats {
+  grid-column: span 5;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+}
+
+.stat {
+  min-width: 0;
+  padding: var(--sp-1) var(--sp-4);
+}
+
+.stat:first-child {
+  padding-left: 0;
+}
+
+.stat + .stat {
+  border-left: 1px solid var(--rule);
+}
+
+.stat dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-wider);
+  color: var(--ink-3);
+}
+
+.stat dd {
+  margin: var(--sp-2) 0 0;
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-flat);
+  color: var(--text-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-last {
+  margin-top: auto;
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  min-width: 0;
+}
+
+.stat-last a {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: var(--fs-sm);
+  transition: color var(--tr-fast);
+}
+
+.stat-last a:hover {
+  color: var(--accent);
+}
+
+.stat-last time {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+/* =================================================================
+   4. 正在做盒
+   ================================================================= */
+.cell-now {
+  grid-column: span 5;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.now-list {
+  list-style: none;
+  margin: var(--sp-4) 0 0;
+  padding: 0;
+  flex: 1 1 auto;
+}
+
+.now-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  padding: .45rem 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  border-bottom: 1px dotted var(--dot-soft);
+}
+
+.now-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 点线语言：空心节点 */
+.now-item::before {
+  content: "";
+  flex-shrink: 0;
+  width: 5px;
+  height: 5px;
+  margin-top: .45em;
+  border-radius: 50%;
+  border: 1px solid var(--dot);
+}
+
+.now-label {
+  flex-shrink: 0;
+  color: var(--ink-3);
+}
+
+.now-value {
+  min-width: 0;
+  color: var(--text-color);
+}
+
+.now-value p {
+  margin: 0;
+  display: inline;
+}
+
+.now-value a {
+  color: inherit;
+}
+
+/* =================================================================
+   5. 特稿盒（最新 / 精选）
+   ================================================================= */
+/* 纯文字特稿：不再用程序化封面，分量靠字号层级撑起来 */
+.cell-lead {
+  grid-column: span 12;
+  display: block;
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cell-lead:hover {
+  border-color: var(--accent-line);
+}
+
+.lead-body {
+  position: relative;
+  z-index: 1;                 /* 压在点阵场之上 */
+  display: flex;
+  flex-direction: column;
+  padding: var(--bento-pad-lg);
+}
+
+/* 栏目标签：最小号 mono + 朱砂，与大标题拉开最大落差 */
+.lead-badge {
+  margin: 0 0 var(--sp-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-widest);
+  color: var(--accent);
+}
+
+/* 大标题：特稿的分量全靠这一档字号 */
+.lead-title {
+  margin: 0;
+  font-family: var(--serif-font-family);
+  font-size: #{"clamp(1.75rem, 3.4vw, 2.75rem)"};
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--text-color);
+  text-wrap: balance;
+  transition: color var(--tr-base);
+}
+
+.cell-lead:hover .lead-title,
+.cell-lead:focus-visible .lead-title {
+  color: var(--accent);
+}
+
+/* 导语：比正文高一档，承接大标题 */
+.lead-desc {
+  margin: var(--sp-4) 0 0;
+  max-width: 56ch;
+  font-size: var(--fs-md);
+  line-height: var(--lh-snug);
+  color: var(--ink-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lead-meta {
+  margin: var(--sp-5) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-3);
+}
+
+.lead-cta {
+  margin-top: auto;
+  padding-top: var(--sp-5);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--accent);
+  letter-spacing: var(--ls-wide);
+}
+
+.lead-cta span {
+  display: inline-block;
+  transition: transform var(--tr-base);
+}
+
+.cell-lead:hover .lead-cta span {
+  transform: translateX(4px);
+}
+
+/* =================================================================
+   6. 主题盒
+   ================================================================= */
+.cell-topic {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 末行补齐：主题数为 3n+1 / 3n+2 时，让最后一个盒子吃掉剩余列，
+   避免 Bento 网格底部留出半空行 */
+.cell-topic:last-child:nth-child(3n + 1) {
+  grid-column: span 12;
+}
+
+.cell-topic:last-child:nth-child(3n + 2) {
+  grid-column: span 8;
+}
+
+.cell-topic:hover {
+  border-color: var(--accent-line);
+}
+
+.topic-name {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin: var(--sp-4) 0 0;
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text-color);
+  transition: color var(--tr-fast);
+}
+
+.cell-topic:hover .topic-name {
+  color: var(--accent);
+}
+
+.topic-name a {
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.topic-count {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-normal);
+  color: var(--ink-3);
+}
+
+.topic-list {
+  list-style: none;
+  margin: .85rem 0 0;
+  padding: 0;
+}
+
+.topic-item a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  padding: .32rem 0;
+  color: var(--ink-2);
+  text-decoration: none;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  transition: color var(--tr-fast);
+}
+
+.topic-item a:hover {
+  color: var(--text-color);
+}
+
+.topic-item-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topic-item-date {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+/* =================================================================
+   7. 更早以前盒
+   元素级 article 复位（max-width: 850 + 居中）会命中列表里的每一篇，
+   在宽屏下形成左右各约 210px 的悬空留白 —— 这里解除，让行撑满盒宽；
+   摘要文本仍按行长上限收窄，避免一行拖到 1200px+。
+   ================================================================= */
+.cell-recent {
+  grid-column: span 12;
+}
+
+.cell-recent .posts-item {
+  max-width: none;
+  margin: 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.cell-recent .posts-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* 行内元信息：等宽小字 */
+.cell-recent .posts-item header p {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-3);
+}
+
+.cell-recent .posts-item header p a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--tr-fast);
+}
+
+.cell-recent .posts-item header p a:hover {
+  color: var(--accent);
+}
+
+/* 标题行 */
+.cell-recent .posts-item h2 {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-lg);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+}
+
+.cell-recent .posts-item h2 a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color var(--tr-fast);
+}
+
+.cell-recent .posts-item h2 a:hover {
+  color: var(--accent);
+}
+
+/* 摘要：限制行长，与标题同宽起点 */
+.cell-recent .posts-item .markdown-body {
+  max-width: 42em;
+  margin-top: var(--sp-2);
+  color: var(--ink-2);
+}
+
+.home-cta {
+  margin: var(--sp-6) 0 0;
+  text-align: center;
+}
+
+/* =================================================================
+   8. 滚动进场 + 响应式
+   ================================================================= */
+@media (prefers-reduced-motion: no-preference) {
+  html.js-reveal .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity var(--tr-reveal), transform var(--tr-reveal);
+  }
+
+  html.js-reveal .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .cell-hero {
+    grid-column: span 12;
+    grid-row: auto;
+  }
+
+  .cell-stats,
+  .cell-now {
+    grid-column: span 6;
+  }
+
+  .cell-topic {
+    grid-column: span 6;
+  }
+
+  /* 双列下的末行补齐（覆盖三列规则） */
+  .cell-topic:last-child:nth-child(3n + 1),
+  .cell-topic:last-child:nth-child(3n + 2) {
+    grid-column: span 6;
+  }
+
+  .cell-topic:last-child:nth-child(2n + 1) {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 700px) {
+  .home-page {
+    padding: 0 var(--sp-3);
+  }
+
+  .bento {
+    gap: 10px;
+  }
+
+  .bento-cell {
+    padding: var(--sp-5);
+  }
+
+  .cell-stats,
+  .cell-now,
+  .cell-topic {
+    grid-column: span 12;
+  }
+
+  .cell-hero,
+  .lead-body {
+    padding: 1.35rem;
+  }
+
+  .cell-lead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lead-cover {
+    min-height: 190px;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .stat dd {
+    font-size: var(--fs-xl);
+  }
+
+  .hero-rule {
+    padding-top: var(--sp-4);
+  }
+}
+
+/* ---------------------------------------------------------------
+   宽屏呼吸（≥1440）
+   --bento-width 已在变量层分档放宽，这里同步放大容器边距、区块间距
+   与宣言尺度，避免「外壳变宽、内部照旧」的局促感。
+   --------------------------------------------------------------- */
+@media (min-width: 1440px) {
+  .home-page {
+    padding: 0 var(--sp-6);
+  }
+
+  .section-head {
+    margin: var(--sp-12) 0 var(--sp-5);
+  }
+}
+
+@media (min-width: 1800px) {
+  .section-head {
+    margin: var(--sp-12) 0 var(--sp-6);
+  }
+
+  .hero-claim {
+    font-size: #{"clamp(2rem, 2.4vw, 3rem)"};
+  }
+}

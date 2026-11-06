@@ -1,0 +1,208 @@
+.post-article {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
+}
+
+/* Header */
+.post-header {
+  margin-bottom: var(--sp-9);
+  padding-bottom: var(--sp-8);
+  border-bottom: 1px dotted var(--dot);
+}
+
+/* 栏目 kicker：节点 + 等宽小字（与首页 cell-tag 同语言） */
+.post-kicker {
+  margin: 0;
+}
+
+.post-kicker-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.post-kicker-tag::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.post-title {
+  margin: var(--sp-4) 0 0;
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+}
+
+.post-subtitle {
+  font-size: var(--fs-lg);
+  color: var(--secondary-text-color);
+  font-style: italic;
+  margin: 0 0 var(--sp-5);
+  line-height: var(--lh-snug);
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-3);
+}
+
+.meta-divider {
+  opacity: 0.5;
+}
+
+.meta-reading-time {
+  font-size: var(--fs-xs);
+  opacity: 0.85;
+}
+
+.post-meta .prefs-toggle {
+  margin-left: auto;
+}
+
+/* 标签：去灰药丸，改点线 tag（文字 + 点状下划线） */
+.post-tags {
+  margin-top: var(--sp-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3) var(--sp-4);
+}
+
+.post-tags .tag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  color: var(--ink-2);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--dot);
+  padding-bottom: 2px;
+  transition: color var(--tr-fast), border-color var(--tr-fast);
+}
+
+.post-tags .tag:hover {
+  opacity: 1;
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+
+/* Body */
+.post-body {
+  min-height: 60vh;
+  font-family: var(--serif-font-family);
+  line-height: var(--lh-base);
+  font-size: var(--fs-md);
+}
+
+@media (min-width: 768px) {
+  .post-body {
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+  }
+}
+
+/* 二级标题：点状分隔线 + 节点，制造章节呼吸 */
+.post-body .markdown-body h2 {
+  margin-top: 2.4em;
+  padding-top: 1.1em;
+  border-top: 1px dotted var(--dot);
+}
+
+.post-body .markdown-body h2::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: .5em;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: .1em;
+}
+
+/* 分隔线：实线改点状延长线 */
+.post-body .markdown-body hr {
+  border: none;
+  height: 7px;
+  margin: 2.5em 0;
+  background-image: radial-gradient(circle at center, var(--dot) 1px, transparent 1.1px);
+  background-size: 7px 7px;
+  background-repeat: repeat-x;
+  background-position: 0 center;
+}
+
+/* 文末「完」：点状延长线夹一枚小印 */
+.post-end {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  margin-top: var(--sp-10);
+}
+
+.post-end i {
+  flex: 1 1 auto;
+  height: 7px;
+  background-image: radial-gradient(circle at center, var(--dot-soft) 1px, transparent 1.1px);
+  background-size: 7px 7px;
+  background-repeat: repeat-x;
+  background-position: 0 center;
+}
+
+.post-end span {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2em;
+  height: 2em;
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-sm);
+  color: var(--accent);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-sm);
+}
+
+/* Footer */
+.post-footer {
+  margin-top: var(--sp-9);
+  padding-top: var(--sp-8);
+  border-top: 1px dotted var(--dot);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .post-title {
+    font-size: var(--fs-2xl);
+  }
+
+  .post-subtitle {
+    font-size: var(--fs-base);
+  }
+
+  .meta-reading-time {
+    margin-left: 0;
+    width: 100%;
+    margin-top: var(--sp-2);
+  }
+
+  .post-body {
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+  }
+}

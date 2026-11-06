@@ -1,20 +1,96 @@
+/* ===================================================================
+   排版系统（Type & Space Scale）
+   -------------------------------------------------------------------
+   全站只使用下面这些变量，禁止再写裸值（.72rem / .04em / 1.35rem …）。
+   原因：此前字号有 40+ 种近似裸值、字距 14 种、padding 30+ 种，
+   相邻档位差 0.02rem 肉眼无差别却让样式表无法维护。
+   =================================================================== */
 :root {
-    /* colors */
-    --background-color: #f5f5f7;
+    /* ---- 字族：内容用衬线（楷），界面用无衬线，编号日期用等宽 ---- */
+    --font-serif: "LXGW WenKai", "Songti SC", serif;
+    --font-sans: system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, "PingFang SC", monospace;
+
+    /* ---- 字号阶梯（major-third 1.25 模块化）----
+       原阶梯是随手取的近似值（1 / 1.1 / 1.25 / 1.5 / 1.75 / 2.25），
+       标题与正文只差 2.25 倍，杂志编排需要的强对比出不来。
+       改从正文 1rem 起按 1.25 逐级放大：标题最高到 3.05rem（约 3 倍对比）。
+       2xs / xs / sm 是元信息用的小字，不参与比例，保持原值以免界面发虚。 */
+    --fs-2xs: .72rem;      /* 编号、角标 */
+    --fs-xs: .8rem;        /* 元信息、日期 */
+    --fs-sm: .86rem;       /* 次要正文、列表项 */
+    --fs-base: 1rem;       /* 正文 16px */
+    --fs-md: 1.25rem;      /* 小标题、导语 */
+    --fs-lg: 1.563rem;     /* 区块标题 */
+    --fs-xl: 1.953rem;     /* 卡片 / 章节标题 */
+    --fs-2xl: 2.441rem;    /* 统计数字 */
+    --fs-display: 3.052rem;/* 站点级大标题 */
+
+    /* ---- 行高四档 ---- */
+    --lh-flat: 1;          /* 大数字、紧贴上排 */
+    --lh-tight: 1.35;      /* 标题 */
+    --lh-snug: 1.6;        /* 列表、紧凑文本 */
+    --lh-base: 1.8;        /* 正文 */
+    --lh-loose: 2;         /* 引文、诗歌 */
+
+    /* ---- 字重三档 ---- */
+    --fw-normal: 400;
+    --fw-medium: 500;
+    --fw-bold: 700;
+
+    /* ---- 字距五档 ---- */
+    --ls-tight: .015em;    /* 中文大标题：微开 */
+    --ls-wide: .04em;      /* 中文小标题 */
+    --ls-mid: .08em;       /* 等宽元信息 */
+    --ls-wider: .16em;     /* 等宽标签 */
+    --ls-widest: .24em;    /* 全大写标签拉开 */
+
+    /* ---- 间距阶梯（4px 基准）---- */
+    --sp-1: .25rem;
+    --sp-2: .5rem;
+    --sp-3: .75rem;
+    --sp-4: 1rem;
+    --sp-5: 1.25rem;
+    --sp-6: 1.5rem;
+    --sp-7: 1.75rem;
+    --sp-8: 2rem;
+    --sp-9: 2.25rem;
+    --sp-10: 2.5rem;
+    --sp-11: 2.75rem;
+    --sp-12: 3rem;
+}
+
+:root {
+    /* colors —— 纸墨暖调
+       中性色一律向品牌绛红倾斜（偏暖），不用纯白/纯黑：纸张是暖白的，
+       冷灰底 + 暖绛红会让 accent 显脏。与霞鹜文楷、方印同为一套气质。 */
+    --background-color: #f7f5f2;
     --block-background-color: rgb(var(--block-background-color-rgb));
-    --block-background-color-rgb: 233, 232, 237;
-    --border-color: #d0d7de;
-    --text-color: #1d1d1f;
-    --secondary-text-color: #6e6e73;
-    --link-color: #313135;
-    --bright-background-color: #fafafa;
-    --card-bg: #ffffff;
+    --block-background-color-rgb: 238, 235, 230;
+    --border-color: #ded9d2;
+    --text-color: #1f1c19;
+    --secondary-text-color: #6f6a63;
+    --link-color: #322e2a;
+    --bright-background-color: #faf8f5;
+    --card-bg: #fdfbf8;
 
-    /* fonts */
-    --serif-font-family: "LXGW WenKai", serif;
+    /* fonts（复用排版系统的衬线族） */
+    --serif-font-family: var(--font-serif);
+    /* 脚注气泡等浮层：跟随界面无衬线族，缺省会回退 initial 造成字形跳变 */
+    --popover-font-family: var(--font-sans);
 
-    --page-width: 850px;
+    /* 阅读栏宽（正文行长，不随屏幕放大）
+       原 850px 在 16px 正文下约 53 字/行，中文舒适区是 35–42 字；
+       收到 720px（约 40 字），长文阅读不易串行。 */
+    --page-width: 720px;
     --page-margin-y: 5rem;
+
+    /* 外壳宽度：页头 / 页脚 / 内容区共用的对齐基准。
+       默认等同阅读栏宽（文章页页脚与正文对齐），
+       目录页（body.is-index，见 baseof）统一放大到 Bento 宽，
+       使页头 / 导航 / 页脚在首页 ↔ 归档 ↔ 标签之间跳转时不位移。
+       min() 兜底：视口窄于栏宽时不顶出横向滚动条。 */
+    --shell-width: min(var(--page-width), 100%);
 
     /* pagefind custom css */
     --pagefind-ui-primary: var(--text-color);
@@ -24,30 +100,231 @@
     --pagefind-ui-tag: var(--border-color);
 }
 
-html[lang="en-US"] {
-    --serif-font-family: "Playfair Display", serif;
+/* 目录页外壳 = 首页 Bento 宽：页头 / 导航 / 页脚跨页不跳位。
+   min() 兜底：视口窄于 Bento 宽时（如 1024 < 1080）页脚不再顶出
+   横向滚动条（页脚在 <article> 之外，只能靠变量自限）。 */
+body.is-index {
+    --shell-width: min(var(--bento-width), 100%);
+}
+
+/* ---------------------------------------------------------------
+   强调色体系（重构新增，可整体删除回退到原有灰阶观感）
+   --------------------------------------------------------------- */
+:root {
+    --accent: #b5382a;
+    --accent-soft: rgba(181, 56, 42, 0.08);
+    --accent-line: rgba(181, 56, 42, 0.32);
+    --accent-2: #2b4c7e;
+    --accent-3: #2f6b4f;
+    --accent-contrast: #fffaf7;
+
+    /* 行内强调（markdown strong / em）：与 accent 同族但更柔和，供正文级着色。
+       em 原 #889E73 在暖白底仅 ~2.9:1，压深到 ~4:1 保底可读性 */
+    --mark-strong: #A94A4A;
+    --mark-em: #647a52;
+
+    /* 编辑排版基础件：hairline 细线 / 编辑灰阶（暖黑，非纯黑） */
+    --hairline: rgba(58, 48, 38, .1);
+    --hairline-strong: rgba(58, 48, 38, .22);
+    --ink-2: #6f6a63;
+    --ink-3: #868076;    /* 原 #98928a 在暖白底上仅 ~2.8:1，压深到 ~3.4:1 保底可读性 */
+
+    /* 圆角四档：xs 用于标签/代码块等小元件（原散落 1–5px 五种值） */
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+
+    /* -----------------------------------------------------------
+       Bento 盒式布局 + 点线视觉语言
+       盒子：统一 gap / 统一圆角 / 统一内边距，靠 hairline 描边成盒
+       点线：--dot 点阵色、--dot-size 点阵步长、--rule 分隔线
+       ----------------------------------------------------------- */
+    --bento-width: 1080px;
+    --bento-gap: var(--sp-3);
+
+    /* 文章页侧边目录：宽度 + 与正文的安全间隙。
+       宽屏下正文不放大（阅读行长固定），目录改挂到「正文+目录」整体
+       居中的位置，避免紧贴正文、右侧空出大片无主留白。 */
+    --toc-w: 200px;
+    --toc-gap: var(--sp-8);
+    --bento-radius: var(--radius-lg);
+    --bento-pad: var(--sp-6);
+    --bento-pad-lg: var(--sp-8);
+    --cell-bg: rgba(253, 251, 248, .62);
+    --cell-bg-solid: #fdfbf8;
+
+    --dot: rgba(58, 48, 38, .24);
+    --dot-soft: rgba(58, 48, 38, .13);
+    --dot-size: 14px;
+    --rule: rgba(58, 48, 38, .11);
+    --rule-strong: rgba(58, 48, 38, .22);
+
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, .04), 0 10px 28px rgba(0, 0, 0, .07);
+    --shadow-lift: 0 2px 6px rgba(0, 0, 0, .06), 0 18px 44px rgba(0, 0, 0, .12);
+
+    --ease-out: cubic-bezier(.22, .61, .36, 1);
+    --dur-fast: .16s;
+    --dur-base: .28s;
+
+    /* 过渡整值：避免 "var(--dur) var(--ease-out)" 相邻两个 var()
+       被构建期压缩器去掉空格后变成非法声明 */
+    --tr-fast: 160ms cubic-bezier(.22, .61, .36, 1);
+    --tr-base: 280ms cubic-bezier(.22, .61, .36, 1);
+    --tr-reveal: 500ms cubic-bezier(.22, .61, .36, 1);
+
+    /* 程序化封面调色板：沉稳低饱和（绛红 / 黛蓝 / 松绿 / 赭石 / 紫檀） */
+    --cover-1: #a03428;
+    --cover-2: #2f4858;
+    --cover-3: #3d5a45;
+    --cover-4: #6e4f2e;
+    --cover-5: #453a5e;
+}
+
+@mixin accentVariablesInDarkMode {
+    --accent: #e8705c;
+    --accent-soft: rgba(232, 112, 92, 0.14);
+    --accent-line: rgba(232, 112, 92, 0.36);
+    --accent-2: #8fb4e8;
+    --accent-3: #7fc4a0;
+    --accent-contrast: #1a1512;
+
+    --mark-strong: #E07070;
+    --mark-em: #A8C893;
+
+    --hairline: rgba(255, 255, 255, .12);
+    --hairline-strong: rgba(255, 255, 255, .26);
+    --ink-2: #a1998d;
+    --ink-3: #7d766c;
+
+    --cell-bg: rgba(255, 252, 247, .05);
+    --cell-bg-solid: #262421;
+    --dot: rgba(255, 255, 255, .26);
+    --dot-soft: rgba(255, 255, 255, .15);
+    --rule: rgba(255, 255, 255, .12);
+    --rule-strong: rgba(255, 255, 255, .26);
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px rgba(0, 0, 0, .38);
+    --shadow-lift: 0 2px 6px rgba(0, 0, 0, .34), 0 18px 44px rgba(0, 0, 0, .5);
+
+    --cover-1: #c4544a;
+    --cover-2: #46647a;
+    --cover-3: #4e7059;
+    --cover-4: #82613d;
+    --cover-5: #5a4d78;
 }
 
 @mixin variablesInDarkMode {
-    --background-color: #1d2021;
+    --background-color: #1b1a18;
     --block-background-color: rgb(var(--block-background-color-rgb));
-    --block-background-color-rgb: 24, 26, 27;
-    --border-color: rgba(255, 255, 255, 0.2);
-    --text-color: #d2cec9;
+    --block-background-color-rgb: 29, 27, 24;
+    --border-color: rgba(255, 252, 247, 0.2);
+    --text-color: #d3cec7;
     --secondary-text-color: #a1998d;
     --link-color: #e3dfda;
-    --bright-background-color: #666;
-    --card-bg: #262626;
+    --bright-background-color: #635f58;
+    --card-bg: #262421;
 }
 
 // 系统暗色模式（仅当没有手动设置时生效）
 @media (prefers-color-scheme: dark) {
     html:not(.light) {
         @include variablesInDarkMode;
+        @include accentVariablesInDarkMode;
     }
 }
 
 // 手动设置暗色模式
 html.dark {
     @include variablesInDarkMode;
+    @include accentVariablesInDarkMode;
+}
+
+/* ---------------------------------------------------------------
+   宽屏呼吸阶梯
+   容器 1080px 在 2560 下两侧各空 740px（内容仅占 42%），
+   观感细长。按视口分档放宽外壳，并同步放大 gap / 内边距 /
+   区块间距，让留白与内容保持同一比例。
+   --------------------------------------------------------------- */
+@media (min-width: 1440px) {
+    :root {
+        --bento-width: 1180px;
+        --bento-gap: 14px;
+        --bento-pad: var(--sp-7);
+        --bento-pad-lg: var(--sp-9);
+        --page-margin-y: 5.5rem;
+        --toc-w: 240px;
+        --toc-gap: var(--sp-10);
+    }
+}
+
+@media (min-width: 1800px) {
+    :root {
+        --bento-width: 1280px;
+        --bento-gap: 16px;
+        --bento-pad: var(--sp-8);
+        --bento-pad-lg: var(--sp-10);
+        --page-margin-y: 6rem;
+        --dot-size: 16px;
+        --toc-gap: var(--sp-12);
+    }
+}
+
+@media (min-width: 2200px) {
+    :root {
+        --bento-width: 1380px;
+        --bento-pad-lg: var(--sp-11);
+        --page-margin-y: 7rem;
+    }
+}
+
+/* ---------------------------------------------------------------
+   点阵盒子：全站通用的「格」
+   -----------------------------------------------------------
+   原先首页有一套盒子样式，其余页面各自另写一套（或干脆没有），
+   导致同一站内出现好几种卡片观感。这里收敛为 mixin，各页面的
+   卡片/区块统一 @include，改动只需动这一处。
+   用法：@include cell-box;          仅盒子
+        @include cell-box; @include cell-crop;   盒子 + 四角点线角标
+   --------------------------------------------------------------- */
+@mixin cell-box {
+  position: relative;
+  background-color: var(--cell-bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--bento-radius);
+  overflow: hidden;
+  transition: border-color var(--tr-base), background-color var(--tr-base);
+}
+
+@mixin cell-crop {
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    opacity: .45;
+    transition: opacity var(--tr-base), border-color var(--tr-base);
+    z-index: 2;
+  }
+
+  &::before {
+    top: 9px;
+    left: 9px;
+    border-top: 1px solid var(--dot);
+    border-left: 1px solid var(--dot);
+  }
+
+  &::after {
+    right: 9px;
+    bottom: 9px;
+    border-bottom: 1px solid var(--dot);
+    border-right: 1px solid var(--dot);
+  }
+
+  &:hover::before,
+  &:hover::after {
+    opacity: 1;
+    border-color: var(--accent);
+  }
 }

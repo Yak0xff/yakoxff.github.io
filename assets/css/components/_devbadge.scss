@@ -1,0 +1,94 @@
+/* ===================================================================
+   本地预览角标（仅 hugo server 渲染）
+   右下角 mono 小标 + 朱砂呼吸点，pointer-events:none 不挡交互；
+   语言沿用 hairline 边框 + 点，暗色自动适配。
+   =================================================================== */
+.dev-badge {
+  position: fixed;
+  right: var(--sp-4);
+  bottom: var(--sp-4);
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-mid);
+  line-height: 1;
+  color: var(--ink-2);
+  background: color-mix(in srgb, var(--background-color) 82%, transparent);
+  border: 1px solid var(--rule);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.dev-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dev-badge-pulse 2.4s ease-in-out infinite;
+}
+
+.dev-badge-label {
+  color: var(--text-color);
+}
+
+.dev-badge-host {
+  padding-left: 0.45rem;
+  border-left: 1px solid var(--rule-strong);
+  color: var(--ink-3);
+}
+
+/* 本地预览下的 Pagefind 索引缺失提示 */
+.pagefind-hint {
+  margin: var(--sp-4) 0;
+  padding: var(--sp-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-2);
+  border: 1px solid var(--rule);
+
+  p {
+    margin: 0;
+  }
+
+  code {
+    padding: 0.1em 0.35em;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+}
+
+@keyframes dev-badge-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 640px) {
+  /* 窄屏下右下角被快捷按钮（bottom 1.5rem / right 1rem，宽约 6.75rem）占用，
+     角标左移让位 */
+  .dev-badge {
+    right: 7rem;
+    bottom: 1.45rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .dev-badge-host {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dev-badge-dot {
+    animation: none;
+  }
+}

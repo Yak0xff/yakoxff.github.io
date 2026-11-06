@@ -1,0 +1,272 @@
+/* ===================================================================
+   页头：展字水印式
+   站名以巨型衬线字铺满页头作底纹，用点阵（--dot）填充、上下裁切，
+   刊名与副题压在水印之上；朱砂落款小印盖尾字右上；
+   双规线收束；导航点分隔，当前项落朱砂。颜色全走 token，暗色自动适配。
+   =================================================================== */
+
+/* ---------- 展字水印 ---------- */
+.waterhead {
+  position: relative;
+  /* 巨型水印超出部分一律裁掉，形成「展字出画」的封面感 */
+  overflow: hidden;
+  padding: var(--sp-7) 0 var(--sp-5);
+}
+
+.waterhead-mark {
+  position: absolute;
+  /* 杂志编排：水印靠左并出画，与左对齐的刊名构成不对称 */
+  left: 0;
+  top: 50%;
+  transform: translate(-6%, -54%);
+  z-index: 0;
+  font-family: var(--serif-font-family);
+  font-size: #{"clamp(5.5rem, 21vw, 12.5rem)"};
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-flat);
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  /* 点阵填充：沿用整站「点」的语言，暗色随 --dot 自动变体 */
+  color: transparent;
+  background-image: radial-gradient(var(--dot) 1.2px, transparent 1.4px);
+  background-size: 7px 7px;
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* 原 .8 偏抢眼，压淡让刊名与内容成为主角 */
+  opacity: .5;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity var(--tr-base);
+}
+
+.waterhead-front {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  /* 杂志编排：左对齐取代居中，避免「一切居中」的呆板 */
+  align-items: flex-start;
+  gap: var(--sp-2);
+  text-align: left;
+}
+
+.waterhead-name {
+  position: relative;
+  margin: 0;
+  font-family: var(--serif-font-family);
+  font-size: #{"clamp(1.75rem, 3.6vw, 2.2rem)"};
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wider);
+  /* 补偿末字后多出的字距，保持视觉居中 */
+  text-indent: var(--ls-wider);
+  line-height: var(--lh-flat);
+  color: var(--text-color);
+}
+
+.waterhead-name a {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--tr-fast);
+}
+
+.waterhead-name a:hover {
+  color: var(--accent);
+}
+
+/* 落款印：盖在刊名尾字右上角 */
+.waterhead-endseal {
+  position: absolute;
+  top: -0.9rem;
+  right: -1.5rem;
+  display: block;
+}
+
+.waterhead-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: var(--sp-1) 0 0;
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-wider);
+  color: var(--ink-2);
+}
+
+.waterhead-sub::before,
+.waterhead-sub::after {
+  content: "";
+  width: 2.75rem;
+  height: 1px;
+  background: var(--rule-strong);
+}
+
+.waterhead-motto {
+  margin: var(--sp-1) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-3);
+}
+
+/* hover：水印点阵变淡，让刊名浮出来 */
+.waterhead:hover .waterhead-mark {
+  opacity: .55;
+}
+
+/* ---------- 方印 ---------- */
+.seal {
+  display: block;
+  flex-shrink: 0;
+  /* 跨页面 View Transition：印章在首页 / 文章页间平滑过渡 */
+  view-transition-name: title-image;
+}
+
+.seal svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.seal-plate {
+  fill: var(--accent);
+  transition: fill var(--tr-base);
+}
+
+.seal-frame {
+  fill: none;
+  stroke: rgba(255, 255, 255, .38);
+  stroke-width: 1;
+}
+
+.seal-char {
+  fill: var(--accent-contrast);
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: var(--fw-bold);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.seal-char--single {
+  font-size: 34px;
+}
+
+a:hover .seal {
+  transform: rotate(-2deg);
+}
+
+a .seal {
+  transition: transform var(--tr-base);
+}
+
+/* 双规线：粗 + 细，报纸头版收束 */
+.masthead-rule {
+  position: relative;
+  border-top: 2.5px solid var(--text-color);
+}
+
+.masthead-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 3.5px;
+  border-top: 1px solid var(--text-color);
+}
+
+/* ---------- 导航 ---------- */
+.header-nav {
+  display: flex;
+  /* 与左对齐的刊名、内容栏同侧（原为居中，与新排版脱节） */
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-5);
+  margin-top: var(--sp-4);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px dotted var(--dot);
+}
+
+.nav-item {
+  position: relative;
+  padding: var(--sp-1) 0;
+  font-size: var(--fs-md);
+  color: var(--text-color);
+  background: none;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--serif-font-family);
+  transition: color var(--tr-fast);
+}
+
+/* 点分隔：落在 gap 正中央（gap = --sp-5，取其一半为偏移） */
+.nav-item + .nav-item::before {
+  content: "·";
+  position: absolute;
+  left: calc(var(--sp-5) / -2);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-3);
+}
+
+.nav-item:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.nav-item.active {
+  color: var(--accent);
+  font-weight: var(--fw-bold);
+  text-decoration: none;
+}
+
+.nav-search {
+  display: flex;
+  align-items: center;
+}
+
+.nav-search:hover {
+  text-decoration: none;
+}
+
+.search-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+@media (max-width: 640px) {
+  .waterhead {
+    padding: var(--sp-6) 0 var(--sp-4);
+  }
+
+  /* 窄屏水印更淡，避免与刊名抢读 */
+  .waterhead-mark {
+    opacity: .6;
+  }
+
+  .waterhead-endseal {
+    top: -0.7rem;
+    right: -1.15rem;
+  }
+
+  .waterhead-sub::before,
+  .waterhead-sub::after {
+    width: 1.75rem;
+  }
+
+  /* 窄屏导航可能换行，隐藏点分隔避免行首悬点 */
+  .nav-item + .nav-item::before {
+    display: none;
+  }
+
+  .header-nav {
+    gap: var(--sp-4);
+  }
+
+  .nav-item {
+    font-size: var(--fs-base);
+  }
+}

@@ -1,0 +1,470 @@
+/* ===================================================================
+   应用页（/product/ 列表 + 详情）—— Bento cell + 点线语言
+   旧版：圆角白卡 + 灰底药丸 + 大阴影，与全站语言脱节。
+   新版：hairline 描边 cell、mono 状态点、meta 表格化、crop mark。
+   =================================================================== */
+
+/* ---------- 列表页 ---------- */
+.product-page {
+  max-width: var(--bento-width);
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
+}
+
+.product-lede {
+  max-width: 42em;
+  margin: var(--sp-3) 0 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-base);
+  color: var(--ink-2);
+}
+
+.product-grid {
+  display: grid;
+  gap: var(--bento-gap);
+  margin-top: var(--sp-6);
+}
+
+/* 应用卡 */
+.product-card {
+  display: flex;
+  align-items: center;
+  gap: var(--bento-pad);
+  padding: var(--bento-pad);
+  @include cell-box;
+  @include cell-crop;
+}
+
+.product-card:hover {
+  border-color: var(--accent-line);
+}
+
+/* 置顶大图卡：图在上、信息在下 */
+.product-card-pinned {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.product-card-pinned .product-cover {
+  border-bottom: 1px solid var(--rule);
+}
+
+.product-card-pinned .product-info-container {
+  padding: var(--bento-pad);
+}
+
+
+
+.product-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+img.product-cover,
+.product-cover img,
+.product-cover-placeholder {
+  display: block;
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+}
+
+.product-card-pinned .product-cover img {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  border: none;
+  border-radius: 0;
+}
+
+.product-cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-3);
+}
+
+.product-cover-placeholder svg {
+  width: 36px;
+  height: 36px;
+}
+
+.product-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  flex: 1;
+}
+
+.product-info {
+  min-width: 0;
+}
+
+.product-name {
+  margin: 0;
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wide);
+  color: var(--text-color);
+  transition: color var(--tr-fast);
+}
+
+.product-card-link:hover .product-name {
+  color: var(--accent);
+}
+
+.product-tagline {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--ink-2);
+}
+
+.product-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-top: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-3);
+}
+
+/* 状态：mono 小字 + 语义点（替代灰底药丸） */
+.product-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.product-status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-released::before { background: var(--accent-3); }
+.status-beta::before,
+.status-alpha::before { background: var(--accent); }
+.status-development::before { background: var(--dot); }
+
+.product-actions-inline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+}
+
+/* mono 文字链接按钮 */
+.product-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-2);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--dot);
+  padding-bottom: 1px;
+  transition: color var(--tr-fast), border-color var(--tr-fast);
+  white-space: nowrap;
+}
+
+.product-link:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent-line);
+}
+
+.product-link-primary {
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent-line);
+}
+
+.product-link-primary:hover {
+  color: var(--accent);
+}
+
+/* ---------- 详情页 ---------- */
+.product-detail {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 var(--sp-4) var(--sp-10);
+}
+
+.product-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-5);
+  margin: var(--sp-6) 0;
+}
+
+.product-icon {
+  width: 72px;
+  height: 72px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.product-hero-title {
+  margin: 0;
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-tight);
+  color: var(--text-color);
+}
+
+.product-hero-tagline {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.product-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-5);
+  margin-left: auto;
+}
+
+/* meta 表：hairline 行分隔，label mono / value 衬线 */
+.product-meta-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin: var(--sp-6) 0;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-4) var(--sp-2);
+}
+
+.meta-item + .meta-item {
+  border-left: 1px dotted var(--dot-soft);
+}
+
+.meta-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-widest);
+  color: var(--ink-3);
+}
+
+.meta-value {
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-md);
+  color: var(--text-color);
+}
+
+/* 区块标题（核心功能 / 应用截图） */
+.product-section-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin: var(--sp-9) 0 var(--sp-4);
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wide);
+  color: var(--text-color);
+}
+
+.product-section-title::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* 功能格：Bento cell */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--bento-gap);
+}
+
+.feature-item {
+  padding: var(--bento-pad);
+  @include cell-box;
+}
+
+.feature-icon {
+  display: block;
+  font-size: var(--fs-lg);
+  margin-bottom: var(--sp-2);
+}
+
+.feature-item h3 {
+  margin: 0;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--text-color);
+}
+
+.feature-item p {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--ink-2);
+}
+
+/* 截图横滚 */
+.screenshots-carousel {
+  overflow-x: auto;
+  padding-bottom: var(--sp-2);
+}
+
+.screenshots-track {
+  display: flex;
+  gap: var(--bento-gap);
+}
+
+.screenshot-item {
+  flex: 0 0 auto;
+  width: #{"min(78vw, 460px)"};
+  border: 1px solid var(--rule);
+  border-radius: var(--bento-radius);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.screenshot-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 数据来源注脚 */
+.product-source-note {
+  margin: var(--sp-8) 0 0;
+  padding-top: var(--sp-3);
+  border-top: 1px dotted var(--dot-soft);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-3);
+}
+
+.product-back {
+  margin-top: var(--sp-6);
+}
+
+/* ---------- Lightbox（保留原交互，色板换 token） ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, .82);
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 88vw;
+  max-height: 86vh;
+  border-radius: var(--radius-sm);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: var(--sp-4);
+  right: var(--sp-6);
+  border: none;
+  background: none;
+  color: var(--accent-contrast);
+  font-size: 2.2rem;
+  line-height: var(--lh-flat);
+  cursor: pointer;
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .12);
+  color: var(--accent-contrast);
+  cursor: pointer;
+  transition: background var(--tr-fast);
+}
+
+.lightbox-nav:hover {
+  background: rgba(255, 255, 255, .24);
+}
+
+.lightbox-prev { left: var(--sp-5); }
+.lightbox-next { right: var(--sp-5); }
+
+.lightbox-nav svg {
+  width: 22px;
+  height: 22px;
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: var(--sp-5);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: rgba(255, 255, 255, .8);
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 700px) {
+  .product-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .product-info-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-hero-actions {
+    margin-left: 0;
+  }
+
+  .meta-item + .meta-item {
+    border-left: none;
+    border-top: 1px dotted var(--dot-soft);
+  }
+}

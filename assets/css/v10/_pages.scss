@@ -1,0 +1,256 @@
+/* ===================================================================
+   V10 其余页面收敛：归档 / 标签 / 分类 / 精选 / 标记 / 关于 /
+   应用 / 虚构 / 侠客 / 赞助
+   不逐页重写模板，而是统一三件事：
+     1. 容器：与顶栏同宽同 gutter（左边缘全站对齐）
+     2. 页面标题：term-kicker / term-title 换成 eyebrow + 黑体大标题
+     3. 目录行：年份、条目、标签统一字族与悬停反馈
+   =================================================================== */
+
+/* ---------- 1. 容器 ---------- */
+article.archive-page,
+article.about-page,
+article.product-page,
+article.fiction-list-page {
+  box-sizing: border-box;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* 正文型页面（关于 / 侠客 / 赞助 / 精选导语）收回阅读行长 */
+.archive-page .post-content,
+.archive-page > .markdown-body {
+  max-width: var(--measure);
+  margin-inline: 0;
+}
+
+/* 小说章节页、应用详情页：阅读型，窄栏 */
+article.fiction-page,
+article.product-detail {
+  box-sizing: border-box;
+  max-width: calc(var(--measure) + var(--gutter) * 2);
+  padding: 0 var(--gutter);
+}
+
+/* ---------- 2. 页面标题 ---------- */
+.term-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+  margin: 0 !important;
+  font-family: var(--font-num);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  color: var(--zhu-ink);
+
+  &::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--zhu);
+  }
+}
+
+.term-title {
+  margin: #{".5rem 0 clamp(1.5rem, 1rem + 2vw, 2.75rem)"};
+  padding-bottom: #{"clamp(1.25rem, 1rem + 1.5vw, 2.25rem)"};
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.08;
+  color: var(--ink);
+}
+
+.term-title-hash { color: var(--zhu); margin-right: .1em; }
+
+.term-header .term-title { margin-bottom: 1rem; }
+.term-description { color: var(--ink-2); font-size: var(--step-1); }
+
+.term-tool-btn {
+  min-height: 36px;
+  padding: 0 .9rem;
+  font-family: var(--font-ui);
+  font-size: var(--step--2);
+  color: var(--ink-2);
+  background: none;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: border-color var(--t-1) var(--ease-ui), color var(--t-1) var(--ease-ui);
+
+  &:hover { color: var(--ink); border-color: var(--ink); }
+}
+
+/* 旧区块标题（taxonomy「文章系列」等）对齐到新 v-section-head 语言 */
+.archive-page .section-head {
+  display: flex;
+  align-items: baseline;
+  padding-top: .9rem;
+  border-top: 2px solid var(--line-ink);
+}
+
+.archive-page .section-title {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 700;
+
+  &::before { display: none; }
+}
+
+/* ---------- 3. 归档目录 ---------- */
+.archive-list { margin-top: 0; }
+
+.archive-year { margin-bottom: #{"clamp(2.5rem, 2rem + 2vw, 4rem)"}; }
+
+.archive-year-head {
+  position: sticky;
+  top: var(--topbar-h);
+  z-index: 5;
+  margin: 0;
+  padding: .75rem 0;
+  background: var(--paper);
+  border-bottom: 2px solid var(--line-ink);
+  transition: top var(--t-2) var(--ease-out);
+}
+
+/* 顶栏收起时，年份条吸附到最顶 */
+.chrome-hidden .archive-year-head { top: 0; }
+
+.archive-year-label {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1;
+  color: var(--ink);
+
+  &::before {
+    width: 9px;
+    height: 9px;
+    background: var(--zhu);
+    transform: translateY(-.35em);
+  }
+}
+
+.archive-year-leader { border-bottom: 0; }
+
+.archive-year-count {
+  font-family: var(--font-num);
+  font-size: var(--step--2);
+  color: var(--ink-3);
+}
+
+.post-row {
+  position: relative;
+  align-items: baseline;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: .7rem 0;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left var(--t-2) var(--ease-out);
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    margin-top: -3px;
+    border-radius: 50%;
+    background: var(--zhu);
+    transform: scale(0);
+    transition: transform var(--t-2) var(--ease-out);
+  }
+
+  &:hover { padding-left: 1rem; }
+  &:hover::before { transform: scale(1); }
+}
+
+/* 整行可点：把标题链接的点按区撑满整行 */
+.post-row-title {
+  font-family: var(--font-display);
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--ink);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  &:hover { text-decoration: none; }
+}
+
+.post-row:hover .post-row-title { color: var(--zhu-ink); }
+.post-row-leader { border-bottom-color: transparent; }
+
+.post-row-date {
+  font-family: var(--font-num);
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+@media (max-width: 600px) {
+  .post-row { flex-wrap: wrap; gap: .15rem 1rem; }
+  .post-row-leader { display: none; }
+  .post-row-date { font-size: var(--step--2); }
+  .post-row:hover { padding-left: 0; }
+  .post-row::before { display: none; }
+}
+
+/* ---------- 标签云 ---------- */
+.tagcloud a,
+.tag-pill {
+  border-radius: var(--r-pill);
+  transition: color var(--t-1) var(--ease-ui), border-color var(--t-1) var(--ease-ui), background-color var(--t-1) var(--ease-ui);
+
+  &:hover {
+    color: var(--zhu-ink);
+    border-color: var(--zhu-line);
+    background: var(--zhu-wash);
+    text-decoration: none;
+  }
+}
+
+/* ---------- 精选页列表 ---------- */
+#featured-posts .entries { border-top: 0; }
+
+/* ---------- 搜索框（Pagefind）---------- */
+#pagefind {
+  --pagefind-ui-primary: var(--zhu-ink);
+  --pagefind-ui-text: var(--ink);
+  --pagefind-ui-background: var(--surface);
+  --pagefind-ui-border: var(--line-2);
+  --pagefind-ui-tag: var(--paper-2);
+  --pagefind-ui-border-radius: 6px;
+  --pagefind-ui-font: var(--font-ui);
+  margin-bottom: var(--section-gap);
+}
+
+/* ---------- 存量 Bento 盒（关于 / 应用）：去米色底，留细线 ---------- */
+.bento-cell {
+  background: transparent;
+  border-color: var(--line);
+}
+
+.bento-cell::before,
+.bento-cell::after,
+.dot-field { display: none; }
+
+/* 关于页鸣谢行：长链接文本（如「MPS Game Filled Icons Collection」）
+   在 360px 下 flex-shrink:0 顶出视口 → 允许收缩并截断 */
+.credits-link {
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

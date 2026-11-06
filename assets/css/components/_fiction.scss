@@ -1,0 +1,115 @@
+/* ===================================================================
+   虚构（/fictions/）
+   =================================================================== */
+
+/* 列表页容器：目录页外壳与首页 Bento 同宽（页头不跳位）；
+   章节阅读页不在此列，维持阅读行宽 */
+.fiction-list-page {
+  max-width: var(--bento-width);
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
+}
+
+/* 小说章节标题（新增 h1，补齐章节页语义） */
+.fiction-chapter-title {
+  margin: 0 0 var(--sp-6);
+  padding-bottom: var(--sp-3);
+  border-bottom: 2px solid var(--border-color);
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: var(--text-color);
+}
+
+@media (max-width: 640px) {
+  .fiction-chapter-title {
+    font-size: var(--fs-lg);
+  }
+}
+
+/* ===================================================================
+   章节页浮动操作条（从 layouts/fictions/page.html 内联 <style> 外迁）
+   =================================================================== */
+.fiction-quick-actions {
+  position: fixed;
+  top: var(--sp-6);
+  right: var(--sp-6);
+  z-index: 100;
+}
+
+.fiction-quick-actions .float-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--sp-6);
+  height: var(--sp-6);
+  opacity: .4;
+  transition: opacity var(--tr-fast);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.fiction-quick-actions .float-btn:hover {
+  opacity: 1;
+}
+
+.fiction-quick-actions .theme-toggle {
+  position: relative;
+}
+
+.fiction-quick-actions .theme-icon {
+  width: var(--sp-5);
+  height: var(--sp-5);
+  position: absolute;
+  /* 过渡统一到全站时长/曲线，避免与其余组件节奏不一致 */
+  transition: opacity var(--tr-base), transform var(--tr-base);
+  color: var(--text-color);
+}
+
+.fiction-quick-actions .theme-icon.sun {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.fiction-quick-actions .theme-icon.moon {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+html.dark .fiction-quick-actions .theme-icon.sun {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+html.dark .fiction-quick-actions .theme-icon.moon {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) .fiction-quick-actions .theme-icon.sun {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+  html:not(.light) .fiction-quick-actions .theme-icon.moon {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .fiction-quick-actions {
+    top: auto;
+    bottom: var(--sp-6);
+    right: var(--sp-4);
+  }
+}
+
+/* 导出 PDF 按钮（从 layouts/fictions/section.html 外迁） */
+.export-pdf-btn:hover svg {
+  transform: translateY(2px);
+  transition: transform var(--tr-fast);
+}

@@ -1,0 +1,115 @@
+/* 正文阅读行长固定（--page-width），宽屏下不放大。
+   为了让「正文 + 目录」作为整体居中，文章页 main 右侧预留目录通道，
+   目录再挂在通道里 —— 见下方 body.posts 规则，两者必须一起看。 */
+.toc-sidebar {
+  display: none;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  right: calc((100% - var(--page-width) - var(--sp-8) - var(--toc-w) - var(--toc-gap)) / 2);
+  width: var(--toc-w);
+  max-height: 70vh;
+  z-index: 100;
+}
+
+@media (min-width: 1200px) {
+  .toc-sidebar {
+    display: block;
+  }
+
+  /* 为目录预留通道，使正文左移、整体居中（2rem = 正文左右 padding）
+     只作用于单篇文章页（is-posts.is-single）；
+     归档列表页 /posts/ 同为 Type=posts，但绝不能吃这个右通道，
+     否则整页被顶偏、不居中。 */
+  body.is-posts.is-single main {
+    padding-right: calc(var(--toc-w) + var(--toc-gap));
+  }
+}
+
+
+.toc-nav {
+  position: relative;
+}
+
+.toc-title {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  color: var(--secondary-text-color);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  margin-bottom: var(--sp-3);
+  padding-left: var(--sp-3);
+}
+
+.toc-progress {
+  position: absolute;
+  left: 0;
+  top: var(--sp-8);
+  bottom: 0;
+  width: 2px;
+  background: var(--border-color);
+  border-radius: var(--radius-xs);
+}
+
+.toc-progress-bar {
+  width: 100%;
+  background: var(--text-color);
+  border-radius: var(--radius-xs);
+  height: 0%;
+  transition: height 0.2s ease-out;
+}
+
+.toc-content {
+  max-height: calc(70vh - 3rem);
+  overflow-y: auto;
+  padding-left: var(--sp-3);
+  scrollbar-width: none;
+}
+
+.toc-content::-webkit-scrollbar {
+  display: none;
+}
+
+.toc-content ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-content li {
+  margin: 0;
+  padding: 0;
+}
+
+.toc-content a {
+  display: block;
+  padding: var(--sp-1) 0;
+  font-size: var(--fs-xs);
+  line-height: var(--lh-tight);
+  color: var(--secondary-text-color);
+  text-decoration: none;
+  transition: color 0.2s, transform 0.2s;
+  border-left: 2px solid transparent;
+  padding-left: var(--sp-2);
+  margin-left: -0.75rem;
+}
+
+.toc-content a:hover {
+  color: var(--text-color);
+}
+
+.toc-content a.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: var(--fw-medium);
+}
+
+/* Nested levels */
+.toc-content ul ul {
+  padding-left: var(--sp-3);
+}
+
+.toc-content ul ul a {
+  font-size: var(--fs-xs);
+  opacity: 0.85;
+}

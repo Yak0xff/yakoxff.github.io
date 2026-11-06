@@ -25,9 +25,11 @@ export default defineConfig({
       textColor: 'var(--text-color)',
       secondary: 'var(--secondary-text-color)'
     },
+    // 指向排版系统真源（assets/css/utils/_variables.scss），避免工具类自成一套
     fontFamily: {
-      mono: ["Courier New", "Courier", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Lucida Console"],
-      serif: ["Noto Serif", "Noto Serif SC", "serif"],
+      mono: 'var(--font-mono)',
+      sans: 'var(--font-sans)',
+      serif: 'var(--font-serif)',
     },
     animation: {
       kayframes: {

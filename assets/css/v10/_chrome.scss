@@ -1,0 +1,244 @@
+/* ===================================================================
+   V10 全站框架：顶栏 + 移动端底部标签栏
+   =================================================================== */
+
+/* ---------- 顶栏 ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  height: var(--topbar-h);
+  background: color-mix(in srgb, var(--paper) 86%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid transparent;
+  transition:
+    transform var(--t-2) var(--ease-out),
+    border-color var(--t-2) var(--ease-ui);
+  /* 跨页转场时顶栏不参与淡入淡出，视觉上「钉」在原地 */
+  view-transition-name: topbar;
+}
+
+.is-scrolled .topbar { border-bottom-color: var(--line); }
+.chrome-hidden .topbar { transform: translateY(-100%); }
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  gap: #{"clamp(1rem, 3vw, 2.5rem)"};
+  height: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* 品牌：朱砂点 + 站名 */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 44px;
+  color: var(--ink);
+  text-decoration: none;
+
+  &:hover { text-decoration: none; }
+  &:hover .brand-dot { transform: scale(1.35); }
+}
+
+.brand-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--zhu);
+  transition: transform var(--t-2) var(--ease-out);
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+/* 导航：当前项下方一枚朱砂点，hover 时点从无到有 */
+.topnav { margin-left: auto; }
+
+.topnav-list {
+  display: flex;
+  gap: .25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topnav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 .85rem;
+  font-family: var(--font-ui);
+  font-size: .9375rem;
+  color: var(--ink-2);
+  text-decoration: none;
+  border-radius: var(--r-2);
+  transition: color var(--t-1) var(--ease-ui), background-color var(--t-1) var(--ease-ui);
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    border-radius: 50%;
+    background: var(--zhu);
+    transform: scale(0);
+    transition: transform var(--t-2) var(--ease-out);
+  }
+
+  &:hover {
+    color: var(--ink);
+    text-decoration: none;
+    background: var(--paper-2);
+  }
+
+  &[aria-current="page"] {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  &[aria-current="page"]::after { transform: scale(1); }
+}
+
+.topbar-tools {
+  display: flex;
+  align-items: center;
+  gap: .125rem;
+}
+
+.tool-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--ink-2);
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color var(--t-1) var(--ease-ui), background-color var(--t-1) var(--ease-ui), transform var(--t-1) var(--ease-ui);
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  svg .fill { fill: currentColor; stroke: none; }
+
+  &:hover { color: var(--ink); background: var(--paper-2); }
+  &:active { transform: scale(.92); }
+  &[aria-current="page"] { color: var(--zhu-ink); }
+}
+
+/* 主题图标：浅色显示月亮（去暗色），暗色显示太阳 */
+#theme-toggle .icon-sun { display: none; }
+html.dark #theme-toggle .icon-sun { display: block; }
+html.dark #theme-toggle .icon-moon { display: none; }
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) #theme-toggle .icon-sun { display: block; }
+  html:not(.light) #theme-toggle .icon-moon { display: none; }
+}
+
+/* ---------- 移动端底部标签栏 ---------- */
+.tabbar { display: none; }
+
+@media (max-width: 767px) {
+  .topnav { display: none; }
+  .topbar-tools { margin-left: auto; }
+  .brand-name { font-size: 1.0625rem; }
+
+  .tabbar {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: color-mix(in srgb, var(--paper) 90%, transparent);
+    -webkit-backdrop-filter: saturate(1.4) blur(16px);
+    backdrop-filter: saturate(1.4) blur(16px);
+    border-top: 1px solid var(--line);
+    transition: transform var(--t-2) var(--ease-out);
+    view-transition-name: tabbar;
+  }
+
+  .chrome-hidden .tabbar { transform: translateY(100%); }
+
+  .tabbar-list {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    height: var(--tabbar-h);
+    margin: 0;
+    padding: 0 .25rem;
+    list-style: none;
+  }
+
+  .tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    height: 100%;
+    font-family: var(--font-ui);
+    font-size: .6875rem;
+    color: var(--ink-3);
+    text-decoration: none;
+    transition: color var(--t-1) var(--ease-ui);
+
+    svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform var(--t-2) var(--ease-out);
+    }
+
+    &:hover { text-decoration: none; }
+    &:active svg { transform: scale(.88); }
+
+    &[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* 当前项：图标上方一枚朱砂点（与桌面导航同一语言） */
+    &[aria-current="page"]::before {
+      content: "";
+      position: absolute;
+      top: 6px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--zhu);
+    }
+  }
+
+  /* 本地预览角标、TOC 抽屉按钮等右下浮层让位给标签栏 */
+  .dev-badge { bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + 10px) !important; }
+}

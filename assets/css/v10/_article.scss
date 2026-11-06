@@ -1,0 +1,294 @@
+/* ===================================================================
+   V10 文章页
+   原则：标题区是「门」，用黑体立起来；正文是「声音」，用楷体
+   放松读；章节靠编号与留白分隔，而不是靠线（旧版每个 h2 上方
+   一条点线 + 一条实线 + 红点，三重装饰只表达了一个意思）。
+   =================================================================== */
+
+/* 阅读栏：与顶栏同一套 gutter，左右边缘与品牌对齐方式一致 */
+article.post-article {
+  box-sizing: border-box;
+  max-width: calc(var(--measure) + var(--gutter) * 2);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ---------- 标题区 ---------- */
+.post-header {
+  margin-bottom: #{"clamp(2rem, 1.5rem + 2vw, 3rem)"};
+  padding-bottom: #{"clamp(1.5rem, 1rem + 2vw, 2.5rem)"};
+  border-bottom: 1px solid var(--line);
+}
+
+.post-kicker-tag {
+  font-family: var(--font-num);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  color: var(--zhu-ink);
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+.post-kicker-tag::before {
+  width: 7px;
+  height: 7px;
+  background: var(--zhu);
+}
+
+.post-title {
+  margin: .85rem 0 0;
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: var(--tracking-display);
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.post-subtitle {
+  margin: .9rem 0 0;
+  font-size: var(--step-1);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem .6rem;
+  margin-top: 1.25rem;
+  font-family: var(--font-num);
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+/* 旧规则在 ≤640px 把阅读时长撑成整行，元信息被拆成三行 */
+.post-meta .meta-reading-time {
+  width: auto;
+  margin: 0;
+}
+
+.post-meta .prefs-toggle {
+  margin-left: auto;
+  min-width: 44px;
+  min-height: 36px;
+  font-family: var(--font-ui);
+  color: var(--ink-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-pill);
+  background: none;
+  transition: border-color var(--t-1) var(--ease-ui), color var(--t-1) var(--ease-ui);
+
+  &:hover { color: var(--ink); border-color: var(--ink); }
+}
+
+.post-tags { margin-top: 1rem; }
+
+.post-tags .tag,
+.post-tags a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 .7rem;
+  margin: 0 .35rem .35rem 0;
+  font-family: var(--font-ui);
+  font-size: var(--step--2);
+  color: var(--ink-2);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  text-decoration: none;
+  transition: border-color var(--t-1) var(--ease-ui), color var(--t-1) var(--ease-ui);
+
+  &:hover {
+    color: var(--zhu-ink);
+    border-color: var(--zhu-line);
+    text-decoration: none;
+  }
+}
+
+/* ---------- 正文 ---------- */
+.post-body {
+  font-family: var(--font-read);
+  font-size: 1.125rem;
+  line-height: 1.9;
+  color: var(--ink-1);
+}
+
+/* 阅读偏好档位重定（旧版「标准」= 20px 偏大，「大 / 特大」相同无区分） */
+html[data-fontsize="sm"] .post-body { font-size: 1rem; }
+html[data-fontsize="md"] .post-body { font-size: 1.125rem; }
+html[data-fontsize="lg"] .post-body { font-size: 1.25rem; }
+html[data-fontsize="xl"] .post-body { font-size: 1.375rem; }
+html[data-leading="tight"] .post-body { line-height: 1.7; }
+html[data-leading="normal"] .post-body { line-height: 1.9; }
+html[data-leading="loose"] .post-body { line-height: 2.15; }
+html[data-width="narrow"] article.post-article { max-width: calc(600px + var(--gutter) * 2); }
+html[data-width="normal"] article.post-article { max-width: calc(var(--measure) + var(--gutter) * 2); }
+html[data-width="wide"] article.post-article { max-width: calc(880px + var(--gutter) * 2); }
+
+#post-content { counter-reset: v-h2; }
+
+.post-body .markdown-body {
+  p { margin: 0 0 1.15em; }
+
+  /* 二级标题：等宽编号 01 / 02 … 作眉题，标题本体黑体 */
+  h2 {
+    counter-increment: v-h2;
+    margin: 2.6em 0 .8em;
+    padding-top: 0;
+    border-top: 0;
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -.01em;
+    color: var(--ink);
+    scroll-margin-top: calc(var(--topbar-h) + 1.5rem);
+  }
+
+  h2::before {
+    content: counter(v-h2, decimal-leading-zero);
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0 0 .5rem;
+    font-family: var(--font-num);
+    font-size: .5em;
+    font-weight: 500;
+    letter-spacing: var(--tracking-meta);
+    color: var(--zhu-ink);
+    background: none;
+    border-radius: 0;
+    vertical-align: baseline;
+  }
+
+  h3,
+  h4 {
+    margin: 2em 0 .6em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ink);
+    scroll-margin-top: calc(var(--topbar-h) + 1.5rem);
+  }
+
+  h3 { font-size: var(--step-1); }
+  h4 { font-size: 1.05em; }
+
+  /* 引用：朱砂竖线 + 次级墨色，去掉大号引号装饰 */
+  blockquote {
+    margin: 1.8em 0;
+    padding: .15em 0 .15em 1.25em;
+    border-left: 3px solid var(--zhu);
+    color: var(--ink-2);
+
+    &::before { content: none; }
+    p { display: block; margin: 0 0 .6em; }
+    p:last-child { margin-bottom: 0; }
+  }
+
+  /* 分隔：三枚点居中（与站名「一点」同一母题） */
+  hr {
+    height: auto;
+    margin: 3em 0;
+    border: 0;
+    background: none;
+    text-align: center;
+    overflow: visible;
+
+    &::before {
+      content: "\00B7\2002\00B7\2002\00B7";
+      font-size: 1.6em;
+      line-height: 1;
+      color: var(--zhu);
+    }
+  }
+
+  a {
+    color: var(--ink);
+    text-decoration-color: var(--zhu-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: .25em;
+    transition: color var(--t-1) var(--ease-ui), text-decoration-color var(--t-1) var(--ease-ui);
+
+    &:hover { color: var(--zhu-ink); text-decoration-color: currentColor; }
+  }
+
+  code {
+    padding: .1em .35em;
+    font-family: var(--font-num);
+    font-size: .86em;
+    background: var(--paper-2);
+    border-radius: var(--r-1);
+  }
+
+  pre {
+    border-radius: var(--r-2);
+    border: 1px solid var(--line);
+  }
+
+  pre code { padding: 0; background: none; }
+
+  img { border-radius: var(--r-1); }
+}
+
+/* 文末：一枚朱砂句点收尾——全文的「点」 */
+.post-end {
+  justify-content: center;
+  margin-top: 3rem;
+
+  i { display: none; }
+
+  span {
+    width: 11px;
+    height: 11px;
+    font-size: 0;
+    color: transparent;
+    background: var(--zhu);
+    border: 0;
+    border-radius: 50%;
+  }
+}
+
+.post-footer {
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- 阅读进度：顶栏之上的一根朱砂细线 ---------- */
+.reader-progress {
+  z-index: 70;
+  height: 2px;
+  background: transparent;
+}
+
+.reader-progress-bar {
+  background: var(--zhu);
+}
+
+/* ---------- 侧边目录 ---------- */
+.toc-title {
+  font-family: var(--font-num);
+  letter-spacing: var(--tracking-meta);
+  color: var(--ink-3);
+}
+
+.toc-content a {
+  font-family: var(--font-ui);
+  color: var(--ink-3);
+
+  &:hover { color: var(--ink); }
+  &.active { color: var(--zhu-ink); border-left-color: var(--zhu); }
+}
+
+.toc-progress { background: var(--line); }
+.toc-progress-bar { background: var(--zhu); }
+
+@media (max-width: 640px) {
+  .post-body { font-size: 1.0625rem; }
+}

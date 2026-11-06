@@ -1,0 +1,183 @@
+/* ===================================================================
+   V10 设计令牌 ——「一点」：纸 · 墨 · 朱
+   -------------------------------------------------------------------
+   站名「一点记」→ 整套视觉只有一个品牌原子：一枚朱砂点。
+   它是 logo、导航当前项、列表游标、阅读进度头、焦点环、文末句点。
+   其余一律交给纸与墨：放弃满屏米色卡片，用字号、字重、粗细线
+   建立层级——盒子越少，真正重要的东西越突出。
+
+   本文件在 main.scss 最后导入：同名变量覆盖旧值，未重写的存量
+   页面（关于 / 应用 / 虚构 / 标签）自动换到新调性。
+   对比度均按 WCAG AA 实算（见行尾注释），正文级文字 ≥ 4.5:1。
+   =================================================================== */
+
+/* 旧令牌映射：存量组件自动换肤。
+   抽成 mixin 是因为旧暗色规则 html.dark {…} 特异性高于 :root，
+   映射必须在暗色选择器里再声明一次才不会被旧值盖住。 */
+@mixin v10-map {
+  --background-color: var(--paper);
+  --block-background-color-rgb: 235, 230, 220;
+  --border-color: var(--line);
+  --text-color: var(--ink);
+  --secondary-text-color: var(--ink-3);
+  --link-color: var(--ink);
+  --bright-background-color: var(--surface);
+  --card-bg: var(--surface);
+  --font-serif: var(--font-read);
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-num);
+
+  --accent: var(--zhu-ink);
+  --accent-soft: var(--zhu-wash);
+  --accent-line: var(--zhu-line);
+  --accent-contrast: var(--on-zhu);
+  --mark-strong: #9e3a2c;                    /* 正文加粗：暗朱，7.0:1 */
+  --mark-em: #4f6a3e;                        /* 正文强调：松绿，5.9:1 */
+
+  --hairline: var(--line);
+  --hairline-strong: var(--line-2);
+  --rule: var(--line);
+  --rule-strong: var(--line-2);
+  --dot: var(--line-2);
+  --dot-soft: var(--line);
+  --cell-bg: transparent;
+  --cell-bg-solid: var(--surface);
+
+  /* 圆角收紧：编辑排版是「裁切的纸」，不是「App 卡片」 */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --bento-radius: 8px;
+
+  --bento-width: var(--container);
+  --page-width: var(--measure);
+
+  --shadow-card: 0 1px 0 var(--line);
+  --shadow-lift: 0 12px 32px -12px rgba(22, 19, 15, .22);
+
+  --tr-fast: var(--t-1) var(--ease-ui);
+  --tr-base: var(--t-2) var(--ease-ui);
+  --tr-reveal: var(--t-3) var(--ease-out);
+}
+
+:root {
+  /* ---------- 纸墨朱 · 浅色 ---------- */
+  --paper: #f4f1ea;          /* 底：偏暖的书页白，L≈0.88 */
+  --paper-2: #ebe6dc;        /* 次级底：表格条纹、代码块、hover 底 */
+  --surface: #fbf9f4;        /* 浮层：抽屉、面板、弹出层 */
+  --ink: #16130f;            /* 主墨：标题与正文 17.6:1 */
+  --ink-1: #2c2721;          /* 正文（长文略降一档，减刺眼）13.4:1 */
+  --ink-2: #4c463e;          /* 导语、次级文字 8.6:1 */
+  --ink-3: #6a6257;          /* 元信息、日期 5.3:1（旧值 3.4:1 不达标） */
+  --line: rgba(22, 19, 15, .13);
+  --line-2: rgba(22, 19, 15, .24);
+  --line-ink: #16130f;       /* 刊头粗线 / 区块起始线 */
+
+  --zhu: #d9431f;            /* 朱砂点：只用于「点」与色块，不承载小字 */
+  --zhu-ink: #b8361a;        /* 朱砂字：链接 hover、kicker 文字 5.2:1 */
+  --zhu-wash: rgba(217, 67, 31, .08);
+  --zhu-line: rgba(217, 67, 31, .35);
+  --on-zhu: #fffaf6;
+
+  /* ---------- 字族：黑体立骨，楷体说话，等宽记账 ----------
+     标题用系统黑体（零下载、字重全），正文保留霞鹜文楷作为
+     站点的「声音」，日期 / 编号 / 计数统一等宽，三者职责不重叠。 */
+  --font-display: "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC",
+    "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --font-read: "LXGW WenKai", "Songti SC", "STKaiti", serif;
+  --font-ui: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-num: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+  /* ---------- 流体字阶（Utopia 式，360 → 1440 线性插值）----------
+     旧阶梯是固定 rem，移动端标题偏大、宽屏又偏小；改 clamp 后
+     同一个档位在 390 与 1920 下各得其所，无需再写断点改字号。 */
+  --step--2: clamp(.72rem, .7rem + .08vw, .78rem);
+  --step--1: clamp(.82rem, .79rem + .12vw, .88rem);
+  --step-0: clamp(1rem, .96rem + .18vw, 1.09rem);
+  --step-1: clamp(1.18rem, 1.1rem + .38vw, 1.4rem);
+  --step-2: clamp(1.4rem, 1.25rem + .7vw, 1.85rem);
+  --step-3: clamp(1.7rem, 1.42rem + 1.35vw, 2.6rem);
+  --step-4: clamp(2.1rem, 1.6rem + 2.4vw, 3.7rem);
+  --step-5: clamp(3rem, 1.9rem + 5.2vw, 7.2rem);
+
+  --tracking-display: -.025em;
+  --tracking-title: -.01em;
+  --tracking-meta: .06em;
+
+  /* ---------- 版式骨架 ---------- */
+  --container: 1200px;                       /* 目录页外壳 */
+  --measure: 700px;                          /* 正文行长 ≈ 38–40 字 */
+  --gutter: clamp(1.125rem, .6rem + 2.4vw, 2.5rem);
+  --section-gap: clamp(3.5rem, 2.4rem + 4.5vw, 7rem);
+
+  --topbar-h: 64px;
+  --tabbar-h: 0px;                           /* 仅移动端 > 0，供底部留白计算 */
+
+  --r-1: 2px;
+  --r-2: 6px;
+  --r-pill: 999px;
+
+  /* ---------- 动效 ----------
+     只有两条曲线：出场用 out-expo（快起慢落，像纸张落定），
+     交互用 out-quart（短促、跟手）。时长三档。 */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-ui: cubic-bezier(.25, 1, .5, 1);
+  --t-1: 140ms;
+  --t-2: 260ms;
+  --t-3: 620ms;
+
+  --focus-ring: 0 0 0 2px var(--paper), 0 0 0 4px var(--zhu);
+
+  @include v10-map;
+}
+
+@mixin v10-dark {
+  /* 映射必须先于暗色专属值声明：映射里含浅色的 --mark-strong 等，
+     放在后面会把暗色值覆盖回去（实测暗色正文加粗仅 2.78:1） */
+  @include v10-map;
+  /* 暗色不是「反相」：底是带一点暖的墨，字是旧纸色，
+     朱砂提亮以保持同等的视觉重量 */
+  --paper: #12110e;
+  --paper-2: #1c1a16;
+  --surface: #1a1814;
+  --ink: #efe9df;            /* 16.1:1 */
+  --ink-1: #ddd5c9;
+  --ink-2: #bdb4a7;          /* 9.4:1 */
+  --ink-3: #958c7f;          /* 5.7:1 */
+  --line: rgba(239, 233, 223, .12);
+  --line-2: rgba(239, 233, 223, .24);
+  --line-ink: #efe9df;
+
+  --zhu: #ff5b36;
+  --zhu-ink: #ff7a59;        /* 7.3:1 */
+  --zhu-wash: rgba(255, 91, 54, .12);
+  --zhu-line: rgba(255, 91, 54, .4);
+  --on-zhu: #12110e;
+
+  --block-background-color-rgb: 28, 26, 22;
+  --mark-strong: #f08a74;
+  --mark-em: #a9c792;
+  --shadow-lift: 0 14px 36px -12px rgba(0, 0, 0, .7);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) { @include v10-dark; }
+}
+html.dark { @include v10-dark; }
+
+/* 高对比偏好：线条与次级文字统一加深一档 */
+@media (prefers-contrast: more) {
+  :root {
+    --ink-3: var(--ink-2);
+    --line: var(--line-2);
+    --line-2: var(--ink-3);
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --topbar-h: 56px;
+    --tabbar-h: 64px;
+  }
+}

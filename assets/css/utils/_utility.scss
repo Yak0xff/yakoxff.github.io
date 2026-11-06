@@ -39,7 +39,7 @@
   display: inline-block;
   margin-left: 0.5rem;
   padding: 0.1rem 0.4rem;
-  font-size: 0.7rem;
+  font-size: var(--fs-2xs);
   font-family: inherit;
   color: var(--background-color);
   background: var(--text-color);
@@ -47,29 +47,39 @@
   vertical-align: middle;
 }
 
-/* fiction status badge */
+/* fiction status badge：mono 小字 + 语义色点（连载朱砂 / 完结墨色 / 暂停空心） */
 .fiction-status-badge {
-  display: inline-block;
-  padding: 0.1rem 0.5rem;
-  font-size: 0.7rem;
-  font-family: inherit;
-  border-radius: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-mid);
   vertical-align: middle;
-  letter-spacing: 0.05em;
+
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
 
   &.ongoing {
-    color: var(--background-color);
-    background: var(--text-color);
+    color: var(--accent);
   }
 
   &.completed {
-    color: var(--background-color);
-    background: var(--secondary-text-color);
+    color: var(--ink-2);
   }
 
   &.paused {
-    color: var(--secondary-text-color);
-    background: transparent;
-    border: 1px solid var(--border-color);
+    color: var(--ink-3);
+
+    &::before {
+      background: transparent;
+      border: 1px solid currentColor;
+    }
   }
 }

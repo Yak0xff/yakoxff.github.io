@@ -1,0 +1,368 @@
+/* ===================================================================
+   V10 基础层：纸面、文字、链接、焦点、通用原子、动效
+   =================================================================== */
+
+/* ---------- 纸面 ----------
+   旧版 body 叠了三层径向渐变（暗色下也有），在米色卡片上再
+   叠米色，整页发闷。改纯色纸面，把层次全部交还给文字。 */
+body,
+html.dark body,
+html:not(.light) body {
+  background-color: var(--paper);
+  background-image: none;
+}
+
+body {
+  --page-margin-y: clamp(2rem, 1rem + 3vw, 4.5rem);
+  color: var(--ink);
+  font-family: var(--font-read);
+  font-size: var(--step-0);
+  line-height: 1.75;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "palt" 0, "kern" 1;
+  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--zhu);
+  color: var(--on-zhu);
+}
+
+/* 新外壳不再依赖 article 的通用 max-width：各页面容器自己声明 */
+#main-content {
+  min-height: 60vh;
+}
+
+/* ---------- 焦点：全站统一的朱砂环 ----------
+   旧版只有浏览器默认蓝框，且部分按钮 outline:none 后完全没有焦点
+   指示。键盘用户需要看见自己在哪。 */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-1);
+}
+
+.skip-link {
+  position: fixed;
+  top: .75rem;
+  left: .75rem;
+  z-index: 1000;
+  padding: .6rem 1rem;
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  color: var(--on-zhu);
+  background: var(--zhu);
+  border-radius: var(--r-2);
+  transform: translateY(-160%);
+  transition: transform var(--t-2) var(--ease-out);
+
+  &:focus { transform: none; }
+}
+
+/* ---------- 链接：下划线从左向右生长 ---------- */
+.v-link {
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--t-2) var(--ease-out), color var(--t-1) var(--ease-ui);
+
+  &:hover {
+    text-decoration: none;
+    background-size: 100% 1px;
+    color: var(--zhu-ink);
+  }
+}
+
+/* ---------- 原子：朱砂点 ---------- */
+.v-dot {
+  display: inline-block;
+  width: .42em;
+  height: .42em;
+  border-radius: 50%;
+  background: var(--zhu);
+  flex-shrink: 0;
+}
+
+/* ---------- 原子：等宽眉题（kicker / 计数 / 日期）---------- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+  margin: 0;
+  font-family: var(--font-num);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.eyebrow--zhu { color: var(--zhu-ink); }
+
+.num {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* ---------- 原子：区块标题 ----------
+   结构：粗墨线 → 编号 + 标题 + 「全部 →」
+   粗线是本站唯一的「强分隔」，告诉读者：新的一栏开始了。 */
+.v-section {
+  margin-top: var(--section-gap);
+}
+
+.v-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-top: .9rem;
+  margin-bottom: #{"clamp(1.25rem, .8rem + 1.6vw, 2.25rem)"};
+  border-top: 2px solid var(--line-ink);
+}
+
+.v-section-no {
+  font-family: var(--font-num);
+  font-size: var(--step--1);
+  color: var(--zhu-ink);
+}
+
+.v-section-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 700;
+  letter-spacing: var(--tracking-title);
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.v-section-more {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: .4em;
+  min-height: 44px;
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  text-decoration: none;
+
+  .v-arrow { transition: transform var(--t-2) var(--ease-out); }
+
+  &:hover {
+    color: var(--zhu-ink);
+    text-decoration: none;
+    .v-arrow { transform: translateX(4px); }
+  }
+}
+
+/* 页面级标题（归档 / 标签 / 关于 等目录页统一使用） */
+.v-page-head {
+  padding-bottom: #{"clamp(1.5rem, 1rem + 2vw, 2.75rem)"};
+  margin-bottom: #{"clamp(1.5rem, 1rem + 2vw, 2.75rem)"};
+  border-bottom: 1px solid var(--line);
+}
+
+.v-page-title {
+  margin: .5rem 0 0;
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.08;
+  color: var(--ink);
+}
+
+.v-page-lede {
+  max-width: 36em;
+  margin: 1rem 0 0;
+  font-size: var(--step-1);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* ===================================================================
+   动效
+   =================================================================== */
+
+/* 滚动进场：上移 14px + 淡入，按 --i 错峰 60ms（最多 8 级） */
+.js-reveal .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity var(--t-3) var(--ease-out),
+    transform var(--t-3) var(--ease-out);
+  /* 插值：LibSass 会尝试求值 min()，遇到 var() 报错 */
+  transition-delay: #{"calc(min(var(--i, 0), 8) * 60ms)"};
+}
+
+.js-reveal .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* 跨页转场：顶栏 / 标签栏常驻不闪，内容区淡出上移 → 淡入
+   （@view-transition navigation:auto 已在 _reset 开启） */
+::view-transition-old(root) {
+  animation: v-page-out 180ms var(--ease-ui) both;
+}
+
+::view-transition-new(root) {
+  animation: v-page-in 420ms var(--ease-out) both;
+}
+
+@keyframes v-page-out {
+  to { opacity: 0; transform: translateY(-6px); }
+}
+
+@keyframes v-page-in {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+/* 主题切换：从按钮位置圆形扩散（JS 写入 --vt-x / --vt-y / --vt-r） */
+html.is-theme-switching::view-transition-old(root),
+html.is-theme-switching::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html.is-theme-switching::view-transition-new(root) {
+  animation: v-theme-reveal 560ms var(--ease-out) both;
+}
+
+@keyframes v-theme-reveal {
+  from { clip-path: circle(0 at var(--vt-x, 50%) var(--vt-y, 0)); }
+  to { clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50%) var(--vt-y, 0)); }
+}
+
+/* 减少动效：一切归零，只保留颜色变化 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js-reveal .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ---------- 原子：「一点」笔墨标记（components/mark.html）----------
+   方印已下线。站名拆写：一笔横画「一」+ 朱砂「、」= 一点。
+   时间线（相对 --mk-delay）：
+     0–750ms   横画运笔：遮罩矩形 scaleX 0→1，起笔慢、收笔快
+     760ms     朱砂点从上方落下，压扁回弹
+     900ms+    点落处荡开一圈涟漪
+   悬停：朱砂点再弹一次并再荡一圈。 */
+.mk {
+  --mk-delay: 0ms;
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--mk-w, 6rem);
+  aspect-ratio: 2 / 1;
+  line-height: 0;
+  cursor: default;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+}
+
+.mk-stroke { fill: var(--ink); }
+.mk-dot { fill: var(--zhu); }
+
+.mk-ring {
+  fill: none;
+  stroke: var(--zhu);
+  stroke-width: 1.2;
+  opacity: 0;
+}
+
+.mk-wipe,
+.mk-dot-wrap,
+.mk-ring {
+  transform-box: fill-box;
+}
+
+.mk-wipe {
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: mk-write 750ms cubic-bezier(.55, .05, .3, 1) var(--mk-delay) forwards;
+}
+
+.mk-dot-wrap {
+  transform-origin: center bottom;
+  opacity: 0;
+  animation: mk-drop 620ms cubic-bezier(.3, 1.5, .5, 1) calc(var(--mk-delay) + 760ms) forwards;
+}
+
+.mk-ring {
+  transform-origin: center;
+  animation: mk-ring 1100ms var(--ease-out) calc(var(--mk-delay) + 900ms) forwards;
+}
+
+/* 进入视口再写（ui-js 给 .mk--view 加 .is-in） */
+.mk--view:not(.is-in) .mk-wipe,
+.mk--view:not(.is-in) .mk-dot-wrap,
+.mk--view:not(.is-in) .mk-ring {
+  animation-play-state: paused;
+}
+
+.mk:hover .mk-dot-wrap {
+  opacity: 1;
+  animation: mk-bounce 560ms cubic-bezier(.3, 1.6, .5, 1);
+}
+
+.mk:hover .mk-ring {
+  animation: mk-ring 1000ms var(--ease-out);
+}
+
+@keyframes mk-write {
+  to { transform: scaleX(1); }
+}
+
+@keyframes mk-drop {
+  0% { opacity: 0; transform: translateY(-14px) scale(.6, 1.25); }
+  45% { opacity: 1; transform: translateY(0) scale(1.22, .78); }
+  75% { transform: translateY(-2px) scale(.94, 1.06); }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes mk-bounce {
+  0% { transform: none; }
+  35% { transform: translateY(-5px) scale(.92, 1.1); }
+  65% { transform: translateY(0) scale(1.15, .85); }
+  100% { transform: none; }
+}
+
+@keyframes mk-ring {
+  0% { opacity: .85; transform: scale(.4); }
+  100% { opacity: 0; transform: scale(2.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mk-wipe { animation: none; transform: none; }
+  .mk-dot-wrap { animation: none; opacity: 1; transform: none; }
+  .mk-ring,
+  .mk:hover .mk-ring,
+  .mk:hover .mk-dot-wrap { animation: none; }
+}

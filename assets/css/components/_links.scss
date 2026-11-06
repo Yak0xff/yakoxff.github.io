@@ -1,0 +1,83 @@
+/* ===================================================================
+   友链卡片（/xiake/，shortcodes/link.html）—— hairline 目录语言
+   旧版：圆角灰底卡 + 内联 <style>。
+   新版：直角 hairline 卡 + favicon + 域名 mono 小字，
+        hover 时整卡落朱砂、右上角浮出箭头。
+   =================================================================== */
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  box-sizing: border-box;
+  width: calc(50% - 0.5rem);
+  min-width: 240px;
+  padding: var(--sp-3) var(--sp-4);
+  @include cell-box;
+  @include cell-crop;
+  color: var(--text-color);
+  text-decoration: none !important;
+}
+
+.link-card:hover {
+  border-color: var(--accent);
+}
+
+.link-card-favicon {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+  margin: 0 !important;
+}
+
+.link-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.link-card-title {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color var(--tr-fast);
+}
+
+.link-card:hover .link-card-title {
+  color: var(--accent);
+}
+
+.link-card-domain {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link-card-arrow {
+  margin-left: auto;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: opacity var(--tr-base), transform var(--tr-base), color var(--tr-fast);
+}
+
+.link-card:hover .link-card-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .link-card {
+    width: 100%;
+  }
+}

@@ -3,10 +3,8 @@ $link-color: var(--link-color);
 $secondary-text-color: var(--secondary-text-color);
 $border-color: var(--border-color);
 $block-background-color: var(--block-background-color);
-$strong-text-color: #A94A4A;
-$strong-text-color-dark: #E07070;
-$em-text-color: #889E73;
-$em-text-color-dark: #A8C893;
+// strong / em 强调色已迁至 _variables.scss 的 --mark-strong / --mark-em，
+// 随暗色模式自动切换，无需在此再写 html.dark 分支
 
 .markdown-body {
   max-width: 100%;
@@ -15,15 +13,16 @@ $em-text-color-dark: #A8C893;
   h1, h2, h3, h4, h5, h6 {
     margin-top: 1.5em;
     margin-bottom: 0.5em;
-    line-height: 1.3;
+    line-height: var(--lh-tight);
   }
 
-  h1 { font-size: 1.75rem; }
-  h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.25rem; }
-  h4 { font-size: 1.1rem; }
-  h5 { font-size: 1rem; }
-  h6 { font-size: 0.9rem; color: $secondary-text-color; }
+  h1 { font-size: var(--fs-2xl); }
+  h2 { font-size: var(--fs-xl); }
+  h3 { font-size: var(--fs-lg); }
+  h4 { font-size: var(--fs-md); }
+  h5 { font-size: var(--fs-base); }
+  /* h6 原与 h5 同为 fs-base，六级标题末端无法区分，压一档 */
+  h6 { font-size: var(--fs-sm); color: $secondary-text-color; }
 
   p {
     hyphens: auto;
@@ -31,20 +30,12 @@ $em-text-color-dark: #A8C893;
     margin-bottom: 1em;
   }
 
-  strong { 
-    color: $strong-text-color;
-    html.dark & { color: $strong-text-color-dark; }
-    @media (prefers-color-scheme: dark) {
-      html:not(.light) & { color: $strong-text-color-dark; }
-    }
+  strong {
+    color: var(--mark-strong);
   }
 
-  em { 
-    color: $em-text-color;
-    html.dark & { color: $em-text-color-dark; }
-    @media (prefers-color-scheme: dark) {
-      html:not(.light) & { color: $em-text-color-dark; }
-    }
+  em {
+    color: var(--mark-em);
   }
 
   img {
@@ -68,10 +59,14 @@ $em-text-color-dark: #A8C893;
   }
 
   mark {
-    background-color: rgba(255, 235, 0, .5);
-    html.dark & { background-color: rgba(255, 235, 0, .3); }
+    background: linear-gradient(to top, var(--accent-soft) 38%, transparent 38%);
+    color: inherit;
+    padding: 0 .1em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    html.dark & { background: linear-gradient(to top, var(--accent-soft) 38%, transparent 38%); }
     @media (prefers-color-scheme: dark) {
-      html:not(.light) & { background-color: rgba(255, 235, 0, .3); }
+      html:not(.light) & { background: linear-gradient(to top, var(--accent-soft) 38%, transparent 38%); }
     }
   }
 
@@ -79,24 +74,25 @@ $em-text-color-dark: #A8C893;
       opacity: 0.5
   }
 
-  // Blockquote with left quotation mark
+  // Blockquote：杂志编排——去掉底色与圆角，改左侧细线 + 引号
   blockquote {
     position: relative;
-    margin: 1.5em 0;
-    padding: 1em 1.25em 1em 2em;
-    background-color: $block-background-color;
-    border-radius: 4px;
+    margin: 1.75em 0;
+    padding: .3em 0 .3em 2.75em;
+    border-left: 2px solid var(--accent-line);
+    background: none;
+    border-radius: 0;
     color: $secondary-text-color;
 
     // Left double quote (Chinese style)
     &::before {
       content: '“';
       position: absolute;
-      top: 0.2em;
-      left: 0.2em;
-      font-size: 3em;
-      line-height: 1;
-      color: $border-color;
+      top: .05em;
+      left: .5em;
+      font-size: 2.4em;
+      line-height: var(--lh-flat);
+      color: var(--accent-line);
     }
 
     p {
@@ -107,7 +103,7 @@ $em-text-color-dark: #A8C893;
     // Nested blockquote
     blockquote {
       margin: 0.75em 0;
-      padding: 0.75em 1em 0.75em 2.5em;
+      padding: .2em 0 .2em 1.75em;
       &::before {
         font-size: 2em;
         left: 0.5em;
@@ -130,17 +126,19 @@ $em-text-color-dark: #A8C893;
   }
 
   a {
-    // color and underline
+    // color and underline：细实线，低对比起点，hover 落到朱砂
     text-decoration: underline;
-    text-decoration-style: wavy;
+    text-decoration-style: solid;
+    text-decoration-thickness: 1px;
     text-underline-offset: 0.25em;
-    text-decoration-color: $border-color;
+    text-decoration-color: var(--rule-strong);
     color: $link-color;
 
     // link hover effects
-    transition: text-decoration-color 0.1s ease-in-out;
+    transition: text-decoration-color 0.1s ease-in-out, color 0.1s ease-in-out;
     &:hover {
-        text-decoration-color: $secondary-text-color;
+        text-decoration-color: var(--accent);
+        color: var(--accent);
     }
 
     // icons with pseudo-elements
@@ -149,7 +147,7 @@ $em-text-color-dark: #A8C893;
         font-size: 70%;
         color: var(--secondary-text-color);
         vertical-align: middle;
-        font-weight: 800;
+        font-weight: var(--fw-bold);
     }
 
     &::after {
@@ -162,7 +160,7 @@ $em-text-color-dark: #A8C893;
         background-size: var(--size);
         height: var(--size);
         width: var(--size);
-        border-radius: 3px;
+        border-radius: var(--radius-xs);
 
     }
 
@@ -174,12 +172,12 @@ $em-text-color-dark: #A8C893;
     // icons for specific domains
     &[href*="wikipedia.org"]::before {
         content: '';
-        background-color: #fff;
+        background-color: var(--card-bg);
         background-image: url('/icons/wikipedia.svg');
     }
     &[href*="wiktionary.org"]::before {
         content: '';
-        background-color: #fff;
+        background-color: var(--card-bg);
         background-image: url('/icons/enwiktionary.svg');
     }
     &[href*="etymonline.com"]::before {
@@ -211,8 +209,8 @@ $em-text-color-dark: #A8C893;
 
   pre {
     padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 5px;
+    font-size: var(--fs-base);
+    border-radius: var(--radius-xs);
     border-top-right-radius: 0;
     position: relative;
 
@@ -229,7 +227,7 @@ $em-text-color-dark: #A8C893;
         content: attr(data-lang);
         display: block;
         box-sizing: border-box;
-        line-height: 1rem;
+        line-height: var(--lh-base);
 
         position: absolute;
         top: 0;
@@ -241,7 +239,7 @@ $em-text-color-dark: #A8C893;
 
         font-size: 0.75em;
         background: #333;
-        color: #fff;
+        color: var(--accent-contrast);
         padding: 0.5rem 0;
         border-radius: 0 4px 4px 0;
       }
@@ -254,9 +252,9 @@ $em-text-color-dark: #A8C893;
     figcaption {
         max-width: 100%;
         h4 {
-            font-size: 0.9rem;
+            font-size: var(--fs-base);
             color: var(--secondary-text-color);
-            font-weight: 400;
+            font-weight: var(--fw-normal);
             text-align: center;
             white-space: normal;
         }
@@ -282,7 +280,7 @@ $em-text-color-dark: #A8C893;
       th {
         padding: 0.75em 1em;
         text-align: left;
-        font-weight: 600;
+        font-weight: var(--fw-medium);
         border-bottom: 2px solid $border-color;
         white-space: nowrap;
       }
@@ -348,7 +346,7 @@ $em-text-color-dark: #A8C893;
     img {
       height: 20rem;
       display: block;
-      border-radius: 4px;
+      border-radius: var(--radius-xs);
       margin: 0;
     }
     figcaption {
@@ -357,7 +355,7 @@ $em-text-color-dark: #A8C893;
         left: 0;
         padding: 0.35rem;
         h4 {
-            font-size: 0.8rem;
+            font-size: var(--fs-xs);
             margin: 0;
             text-align: left;
             width: fit-content;
@@ -365,8 +363,8 @@ $em-text-color-dark: #A8C893;
             background-color: rgba(var(--block-background-color-rgb), 0.75);
             backdrop-filter: blur(0.5rem);
             padding: 0.2rem 0.35rem;
-            border-radius: 3px;
-            line-height: 1.2;
+            border-radius: var(--radius-xs);
+            line-height: var(--lh-tight);
         }
     }
   }

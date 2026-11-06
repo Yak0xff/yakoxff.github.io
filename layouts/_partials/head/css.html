@@ -1,20 +1,7 @@
-<!-- Fonts - 优化加载 -->
-{{ if eq .Site.Language.Lang "zh" }}
-<!-- LXGW WenKai 霞鹜文楷 - preconnect + swap -->
+<!-- Fonts - 全站唯一正文字体：LXGW WenKai 霞鹜文楷（preconnect + swap） -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet"></noscript>
-{{ else }}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"></noscript>
-{{ end }}
-
-<!-- Aplayer -->
-{{ with resources.Get "css/aplayer.css" }}
-<style>{{ .Content | safeCSS }}</style>
-{{ end }}
 
 <!-- Pagefind - 延迟加载 -->
 {{ if eq .Kind "taxonomy" }}
@@ -30,15 +17,18 @@
 />
 {{- end }}
 
-<!-- theme css -->
-{{ $unoCSS := resources.Get "css/uno.css" }}
-{{ if $unoCSS }}
-{{ $unoCSS = $unoCSS | minify }}
-<style>{{ $unoCSS.Content | safeCSS }}</style>
-{{ end }}
+{{/*
+  主样式包：UnoCSS + 主 SCSS + Aplayer，经 Hugo Pipes 合并压缩并加指纹。
+  外链后可被浏览器长期缓存，避免每页重复内联约 66KB 样式。
+*/}}
+{{- $bundle := slice -}}
+{{- with resources.Get "css/uno.css" -}}{{- $bundle = $bundle | append . -}}{{- end -}}
+{{- with resources.Get "css/main.scss" -}}
+  {{- $bundle = $bundle | append (css.Sass .) -}}
+{{- end -}}
+{{- with resources.Get "css/aplayer.css" -}}{{- $bundle = $bundle | append . -}}{{- end -}}
 
-{{ $mainSCSS := resources.Get "css/main.scss" }}
-{{ if $mainSCSS }}
-{{ $mainSCSS = $mainSCSS | css.Sass | minify }}
-<style>{{ $mainSCSS.Content | safeCSS }}</style>
-{{ end }}
+{{- with $bundle -}}
+  {{- $main := . | resources.Concat "css/main.css" | minify | fingerprint -}}
+  <link rel="stylesheet" href="{{ $main.RelPermalink }}" integrity="{{ $main.Data.Integrity }}" crossorigin="anonymous">
+{{- end -}}

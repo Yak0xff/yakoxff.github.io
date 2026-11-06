@@ -1,0 +1,305 @@
+/* ===================================================================
+   关于页（/about/）—— 点线 + Bento 语言
+   旧版：emoji 图标 + GitHub 绿色贡献图 + 圆角灰卡。
+   新版：朱砂节点区块题、贡献图改朱砂单色点阵阶、
+        「正在…」格与鸣谢列表统一 hairline / leader 点线。
+   =================================================================== */
+
+.about-page {
+  max-width: var(--bento-width);
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
+}
+
+/* 致谢框：hairline 引用，左侧点状线 */
+/* 杂志编排：只保留左侧点状线作为引用标记，去掉盒子的底色与圆角 */
+.about-callout {
+  margin: var(--sp-6) 0;
+  padding: var(--sp-2) 0 var(--sp-2) var(--sp-5);
+  border: 0;
+  border-left: 3px dotted var(--rule-strong);
+  border-radius: 0;
+  background: none;
+}
+
+.about-callout p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-base);
+  color: var(--ink-2);
+}
+
+.about-intro {
+  margin: var(--sp-6) 0;
+}
+
+.about-intro p {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: var(--lh-loose);
+  color: var(--text-color);
+}
+
+/* 区块标题：朱砂节点（与全站 section-title 同语言） */
+.about-section {
+  margin: 0 0 var(--sp-9);
+}
+
+.about-section-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-4);
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wide);
+  color: var(--text-color);
+}
+
+.about-section-title::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* ---------- 写作记录：朱砂点阵贡献图 ---------- */
+.contributions-wrapper {
+  padding: var(--bento-pad);
+  @include cell-box;
+  overflow-x: auto;
+}
+
+.contributions-graph-monthly {
+  display: flex;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+.contrib-month-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.contrib-month-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-mid);
+  color: var(--ink-3);
+  text-align: center;
+  margin-bottom: var(--sp-1);
+}
+
+.contrib-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.contrib-cell {
+  width: 13px;
+  height: 13px;
+  border-radius: var(--radius-xs);
+  background: var(--dot-soft);
+  cursor: pointer;
+}
+
+.contrib-cell.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.contrib-cell:not(.empty):hover {
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
+}
+
+/* 朱砂单色阶：暗色随 --accent 变量自动适配 */
+.contrib-cell[data-level="1"] { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+.contrib-cell[data-level="2"] { background: color-mix(in srgb, var(--accent) 45%, transparent); }
+.contrib-cell[data-level="3"] { background: color-mix(in srgb, var(--accent) 70%, transparent); }
+.contrib-cell[data-level="4"] { background: var(--accent); }
+
+.contrib-legend {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+.legend-scale {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.legend-cell {
+  width: 11px;
+  height: 11px;
+  border-radius: var(--radius-xs);
+  background: var(--dot-soft);
+}
+
+.legend-cell[data-level="1"] { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+.legend-cell[data-level="2"] { background: color-mix(in srgb, var(--accent) 45%, transparent); }
+.legend-cell[data-level="3"] { background: color-mix(in srgb, var(--accent) 70%, transparent); }
+.legend-cell[data-level="4"] { background: var(--accent); }
+
+.contrib-tooltip {
+  position: fixed;
+  background: var(--text-color);
+  color: var(--background-color);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  pointer-events: none;
+  z-index: 1000;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--tr-fast);
+}
+
+.contrib-tooltip.visible {
+  opacity: 1;
+}
+
+/* ---------- 正在…：Bento cell ---------- */
+.about-bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--bento-gap);
+}
+
+.about-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--bento-pad);
+  @include cell-box;
+  @include cell-crop;
+}
+
+.about-cell:hover {
+  border-color: var(--accent-line);
+}
+
+.about-cell-featured {
+  grid-column: span 2;
+}
+
+.about-cell-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.about-cell-icon {
+  display: flex;
+  align-items: center;
+  color: var(--ink-3);
+}
+
+.about-cell-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.about-cell-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-widest);
+  color: var(--ink-3);
+}
+
+.about-cell-value {
+  font-family: var(--serif-font-family);
+  font-size: var(--fs-base);
+  line-height: var(--lh-snug);
+  color: var(--text-color);
+}
+
+.about-cell-featured .about-cell-value {
+  font-size: var(--fs-md);
+}
+
+/* ---------- 鸣谢：leader 点线 ---------- */
+.credits-group {
+  margin-bottom: var(--sp-5);
+}
+
+.credits-group-title {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  color: var(--ink-2);
+}
+
+.credits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.credits-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+}
+
+.credits-name {
+  flex-shrink: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-color);
+}
+
+.credits-leader {
+  flex: 1;
+  min-width: var(--sp-6);
+  border-bottom: 1px dotted var(--dot-soft);
+  transform: translateY(-4px);
+}
+
+.credits-link {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--dot);
+  padding-bottom: 1px;
+  transition: color var(--tr-fast), border-color var(--tr-fast);
+}
+
+.credits-link:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent-line);
+}
+
+/* ---------- 正文 ---------- */
+.about-content {
+  margin-top: var(--sp-8);
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--rule);
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 640px) {
+  .about-bento {
+    grid-template-columns: 1fr;
+  }
+
+  .about-cell-featured {
+    grid-column: span 1;
+  }
+}
