@@ -1,0 +1,19 @@
+{{/*
+  取 taxonomy 首项：兼容「切片 / 标量字符串 / 空值」三种写法
+  ----------------------------------------------------------
+  本站存在两种 front matter 风格：
+    categories: [写作, 随笔]        → 切片
+    categories: 稻草人周刊           → 标量字符串（index . 0 会返回 uint8，导致 len 报错或渲染成数字）
+
+  用法：{{ partial "components/first-term" .Params.categories }}
+  返回：字符串；无值时返回空字符串
+*/}}
+{{- $pick := "" -}}
+{{- with . -}}
+  {{- if eq (printf "%T" .) "string" -}}
+    {{- $pick = . -}}
+  {{- else if gt (len .) 0 -}}
+    {{- $pick = index . 0 -}}
+  {{- end -}}
+{{- end -}}
+{{- return (printf "%v" $pick) -}}

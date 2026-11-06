@@ -1,7 +1,10 @@
 {{ define "main" }}
+    {{ .Scratch.Set "shellWidth" "bento" }}{{/* 页脚外壳与 Bento 容器对齐，见 footer.html */}}
     <article class="fiction-list-page">
         {{ partial "header.html" . }}
         <div id="fiction-section" class="pagefind-exclude">
+            <p class="term-kicker">连载长篇</p>
+            <h1 class="term-title">{{ .Title }}</h1>
             {{/* 简介区域 */}}
             {{ with .Content }}
             <div class="mb-12 markdown-body text-size-lg md:text-size-xl leading-loose md:leading-relaxed">
@@ -38,7 +41,7 @@
                         <span class="fiction-status-badge ongoing">连载</span>
                         {{ end }}
                         <h2 class="xerox">
-                            <a href="{{ .Permalink }}" class="hover:text-primary transition-colors">
+                            <a href="{{ .RelPermalink }}" class="hover:text-primary transition-colors">
                                 《{{ .Title }}》
                             </a>
                         </h2>
@@ -71,7 +74,7 @@
                     <div class="py-2 flex items-baseline gap-3 text-size-sm">
                         <span class="text-secondary/40">{{ .Parent.Title }}</span>
                         <span class="text-secondary/20">·</span>
-                        <a href="{{ .Permalink }}" class="hover:text-primary transition-colors">{{ .Title }}</a>
+                        <a href="{{ .RelPermalink }}" class="hover:text-primary transition-colors">{{ .Title }}</a>
                         <time class="text-secondary/30 ml-auto">{{ .Date.Format "01-02" }}</time>
                     </div>
                     {{ end }}

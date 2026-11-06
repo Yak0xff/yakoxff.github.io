@@ -1,10 +1,90 @@
 {{ define "main" }}
-    <article>
-      {{ partial "header" . }}
-      
-      {{/* 最新文章列表（精选置顶） */}}
-      {{ partial "home/latest-posts" . }}
-    </article>
-    
+{{/*
+  首页（V10）—— 报刊式信息架构
+  ---------------------------------------------------------------
+  1. 刊头      home/hero    站名大字 + 刊语 + 数据（这是谁、写了多少）
+  2. 头条      home/lead    精选 / 最新一篇 + 「正在」侧栏
+  3. 最近发表   items/post   严格按时间倒序（旧版取的是主题区挑剩的
+                             文章，时间线是断的）
+  4. 按主题读   home/topics  从剩余文章中按标签分组
+  数据口径与旧版一致：mainSections 去掉 fictions。
+*/}}
+{{- $scratch := newScratch -}}
+{{- $scratch.Set "used" slice -}}
+{{- $scratch.Set "groups" slice -}}
+{{- $scratch.Set "rest" slice -}}
+
+{{- $all := where site.RegularPages "Type" "in" site.Params.mainSections -}}
+{{- $all = where $all "Section" "!=" "fictions" -}}
+{{- $sorted := sort $all "Date" "desc" -}}
+
+{{/* 头条：优先 featured，否则最新 */}}
+{{- $lead := "" -}}
+{{- with first 1 (where $sorted ".Params.featured" true) -}}
+  {{- $lead = dict "page" (index . 0) "badge" "精选" -}}
+{{- else -}}
+  {{- with first 1 $sorted -}}{{- $lead = dict "page" (index . 0) "badge" "最新" -}}{{- end -}}
+{{- end -}}
+{{- with $lead -}}{{- $scratch.Add "used" (slice .page.RelPermalink) -}}{{- end -}}
+
+{{/* 最近发表：头条之后的 N 篇，严格时间序 */}}
+{{- $streamLimit := site.Params.features.restCount | default 8 -}}
+{{- range $sorted -}}
+  {{- if and (lt (len ($scratch.Get "rest")) $streamLimit) (not (in ($scratch.Get "used") .RelPermalink)) -}}
+    {{- $scratch.Add "rest" (slice .) -}}
+    {{- $scratch.Add "used" (slice .RelPermalink) -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* 主题：优先 tags；categories 超过 1 个时改用 categories */}}
+{{- $taxoName := "tags" -}}
+{{- $taxo := site.Taxonomies.tags.ByCount -}}
+{{- with site.Taxonomies.categories.ByCount -}}
+  {{- if gt (len .) 1 -}}{{- $taxo = . -}}{{- $taxoName = "categories" -}}{{- end -}}
+{{- end -}}
+{{- $topicCount := site.Params.features.topicCount | default 6 -}}
+{{- range first $topicCount $taxo -}}
+  {{- $picked := slice -}}
+  {{- range .Pages -}}
+    {{- if and (lt (len $picked) 3) (eq .Section "posts") (not (in ($scratch.Get "used") .RelPermalink)) -}}
+      {{- $picked = $picked | append . -}}
+      {{- $scratch.Add "used" (slice .RelPermalink) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if $picked -}}{{- $scratch.Add "groups" (slice (dict "Term" . "Pages" $picked)) -}}{{- end -}}
+{{- end -}}
+
+<div class="home">
+  {{ partial "home/hero" . }}
+
+  {{ with $lead }}
+  <div class="front">
+    {{ partial "home/lead" (dict "ctx" .page "badge" .badge) }}
+    {{ partial "home/now" . }}
+  </div>
+  {{ end }}
+
+  {{ with $scratch.Get "rest" }}
+  <section class="v-section stream pagefind-exclude" aria-labelledby="stream-heading">
+    <div class="v-section-head">
+      <span class="v-section-no" aria-hidden="true">01</span>
+      <h2 class="v-section-title" id="stream-heading">最近发表</h2>
+      <a class="v-section-more" href="/posts/">全部归档 <span class="v-arrow" aria-hidden="true">→</span></a>
+    </div>
+    <ol class="entries" data-stagger>
+      {{ range . }}
+      <li>{{ partial "items/post" (dict "ctx" .) }}</li>
+      {{ end }}
+    </ol>
+  </section>
+  {{ end }}
+
+  {{ partial "home/topics" (dict "groups" ($scratch.Get "groups") "taxo" $taxoName) }}
+
+  <p class="home-more">
+    <a class="v-button" href="/posts/">翻阅全部 {{ len $sorted }} 篇 <span class="v-arrow" aria-hidden="true">→</span></a>
+  </p>
+</div>
+
 {{ partial "footer.html" . }}
 {{ end }}

@@ -7,7 +7,7 @@
             <img class="block w-full" src="{{ $book.Params.cover }}" />
         </div>
         <h3 class="book-title">
-            <a href="{{ $book.Permalink }}">{{ $book.Title }}</a>
+            <a href="{{ $book.RelPermalink }}">{{ $book.Title }}</a>
         </h3>
 
         {{- $rating := $book.Params.rating -}}

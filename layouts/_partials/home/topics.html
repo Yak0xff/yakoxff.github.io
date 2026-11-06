@@ -1,0 +1,38 @@
+{{/*
+  按主题读（V10）：索引式栏目，不再一主题一盒子。
+  每栏顶部细线 + 等宽编号，栏内三篇用标题列出，日期右对齐。
+  入参：.groups（dict "Term" "Pages"），.taxo（taxonomy 名）
+*/}}
+{{- $groups := .groups -}}
+{{- $taxo := .taxo | default "tags" -}}
+{{- if $groups -}}
+<section class="v-section topics pagefind-exclude" aria-labelledby="topics-heading">
+  <div class="v-section-head">
+    <span class="v-section-no" aria-hidden="true">02</span>
+    <h2 class="v-section-title" id="topics-heading">按主题读</h2>
+    <a class="v-section-more" href="/{{ $taxo }}/">全部主题 <span class="v-arrow" aria-hidden="true">→</span></a>
+  </div>
+
+  <div class="topic-grid" data-stagger>
+    {{ range $i, $g := $groups }}
+    <section class="topic reveal" aria-labelledby="topic-{{ $i }}">
+      <header class="topic-head">
+        <span class="num topic-no" aria-hidden="true">{{ printf "%02d" (add $i 1) }}</span>
+        <h3 class="topic-name" id="topic-{{ $i }}"><a class="v-link" href="{{ $g.Term.Page.RelPermalink }}">{{ $g.Term.Page.LinkTitle }}</a></h3>
+        <span class="num topic-count">{{ $g.Term.Count }} 篇</span>
+      </header>
+      <ul class="topic-list">
+        {{ range $g.Pages }}
+        <li>
+          <a class="topic-item" href="{{ .RelPermalink }}">
+            <span class="topic-item-title">{{ .Title }}</span>
+            <time class="num" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01.02" }}</time>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </section>
+    {{ end }}
+  </div>
+</section>
+{{- end -}}

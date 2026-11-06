@@ -1,6 +1,7 @@
 ---
 date: 2025-05-06 11:12:12
 title: 侠客
+kicker: 友朋名录
 aliases:
   - /cards/links/
   - /links/

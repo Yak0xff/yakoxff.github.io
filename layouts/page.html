@@ -1,11 +1,14 @@
 {{ define "main" }}
-    {{ partial "header.html" . }}
-    <article>
-      <div id="post-content" class="post-content markdown-body text-size-lg md:text-size-xl leading-loose"
-          style="view-transition-name: post-content-{{ .File.UniqueID }}">
-        {{ partial "posts/toc" . }}
-        {{ .Content }}
-      </div>
+    {{ .Scratch.Set "shellWidth" "bento" }}{{/* 页脚外壳与 Bento 容器对齐，见 footer.html */}}
+    <article class="archive-page">
+        {{ partial "header.html" . }}
+        <p class="term-kicker" style="margin-top: var(--sp-6);">{{ .Params.kicker | default .Section | default "随笔" }}</p>
+        <h1 class="term-title">{{ .Title }}</h1>
+        <div class="post-content markdown-body text-size-lg md:text-size-xl leading-loose"
+            style="view-transition-name: post-content-{{ .File.UniqueID }}">
+            {{ partial "posts/toc" . }}
+            {{ .Content }}
+        </div>
     </article>
     {{ partial "footer.html" . }}
 {{ end }}

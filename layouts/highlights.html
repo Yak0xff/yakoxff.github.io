@@ -1,59 +1,26 @@
 {{ define "main" }}
-    <article>
+    {{ .Scratch.Set "shellWidth" "bento" }}{{/* 页脚外壳与 Bento 容器对齐，见 footer.html */}}
+    <article class="archive-page">
         {{ partial "header" . }}
-        <h1 class="term-title" style="color: var(--text-color);">{{ .Title }}</h1>
-        <div class="post-content markdown-body text-size-lg md:text-size-xl" style="color: var(--text-color);">
-            <p>{{ .Content }}</p>
+        <p class="term-kicker" style="margin-top: var(--sp-6);">摘句集存</p>
+        <h1 class="term-title">{{ .Title }}</h1>
+        <div class="markdown-body" style="margin-top: var(--sp-3);">
+            {{ .Content }}
         </div>
         <!-- Highlights -->
         {{ $highlights := site.Data.highlights }}
         {{ if $highlights }}
         {{ range $highlights }}
-        <section class="post-content">
-            <h3 style="color: var(--text-color);"><a href="{{ .url }}" style="color: inherit !important;">《{{ .title }}》</a></h3>
-            <ul class="list-none">
-                {{ range .highlights }}
-                    <li class="my-2 text-lg highlight-item">
-                        <a class="highlight-link" href="{{ .link }}">{{ .text | markdownify }}</a>
-                    </li>
-                {{ end }}
-            </ul>
-        </section>
+        <h2 class="highlight-source"><a href="{{ .url }}">《{{ .title }}》</a></h2>
+        <ul class="highlight-rows">
+            {{ range .highlights }}
+                <li class="highlight-item">
+                    <a class="highlight-link" href="{{ .link }}">{{ .text | markdownify }}</a>
+                </li>
+            {{ end }}
+        </ul>
         {{ end }}
         {{ end }}
     </article>
-
-<style>
-.highlight-item {
-    display: block;
-}
-.highlight-link {
-    display: inline;
-    padding: 0.125rem 0.25rem;
-    border-radius: 0.25rem;
-    background-color: rgba(251, 191, 36, 0.3);
-    color: var(--text-color) !important;
-    text-decoration: none !important;
-    transition: background-color 0.2s ease;
-}
-.highlight-link:hover {
-    background-color: rgba(251, 191, 36, 0.5);
-    text-decoration: none !important;
-}
-html.dark .highlight-link {
-    background-color: rgba(180, 130, 50, 0.4);
-}
-html.dark .highlight-link:hover {
-    background-color: rgba(180, 130, 50, 0.6);
-}
-@media (prefers-color-scheme: dark) {
-    html:not(.light) .highlight-link {
-        background-color: rgba(180, 130, 50, 0.4);
-    }
-    html:not(.light) .highlight-link:hover {
-        background-color: rgba(180, 130, 50, 0.6);
-    }
-}
-</style>
 {{ partial "footer.html" . }}
 {{ end }}

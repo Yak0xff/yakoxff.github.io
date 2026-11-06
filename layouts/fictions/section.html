@@ -27,7 +27,7 @@
                     {{- range $i, $chapter := $chapters }}
                     {{/* 过滤掉以 _ 开头的文件（如大纲） */}}
                     {{ if not (hasPrefix $chapter.File.LogicalName "_") }}
-                    <a href="{{ $chapter.Permalink }}" class="chapter-item group block py-3 px-4 rounded-lg hover:bg-primary/5 transition-all">
+                    <a href="{{ $chapter.RelPermalink }}" class="chapter-item group block py-3 px-4 rounded-lg hover:bg-primary/5 transition-all">
                         <div class="flex items-baseline gap-3">
                             <span class="text-secondary/40 text-sm font-mono tabular-nums shrink-0">{{ printf "%02d" (add $i 1) }}</span>
                             <div class="flex-1 min-w-0">
@@ -47,13 +47,6 @@
     </article>
     {{ partial "footer.html" . }}
 
-<style>
-/* 导出按钮 */
-.export-pdf-btn:hover svg {
-    transform: translateY(2px);
-    transition: transform 0.2s ease;
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

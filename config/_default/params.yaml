@@ -23,6 +23,27 @@ footerExternalLinks:
   - name: X
     link: https://x.com/zh_robin
     icon: /img/x.png
+# ------------------------------------------------------------------
+# 重构新增能力开关
+# 全部为增量能力，置 false 即回退到重构前行为，不影响文章数据与 URL
+# ------------------------------------------------------------------
+features:
+  homeHero: true          # 首页 Hero（主张横幅 + 数据 + 当前状态）
+  topicCount: 6           # 主题走廊展示的主题数（默认取 tags，若 categories 补齐则自动改用它）
+  restCount: 12           # 「更早以前」列表条数
+  revealOnScroll: true    # 滚动进场动效（自动尊重 prefers-reduced-motion）
+  reader:
+    progress: true        # 顶部阅读进度条
+    tocDrawer: true       # 移动端 TOC 抽屉
+    preferences: true     # 阅读偏好面板（字号/行距/栏宽）
+    shortcuts: true       # 键盘快捷键
+    related: 3            # 文末相关推荐条数（0 表示关闭）
+
+# 首页 Hero 文案（留空则回退到站点 description）
+home:
+  kicker: "一个人的编辑部"
+  claim: "世界不会等你准备好。写下来，就是在时间里刻下坐标。"
+  claimNote: "这里记录一个普通人在加速时代里的观察、误判与重新校准。"
 giscus:
   repo: Yak0xff/yakoxff.github.io
   repoId: R_kgDOPv9iUg

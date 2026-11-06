@@ -29,7 +29,7 @@
         {{- range $referencedBy }}
         <li class="flex gap-4">
             <span class="text-secondary">→</span>
-            <a href="{{ .Permalink }}">{{ .Title }}</a>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
         </li>
         {{- end }}
     </ul>

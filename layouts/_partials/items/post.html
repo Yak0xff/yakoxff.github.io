@@ -1,47 +1,37 @@
-{{ $ctx := .ctx }}
-{{ $showSummary := .showSummary }}
-{{ $isFeatured := .isFeatured | default false }}
-<article class="posts-item w-full"
-    style="view-transition-name: post-{{ .ctx.File.UniqueID }}; padding: 0.75rem 0;">
-    <header class="w-full md:flex md:justify-between">
-        <div>
-            <p class="text-size-sm text-secondary opacity-80 font-sans">
-                {{ partial "components/date" .ctx }}
-                <span class="mx-1">·</span>
-                <span class="mx-1">in</span>
-                <a href="/{{ .ctx.Section }}/" class="hover:text-[var(--text-color)] transition-colors">{{ .ctx.Section }}</a>
-                {{ if $isFeatured }}<span class="featured-badge">{{ T "post.featured" }}</span>{{ end }}
-            </p>
-            <h2 class="xerox"
-                {{ if $showSummary }} style="margin-bottom: 0"{{ end }}>
-                <a
-                    href="{{ .ctx.Permalink }}"
-                >
-                    {{ if eq .ctx.Section "library" }}
-                        读{{ .ctx.Title }}
-                    {{ else }}
-                        {{ .ctx.Title }}
-                    {{ end }}
-                </a>
-                {{ if eq .ctx.Section "fictions" }}
-                <span class="font-normal text-4 text-secondary">小说</span>
-                {{ end }}
-            </h2>
-        </div>
-        {{ with .ctx.Params.categories }}
-        <div class="my-4">
-            {{ partial "components/category-pill" $ctx }}
-        </div>
-        {{ end }}
-    </header>
-    {{ if or $showSummary .ctx.Params.description }}
-    <div class="markdown-body text-size-base md:text-size-lg leading-relaxed"
-        style="view-transition-name: post-content-{{ .File.UniqueID }}">
-        {{ if $showSummary }}
-            {{ .ctx.Summary }}
-        {{ else if .ctx.Params.description }}
-            {{ .ctx.Params.description }}
-        {{ end }}
+{{/*
+  文章条目（V10）—— 首页「最近发表」与精选页共用
+  ---------------------------------------------------------------
+  旧版问题：元信息写成「2026年1月24日 早上 · in posts」（英文
+  section 名直接外露）；只有标题文字可点，移动端点按区不到 30px。
+  新版：整行是一个链接（触控目标 = 整行），三栏网格：
+    [日期 等宽] [标题 + 摘要] [栏目 · 时长 →]
+  悬停：左侧朱砂点滑入、标题转朱、箭头右移。
+  入参：.ctx 页面；.showSummary 为 true 时用 Summary 代替 description
+*/}}
+{{- $p := .ctx -}}
+{{- $sectionNames := dict "posts" "随笔" "fictions" "虚构" "library" "书房" "product" "应用" -}}
+{{- $label := "" -}}
+{{- with $p.Params.categories -}}{{- $label = partial "components/first-term" . -}}{{- end -}}
+{{- if not $label -}}{{- with $p.Params.tags -}}{{- $label = index . 0 -}}{{- end -}}{{- end -}}
+{{- if not $label -}}{{- $label = index $sectionNames $p.Section | default $p.Section -}}{{- end -}}
+{{- $desc := cond (eq .showSummary true) ($p.Summary | plainify) ($p.Params.description | default "") -}}
+<article class="entry reveal" style="view-transition-name: post-{{ $p.File.UniqueID }}">
+  <a class="entry-link" href="{{ $p.RelPermalink }}">
+    <time class="entry-date num" datetime="{{ $p.Date.Format "2006-01-02" }}">
+      <span class="entry-day">{{ $p.Date.Format "01.02" }}</span>
+      <span class="entry-year">{{ $p.Date.Format "2006" }}</span>
+    </time>
+    <div class="entry-main">
+      <h3 class="entry-title">
+        {{- if eq $p.Section "library" }}读{{ end }}{{ $p.Title -}}
+        {{- if $p.Params.featured }}<span class="entry-flag">精选</span>{{ end -}}
+      </h3>
+      {{ with $desc }}<p class="entry-desc">{{ . | truncate 120 }}</p>{{ end }}
     </div>
-    {{ end }}
+    <p class="entry-meta">
+      <span class="entry-label">{{ $label }}</span>
+      <span class="num">{{ $p.ReadingTime }} 分钟</span>
+      <span class="entry-arrow" aria-hidden="true">→</span>
+    </p>
+  </a>
 </article>

@@ -1,21 +1,35 @@
 {{ define "main" }}
-<article>
+<article class="archive-page">
     {{ partial "header" . }}
 
-    <div id="pagefind" class="py-3"></div>
+    <header class="v-page-head">
+        <p class="eyebrow eyebrow--zhu"><span class="v-dot" aria-hidden="true"></span>检索与索引</p>
+        <h1 class="v-page-title">{{ .Title }}</h1>
+        <p class="v-page-lede">全文搜索，或从 <span class="num">{{ len site.Taxonomies.tags }}</span> 个主题进入。</p>
+    </header>
+
+    <div id="pagefind"></div>
 
     {{ partial "taxonomy/all-tags.html" . }}
-    <hr />
 
-    <h2 class="text-gray-900 dark:text-gray-100">文章系列</h2>
+    <h2 class="section-head" style="margin-top: var(--sp-10);">
+        <span class="section-title">文章系列</span>
+    </h2>
     {{ partial "taxonomy/all-categories.html" . }}
 </article>
 
+{{ if hugo.IsServer }}
+{{/* 本地预览：Pagefind 索引需生产构建后生成，这里给出提示而不是加载不存在的脚本 */}}
+<div class="pagefind-hint" role="note">
+    <p>本地预览未生成搜索索引。生产构建后执行 <code>pagefind --site public</code> 即可启用站内搜索。</p>
+</div>
+{{ else }}
 <script src="/pagefind/pagefind-ui.js"></script>
 <script>
   window.addEventListener('DOMContentLoaded', () => {
     new PagefindUI({ element: "#pagefind", showSubResults: true });
   });
 </script>
+{{ end }}
 {{ partial "footer.html" . }}
 {{ end }}

@@ -1,0 +1,34 @@
+{{/*
+  移动端底部标签栏（V10，< 768px 显示）
+  ---------------------------------------------------------------
+  旧版移动端导航挤在页头第二行、字号 13px、点按区不足 30px，
+  且要先滚回顶部才能切栏目。改为拇指热区内的固定标签栏：
+  图标 + 文字双编码、高 64px、适配 iPhone 底部安全区；
+  阅读时随下滑隐藏、上滑出现（逻辑见 scripts/ui-js.html）。
+*/}}
+{{- $icons := dict
+  "/"          `<path d="M4 10.5 12 4l8 6.5V20h-5v-6H9v6H4z"/>`
+  "/fictions/" `<path d="M5 4.5h9.5A2.5 2.5 0 0 1 17 7v12.5H7.5A2.5 2.5 0 0 1 5 17z"/><path d="M5 17a2.5 2.5 0 0 1 2.5-2.5H17"/><path d="M19 7v13"/>`
+  "/posts/"    `<path d="M4 6h16M4 12h16M4 18h10"/>`
+  "/product/"  `<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>`
+  "/about/"    `<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/>`
+-}}
+<nav class="tabbar pagefind-exclude" aria-label="底部导航">
+  <ul class="tabbar-list">
+    <li>
+      <a class="tab" href="{{ site.LanguagePrefix }}/"{{ if .IsHome }} aria-current="page"{{ end }}>
+        <svg viewBox="0 0 24 24" aria-hidden="true">{{ index $icons "/" | safeHTML }}</svg>
+        <span>{{ T "nav.home" | default "首页" }}</span>
+      </a>
+    </li>
+    {{- range site.Params.nav }}
+    {{- $active := and (not $.IsHome) (hasPrefix $.RelPermalink .link) }}
+    <li>
+      <a class="tab" href="{{ .link }}"{{ if $active }} aria-current="page"{{ end }}>
+        <svg viewBox="0 0 24 24" aria-hidden="true">{{ index $icons .link | default `<circle cx="12" cy="12" r="3"/>` | safeHTML }}</svg>
+        <span>{{ .name }}</span>
+      </a>
+    </li>
+    {{- end }}
+  </ul>
+</nav>

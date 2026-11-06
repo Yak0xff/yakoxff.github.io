@@ -24,6 +24,19 @@ outputs:
 security:
   enableInlineShortcodes: true
 
+# 相关内容权重（修好文末「接下来读什么」——此前未配置，26 篇中 4 篇推空）
+related:
+  threshold: 40
+  includeNewer: true
+  toLower: false
+  indices:
+    - name: tags
+      weight: 100
+    - name: categories
+      weight: 80
+    - name: title
+      weight: 20
+
 # 排除以下划线开头的 Markdown 文件
 exclude:
   - "**/_*.md"

@@ -1,7 +1,6 @@
+# 主导航（顶栏 + 移动端底部标签栏共用）
+# 2026-11：「虚构」移出主导航，小说内容与 URL 保留，入口移到页脚「站内」
 nav:
-  - name: 虚构
-    link: /fictions/
-    target: _self
   - name: 归档
     link: /posts/
     target: _self
@@ -10,8 +9,11 @@ nav:
     target: _self
   - name: 关于
     link: /about/
-    target: _self
+# 页头方印刻字（缺省回退见 layouts/_partials/components/seal.html）
+sealText: 一点记
 footerInternalLinks:
+  - name: 虚构
+    link: /fictions/
   - name: 侠客
     link: /xiake/
   - name: 标记

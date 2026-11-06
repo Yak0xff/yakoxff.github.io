@@ -9,14 +9,16 @@ aliases:
 你可以通过 RSS 订阅本博客。用[这个链接](/index.xml)订阅本站的所有更新。
 
 ```
-https://yakoxff.pages.dev/index.xml
+/index.xml
 ```
 
 你也可以单独订阅文章更新。
 
 ```
-https://yakoxff.pages.dev/posts/index.xml
+/posts/index.xml
 ```
+
+> 以上为站内路径，订阅时在前面补上你访问的站点域名即可。
 <!-- 
 
 仅订阅周刊更新

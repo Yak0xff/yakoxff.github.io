@@ -1,9 +1,8 @@
-<!-- Display Tags -->
-<section class="flex flex-wrap gap-2">
+<!-- 标签云：按分类分组，组内按引用数排序，#名字 + 计数的点线索引样式 -->
+<div>
   {{ $categorizedTags := dict }}
   {{ $uncategorizedTags := slice }}
 
-  <!-- Group tags by category -->
   {{ range $tagName, $tagPages := .Site.Taxonomies.tags }}
     {{ $tagPage := site.GetPage (printf "/tags/%s" $tagName) }}
     {{ $tagData := dict "Name" $tagName "Count" (len $tagPages) "Page" $tagPage }}
@@ -17,30 +16,29 @@
     {{ end }}
   {{ end }}
 
-  <!-- Sort tags by count -->
   {{ $uncategorizedTags = sort $uncategorizedTags "Count" "desc" }}
   {{ range $category, $categoryTags := $categorizedTags }}
     {{ $categorizedTags = merge $categorizedTags (dict $category (sort $categoryTags "Count" "desc")) }}
   {{ end }}
 
-  <!-- Display uncategorized tags first -->
-    {{ if $uncategorizedTags }}
-      <div class="flex flex-wrap gap-2">
+  {{ if $uncategorizedTags }}
+    <div class="tagcloud-group">
+      <div class="tagcloud">
         {{ range $uncategorizedTags }}
         {{ partial "taxonomy/tag-pill" . }}
         {{ end }}
       </div>
-    {{ end }}
+    </div>
+  {{ end }}
 
-  <!-- Display categorized tags -->
-    {{ range $category, $categoryTags := $categorizedTags }}
-      <div>
-        <h3 class="text-gray-900 dark:text-gray-100">{{ $category }}</h3>
-        <div class="flex flex-wrap gap-2">
-          {{ range $categoryTags }}
-          {{ partial "taxonomy/tag-pill" . }}
-          {{ end }}
-        </div>
+  {{ range $category, $categoryTags := $categorizedTags }}
+    <div class="tagcloud-group">
+      <h3 class="tagcloud-group-title">{{ $category }}</h3>
+      <div class="tagcloud">
+        {{ range $categoryTags }}
+        {{ partial "taxonomy/tag-pill" . }}
+        {{ end }}
       </div>
-    {{ end }}
-</section>
+    </div>
+  {{ end }}
+</div>

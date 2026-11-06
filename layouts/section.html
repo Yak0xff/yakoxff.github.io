@@ -1,26 +1,30 @@
 {{ define "main" }}
-    <article>
-      {{ partial "header.html" . }}
-      <div class="posts-list pagefind-exclude">
-        <!-- Post Archive List -->
-        {{ range (where site.RegularPages "Type" "eq" "posts").GroupByDate "2006" -}}
-          <section class="w-full mb-8">
-            <h1 class="border-b border-b-solid border-[var(--border-color)]
-                py-3 text-4 font-semibold
-                flex justify-between items-center"
-                style="color: var(--text-color);">
-                {{ .Key }}
-                <small class="font-mono text-3 opacity-80" style="color: var(--secondary-text-color);">{{ T "archivePage.postCountAnnual" (len .Pages) }}</small>
-            </h1>
+<article class="archive-page">
+  {{ partial "header.html" . }}
+  {{- $all := where site.RegularPages "Type" "eq" "posts" -}}
+  <header class="v-page-head">
+    <p class="eyebrow eyebrow--zhu"><span class="v-dot" aria-hidden="true"></span>归档 · Archive</p>
+    <h1 class="v-page-title">{{ .Title }}</h1>
+    <p class="v-page-lede">共 <span class="num">{{ len $all }}</span> 篇，按年份倒序排列。</p>
+  </header>
 
-            <ul class="ps-0 flex flex-col gap-3 list-none leading-relaxed mt-3">
-                {{ range .Pages }}
-                {{ partial "items/post-small" . }}
-                {{ end }}
-            </ul>
-          </section>
+  <div class="archive-list pagefind-exclude">
+    <!-- 按年分组的归档目录：mono 年份 + 节点 + leader 点线行 -->
+    {{ range (where site.RegularPages "Type" "eq" "posts").GroupByDate "2006" -}}
+    <section class="archive-year">
+      <h2 class="archive-year-head">
+        <span class="archive-year-label">{{ .Key }}</span>
+        <span class="archive-year-leader" aria-hidden="true"></span>
+        <span class="archive-year-count">{{ T "archivePage.postCountAnnual" (len .Pages) }}</span>
+      </h2>
+      <ul class="archive-rows">
+        {{ range .Pages }}
+        {{ partial "items/post-small" . }}
         {{ end }}
-      </div>
-    </article>
-    {{ partial "footer.html" . }}
+      </ul>
+    </section>
+    {{ end -}}
+  </div>
+</article>
+{{ partial "footer.html" . }}
 {{ end }}

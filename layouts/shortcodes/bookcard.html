@@ -7,7 +7,7 @@
             <img class="no-fancybox block w-full" src="{{ $book.Params.cover }}" loading="lazy" />
         </div>
         <h3 class="book-title">
-            <a href="{{ $book.Permalink }}">{{ $book.Title }}</a>
+            <a href="{{ $book.RelPermalink }}">{{ $book.Title }}</a>
         </h3>
 
         {{- $rating := $book.Params.rating -}}

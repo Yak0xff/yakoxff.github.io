@@ -1,59 +1,51 @@
-{{/* 快捷操作区 - 固定右上角（全站） */}}
-{{ partial "home/quick-actions" . }}
+{{/*
+  页脚（V10）
+  ---------------------------------------------------------------
+  旧版：一行版权 + 一行小字链接 + 三个外链小图标，信息全挤在 13px 里，
+  且在页脚内调用了右上角浮动按钮（快捷操作）。
+  新版：刊语收尾（与首页刊头呼应，形成「开篇—落款」）+ 三栏索引
+  （站内 / 订阅 / 别处）+ 版权。外链改为文字链接，读屏可读、可点区足够。
+  footerInternalLinks / footerExternalLinks 仍取自 params，未硬编码。
+*/}}
+<footer class="site-footer pagefind-exclude" aria-labelledby="footer-motto">
+  <div class="site-footer-inner">
+    <p class="footer-motto" id="footer-motto">
+      <span class="v-dot" aria-hidden="true"></span>{{ T "header.subtitle" }}
+    </p>
 
-<footer class="pagefind-exclude my-8 mx-auto font-mono px-4 md:px-0
-    text-sm
-    md:w-[var(--page-width)] md:flex md:justify-between">
-    <!-- copyright -->
-    <section>
-        <p class="copyright">&copy; 2025-{{ now | dateFormat "2006" }} <a href="https://yakoxff.pages.dev/" target="_blank">Yak</a></p>
-        <p class="license">{{ T "footer.licenseStatement" (printf "<a href=\"https://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">CC BY-SA 4.0</a>") | safeHTML }}</p>
-    </section>
-    <!-- links -->
-    <section class="flex justify-between items-center
-        md:justify-start md:flex-col md:items-end">
-        <!-- Internal Links -->
-        <ul class="list-none flex gap-1 ps-0 my-2 mx-0 md:justify-end">
-            {{ range .Site.Params.footerInternalLinks }}
-            <li><a href="{{ .link }}" title="{{ .name }}">{{ .name }}</a></li>
-            <li class="text-secondary last:hidden">·</li>
-            {{ end }}
-            <li class="inline-flex items-center">
-                {{ if eq .Site.Language.Lang "en" }}
-                <a href="/en/posts/index.xml" title="RSS (English)" target="_blank">
-                {{ else if eq .Site.Language.Lang "zh" }}
-                <a href="/rss/" title="RSS (中文)">
-                {{ end }}
-                    {{ T "RSS" . }}
-                </a>
-            </li>
+    <nav class="footer-cols" aria-label="页脚导航">
+      <div class="footer-col">
+        <h2 class="eyebrow">站内</h2>
+        <ul>
+          {{ range site.Params.nav }}<li><a class="v-link" href="{{ .link }}">{{ .name }}</a></li>{{ end }}
+          {{ range site.Params.footerInternalLinks }}<li><a class="v-link" href="{{ .link }}">{{ .name }}</a></li>{{ end }}
         </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="eyebrow">订阅</h2>
+        <ul>
+          {{ if eq site.Language.Lang "en" }}
+          <li><a class="v-link" href="/en/posts/index.xml">RSS (English)</a></li>
+          {{ else }}
+          <li><a class="v-link" href="/rss/">RSS 订阅</a></li>
+          {{ end }}
+          <li><a class="v-link" href="/categories/">站内搜索</a></li>
+          <li><a class="v-link" href="/tags/">全部主题</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="eyebrow">别处</h2>
+        <ul>
+          {{ range site.Params.footerExternalLinks }}
+          <li><a class="v-link" href="{{ .link }}" target="_blank" rel="noopener">{{ .name }}<span class="ext" aria-hidden="true">↗</span><span class="sr-only">（新窗口打开）</span></a></li>
+          {{ end }}
+        </ul>
+      </div>
+    </nav>
 
-        <!-- External Links -->
-        <ul class="list-style-none flex gap-2 ps-0 my-2 mx-0 md:justify-end">
-            {{ range .Site.Params.footerExternalLinks }}
-            <li class="inline-flex items-center">
-                <a href="{{ .link }}" title="{{ .name }}" target="_blank" data-tooltip>
-                    <img
-                        class="h-4 w-auto inline-block rounded-full grayscale footer-icon"
-                        src="{{ .icon }}"
-                        alt="{{ .name }} icon."
-                        loading="lazy"
-                    />
-                </a>
-            </li>
-            {{ end }}
-        </ul>
-    </section>
+    <p class="footer-legal num">
+      <span>&copy; 2025–{{ now.Format "2006" }} <a class="v-link" href="{{ "/" | relURL }}">{{ site.Params.author | default "Yak" }}</a></span>
+      <span>{{ T "footer.licenseStatement" (printf "<a class=\"v-link\" href=\"https://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\" rel=\"noopener\">CC BY-SA 4.0</a>") | safeHTML }}</span>
+    </p>
+  </div>
 </footer>
-
-<style>
-html.dark .footer-icon {
-    filter: grayscale(100%) invert(1);
-}
-@media (prefers-color-scheme: dark) {
-    html:not(.light) .footer-icon {
-        filter: grayscale(100%) invert(1);
-    }
-}
-</style>

@@ -1,17 +1,26 @@
 {{ define "main" }}
-    <article>
+    {{ .Scratch.Set "shellWidth" "bento" }}{{/* 页脚外壳与 Bento 容器对齐，见 footer.html */}}
+    <article class="archive-page">
       {{ partial "header" . }}
 
-      <div class="markdown-content" style="line-height: 2">
+      <p class="term-kicker" style="margin-top: var(--sp-6);">私心推荐</p>
+      <h1 class="term-title">{{ .Title }}</h1>
+
+      <div class="markdown-body" style="margin-top: var(--sp-3);">
           {{ .Content }}
       </div>
 
-      <section id="featured-posts">
-          <div class="posts-list">
-            {{ range where site.RegularPages "Params.featured" true }}
+      <section id="featured-posts" style="margin-top: var(--sp-8);">
+          {{ $featured := where site.RegularPages "Params.featured" true }}
+          {{ if $featured }}
+          <div class="posts-list entries" data-stagger>
+            {{ range $featured }}
             {{ partial "items/post" (dict "ctx" . ) }}
             {{ end }}
           </div>
+          {{ else }}
+          <p class="product-source-note">暂无精选 —— 在文章 front matter 里写 featured: true，它就会出现在这里。</p>
+          {{ end }}
       </section>
     </article>
 {{ partial "footer.html" . }}

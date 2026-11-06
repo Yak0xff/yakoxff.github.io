@@ -1,0 +1,39 @@
+{{/*
+  首页刊头（V10）
+  ---------------------------------------------------------------
+  旧版：水印页头 + 宣言盒 + 统计盒 + 正在盒，四个等重的米色盒子
+  在首屏抢注意力，站名反而只有 1.3rem。
+  新版：站名本身就是刊头——黑体特大字 + 句末一枚朱砂点
+  （「一点记」的「点」），宣言与数据退到右侧作注脚。
+  数据来自 site.Params.home / 站点统计，无硬编码文案。
+*/}}
+{{- $posts := where site.RegularPages "Section" "posts" -}}
+{{- $words := 0 -}}{{- range $posts -}}{{- $words = add $words .WordCount -}}{{- end -}}
+{{- $latest := index (first 1 (sort $posts "Date" "desc")) 0 -}}
+{{- $claim := site.Params.home.claim | default site.Params.description -}}
+<section class="masthead pagefind-exclude" aria-labelledby="site-title">
+  <div class="masthead-dateline num" aria-hidden="true">
+    <span>VOL.{{ now.Format "2006" }}</span>
+    <span>{{ T "header.subtitle" }}</span>
+    {{ with $latest }}<span>更新于 {{ .Date.Format "2006.01.02" }}</span>{{ end }}
+  </div>
+
+  <div class="masthead-grid">
+    {{/* 「一点入水」涟漪点阵场：纯装饰，读屏忽略；逻辑见 assets/js/field.js */}}
+    <canvas class="masthead-field" data-field aria-hidden="true"></canvas>
+    <h1 class="masthead-title" id="site-title">
+      {{- site.Title -}}<span class="masthead-dot" aria-hidden="true"></span>
+    </h1>
+
+    <div class="masthead-aside">
+      <p class="masthead-claim">{{ $claim }}</p>
+      {{ with site.Params.home.claimNote }}<p class="masthead-note">{{ . }}</p>{{ end }}
+      <dl class="masthead-stats">
+        <div><dt>文章</dt><dd class="num">{{ len $posts }}</dd></div>
+        <div><dt>主题</dt><dd class="num">{{ len site.Taxonomies.tags }}</dd></div>
+        <div><dt>万字</dt><dd class="num">{{ lang.FormatNumber 1 (div (float $words) 10000) }}</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+{{ with resources.Get "js/field.js" | minify }}<script defer>{{ .Content | safeJS }}</script>{{ end }}

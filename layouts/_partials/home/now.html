@@ -1,0 +1,14 @@
+{{/* 「正在」侧栏（V10）：数据 data/about.yaml 的 currently */}}
+{{ with site.Data.about.currently }}
+<aside class="now reveal pagefind-exclude" aria-labelledby="now-heading" style="--i: 1">
+  <h2 class="eyebrow" id="now-heading"><span class="now-pulse" aria-hidden="true"></span>此刻</h2>
+  <dl class="now-list">
+    {{ range first 4 . }}
+    <div class="now-item">
+      <dt>{{ .label }}</dt>
+      <dd>{{ .value | markdownify }}</dd>
+    </div>
+    {{ end }}
+  </dl>
+</aside>
+{{ end }}

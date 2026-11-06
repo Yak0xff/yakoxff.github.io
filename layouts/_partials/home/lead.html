@@ -1,0 +1,18 @@
+{{/*
+  头条（V10）：整块可点，标题是首页第二大的字。
+  入参 .ctx 页面，.badge「精选 / 最新」
+*/}}
+{{- $p := .ctx -}}
+<article class="lead reveal pagefind-exclude" style="view-transition-name: post-{{ $p.File.UniqueID }}">
+  <a class="lead-link" href="{{ $p.RelPermalink }}">
+    <p class="eyebrow eyebrow--zhu"><span class="v-dot" aria-hidden="true"></span>{{ .badge | default "最新" }}</p>
+    <h2 class="lead-title">{{ $p.Title }}</h2>
+    {{ with $p.Params.description }}<p class="lead-desc">{{ . }}</p>{{ end }}
+    <p class="lead-meta num">
+      <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "2006.01.02" }}</time>
+      <span aria-hidden="true">/</span>
+      <span>{{ $p.ReadingTime }} 分钟</span>
+      <span class="lead-cta">读全文 <span class="v-arrow" aria-hidden="true">→</span></span>
+    </p>
+  </a>
+</article>

@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode }}" prefix="og: http://ogp.me/ns#">
 {{ partial "head.html" . }}
-<body>
+<!-- is-index：目录页（首页/归档/标签/分类等），外壳与首页同宽；
+     is-single：单篇内容页，保留阅读行宽与目录通道 -->
+<body class="{{ if .IsHome }}is-home{{ else }}is-{{ .Type }}{{ end }}{{ if ne .Kind "page" }} is-index{{ else }} is-single{{ end }}">
     {{ partial "components/svg-filters.html" . }}
-    <main class="my-[var(--page-margin-y)] relative">
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    {{/* V10：全站统一顶栏 + 移动端底部标签栏（替代旧版三套页头） */}}
+    {{ partial "site/topbar.html" . }}
+    <main id="main-content" class="my-[var(--page-margin-y)] relative" tabindex="-1">
       {{ block "main" . }}{{ end }}
       {{ partial "components/shade-mask" . }}
     </main>
+    {{ partial "site/tabbar.html" . }}
     {{ partial "scripts.html" . }}
+    {{ partial "scripts/ui-js.html" . }}
+    {{ if hugo.IsServer }}{{ partial "components/dev-badge" . }}{{ end }}
 </body>
 </html>
