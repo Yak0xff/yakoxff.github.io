@@ -85,10 +85,11 @@
 三种字体角色分工：标题走 `--font-display`（系统黑体），正文走 `--font-read`（霞鹜文楷），数字 / 眉题走 `--font-num`（等宽）。正文之外的界面文字一律用系统 UI 字体。
 
 - **首页**：刊头是一块 canvas 涟漪点阵场——朱砂点像一滴墨落进水面，波前经过的点被点亮并沿径向推开；指针靠近会亮起，点击能激起新的涟漪。`prefers-reduced-motion` 下只画一帧静态晕圈，画面静止 600ms 后停表。
+- **此刻**：头条底下的通栏「状态公报」——细线分栏、等宽标签、朱砂点、日期框、底部排印说明，四行「在读 / 在写 / 在发 / 在码」。后两行从站点内容自动算出（篇数、字数、最近更新、近 12 个月发文柱图），不会写完就过期。见[维护此刻状态](#维护此刻状态)。
 - **阅读页**：「一章书页」——居中扉页、首字下沉、图片外扩出血、右页边点线目录（每章一个点，按真实位置排布），选中文字浮出「复制摘句 / 分享」，文末用笔墨标记写出「全文完」并给出本次实际用时。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 22 节，从诊断到 V10.5 站名收敛）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 23 节，从诊断到 V10.6 此刻公报）。
 
 ## 目录结构
 
@@ -99,12 +100,12 @@
 │   └── js/             # field.js 涟漪场 · reading.js 阅读页 · rings.js 写作年轮 · reader-*.js 读程与偏好 …
 ├── config/_default/    # config · params · params.zh · languages · markup · services
 ├── content/            # posts · fictions · product · tags · categories + 独立页面（about / highlights / xiake / sponsor …）
-├── data/               # about.yaml 关于页 · products.yaml 应用清单 · imgmeta.json 图片宽高
+├── data/               # about.yaml 关于页 + 首页 dispatch 状态 · products.yaml · imgmeta.json
 ├── i18n/               # zh.yml（en.yml 保留但未启用）
 ├── layouts/            # baseof · home · page · section · taxonomy · term + _partials/（含 components/dot-shape）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights · fetch_appstore
 ├── static/             # img/（含 og:image header.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（22 节）
+├── REFACTOR.md         # 设计重构记录（23 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -216,6 +217,17 @@ banner: /img/xxx.png   # 扉页横幅，可选
 - **侠客**：直接写在 `content/xiake.md` 里，一条一个 `{{</* link link="…" title="…" */>}}`。
 - **精选 / 赞助 / RSS / 留白**：`/featured/` 用 `layout: featured`，`/blank/` 用 `layout: blank`，`/sponsor/` 与 `/rss/` 就是普通页面（赞助页里用了 `postcount` / `wordcount` 两个短代码做实时统计）。
 
+### 维护此刻状态
+
+首页那张「此刻 · DISPATCH」状态公报的数据分两路，**只有前两行要手动改**：
+
+| 行 | 来源 | 怎么改 |
+|---|---|---|
+| 在读 / 在写 | `data/about.yaml` 的 `dispatch` | 改 `text` / `note`，「在写」还能给 `link` |
+| 在发 / 在码 | `layouts/_partials/home/now.html` 自动统计 | 不用管：在发取全站篇数、总字数、最近更新日期；在码按近 12 个月逐月数发文，画成迷你柱图，最近 3 个月为 0 就写「静默中」 |
+
+`about.yaml` 里另有一份 `currently`（正在读 / 听 / 做 / 喝）是**关于页**用的，和 `dispatch` 各管各的，改一边不会动到另一边。窄屏下四行的英文标签会收起，只留中文。
+
 ### 分类与标签页
 
 Hugo 会按 front matter 自动生成 `/categories/` 与 `/tags/`。要改总览页的描述就编辑 `content/categories/_index.md` / `content/tags/_index.md`。
@@ -278,13 +290,13 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 |---|---|
 | 构建产物 | 207 页 / 334 个文件 / 17.3 MiB |
 | 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 woff2 + favicon 5KB），涟漪脚本内联在 HTML 里 |
-| 首页 HTML | 33.5KB（gzip 后 11.5KB，含内联的点阵 SVG） |
-| 首页样式 | 168KB（gzip 后 30KB） |
+| 首页 HTML | 35.9KB（gzip 后 11.8KB，含内联的点阵 SVG 与状态公报） |
+| 首页样式 | 169KB（gzip 后 30KB） |
 | 首页 LCP / CLS | 约 120ms / 0.0001 |
 | 文章页 | 2 个 woff2（1.33MB）+ 21KB JS；LCP 140ms，CLS 0.0011 |
 | 列表页脚本 | 0.5KB（只剩进场动画，读程 / 目录 / 偏好按 `.IsPage` 才加载） |
 
-两处最值得注意的成本：**字体是大头**（文章页两个 woff2 就把首访流量顶到 1.5MB，换来的是正文不发虚、长期可缓存），**样式是第二块**（167KB 里大部分是 `uno.css` 与设计系统本身，gzip 后能压到 30KB）。
+两处最值得注意的成本：**字体是大头**（文章页两个 woff2 就把首访流量顶到 1.5MB，换来的是正文不发虚、长期可缓存），**样式是第二块**（169KB 里大部分是 `uno.css` 与设计系统本身，gzip 后能压到 30KB）。
 
 ## 已知限制
 

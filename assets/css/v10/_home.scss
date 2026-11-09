@@ -156,11 +156,8 @@ body { margin: 0; }
   }
 }
 
-/* ---------- 2. 头条 + 此刻 ---------- */
+/* ---------- 2. 头条（V10.6：此刻已抽出为通栏公报，这里只剩一列） ---------- */
 .front {
-  display: grid;
-  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
-  gap: #{"clamp(1.75rem, 4vw, 4.5rem)"};
   padding-top: #{"clamp(2rem, 1rem + 3vw, 3.5rem)"};
 }
 
@@ -217,49 +214,8 @@ body { margin: 0; }
   .v-arrow { transition: transform var(--t-2) var(--ease-out); }
 }
 
-.now {
-  align-self: start;
-  padding-left: #{"clamp(1.25rem, 2.5vw, 2rem)"};
-  border-left: 1px solid var(--line);
-}
-
-/* 「此刻」呼吸点：唯一一个持续动画，表示内容是活的 */
-.now-pulse {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--zhu);
-  animation: v-pulse 2.6s var(--ease-ui) infinite;
-}
-
-@keyframes v-pulse {
-  0% { box-shadow: 0 0 0 0 var(--zhu-line); }
-  70% { box-shadow: 0 0 0 9px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
-}
-
-.now-list { margin: .9rem 0 0; }
-
-.now-item {
-  padding: .85rem 0;
-  border-top: 1px solid var(--line);
-
-  dt {
-    font-family: var(--font-ui);
-    font-size: var(--step--2);
-    letter-spacing: var(--tracking-meta);
-    color: var(--ink-3);
-  }
-
-  dd {
-    margin: .2rem 0 0;
-    font-size: var(--step-0);
-    line-height: 1.55;
-    color: var(--ink-1);
-  }
-
-  dd p { margin: 0; display: inline; }
-}
+/* V10.6：原「此刻」侧栏（.now / .now-pulse / .now-list）整块下线，
+   改由 v10/_dispatch.scss 的通栏状态公报承接，见 components/dot-shape。 */
 
 /* ---------- 4. 按主题读 ---------- */
 .topic-grid {
@@ -376,20 +332,6 @@ body { margin: 0; }
 
 @media (max-width: 860px) {
   .masthead-grid { grid-template-columns: 1fr; align-items: start; }
-  .front { grid-template-columns: 1fr; }
-
-  .now {
-    padding: 1.25rem 0 0;
-    border-left: 0;
-    border-top: 2px solid var(--line-ink);
-  }
-
-  /* 移动端「此刻」改两列，压缩首屏到头条的距离 */
-  .now-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 1.25rem;
-  }
 }
 
 @media (max-width: 600px) {
@@ -403,15 +345,6 @@ body { margin: 0; }
    旧文件仍被关于 / 应用 / 精选等页面使用，不能整体移除；
    这里只把与新首页组件重名、且新层未声明的属性归位。 */
 .home {
-  .now-item {
-    display: block;
-    font-size: inherit;
-    border-bottom: 0;
-
-    &::before { content: none; }
-    &:last-child { padding-bottom: .85rem; }
-  }
-
   .lead-desc {
     display: block;
     overflow: visible;

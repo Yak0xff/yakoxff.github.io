@@ -1,5 +1,18 @@
 # 关于页面配置
 
+# 首页「此刻 · DISPATCH」状态公报
+# 与下面关于页的 currently 分开维护：这里只放前两行手写内容，
+# 「在发 / 在码」由 layouts/_partials/home/now.html 从站点内容自动统计。
+# 改状态只改这两条 text / note / link 即可。
+dispatch:
+  reading:
+    text: "《思考，快与慢》"
+    note: "重读"
+  writing:
+    text: "《草台班子》连载"
+    note: "连载中"
+    link: /fictions/草台班子/
+
 # 个人简介
 intro: |
   欢迎来访，这里只有真情流露和赤裸的思考。

@@ -3,10 +3,12 @@
   首页（V10）—— 报刊式信息架构
   ---------------------------------------------------------------
   1. 刊头      home/hero    站名大字 + 刊语 + 数据（这是谁、写了多少）
-  2. 头条      home/lead    精选 / 最新一篇 + 「正在」侧栏
-  3. 最近发表   items/post   严格按时间倒序（旧版取的是主题区挑剩的
+  2. 头条      home/lead    精选 / 最新一篇
+  3. 此刻公报  home/now     通栏状态流：在读 / 在写 / 在发 / 在码
+                             后两行从站点内容自动统计
+  4. 最近发表   items/post   严格按时间倒序（旧版取的是主题区挑剩的
                              文章，时间线是断的）
-  4. 按主题读   home/topics  从剩余文章中按标签分组
+  5. 按主题读   home/topics  从剩余文章中按标签分组
   数据口径与旧版一致：mainSections 去掉 fictions。
 */}}
 {{- $scratch := newScratch -}}
@@ -60,9 +62,11 @@
   {{ with $lead }}
   <div class="front">
     {{ partial "home/lead" (dict "ctx" .page "badge" .badge) }}
-    {{ partial "home/now" . }}
   </div>
   {{ end }}
+
+  {{/* V10.6：此刻从 .front 的右栏抽出来，升级成通栏状态公报 */}}
+  {{ partial "home/now" . }}
 
   {{ with $scratch.Get "rest" }}
   <section class="v-section stream pagefind-exclude" aria-labelledby="stream-heading">
