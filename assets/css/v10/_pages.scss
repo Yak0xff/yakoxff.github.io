@@ -90,7 +90,7 @@ article.fiction-page {
   display: flex;
   align-items: baseline;
   padding-top: .9rem;
-  border-top: 2px solid var(--line-ink);
+  border-top: 1px solid var(--line-2);
 }
 
 .archive-page .section-title {
@@ -113,7 +113,7 @@ article.fiction-page {
   margin: 0;
   padding: .75rem 0;
   background: var(--paper);
-  border-bottom: 2px solid var(--line-ink);
+  border-bottom: 1px solid var(--line-2);
   transition: top var(--t-2) var(--ease-out);
 }
 

@@ -411,7 +411,7 @@ html[data-width] article.post-article.rd {
     padding: .7em 1em;
     text-align: left;
     white-space: nowrap;
-    border-bottom: 2px solid var(--line-ink);
+    border-bottom: 1px solid var(--line-2);
   }
 
   td {
@@ -1112,7 +1112,7 @@ html.rd-in-body .rd-pill {
   gap: .45rem;
   padding: 1.1rem 0 0;
   color: var(--ink);
-  border-top: 2px solid var(--line-ink);
+  border-top: 1px solid var(--line-2);
   text-decoration: none;
 
   &:hover { text-decoration: none; }

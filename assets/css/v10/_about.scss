@@ -11,11 +11,8 @@ article.ab {
 }
 
 /* ---------- 1. 首屏 ---------- */
-/* V10.14：关于页的分隔线统一收细、换柔和色。
-   全局 .v-section-head 是 2px 纯墨/纯白线（--line-ink），在这里只对
-   关于页覆盖成 1px 半透明 --line-2，不影响首页 / 归档等其它页面。 */
-.ab .v-section-head { border-top: 1px solid var(--line-2); }
-
+/* V10.15：全站分隔线已在 _base.scss 统一收成 1px --line-2，
+   关于页不再需要局部覆盖。 */
 .ab-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

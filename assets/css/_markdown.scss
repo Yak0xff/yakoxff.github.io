@@ -281,7 +281,7 @@ $block-background-color: var(--block-background-color);
         padding: 0.75em 1em;
         text-align: left;
         font-weight: var(--fw-medium);
-        border-bottom: 2px solid $border-color;
+        border-bottom: 1px solid var(--line-2);
         white-space: nowrap;
       }
     }

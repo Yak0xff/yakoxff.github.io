@@ -87,10 +87,11 @@
 - **刊头右侧**：不再重复「文章 / 主题 / 万字」（「此刻 → 在发」已有篇数和字数），改放「潮汐之境」点云球——2000 枚点按 Fibonacci 球面分布，多层噪声长出朱砂群岛，缓慢自转，入场时从海面往上生长，点一下荡开两圈潮汐。单 canvas + 内联 JS（30fps 节流、不可见停表），颜色读站点令牌跟随明暗，`prefers-reduced-motion` 下只画一帧。原型取自 DOT / WORLD 的 *TIDAL ARCHIPELAGO*，见 `assets/js/tide.js`。
 - **按主题读**：三栏一行，每栏一个主题三篇。先挑没被头条与「最近发表」用掉的文章，不够再回补，所以三栏始终填满。
 - **此刻**：头条右侧栏里的「状态公报」——细线分栏、等宽标签、朱砂点、日期框、底部排印说明，四行「在读 / 在写 / 在发 / 在码」，字号比头条低一档，不抢刊头。后两行从站点内容自动算出（篇数、字数、最近更新、近 12 个月发文柱图），不会写完就过期。见[维护此刻状态](#维护此刻状态)。
+- **分隔线**：全站统一 1px 半透明 `--line-2`（明暗各 24% 墨 / 纸色）。原 `--line-ink` 纯墨纯白的 2px 强线与 `3px double` 双线已废弃；只有引用块、朱砂强调这类竖向装饰保留粗线。
 - **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 31 节，从诊断到 V10.14 关于页收线）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 32 节，从诊断到 V10.15 全站分隔线统一）。
 
 ## 目录结构
 
@@ -106,7 +107,7 @@
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights
 ├── static/             # img/（含 og:image header.png、dot-motion-preview.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（31 节）
+├── REFACTOR.md         # 设计重构记录（32 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -181,7 +182,7 @@ banner: /img/xxx.png   # 扉页横幅，可选
 
 ### 独立页面
 
-- **关于**：文案在 `data/about.yaml`，写作年轮由文章自动算出；首页的「此刻」不出现在这里。写作年轮与版权页之间是一张「插页」：左侧用 [DOT / MOTION](https://dot-matrix-4gz.pages.dev/) 官方 `preview.png` 的本地副本 `static/img/dot-motion-preview.png`（目标站视觉全是 canvas 画的，这是它唯一的静态资源），右侧是动效名标签与一条外链。写在 `layouts/about.html` 里，不占章节编号、不加载对方脚本；图片也可点。原图直连外链实测加载不稳，所以存了一份本地副本，oxipng 后 58KB；预览图固定 560×294，用 `object-fit: cover` 铺满容器且不变形，并撑满整个插页高度，窄屏随容器等比缩放。插页本身不画分隔线；关于页的区块线统一收成 1px 半透明 `--line-2`（其它页面仍是 2px 粗墨线），版权页里的「设计灵感」与致谢已移除。
+- **关于**：文案在 `data/about.yaml`，写作年轮由文章自动算出；首页的「此刻」不出现在这里。写作年轮与版权页之间是一张「插页」：左侧用 [DOT / MOTION](https://dot-matrix-4gz.pages.dev/) 官方 `preview.png` 的本地副本 `static/img/dot-motion-preview.png`（目标站视觉全是 canvas 画的，这是它唯一的静态资源），右侧是动效名标签与一条外链。写在 `layouts/about.html` 里，不占章节编号、不加载对方脚本；图片也可点。原图直连外链实测加载不稳，所以存了一份本地副本，oxipng 后 58KB；预览图固定 560×294，用 `object-fit: cover` 铺满容器且不变形，并撑满整个插页高度，窄屏随容器等比缩放。插页本身不画分隔线；全站分隔线已统一收成 1px 半透明 `--line-2`（原 `--line-ink` 纯墨/纯白强线已废弃），版权页里的「设计灵感」与致谢已移除。
 - **标记**：主导航栏目，`data/highlights.json` 已入库。跑 `python3 scripts/highlights.py`，它扫 `content/` 下所有 `==…==`，按文章分组写成 `data/highlights.json`，结构是：
 
   ```json
