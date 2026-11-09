@@ -9,14 +9,25 @@
 /* 旧 TOC 侧栏为正文预留的右通道不再需要：正文回到页面正中 */
 body.is-posts.is-single main { padding-right: 0; }
 
-/* 正文栏宽：定义在 html 上——点线目录挂在 body 下，必须能读到同一个值 */
-:root { --rd-measure: var(--measure); }
-html[data-width="narrow"] { --rd-measure: 600px; }
-html[data-width="wide"] { --rd-measure: 860px; }
+/* 正文栏宽：定义在 html 上——点线目录挂在 body 下，必须能读到同一个值。
+   V10.8：原先 700px 的窄条像移动端排版，改成宽版桌面栏（最多 980px）。
+   max-width 不强制宽度，窄屏会自动收缩到父容器，不会出现负值或 0 宽。 */
+:root { --rd-measure: 980px; }
+html[data-width="narrow"] { --rd-measure: 700px; }
+html[data-width="wide"] { --rd-measure: 1200px; }
+
+/* 仅在目录真的出现（≥1100px）时，才按视口收缩正文、给右侧常显文字
+   稳定留出约 160px；「100vw - 26rem」与 rail 宽度的算式互为补数。
+   min() / calc() 用插值输出，避开 LibSass 对混合单位求值。 */
+@media (min-width: 1100px) {
+  :root { --rd-measure: #{"min(980px, calc(100vw - 26rem))"}; }
+  html[data-width="narrow"] { --rd-measure: #{"min(700px, calc(100vw - 26rem))"}; }
+  html[data-width="wide"] { --rd-measure: #{"min(1200px, calc(100vw - 4rem))"}; }
+}
 
 article.post-article.rd,
 html[data-width] article.post-article.rd {
-  --rd-wide: min(960px, 100vw - 3rem);
+  --rd-wide: #{"min(1200px, calc(100vw - 3rem))"};
   box-sizing: border-box;
   max-width: calc(var(--container) + var(--gutter) * 2);
   margin: 0 auto;
@@ -29,7 +40,7 @@ html[data-width] article.post-article.rd {
    1. 扉页
    =================================================================== */
 .rd-head {
-  max-width: 980px;
+  max-width: var(--container);   /* 扉页与首页外壳同宽 */
   margin: 0 auto;
   padding: #{"clamp(1rem, 3vw, 3.5rem)"} 0 0;
   border: 0;
@@ -70,7 +81,8 @@ html[data-width] article.post-article.rd {
   max-width: 15em;
   margin: 1.1rem auto 0;
   font-family: var(--font-display);
-  font-size: #{"clamp(2.15rem, 1.25rem + 3.6vw, 4.5rem)"};
+  /* V10.8：原本最大 4.5rem，收一档，不跟刊头「一点」抢视觉 */
+  font-size: #{"clamp(1.9rem, 1.4rem + 2.2vw, 3.1rem)"};
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -.03em;
@@ -487,14 +499,17 @@ html[data-width] article.post-article.rd {
    3. 读程：点线目录（宽屏）
    =================================================================== */
 .rd-rail {
-  --rail-left: calc(50% + var(--rd-measure) / 2 + var(--gutter) + 2rem);
+  /* V10.8：文字常显，右侧要稳定留出约 192px；--rd-measure 里已经
+     用 100vw - 30rem 预留过，这里只扣掉与正文的间距和页边留白 */
+  --rail-gap: 1.5rem;
+  --rail-left: calc(50% + var(--rd-measure) / 2 + var(--rail-gap));
   position: fixed;
   z-index: 40;
   top: calc(var(--topbar-h) + 14vh);
   bottom: 16vh;
   left: var(--rail-left);
-  width: calc(50vw - var(--rd-measure) / 2 - var(--gutter) - 4rem);
-  max-width: 250px;
+  width: calc(50vw - var(--rd-measure) / 2 - var(--rail-gap) - 1.5rem);
+  max-width: 240px;
   display: none;
   opacity: 0;
   visibility: hidden;
@@ -503,7 +518,7 @@ html[data-width] article.post-article.rd {
   pointer-events: none;
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1100px) {
   .rd-rail { display: block; }
 
   html.rd-in-body .rd-rail {
@@ -610,8 +625,10 @@ html.rd-past-body .rd-pill { transform: translate(-50%, 16px); }
   font-family: var(--font-ui);
   font-size: .8125rem;
   line-height: 1.4;
-  opacity: 0;
-  transform: translateX(-4px);
+  /* V10.8：章节名常显，不再只露点；未读章节淡一档，当前章由下面提亮 */
+  opacity: .82;
+  color: var(--ink-2);
+  transform: none;
   transition: opacity var(--t-1) var(--ease-ui), transform var(--t-2) var(--ease-out), color var(--t-1) var(--ease-ui);
 }
 
@@ -648,9 +665,8 @@ html.rd-past-body .rd-pill { transform: translate(-50%, 16px); }
 
 .rd-rail-link:hover .rd-rail-dot { transform: scale(1.35); border-color: var(--zhu); }
 
-/* 悬停整条目录时，所有章节名都浮现，方便一眼扫完 */
+/* 章节名已常显，悬停整条时只整体提亮，不再把未读项压淡 */
 .rd-rail:hover .rd-rail-label { opacity: 1; transform: none; }
-.rd-rail:hover .rd-rail-item:not(:hover):not(.is-active) .rd-rail-label { color: var(--ink-3); }
 
 /* ===================================================================
    4. 读程胶囊（窄屏）+ 目录面板
