@@ -5,11 +5,11 @@
   旧版是「致谢框 + 简介 + GitHub 式热力图 + 正在卡片 + 鸣谢列表」五个
   等重的盒子，读完不知道这个人是谁、写了什么。新版只讲三件事：
     1. 我是谁      宣言大字 + 落款 + 一行数字
-    2. 我做了什么  「写作年轮」+ GitHub 上置顶的几个仓库
+    2. 我写了什么  「写作年轮」：所有文章按日排在螺线上，一圈一年
     3. 我在哪      版权页（鸣谢）/ 在别处
   署名与社标使用「一点」笔墨标记（components/mark.html），不再用方印
-  数据：data/about.yaml（intro / credits）+ data/github.yaml + 站点统计 + params
-  V10.10：「此刻」下线，01 换成 GitHub 公开主页快照；dispatch 只服务首页
+  数据：data/about.yaml（intro / credits）+ 站点统计 + params
+  V10.11：「此刻」与「在 GitHub 上」先后下线，关于页只剩写作年轮 / 版权页 / 在别处
 */}}
 {{- $about := site.Data.about -}}
 {{- $posts := sort (where site.RegularPages "Section" "posts") "Date" -}}
@@ -71,49 +71,10 @@
     <script type="application/json" id="rings-data">{{ $days | jsonify | safeJS }}</script>
   </section>
 
-  {{/* ---------- 2. 在 GitHub 上：data/github.yaml 的公开主页快照 ---------- */}}
-  {{- with site.Data.github -}}
-  {{- $stars := 0 -}}
-  {{- range .repos -}}{{- $stars = add $stars .stars -}}{{- end -}}
-  <section class="v-section ab-gh" aria-labelledby="ab-gh-title">
-    <div class="v-section-head">
-      <span class="v-section-no" aria-hidden="true">01</span>
-      <h2 class="v-section-title" id="ab-gh-title">在 GitHub 上</h2>
-      <a class="v-section-more" href="{{ .profile.url }}" target="_blank" rel="noopener">@{{ .profile.user }} <span class="v-arrow" aria-hidden="true">→</span></a>
-    </div>
-
-    <blockquote class="ab-gh-quote">
-      <p>{{ .profile.quote }}</p>
-      <footer>{{ .profile.tagline }}<span aria-hidden="true"> · </span>{{ .profile.location }}</footer>
-    </blockquote>
-
-    <ul class="ab-gh-repos" data-stagger>
-      {{ range $i, $r := .repos }}
-      <li class="ab-gh-repo reveal">
-        <a class="ab-gh-repo-link" href="{{ $r.url }}" target="_blank" rel="noopener">
-          <span class="ab-gh-no num" aria-hidden="true">{{ printf "%02d" (add $i 1) }}</span>
-          <span class="ab-gh-repo-main">
-            <span class="ab-gh-repo-name">{{ $r.name }}</span>
-            <span class="ab-gh-repo-desc">{{ $r.desc }}</span>
-          </span>
-          <span class="ab-gh-repo-meta num">
-            <span class="ab-gh-lang">{{ $r.language }}</span>
-            <span>{{ $r.stars }} ★</span>
-            {{ with $r.forks }}<span>{{ . }} forks</span>{{ end }}
-          </span>
-        </a>
-      </li>
-      {{ end }}
-    </ul>
-
-    <p class="ab-gh-foot num">{{ .profile.stack }}　·　{{ len .repos }} 个置顶仓库 / {{ $stars }} 星　·　截至 {{ .asOf }} 的公开主页快照</p>
-  </section>
-  {{- end -}}
-
-  {{/* ---------- 3. 版权页：把鸣谢写成一本书的最后一页 ---------- */}}
+  {{/* ---------- 2. 版权页：把鸣谢写成一本书的最后一页 ---------- */}}
   <section class="v-section ab-colophon-wrap" aria-labelledby="ab-colophon-title">
     <div class="v-section-head">
-      <span class="v-section-no" aria-hidden="true">02</span>
+      <span class="v-section-no" aria-hidden="true">01</span>
       <h2 class="v-section-title" id="ab-colophon-title">版权页</h2>
     </div>
 
@@ -145,10 +106,10 @@
     </div>
   </section>
 
-  {{/* ---------- 4. 在别处 ---------- */}}
+  {{/* ---------- 3. 在别处 ---------- */}}
   <section class="v-section ab-elsewhere" aria-labelledby="ab-else-title">
     <div class="v-section-head">
-      <span class="v-section-no" aria-hidden="true">03</span>
+      <span class="v-section-no" aria-hidden="true">02</span>
       <h2 class="v-section-title" id="ab-else-title">在别处</h2>
     </div>
     <ul class="ab-links" data-stagger>
