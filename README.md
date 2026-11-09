@@ -85,11 +85,13 @@
 三种字体角色分工：标题走 `--font-display`（系统黑体），正文走 `--font-read`（霞鹜文楷），数字 / 眉题走 `--font-num`（等宽）。正文之外的界面文字一律用系统 UI 字体。
 
 - **首页**：刊头是一块 canvas 涟漪点阵场——朱砂点像一滴墨落进水面，波前经过的点被点亮并沿径向推开；指针靠近会亮起，点击能激起新的涟漪。`prefers-reduced-motion` 下只画一帧静态晕圈，画面静止 600ms 后停表。
+- **刊头右侧**：不再重复「文章 / 主题 / 万字」（「此刻 → 在发」已有篇数和字数），改放「潮汐之境」点云球——2000 枚点按 Fibonacci 球面分布，多层噪声长出朱砂群岛，缓慢自转，入场时从海面往上生长，点一下荡开两圈潮汐。单 canvas + 内联 JS（30fps 节流、不可见停表），颜色读站点令牌跟随明暗，`prefers-reduced-motion` 下只画一帧。原型取自 DOT / WORLD 的 *TIDAL ARCHIPELAGO*，见 `assets/js/tide.js`。
+- **按主题读**：三栏一行，每栏一个主题三篇。先挑没被头条与「最近发表」用掉的文章，不够再回补，所以三栏始终填满。
 - **此刻**：头条右侧栏里的「状态公报」——细线分栏、等宽标签、朱砂点、日期框、底部排印说明，四行「在读 / 在写 / 在发 / 在码」，字号比头条低一档，不抢刊头。后两行从站点内容自动算出（篇数、字数、最近更新、近 12 个月发文柱图），不会写完就过期。见[维护此刻状态](#维护此刻状态)。
 - **阅读页**：「一章书页」——居中扉页、首字下沉、图片外扩出血、右页边点线目录（每章一个点，按真实位置排布），选中文字浮出「复制摘句 / 分享」，文末用笔墨标记写出「全文完」并给出本次实际用时。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 23 节，从诊断到 V10.6 此刻公报）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 24 节，从诊断到 V10.7 点阵动效）。
 
 ## 目录结构
 
@@ -97,15 +99,15 @@
 .
 ├── assets/
 │   ├── css/            # main.scss 入口 · _fonts.scss 字体声明 · v10/ 设计系统 · components/ 组件 · legacy/ 旧版
-│   └── js/             # field.js 涟漪场 · reading.js 阅读页 · rings.js 写作年轮 · reader-*.js 读程与偏好 …
+│   └── js/             # field.js 涟漪场 · tide.js 潮汐之境 · reading.js 阅读页 · rings.js 写作年轮 …
 ├── config/_default/    # config · params · params.zh · languages · markup · services
 ├── content/            # posts · fictions · product · tags · categories + 独立页面（about / highlights / xiake / sponsor …）
 ├── data/               # about.yaml 关于页 + 首页 dispatch 状态 · products.yaml · imgmeta.json
 ├── i18n/               # zh.yml（en.yml 保留但未启用）
-├── layouts/            # baseof · home · page · section · taxonomy · term + _partials/（含 components/dot-shape）· _shortcodes/ · _markup/
+├── layouts/            # baseof · home · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights · fetch_appstore
 ├── static/             # img/（含 og:image header.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（23 节）
+├── REFACTOR.md         # 设计重构记录（24 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -292,9 +294,9 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 |---|---|
 | 构建产物 | 207 页 / 334 个文件 / 17.3 MiB |
 | 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 woff2 + favicon 5KB），涟漪脚本内联在 HTML 里 |
-| 首页 HTML | 35.9KB（gzip 后 11.8KB，含内联的点阵 SVG 与状态公报） |
+| 首页 HTML | 40.8KB（gzip 后 13.5KB，含内联的 field / tide 脚本与状态公报） |
 | 首页样式 | 169KB（gzip 后 30KB） |
-| 首页 LCP / CLS | 约 120ms / 0.0002 |
+| 首页 LCP / CLS | 约 120ms / 0.0001 |
 | 文章页 | 2 个 woff2（1.33MB）+ 21KB JS；LCP 140ms，CLS 0.0011 |
 | 列表页脚本 | 0.5KB（只剩进场动画，读程 / 目录 / 偏好按 `.IsPage` 才加载） |
 

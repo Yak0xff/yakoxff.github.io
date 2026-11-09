@@ -1,0 +1,17 @@
+{{/*
+  刊头右侧「潮汐之境」点云球（V10.7）
+  ---------------------------------------------------------------
+  原型：DOT / WORLD · TIDAL ARCHIPELAGO（桌面 Publisher/world 的 scene 0）
+  ——「群岛从海面缓慢生长，每一次触碰，都是一场小小的潮汐」。
+  这里把 34000 点的可拖拽宇宙精简成 1600 点的单 canvas 装饰：
+  Fibonacci 球面布点 + 多层 value noise 定陆地 / 海岸，缓慢自转，
+  入场时点从下往上逐批浮现（群岛生长），点击荡开两圈椭圆潮汐。
+
+  配色不用原型的深墨绿，改读站点令牌 --ink / --zhu / --ink-3，
+  纸底上是墨点与朱砂点，暗色主题自动跟随。
+  纯装饰，aria-hidden；reduced-motion 下只画一帧、不自转、不响应点击。
+  逻辑见 assets/js/tide.js（随本页内联，无额外请求）。
+*/}}
+<div class="tide" aria-hidden="true">
+  <canvas class="tide-canvas" data-tide></canvas>
+</div>

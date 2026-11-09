@@ -3,7 +3,7 @@
    旧版 Bento 的问题是「所有盒子一样重」：宣言、统计、正在、特稿、
    主题，全是同色同描边同圆角的格子，眼睛不知道先看哪。
    新版取消盒子，层级完全由字号阶梯表达：
-     站名 step-5 > 头条 step-4 > 区块标题 step-2 > 条目 step-1
+     站名 step-5 > 头条 step-3 > 区块标题 step-2 > 条目 step-1
    =================================================================== */
 
 body { margin: 0; }
@@ -131,30 +131,9 @@ body { margin: 0; }
   color: var(--ink-2);
 }
 
-.masthead-stats {
-  display: flex;
-  gap: #{"clamp(1.5rem, 3vw, 2.75rem)"};
-  margin: 1.5rem 0 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--line);
-
-  div { margin: 0; }
-
-  dt {
-    font-family: var(--font-ui);
-    font-size: var(--step--2);
-    letter-spacing: var(--tracking-meta);
-    color: var(--ink-3);
-  }
-
-  dd {
-    margin: .15rem 0 0;
-    font-size: var(--step-2);
-    font-weight: 500;
-    line-height: 1.1;
-    color: var(--ink);
-  }
-}
+/* V10.7：刊头的「文章 / 主题 / 万字」已下线——「此刻 → 在发」已经有
+   篇数和字数，两处同数重复。空出来的位置放「潮汐之境」点云球
+   （components/tide.html + assets/js/tide.js + v10/_tide.scss）。 */
 
 /* ---------- 2. 头条 + 此刻（右栏） ---------- */
 .front {
@@ -177,7 +156,7 @@ body { margin: 0; }
 .lead-title {
   margin: .9rem 0 0;
   font-family: var(--font-display);
-  font-size: var(--step-4);
+  font-size: var(--step-3);
   font-weight: 700;
   line-height: 1.12;
   letter-spacing: var(--tracking-display);

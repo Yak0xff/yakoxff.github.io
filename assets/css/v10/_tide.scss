@@ -1,0 +1,26 @@
+/* ===================================================================
+   V10.7 刊头右侧「潮汐之境」点云球
+   -------------------------------------------------------------------
+   原型 DOT / WORLD 的 scene 0，精简后由 assets/js/tide.js 单 canvas 绘制。
+   这里只负责尺寸与落位：刊语下方右对齐，纸底 / 墨点 / 朱砂群岛由 JS
+   读取 CSS 变量决定，明暗主题自动跟随。
+   =================================================================== */
+
+.tide {
+  position: relative;
+  width: #{"clamp(128px, 12vw, 168px)"};
+  aspect-ratio: 1;
+  margin: #{"clamp(1.25rem, 1rem + 1.5vw, 2rem)"} 0 0 auto;
+  cursor: pointer;              /* 点一下会有一圈潮汐 */
+  touch-action: manipulation;
+}
+
+.tide-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 860px) {
+  .tide { width: #{"clamp(116px, 30vw, 148px)"}; }
+}

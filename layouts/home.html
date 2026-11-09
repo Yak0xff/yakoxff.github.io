@@ -27,7 +27,11 @@
 {{- else -}}
   {{- with first 1 $sorted -}}{{- $lead = dict "page" (index . 0) "badge" "最新" -}}{{- end -}}
 {{- end -}}
-{{- with $lead -}}{{- $scratch.Add "used" (slice .page.RelPermalink) -}}{{- end -}}
+{{- with $lead -}}
+  {{- $scratch.Set "leadURL" .page.RelPermalink -}}
+  {{- $scratch.Add "used" (slice .page.RelPermalink) -}}
+{{- end -}}
+{{- if not ($scratch.Get "leadURL") -}}{{- $scratch.Set "leadURL" "" -}}{{- end -}}
 
 {{/* 最近发表：头条之后的 N 篇，严格时间序 */}}
 {{- $streamLimit := site.Params.features.restCount | default 8 -}}
@@ -44,13 +48,25 @@
 {{- with site.Taxonomies.categories.ByCount -}}
   {{- if gt (len .) 1 -}}{{- $taxo = . -}}{{- $taxoName = "categories" -}}{{- end -}}
 {{- end -}}
-{{- $topicCount := site.Params.features.topicCount | default 6 -}}
+{{- $topicCount := site.Params.features.topicCount | default 3 -}}
 {{- range first $topicCount $taxo -}}
   {{- $picked := slice -}}
+  {{- $pickedURLs := slice -}}
+  {{/* 先挑没被头条 / 最近发表用掉的文章 */}}
   {{- range .Pages -}}
     {{- if and (lt (len $picked) 3) (eq .Section "posts") (not (in ($scratch.Get "used") .RelPermalink)) -}}
       {{- $picked = $picked | append . -}}
-      {{- $scratch.Add "used" (slice .RelPermalink) -}}
+      {{- $pickedURLs = $pickedURLs | append .RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+  {{/* 文章流用掉 13 篇后，剩余常不够填满三栏：回补已出现过的文章，
+       只避开头条，避免主题区第一篇又是最醒目的那一篇 */}}
+  {{- if lt (len $picked) 3 -}}
+    {{- range .Pages -}}
+      {{- if and (lt (len $picked) 3) (eq .Section "posts") (ne .RelPermalink ($scratch.Get "leadURL")) (not (in $pickedURLs .RelPermalink)) -}}
+        {{- $picked = $picked | append . -}}
+        {{- $pickedURLs = $pickedURLs | append .RelPermalink -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
   {{- if $picked -}}{{- $scratch.Add "groups" (slice (dict "Term" . "Pages" $picked)) -}}{{- end -}}

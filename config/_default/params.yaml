@@ -30,7 +30,7 @@ footerExternalLinks:
 # ------------------------------------------------------------------
 features:
   homeHero: true          # 首页 Hero（主张横幅 + 数据 + 当前状态）
-  topicCount: 6           # 主题走廊展示的主题数（默认取 tags，若 categories 补齐则自动改用它）
+  topicCount: 3           # 按主题读展示的主题数（三列一行；不足 3 篇时允许回补文章流里的文章）
   restCount: 12           # 「更早以前」列表条数
   revealOnScroll: true    # 滚动进场动效（自动尊重 prefers-reduced-motion）
   reader:

@@ -4,11 +4,11 @@
   旧版：水印页头 + 宣言盒 + 统计盒 + 正在盒，四个等重的米色盒子
   在首屏抢注意力，站名反而只有 1.3rem。
   新版：站名本身就是刊头——黑体特大字「一点」+ 句末一组由点组成的
-  形状（按栏目重排），宣言与数据退到右侧作注脚。
-  数据来自 site.Params.home / 站点统计，无硬编码文案。
+  形状（按栏目重排），右侧只留刊语与「潮汐之境」点云球。
+  V10.7：原来的「文章 / 主题 / 万字」统计下线——「此刻 → 在发」已有
+  篇数与字数，两处同数重复。刊语来自 site.Params.home，无硬编码文案。
 */}}
 {{- $posts := where site.RegularPages "Section" "posts" -}}
-{{- $words := 0 -}}{{- range $posts -}}{{- $words = add $words .WordCount -}}{{- end -}}
 {{- $latest := index (first 1 (sort $posts "Date" "desc")) 0 -}}
 {{- $claim := site.Params.home.claim | default site.Params.description -}}
 <section class="masthead pagefind-exclude" aria-labelledby="site-title">
@@ -28,12 +28,9 @@
     <div class="masthead-aside">
       <p class="masthead-claim">{{ $claim }}</p>
       {{ with site.Params.home.claimNote }}<p class="masthead-note">{{ . }}</p>{{ end }}
-      <dl class="masthead-stats">
-        <div><dt>文章</dt><dd class="num">{{ len $posts }}</dd></div>
-        <div><dt>主题</dt><dd class="num">{{ len site.Taxonomies.tags }}</dd></div>
-        <div><dt>万字</dt><dd class="num">{{ lang.FormatNumber 1 (div (float $words) 10000) }}</dd></div>
-      </dl>
+      {{ partial "components/tide" . }}
     </div>
   </div>
 </section>
 {{ with resources.Get "js/field.js" | minify }}<script defer>{{ .Content | safeJS }}</script>{{ end }}
+{{ with resources.Get "js/tide.js" | minify }}<script defer>{{ .Content | safeJS }}</script>{{ end }}
