@@ -1,4 +1,4 @@
-# 一点记 · 向死而生
+# 一点 · 向死而生
 
 > 一个人的编辑部。世界不会等你准备好——写下来，就是在时间里刻下坐标。
 
@@ -56,7 +56,19 @@
 
 ## 设计：V10「一点」
 
-整套视觉只有一个品牌原子：**一枚朱砂点**。它是 logo、导航当前项、列表游标、阅读进度珠、焦点环、文末句点。其余交给纸与墨：不加满屏卡片，用字号、字重、粗细线建立层级。
+整套视觉只有一个品牌原子：**点**。站名从「一点记」收敛成「一点」，单枚朱砂点继续做导航当前项、列表游标、阅读进度珠、焦点环、文末句点；**一组点**则按栏目重排成形状，顶栏 logo 与首页刊头的句点就是它。其余交给纸与墨：不加满屏卡片，用字号、字重、粗细线建立层级。
+
+点阵是 5×5 网格，由 `layouts/_partials/components/dot-shape.html` 用纯 SVG 输出，无 JS、无额外请求，颜色取 `--zhu`，明暗主题自动跟随：
+
+| 栏目 | 形状 | 点数 | 落在哪 |
+|---|---|---|---|
+| 首页 | 圆 | 21 | 顶栏 + 刊头句点（也是首页涟漪的波心） |
+| 归档 / 随笔 | 方 | 16 | 顶栏 |
+| 应用 | 三角 | 17 | 顶栏 |
+| 虚构 | 弧 | 11 | 顶栏 |
+| 关于 / 标记 / 标签等 | 十字 | 9 | 顶栏 |
+
+眉题前那枚 `.v-dot` 只有 `0.42em`，点阵会糊成一团，仍保留实心圆；文末「全文完」的「一 + 、」笔墨标记是手写笔触，属于另一套语言。
 
 | 令牌 | 明色 | 暗色 | 用途 |
 |---|---|---|---|
@@ -76,7 +88,7 @@
 - **阅读页**：「一章书页」——居中扉页、首字下沉、图片外扩出血、右页边点线目录（每章一个点，按真实位置排布），选中文字浮出「复制摘句 / 分享」，文末用笔墨标记写出「全文完」并给出本次实际用时。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 21 节，从诊断到 V10.4 性能收敛）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 22 节，从诊断到 V10.5 站名收敛）。
 
 ## 目录结构
 
@@ -89,10 +101,10 @@
 ├── content/            # posts · fictions · product · tags · categories + 独立页面（about / highlights / xiake / sponsor …）
 ├── data/               # about.yaml 关于页 · products.yaml 应用清单 · imgmeta.json 图片宽高
 ├── i18n/               # zh.yml（en.yml 保留但未启用）
-├── layouts/            # baseof · home · page · section · taxonomy · term + _partials/ · _shortcodes/ · _markup/
+├── layouts/            # baseof · home · page · section · taxonomy · term + _partials/（含 components/dot-shape）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights · fetch_appstore
-├── static/             # img/ · fonts/ · pagefind/ · css/ · js/ · _headers · favicon
-├── REFACTOR.md         # 设计重构记录（21 节）
+├── static/             # img/（含 og:image header.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
+├── REFACTOR.md         # 设计重构记录（22 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -264,11 +276,11 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 | 指标 | 数值 |
 |---|---|
-| 构建产物 | 207 页 / 333 个文件 / 17.3 MiB |
-| 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 woff2 + favicon），涟漪脚本内联在 HTML 里 |
-| 首页 HTML | 31.8KB（gzip 后 11KB） |
-| 首页样式 | 167KB（gzip 后 30KB） |
-| 首页 LCP / CLS | 112ms / 0.0001 |
+| 构建产物 | 207 页 / 334 个文件 / 17.3 MiB |
+| 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 woff2 + favicon 5KB），涟漪脚本内联在 HTML 里 |
+| 首页 HTML | 33.5KB（gzip 后 11.5KB，含内联的点阵 SVG） |
+| 首页样式 | 168KB（gzip 后 30KB） |
+| 首页 LCP / CLS | 约 120ms / 0.0001 |
 | 文章页 | 2 个 woff2（1.33MB）+ 21KB JS；LCP 140ms，CLS 0.0011 |
 | 列表页脚本 | 0.5KB（只剩进场动画，读程 / 目录 / 偏好按 `.IsPage` 才加载） |
 
@@ -283,7 +295,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 - **`static/img/product/*/icon.png` 实际是 JPEG**（历史遗留，512×512）。脚本识别到扩展名与真实格式不符会跳过，不影响显示，但会误导后来的人。
 - **`layouts/shortcodes/` 是历史副本**：配置里 `shortcodeDir` 指向 `layouts/_shortcodes/`，前者已不参与渲染，可以删。
 - **CSP 只约束了 `script-src`**，没有 `default-src`；要收紧得逐项放开 giscus、Umami 与内联样式/脚本（页面里有几段防闪烁的内联 script）。
-- **`favicon.ico` 有 15KB**，差不多是首页 HTML 的一半，换成小尺寸或 SVG 还能再省一点。
+- **品牌图标是生成物**：`favicon.svg` 是手写的，但 `favicon.ico`（5KB）/ `apple-touch-icon.png` / `img/header.png`（1200×630 分享卡片）由一次性脚本画出、脚本没入库。再改站名或形状时，这三张要跟着重画。
 
 ## 许可
 

@@ -100,13 +100,11 @@ body { margin: 0; }
   color: var(--ink);
 }
 
-/* 句末朱砂点：入场时「点」一下（缩放过冲），之后静止 */
+/* 句末点阵形状：入场时「点」一下（缩放过冲），之后静止
+   V10.5：从一枚实心圆换成由点组成的形状，同时是 field.js 的涟漪源 */
 .masthead-dot {
-  width: .19em;
-  height: .19em;
-  margin: 0 0 .06em .08em;
-  border-radius: 50%;
-  background: var(--zhu);
+  --dot-shape-size: .38em;
+  margin: 0 0 .05em .1em;
   animation: v-dot-in 900ms var(--ease-out) 240ms both;
 }
 

@@ -1,0 +1,43 @@
+{{/*
+  点阵形状组件（V10.5）
+  ---------------------------------------------------------------
+  站名收敛为「一点」之后，品牌原子从「一枚实心圆」升级为「一组点」。
+  同一套 5×5 网格，按栏目把点重排成不同形状，字标与配色都不变：
+
+    首页 → 圆（circle）        归档 / 随笔 → 方（square）
+    应用 → 三角（triangle）    虚构 → 弧（arc）
+    其余页面 → 十字（cross）
+
+  纯模板 + SVG，无 JS、无额外请求；颜色取 --zhu，明暗主题自动跟随。
+  参数：
+    .ctx    页面上下文（用于自动选形状）
+    .shape  显式指定形状，优先级高于 .ctx
+    .class  附加 class（调用方负责尺寸 / 动画 / 涟漪锚点）
+  无障碍：纯装饰，aria-hidden；reduced-motion 下由 CSS 关掉动效。
+*/}}
+{{- $shape := .shape -}}
+{{- if not $shape -}}
+  {{- $section := "" -}}
+  {{- $isHome := false -}}
+  {{- with .ctx -}}
+    {{- $section = .Section -}}
+    {{- $isHome = .IsHome -}}
+  {{- end -}}
+  {{- $shape = "cross" -}}
+  {{- if $isHome -}}{{- $shape = "circle" -}}
+  {{- else if eq $section "posts" -}}{{- $shape = "square" -}}
+  {{- else if or (eq $section "product") (eq $section "web") -}}{{- $shape = "triangle" -}}
+  {{- else if eq $section "fictions" -}}{{- $shape = "arc" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* 5×5 网格，坐标是格心；每枚点半径 0.32，见 v10/_dot-shape.scss */}}
+{{- $shapes := dict
+  "circle"   "1.5,0.5 2.5,0.5 3.5,0.5 0.5,1.5 1.5,1.5 2.5,1.5 3.5,1.5 4.5,1.5 0.5,2.5 1.5,2.5 2.5,2.5 3.5,2.5 4.5,2.5 0.5,3.5 1.5,3.5 2.5,3.5 3.5,3.5 4.5,3.5 1.5,4.5 2.5,4.5 3.5,4.5"
+  "square"   "0.5,0.5 1.5,0.5 2.5,0.5 3.5,0.5 4.5,0.5 0.5,1.5 4.5,1.5 0.5,2.5 4.5,2.5 0.5,3.5 4.5,3.5 0.5,4.5 1.5,4.5 2.5,4.5 3.5,4.5 4.5,4.5"
+  "triangle" "2.5,0.5 1.5,1.5 2.5,1.5 3.5,1.5 1.5,2.5 2.5,2.5 3.5,2.5 0.5,3.5 1.5,3.5 2.5,3.5 3.5,3.5 4.5,3.5 0.5,4.5 1.5,4.5 2.5,4.5 3.5,4.5 4.5,4.5"
+  "arc"      "1.5,0.5 2.5,0.5 3.5,0.5 0.5,1.5 4.5,1.5 0.5,2.5 0.5,3.5 4.5,3.5 1.5,4.5 2.5,4.5 3.5,4.5"
+  "cross"    "2.5,0.5 2.5,1.5 0.5,2.5 1.5,2.5 2.5,2.5 3.5,2.5 4.5,2.5 2.5,3.5 2.5,4.5"
+-}}
+{{- $pts := index $shapes $shape | default (index $shapes "circle") -}}
+<span class="dot-shape {{ .class }}" data-dot-shape="{{ $shape }}" aria-hidden="true"><svg viewBox="0 0 5 5" focusable="false">{{- range split $pts " " -}}{{- $xy := split . "," -}}<circle cx="{{ index $xy 0 }}" cy="{{ index $xy 1 }}" r="0.32"/>{{- end -}}</svg></span>

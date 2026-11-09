@@ -1,7 +1,7 @@
 /* =====================================================================
    首页刊头背景：「一点入水」涟漪点阵场
    ---------------------------------------------------------------------
-   站名「一点记」——那枚朱砂点像一滴墨落进水面：
+   站名「一点」——那组点像一滴墨落进水面：
    · 点阵铺满刊头，涟漪从朱砂点周期性扩散，波前经过的点被点亮成朱砂色、
      并沿径向被轻轻推开（水波感）；
    · 指针靠近时点阵向光标处变大变亮（像光照进裂缝）；
@@ -19,6 +19,7 @@
   var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   var GAP = 22;              // 点距
+  var CLEAR = 38;            // 波心留白半径：品牌点阵形状独占，不与涟漪点阵混成一片
   var SPEED = 240;           // 涟漪扩散速度 px/s
   var BAND = 26;             // 波前宽度
   var LIFE = 2.8;            // 涟漪寿命 s
@@ -63,7 +64,12 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     dots = [];
     var ox = (W % GAP) / 2 + GAP / 2, oy = (H % GAP) / 2 + GAP / 2;
-    for (var y = oy; y < H; y += GAP) for (var x = ox; x < W; x += GAP) dots.push(x, y);
+    var o = origin(), c2 = CLEAR * CLEAR;
+    for (var y = oy; y < H; y += GAP) for (var x = ox; x < W; x += GAP) {
+      var dx = x - o.x, dy = y - o.y;
+      if (dx * dx + dy * dy < c2) continue;
+      dots.push(x, y);
+    }
     frame(performance.now());
   }
 

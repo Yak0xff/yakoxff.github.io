@@ -1,0 +1,39 @@
+/* ===================================================================
+   V10.5 点阵形状 —— 品牌原子的新形态
+   -------------------------------------------------------------------
+   站名「一点」+ 由点组成的形状。5×5 网格里的 9~21 枚小点，按栏目
+   重排成圆 / 方 / 三角 / 弧 / 十字；形状由模板 partial 决定，这里只管
+   尺寸、颜色与动效。颜色沿用 --zhu，明暗主题自动跟随。
+
+   调用处各自给 --dot-shape-size：
+     .brand-dot      顶栏，20px
+     .masthead-dot   首页刊头句点，.38em（跟着 h1 字号缩放）
+   眉题前那枚 .v-dot 只有 .42em，点阵会糊，仍保留实心圆。
+   =================================================================== */
+
+.dot-shape {
+  display: inline-block;
+  width: var(--dot-shape-size, 16px);
+  height: var(--dot-shape-size, 16px);
+  flex: none;
+  color: var(--zhu);
+  line-height: 0;
+  vertical-align: middle;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot-shape,
+  .dot-shape.brand-dot,
+  .dot-shape.masthead-dot {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+}

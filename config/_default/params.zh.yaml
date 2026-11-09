@@ -9,8 +9,6 @@ nav:
     target: _self
   - name: 关于
     link: /about/
-# 页头方印刻字（缺省回退见 layouts/_partials/components/seal.html）
-sealText: 一点记
 footerInternalLinks:
   - name: 虚构
     link: /fictions/
