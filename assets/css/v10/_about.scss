@@ -294,28 +294,28 @@ article.ab {
 /* ---------- 插页：点阵动效展台（V10.12，不占章节编号） ----------
    静态点阵图形 + 动效名标签 + 一条外链，不做互动、不发外部请求。 */
 .ab-play {
-  margin: #{"clamp(2rem, 1.5rem + 2vw, 3rem)"} 0;
-  padding: #{"clamp(1.5rem, 1rem + 2vw, 2.25rem)"} 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  /* 不自己画线：前后 .ab-hero / .v-section-head 的粗墨线已是唯一分隔，
+     再叠两条细线就成了四条横线。也不留上下 padding，让图片撑满区块高度。 */
+  margin: #{"clamp(1.25rem, 1rem + 1vw, 2rem)"} 0;
+  padding: 0;
 }
 
 .ab-play-inner {
   display: flex;
   align-items: center;
-  gap: #{"clamp(1.5rem, 4vw, 3.5rem)"};
-  max-width: 1040px;
+  gap: #{"clamp(1.5rem, 3vw, 2.5rem)"};
+  max-width: 1140px;
   margin: 0 auto;
 }
 
 /* 目标站官方 preview.png 的本地副本，不在本站重画点阵图形。
-   容器固定 400px 宽（1200:630 比例 → 210px 高），图片绝对定位铺满，
-   object-fit: cover 保证不变形；窄屏由 max-width: 100% 兜底不溢出。 */
+   固定 560px 宽（1200:630 → 294px 高），图片决定整个插页的高度；
+   绝对定位铺满 + object-fit: cover 不变形；窄屏由 max-width: 100% 等比兜底。 */
 .ab-play-figure {
   position: relative;
   display: block;
   flex: none;
-  width: 400px;
+  width: 560px;
   max-width: 100%;
   aspect-ratio: 1200 / 630;
   overflow: hidden;

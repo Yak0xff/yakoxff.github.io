@@ -181,7 +181,7 @@ banner: /img/xxx.png   # 扉页横幅，可选
 
 ### 独立页面
 
-- **关于**：文案与鸣谢在 `data/about.yaml`，写作年轮由文章自动算出；首页的「此刻」不出现在这里。写作年轮与版权页之间是一张「插页」：左侧用 [DOT / MOTION](https://dot-matrix-4gz.pages.dev/) 官方 `preview.png` 的本地副本 `static/img/dot-motion-preview.png`（目标站视觉全是 canvas 画的，这是它唯一的静态资源），右侧是动效名标签与一条外链。写在 `layouts/about.html` 里，不占章节编号、不加载对方脚本；图片也可点。原图直连外链实测加载不稳，所以存了一份本地副本，oxipng 后 58KB；预览图固定 400×210，用 `object-fit: cover` 铺满容器且不变形，窄屏随容器等比缩放。
+- **关于**：文案与鸣谢在 `data/about.yaml`，写作年轮由文章自动算出；首页的「此刻」不出现在这里。写作年轮与版权页之间是一张「插页」：左侧用 [DOT / MOTION](https://dot-matrix-4gz.pages.dev/) 官方 `preview.png` 的本地副本 `static/img/dot-motion-preview.png`（目标站视觉全是 canvas 画的，这是它唯一的静态资源），右侧是动效名标签与一条外链。写在 `layouts/about.html` 里，不占章节编号、不加载对方脚本；图片也可点。原图直连外链实测加载不稳，所以存了一份本地副本，oxipng 后 58KB；预览图固定 560×294，用 `object-fit: cover` 铺满容器且不变形，并撑满整个插页高度，窄屏随容器等比缩放。插页本身不画分隔线，前后沿用区块原有的粗墨线。
 - **标记**：主导航栏目，`data/highlights.json` 已入库。跑 `python3 scripts/highlights.py`，它扫 `content/` 下所有 `==…==`，按文章分组写成 `data/highlights.json`，结构是：
 
   ```json
