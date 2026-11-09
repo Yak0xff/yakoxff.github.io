@@ -29,7 +29,7 @@
 |---|---|---|
 | 随笔 | `/posts/` | 24 篇：技术、认知、生活观察 |
 | 虚构 | `/fictions/` | 2 部连载、26 章：目录即书名，一章一个文件 |
-| 关于 | `/about/` | 写作年轮（一圈一年）、版权页、鸣谢、在别处 |
+| 关于 | `/about/` | 写作年轮（一圈一年）、DOT / MOTION 点阵动效插页、版权页、鸣谢、在别处 |
 | 标记 | `/highlights/` | 主导航栏目。8 篇 / 36 句，按来源文章分组；`==高亮==` 由脚本汇总，JSON 已入库 |
 | 侠客 | `/xiake/` | 友情链接与「网上邻居」（旧地址 `/blogroll/`、`/cards/links/` 会重定向） |
 | 精选 | `/featured/` | 自选的一批文章 |
@@ -90,7 +90,7 @@
 - **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 28 节，从诊断到 V10.11 撤下 GitHub 区块）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 29 节，从诊断到 V10.12 点阵插页）。
 
 ## 目录结构
 
@@ -106,7 +106,7 @@
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights
 ├── static/             # img/（含 og:image header.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（28 节）
+├── REFACTOR.md         # 设计重构记录（29 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -181,7 +181,7 @@ banner: /img/xxx.png   # 扉页横幅，可选
 
 ### 独立页面
 
-- **关于**：文案与鸣谢在 `data/about.yaml`，写作年轮由文章自动算出；页面只剩写作年轮、版权页、在别处三块。首页的「此刻」不出现在这里。
+- **关于**：文案与鸣谢在 `data/about.yaml`，写作年轮由文章自动算出；首页的「此刻」不出现在这里。写作年轮与版权页之间是一张「插页」：静态点阵图形 + `DOT / MOTION` 动效名标签 + 一条外链，写在 `layouts/about.html` 里，不占章节编号、不加载外部资源；外链指向 [dot-matrix-4gz.pages.dev](https://dot-matrix-4gz.pages.dev/)。
 - **标记**：主导航栏目，`data/highlights.json` 已入库。跑 `python3 scripts/highlights.py`，它扫 `content/` 下所有 `==…==`，按文章分组写成 `data/highlights.json`，结构是：
 
   ```json
@@ -209,7 +209,7 @@ banner: /img/xxx.png   # 扉页横幅，可选
 | 在读 / 在写 | `data/about.yaml` 的 `dispatch` | 改 `text` / `note`，「在写」还能给 `link` |
 | 在发 / 在码 | `layouts/_partials/home/now.html` 自动统计 | 不用管：在发取全站篇数、总字数、最近更新日期；在码按近 12 个月逐月数发文，画成迷你柱图，最近 3 个月为 0 就写「静默中」 |
 
-关于页不再展示「此刻」，也不再有 GitHub 区块。公报固定在头条右侧栏：`860px` 以下右栏落到头条下方，四行排成 2×2 压缩高度；`700px` 以下再收回单列，英文标签隐藏。柱图在窄栏里独占一行，不会被文字挤成一个小突起。
+关于页不再展示「此刻」，也不再有 GitHub 区块，中间改放一张点阵动效插页。公报固定在头条右侧栏：`860px` 以下右栏落到头条下方，四行排成 2×2 压缩高度；`700px` 以下再收回单列，英文标签隐藏。柱图在窄栏里独占一行，不会被文字挤成一个小突起。
 
 ### 分类与标签页
 

@@ -71,6 +71,32 @@
     <script type="application/json" id="rings-data">{{ $days | jsonify | safeJS }}</script>
   </section>
 
+  {{/* ---------- 插页：点阵动效展台（不占章节编号，只是书里的一张插图页） ----------
+       V10.12：写作年轮与版权页之间原本空着一段，放一个轻量的外链展台。
+       静态点阵图形 + 动效名标签，不做互动、不请求外部接口，只给一条外链。 */}}
+  <aside class="ab-play" aria-labelledby="ab-play-title">
+    <div class="ab-play-inner">
+      <div class="ab-play-figure" aria-hidden="true">
+        <span class="ab-play-ring"></span>
+        {{ partial "components/dot-shape" (dict "shape" "circle" "class" "ab-play-mark") }}
+      </div>
+
+      <div class="ab-play-copy">
+        <p class="ab-play-kicker num">FIELD NOTE · 点阵动效</p>
+        <h2 class="ab-play-title" id="ab-play-title">DOT / MOTION</h2>
+        <p class="ab-play-desc">一堆点能怎么动起来：淡入、打字机、交错、噪声流动、展开。那边收着动效笔记，还有一块可以用鼠标搅动的点阵。</p>
+        <ul class="ab-play-tags">
+          <li>淡入 FADE</li>
+          <li>打字机 TYPEWRITER</li>
+          <li>交错 INTERLACE</li>
+          <li>噪声流动 NOISE FLOW</li>
+          <li>展开 UNFOLD</li>
+        </ul>
+        <a class="v-button ab-play-cta" href="https://dot-matrix-4gz.pages.dev/" target="_blank" rel="noopener">去点阵实验室 <span class="v-arrow" aria-hidden="true">→</span><span class="sr-only">（新窗口打开）</span></a>
+      </div>
+    </div>
+  </aside>
+
   {{/* ---------- 2. 版权页：把鸣谢写成一本书的最后一页 ---------- */}}
   <section class="v-section ab-colophon-wrap" aria-labelledby="ab-colophon-title">
     <div class="v-section-head">
