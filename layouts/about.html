@@ -4,12 +4,12 @@
   ---------------------------------------------------------------
   旧版是「致谢框 + 简介 + GitHub 式热力图 + 正在卡片 + 鸣谢列表」五个
   等重的盒子，读完不知道这个人是谁、写了什么。新版只讲三件事：
-    1. 我是谁      宣言大字 + 方印落款 + 一行数字
-    2. 我写了什么  「写作年轮」：所有文章按日排在螺线上，一圈一年
-    3. 我在哪      此刻 / 版权页（鸣谢）/ 在别处
+    1. 我是谁      宣言大字 + 落款 + 一行数字
+    2. 我做了什么  「写作年轮」+ GitHub 上置顶的几个仓库
+    3. 我在哪      版权页（鸣谢）/ 在别处
   署名与社标使用「一点」笔墨标记（components/mark.html），不再用方印
-  数据：data/about.yaml（intro / dispatch / credits）+ 站点统计 + params
-  V10.9：「此刻」与首页共用 dispatch，不再读已下线的 currently
+  数据：data/about.yaml（intro / credits）+ data/github.yaml + 站点统计 + params
+  V10.10：「此刻」下线，01 换成 GitHub 公开主页快照；dispatch 只服务首页
 */}}
 {{- $about := site.Data.about -}}
 {{- $posts := sort (where site.RegularPages "Section" "posts") "Date" -}}
@@ -21,16 +21,6 @@
   {{- $k := .Date.Format "2006-01-02" -}}
   {{- $list := index $days $k | default slice -}}
   {{- $days = merge $days (dict $k ($list | append (dict "t" .Title "u" .RelPermalink))) -}}
-{{- end -}}
-
-{{/* 此刻：与首页 home/now.html 同口径，后两行从站点内容自动统计 */}}
-{{- $latest := index (last 1 $posts) 0 -}}
-{{- $thisMonth := add (mul now.Year 12) (int now.Month) -}}
-{{- $yearPosts := 0 -}}{{- $recent3 := 0 -}}
-{{- range $posts -}}
-  {{- $d := sub $thisMonth (add (mul .Date.Year 12) (int .Date.Month)) -}}
-  {{- if and (ge $d 0) (lt $d 12) -}}{{- $yearPosts = add $yearPosts 1 -}}{{- end -}}
-  {{- if and (ge $d 0) (lt $d 3) -}}{{- $recent3 = add $recent3 1 -}}{{- end -}}
 {{- end -}}
 
 {{/* 宣言：按第一个逗号拆成「引子」与「主句」，主句做大字 */}}
@@ -81,42 +71,44 @@
     <script type="application/json" id="rings-data">{{ $days | jsonify | safeJS }}</script>
   </section>
 
-  {{/* ---------- 2. 此刻（与首页同一份 dispatch） ---------- */}}
-  <section class="v-section ab-now" aria-labelledby="ab-now-title">
+  {{/* ---------- 2. 在 GitHub 上：data/github.yaml 的公开主页快照 ---------- */}}
+  {{- with site.Data.github -}}
+  {{- $stars := 0 -}}
+  {{- range .repos -}}{{- $stars = add $stars .stars -}}{{- end -}}
+  <section class="v-section ab-gh" aria-labelledby="ab-gh-title">
     <div class="v-section-head">
       <span class="v-section-no" aria-hidden="true">01</span>
-      <h2 class="v-section-title" id="ab-now-title">此刻</h2>
-      <span class="ab-now-pulse" aria-hidden="true"></span>
+      <h2 class="v-section-title" id="ab-gh-title">在 GitHub 上</h2>
+      <a class="v-section-more" href="{{ .profile.url }}" target="_blank" rel="noopener">@{{ .profile.user }} <span class="v-arrow" aria-hidden="true">→</span></a>
     </div>
-    <ul class="ab-now-list" data-stagger>
-      <li class="ab-now-item reveal">
-        <span class="ab-now-icon" aria-hidden="true">01</span>
-        <span class="ab-now-label">在读</span>
-        <span class="ab-now-value">
-          {{- with $about.dispatch.reading -}}{{ .text }}{{ with .note }} · {{ . }}{{ end }}{{- end -}}
-        </span>
+
+    <blockquote class="ab-gh-quote">
+      <p>{{ .profile.quote }}</p>
+      <footer>{{ .profile.tagline }}<span aria-hidden="true"> · </span>{{ .profile.location }}</footer>
+    </blockquote>
+
+    <ul class="ab-gh-repos" data-stagger>
+      {{ range $i, $r := .repos }}
+      <li class="ab-gh-repo reveal">
+        <a class="ab-gh-repo-link" href="{{ $r.url }}" target="_blank" rel="noopener">
+          <span class="ab-gh-no num" aria-hidden="true">{{ printf "%02d" (add $i 1) }}</span>
+          <span class="ab-gh-repo-main">
+            <span class="ab-gh-repo-name">{{ $r.name }}</span>
+            <span class="ab-gh-repo-desc">{{ $r.desc }}</span>
+          </span>
+          <span class="ab-gh-repo-meta num">
+            <span class="ab-gh-lang">{{ $r.language }}</span>
+            <span>{{ $r.stars }} ★</span>
+            {{ with $r.forks }}<span>{{ . }} forks</span>{{ end }}
+          </span>
+        </a>
       </li>
-      <li class="ab-now-item reveal">
-        <span class="ab-now-icon" aria-hidden="true">02</span>
-        <span class="ab-now-label">在写</span>
-        <span class="ab-now-value">
-          {{- with $about.dispatch.writing -}}
-          {{ if .link }}<a href="{{ .link }}">{{ .text }}</a>{{ else }}{{ .text }}{{ end }}{{ with .note }} · {{ . }}{{ end }}
-          {{- end -}}
-        </span>
-      </li>
-      <li class="ab-now-item reveal">
-        <span class="ab-now-icon" aria-hidden="true">03</span>
-        <span class="ab-now-label">在发</span>
-        <span class="ab-now-value">{{ len $posts }} 篇 · {{ lang.FormatNumber 1 (div (float $words) 10000) }} 万字 · 最近 {{ $latest.Date.Format "01.02" }} 更新</span>
-      </li>
-      <li class="ab-now-item reveal">
-        <span class="ab-now-icon" aria-hidden="true">04</span>
-        <span class="ab-now-label">在码</span>
-        <span class="ab-now-value">{{ cond (eq $recent3 0) "静默中" "持续更新" }} · 近 12 个月 {{ $yearPosts }} 篇</span>
-      </li>
+      {{ end }}
     </ul>
+
+    <p class="ab-gh-foot num">{{ .profile.stack }}　·　{{ len .repos }} 个置顶仓库 / {{ $stars }} 星　·　截至 {{ .asOf }} 的公开主页快照</p>
   </section>
+  {{- end -}}
 
   {{/* ---------- 3. 版权页：把鸣谢写成一本书的最后一页 ---------- */}}
   <section class="v-section ab-colophon-wrap" aria-labelledby="ab-colophon-title">

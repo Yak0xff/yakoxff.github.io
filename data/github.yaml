@@ -1,0 +1,39 @@
+# 关于页「在 GitHub 上」区块的数据
+# 来源：https://github.com/Yak0xff 公开主页（profile README + Pinned repositories）
+# 快照日期见 asOf。GitHub API 对未认证请求有速率限制，静态站也不该在
+# 运行时请求外部接口，所以这里存一份人工核对过的快照；star / fork 会变，
+# 需要更新时改这份文件即可。fork 来的仓库不计入（不算自己做的东西）。
+asOf: "2026-11-09"
+
+profile:
+  user: Yak0xff
+  displayName: Yak
+  url: https://github.com/Yak0xff
+  location: "Xi'an, Shaanxi"
+  tagline: "Product-minded builder • Mobile • UX • Motion"
+  quote: "I build small things that feel good, move smoothly, and make sense in real life."
+  stack: "Flutter · SwiftUI · React Native · Android · iOS"
+
+repos:
+  - name: ChatMessageTableViewController
+    url: https://github.com/Yak0xff/ChatMessageTableViewController
+    desc: "像 iMessage 的聊天界面，支持文字与图片"
+    language: Objective-C
+    stars: 295
+    forks: 56
+  - name: AnimatedPaths
+    url: https://github.com/Yak0xff/AnimatedPaths
+    desc: "用 CAShapeLayer.strokeEnd 让 CGPath 自己画出来"
+    language: Swift
+    stars: 37
+    forks: 8
+  - name: CoreML-Practice-with-SwiftUI
+    url: https://github.com/Yak0xff/CoreML-Practice-with-SwiftUI
+    desc: "CoreML + SwiftUI：深度预测、MNIST、图像分类、目标检测"
+    language: Swift
+    stars: 14
+  - name: Card-List-with-SwiftUI
+    url: https://github.com/Yak0xff/Card-List-with-SwiftUI
+    desc: "SwiftUI 卡片式内容列表的基础示例"
+    language: Swift
+    stars: 7

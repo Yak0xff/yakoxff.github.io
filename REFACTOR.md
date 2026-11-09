@@ -920,3 +920,39 @@ CDP 量化探针（1440 视口）量出两个叠加原因：
 - 关于页此刻 4 行，无 `currently` / 内联 SVG 残留，数值与首页一致。
 - 首页 / 标记 / 关于 / 归档四页控制台 0 报错；首页仍 6 请求、字体 1 个 / 683KB、CLS 0.0001。
 - README 的栏目表、目录结构、应用章节、部署说明、性能基线、已知限制同步；REFACTOR 追加本节（共 26 节）。
+
+---
+
+## 二十七、V10.10：关于页换成 GitHub 公开主页快照（2026-11-09）
+
+### 27.1 两条反馈
+
+1. 去掉关于页里的「此刻」。
+2. 从 GitHub 上找一些有意义、有意思的内容展示出来。
+
+### 27.2 数据从哪来、挑了什么
+
+`https://api.github.com/users/Yak0xff` 直接撞 403：`API rate limit exceeded for 43.132.141.14`（共享出口 IP），本机也没装 `gh` CLI。改读公开主页 HTML，拿到 profile README 与 5 个 Pinned 仓库，整理成一份静态快照：
+
+- **人**：Yak（Yak0xff），Xi'an Shaanxi，bio「好好学习，天天向上」，主页指向本站。
+- **一句话**：profile README 里的 `I build small things that feel good, move smoothly, and make sense in real life.`，配 `Product-minded builder • Mobile • UX • Motion` 与技术栈 `Flutter · SwiftUI · React Native · Android · iOS`。
+- **四个仓库**（按 star 排）：`ChatMessageTableViewController`（Objective-C，295★ / 56 forks，像 iMessage 的聊天界面）、`AnimatedPaths`（Swift，37★，用 `CAShapeLayer.strokeEnd` 让 CGPath 自己画出来）、`CoreML-Practice-with-SwiftUI`（Swift，14★）、`Card-List-with-SwiftUI`（Swift，7★）。合计 353 星。
+- fork 来的 `Machine-Learning-with-Python` 不计入——不是自己做的东西。
+
+有意思的地方不是数字，是那条线：从聊天界面到路径绘制动画，再到 CoreML 和 SwiftUI，一直在做手机上「摸得到、动得顺」的东西；`AnimatedPaths` 和这个站的「一点入水」「潮汐之境」其实是同一件事的不同年纪。所以区块里只如实引用 profile README 的原话与仓库数据，不额外加评论。
+
+**为什么不自动刷新**：GitHub API 有速率限制，静态站也不该在运行时请求外部接口。`data/github.yaml` 存一份人工核对过的快照，带 `asOf: 2026-11-09`；star / fork 变了手工改 YAML，页面里的合计数由模板现算。
+
+### 27.3 删除与替换
+
+- `about.html`：删掉「此刻」整个 section，以及只服务于它的四个统计变量（`$latest` / `$thisMonth` / `$yearPosts` / `$recent3`）。章节编号 `01 / 02 / 03` 不变，`01` 换成「在 GitHub 上」——引语 + tagline/地点、四行仓库（等宽编号、名称、描述、语言、star/fork）、底部技术栈与快照说明，右侧给 `@Yak0xff →` 外链。
+- `v10/_about.scss`：删 `.ab-now-*` 整段（含呼吸点、两列网格、圆形编号）与两条响应式规则，换成 `.ab-gh-*`；窄屏仓库行改两列、元信息落到第二列。
+- `data/about.yaml`：`dispatch` 保留但注释改成「只服务首页」——首页 `home/now.html` 仍读它，关于页不再引用。
+- 新增 `data/github.yaml`。
+
+### 27.4 验证
+
+- 干净生产构建 203 页；关于页产物无 `ab-now` 残留，章节编号仍为 `01 / 02 / 03`，4 个仓库名、353 星、快照日期全部正确渲染；首页「此刻」不受影响。
+- 1440 明暗两色 + 390px 窄屏截图通过：引语换行、长仓库名不溢出、元信息不与描述打架。
+- 关于 / 首页 / 标记三页控制台 0 报错。
+- README 的栏目表、目录结构、独立页面说明、「维护此刻状态」小节同步，新增「维护 GitHub 快照」说明数据来源与更新方式；REFACTOR 追加本节（共 27 节）。

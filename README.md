@@ -29,7 +29,7 @@
 |---|---|---|
 | 随笔 | `/posts/` | 24 篇：技术、认知、生活观察 |
 | 虚构 | `/fictions/` | 2 部连载、26 章：目录即书名，一章一个文件 |
-| 关于 | `/about/` | 写作年轮（一圈一年）、此刻状态公报、鸣谢 |
+| 关于 | `/about/` | 写作年轮（一圈一年）、GitHub 置顶仓库、鸣谢 |
 | 标记 | `/highlights/` | 主导航栏目。8 篇 / 36 句，按来源文章分组；`==高亮==` 由脚本汇总，JSON 已入库 |
 | 侠客 | `/xiake/` | 友情链接与「网上邻居」（旧地址 `/blogroll/`、`/cards/links/` 会重定向） |
 | 精选 | `/featured/` | 自选的一批文章 |
@@ -90,7 +90,7 @@
 - **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 26 节，从诊断到 V10.9 栏目收敛）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 27 节，从诊断到 V10.10 GitHub 区块）。
 
 ## 目录结构
 
@@ -101,12 +101,12 @@
 │   └── js/             # field.js 涟漪场 · tide.js 潮汐之境 · reading.js 阅读页 · rings.js 写作年轮 …
 ├── config/_default/    # config · params · params.zh · languages · markup · services
 ├── content/            # posts · fictions · tags · categories + 独立页面（about / highlights / xiake / sponsor …）
-├── data/               # about.yaml（intro / dispatch / credits）· highlights.json 标记数据 · imgmeta.json
+├── data/               # about.yaml（首页 dispatch / 关于页 credits）· github.yaml GitHub 快照 · highlights.json · imgmeta.json
 ├── i18n/               # zh.yml（en.yml 保留但未启用）
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights
 ├── static/             # img/（含 og:image header.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（26 节）
+├── REFACTOR.md         # 设计重构记录（27 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -181,7 +181,7 @@ banner: /img/xxx.png   # 扉页横幅，可选
 
 ### 独立页面
 
-- **关于**：文案、`dispatch` 状态与鸣谢都在 `data/about.yaml`。「此刻」与首页共用同一份 `dispatch`：在读 / 在写手写，在发 / 在码由模板自动统计；写作年轮也由文章自动算出，不用手填。
+- **关于**：文案与鸣谢在 `data/about.yaml`，写作年轮由文章自动算出；编号 01 的「在 GitHub 上」读 `data/github.yaml`（公开主页快照，见下）。首页的「此刻」已不出现在这里。
 - **标记**：主导航栏目，`data/highlights.json` 已入库。跑 `python3 scripts/highlights.py`，它扫 `content/` 下所有 `==…==`，按文章分组写成 `data/highlights.json`，结构是：
 
   ```json
@@ -202,16 +202,20 @@ banner: /img/xxx.png   # 扉页横幅，可选
 
 ### 维护此刻状态
 
-首页与关于页的「此刻」共用 `data/about.yaml` 的 `dispatch`，数据分两路，**只有前两行要手动改**：
+首页的「此刻 · DISPATCH」读 `data/about.yaml` 的 `dispatch`，数据分两路，**只有前两行要手动改**：
 
 | 行 | 来源 | 怎么改 |
 |---|---|---|
 | 在读 / 在写 | `data/about.yaml` 的 `dispatch` | 改 `text` / `note`，「在写」还能给 `link` |
-| 在发 / 在码 | 模板自动统计（首页 `home/now.html`、关于页 `about.html`） | 不用管：在发取全站篇数、总字数、最近更新日期；在码按近 12 个月逐月数发文，最近 3 个月为 0 就写「静默中」 |
+| 在发 / 在码 | `layouts/_partials/home/now.html` 自动统计 | 不用管：在发取全站篇数、总字数、最近更新日期；在码按近 12 个月逐月数发文，画成迷你柱图，最近 3 个月为 0 就写「静默中」 |
 
-两处口径一致，改一处数据两边同步；旧版那份 `currently`（正在读 / 听 / 做 / 喝，带内联 SVG）已下线。首页把柱图画在右栏，关于页用两列网格配等宽编号。
+关于页不再有「此刻」。公报固定在头条右侧栏：`860px` 以下右栏落到头条下方，四行排成 2×2 压缩高度；`700px` 以下再收回单列，英文标签隐藏。柱图在窄栏里独占一行，不会被文字挤成一个小突起。
 
-公报固定在头条右侧栏：`860px` 以下右栏落到头条下方，四行排成 2×2 压缩高度；`700px` 以下再收回单列，英文标签隐藏。柱图在窄栏里独占一行，不会被文字挤成一个小突起。
+### 维护 GitHub 快照
+
+关于页编号 01 的「在 GitHub 上」读 `data/github.yaml`：profile README 里的一句话、tagline / 地点 / 技术栈，加上 4 个置顶仓库（名称、描述、语言、star / fork）。数据抄自 `https://github.com/Yak0xff` 公开主页，带 `asOf` 快照日期；fork 来的仓库不计入，合计数由模板现算。
+
+GitHub API 对未认证请求有速率限制（共享出口 IP 很容易撞 403），静态站也不该在运行时请求外部接口，所以这里不自动刷新。star / fork 变了、或置顶仓库换了，手工改这份 YAML 和 `asOf` 即可。
 
 ### 分类与标签页
 

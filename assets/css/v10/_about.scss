@@ -291,71 +291,94 @@ article.ab {
   .eyebrow { display: block; margin-bottom: .25rem; color: var(--ink-2); }
 }
 
-/* ---------- 2. 此刻 ---------- */
-.ab-now-pulse {
-  width: 8px;
-  height: 8px;
-  margin-left: .25rem;
-  border-radius: 50%;
-  background: var(--zhu);
-  align-self: center;
-  animation: v-pulse 2.6s var(--ease-ui) infinite;
+/* ---------- 2. 在 GitHub 上（V10.10，「此刻」已下线） ----------
+   引语 + 仓库列表，数据与来源见 data/github.yaml。 */
+.ab-gh-quote {
+  margin: 0 0 1.5rem;
+  padding: 0 0 1.25rem;
+  border-bottom: 1px solid var(--line);
+
+  p {
+    margin: 0;
+    font-family: var(--font-read);
+    font-size: var(--step-2);
+    line-height: 1.6;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+
+  footer {
+    margin-top: .65rem;
+    font-family: var(--font-num);
+    font-size: var(--step--2);
+    letter-spacing: .04em;
+    color: var(--ink-3);
+  }
 }
 
-.ab-now-list {
-  display: grid;
-  /* 宽屏两列、窄屏一列：长书名「《思考，快与慢》— 丹尼尔·卡尼曼」需要横向空间 */
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: #{"clamp(1.5rem, 4vw, 4rem)"};
+.ab-gh-repos {
   margin: 0;
   padding: 0;
   list-style: none;
   border-top: 1px solid var(--line);
 }
 
-.ab-now-item {
+.ab-gh-repo-link {
   display: grid;
-  grid-template-columns: 2.75rem 4.5rem minmax(0, 1fr);
-  align-items: center;
-  gap: .75rem;
-  padding: 1.1rem .5rem 1.1rem 0;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1rem .5rem 1rem 0;
   border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
   transition: background-color var(--t-2) var(--ease-ui);
 
-  &:hover { background: var(--zhu-wash); }
-  &:hover .ab-now-icon { color: var(--on-zhu); background: var(--zhu); border-color: var(--zhu); }
+  &:hover { text-decoration: none; background: var(--zhu-wash); }
+  &:hover .ab-gh-repo-name { color: var(--zhu-ink); }
 }
 
-.ab-now-icon {
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  /* V10.9：原先放内联 SVG 图标，now 改成等宽序号，不再有手写图标数据 */
-  font-family: var(--font-num);
-  font-size: .72rem;
-  letter-spacing: .04em;
-  color: var(--zhu-ink);
-  border: 1px solid var(--zhu-line);
-  border-radius: 50%;
-  transition: background-color var(--t-2) var(--ease-ui), color var(--t-2) var(--ease-ui), border-color var(--t-2) var(--ease-ui);
-
-  svg { width: 18px; height: 18px; }
-}
-
-.ab-now-label {
-  font-family: var(--font-num);
+.ab-gh-no {
   font-size: var(--step--2);
-  letter-spacing: var(--tracking-meta);
+  color: var(--zhu);
+}
+
+.ab-gh-repo-main {
+  display: grid;
+  min-width: 0;
+  gap: .25rem;
+}
+
+.ab-gh-repo-name {
+  font-family: var(--font-display);
+  font-size: var(--step-0);
+  font-weight: 600;
+  color: var(--ink);
+  transition: color var(--t-1) var(--ease-ui);
+}
+
+.ab-gh-repo-desc {
+  font-family: var(--font-read);
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.ab-gh-repo-meta {
+  display: flex;
+  gap: .75rem;
+  font-size: var(--step--2);
+  white-space: nowrap;
   color: var(--ink-3);
 }
 
-.ab-now-value {
-  font-family: var(--font-display);
-  font-size: var(--step-1);
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--ink);
+.ab-gh-lang { color: var(--zhu-ink); }
+
+.ab-gh-foot {
+  margin: 1rem 0 0;
+  font-size: var(--step--2);
+  line-height: 1.7;
+  color: var(--ink-3);
 }
 
 /* ---------- 3. 版权页 ---------- */
@@ -504,7 +527,7 @@ article.ab {
 /* ---------- 响应式 ---------- */
 @media (max-width: 900px) {
   .ab-hero { grid-template-columns: 1fr; }
-  .ab-now-list { grid-template-columns: 1fr; }
+  .ab-gh-repo-meta { flex-wrap: wrap; gap: .25rem .75rem; }
   .ab-rings { margin-top: .5rem; }
   .rings { max-width: 440px; }
 }
@@ -512,10 +535,8 @@ article.ab {
 @media (max-width: 600px) {
   .ab-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ab-stats div:nth-child(3) { padding-left: 0; border-left: 0; }
-  .ab-now-item { grid-template-columns: 2.75rem minmax(0, 1fr); }
-  .ab-now-label { grid-column: 2; }
-  .ab-now-value { grid-column: 2; margin-top: -.5rem; }
-  .ab-now-icon { grid-row: span 2; }
+  .ab-gh-repo-link { grid-template-columns: 2rem minmax(0, 1fr); gap: .35rem .75rem; }
+  .ab-gh-repo-meta { grid-column: 2; }
   .ab-link-host { display: none; }
   .ab-colophon-list div { grid-template-columns: 5.5em minmax(0, 1fr); gap: .75rem; }
 }
