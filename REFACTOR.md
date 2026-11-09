@@ -1002,3 +1002,32 @@ CDP 量化探针（1440 视口）量出两个叠加原因：
 - 1440 明暗两色 + 390px 窄屏截图通过：插页正好落进原来的空白，图形与文字不挤、标签换行正常、按钮不溢出。
 - 关于 / 首页控制台 0 报错；about HTML 29.2KB（gzip 10.7KB），CSS 152.8KB（gzip 27.6KB），基本无增量。
 - README 栏目表、独立页面说明、「维护此刻状态」小节同步，节数 28 → 29。
+
+---
+
+## 三十、V10.13：插页图形改用目标站官方预览图（2026-11-09）
+
+### 30.1 反馈与调研
+
+上一节自绘的「淡环 + 5×5 点阵圆」效果太弱，用户要求不要自己画，直接引用目标站的资源。
+
+用 CDP 把 `https://dot-matrix-4gz.pages.dev/` 的运行时 DOM 与资源表拉出来看：页面里 **没有 `<img>`、没有背景图、没有 favicon link**，13 个 canvas（heroCanvas / stageCanvas / labA / labB …）全是动态绘制；`performance.getEntriesByType('resource')` 里只有两份 CSS。唯一可直接引用的静态资源是 og:image —— `https://dot-matrix-4gz.pages.dev/preview.png`（1200×630，黑底上由点组成的「点阵动效」四个大字，上方是三张 FIELD NOTE 卡片）。
+
+### 30.2 外链实测失败，改本地副本
+
+先按字面写成 `<img src="https://dot-matrix-4gz.pages.dev/preview.png">`，headless Chrome 实测**图片没加载出来**，展台左侧只剩一个空框（跨域图片请求在这条网络路径上不通；生产环境的用户网络、防盗链策略同样不可控）。
+
+于是改为把这张官方图存一份到 `static/img/dot-motion-preview.png`，`oxipng -o4 --strip safe` 后 100KB → **58KB**。内容仍完全来自目标站、不是本站重画，但不再依赖对方站点在线；来源 URL 写在模板注释、README 与本节里。图片本身包在 `<a>` 里可点，带 `width` / `height`（CLS 实测 0）、`loading="lazy"`、描述性 alt 与 sr-only 新窗口提示。
+
+### 30.3 版面调整
+
+- 左侧从 148px 的圆形点阵（环 + 圆）换成 `clamp(200px, 24vw, 300px)` 的 1200:630 缩略图，细边框 + 圆角 + `object-fit: cover`，hover 时边框转朱砂。
+- 删 `.ab-play-ring` / `.ab-play-mark` 规则；展台仍是左右两栏、不占章节编号，版权页 `01` / 在别处 `02` 不变。
+- 黑底预览图在纸色页面上形成一块明确的深色插画，比自绘的点阵圆有分量；暗色主题下靠细边框与图内的深灰卡片区分。
+
+### 30.4 验证
+
+- 干净生产构建 203 页 / **316 文件 / 13.81 MiB**（+1 文件、+58KB）；关于页产物无自绘点阵残留，改引 `/img/dot-motion-preview.png`。
+- 1440 明暗两色 + 390px 窄屏截图：预览图都正常显示、比例与边框无误、不与文字挤在一起。
+- 关于 / 首页控制台 0 报错；关于页图片请求 1 个 / 57KB，CLS 0。
+- README 栏目/目录结构、独立页面说明与性能基线同步，节数 29 → 30。

@@ -73,13 +73,17 @@
 
   {{/* ---------- 插页：点阵动效展台（不占章节编号，只是书里的一张插图页） ----------
        V10.12：写作年轮与版权页之间原本空着一段，放一个轻量的外链展台。
-       静态点阵图形 + 动效名标签，不做互动、不请求外部接口，只给一条外链。 */}}
+       V10.13：左侧不再自绘点阵图形，改用目标站的官方 preview.png
+       （它全站视觉都是 canvas 画的，没有 img / 背景图，这是唯一静态资源）。
+       外链实测加载不稳，故存一份到 static/img/dot-motion-preview.png，
+       来源 https://dot-matrix-4gz.pages.dev/preview.png 。
+       不做互动、不加载对方脚本，只有这张预览图 + 一条文字外链。 */}}
   <aside class="ab-play" aria-labelledby="ab-play-title">
     <div class="ab-play-inner">
-      <div class="ab-play-figure" aria-hidden="true">
-        <span class="ab-play-ring"></span>
-        {{ partial "components/dot-shape" (dict "shape" "circle" "class" "ab-play-mark") }}
-      </div>
+      <a class="ab-play-figure" href="https://dot-matrix-4gz.pages.dev/" target="_blank" rel="noopener">
+        <img src="/img/dot-motion-preview.png" width="1200" height="630" loading="lazy" decoding="async" alt="DOT / MOTION 首页预览：黑底上由点组成的「点阵动效」四个大字">
+        <span class="sr-only">（新窗口打开）</span>
+      </a>
 
       <div class="ab-play-copy">
         <p class="ab-play-kicker num">FIELD NOTE · 点阵动效</p>

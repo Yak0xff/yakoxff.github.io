@@ -90,7 +90,7 @@
 - **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 29 节，从诊断到 V10.12 点阵插页）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 30 节，从诊断到 V10.13 改用目标站预览图）。
 
 ## 目录结构
 
@@ -105,8 +105,8 @@
 ├── i18n/               # zh.yml（en.yml 保留但未启用）
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights
-├── static/             # img/（含 og:image header.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（29 节）
+├── static/             # img/（含 og:image header.png、dot-motion-preview.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
+├── REFACTOR.md         # 设计重构记录（30 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -181,7 +181,7 @@ banner: /img/xxx.png   # 扉页横幅，可选
 
 ### 独立页面
 
-- **关于**：文案与鸣谢在 `data/about.yaml`，写作年轮由文章自动算出；首页的「此刻」不出现在这里。写作年轮与版权页之间是一张「插页」：静态点阵图形 + `DOT / MOTION` 动效名标签 + 一条外链，写在 `layouts/about.html` 里，不占章节编号、不加载外部资源；外链指向 [dot-matrix-4gz.pages.dev](https://dot-matrix-4gz.pages.dev/)。
+- **关于**：文案与鸣谢在 `data/about.yaml`，写作年轮由文章自动算出；首页的「此刻」不出现在这里。写作年轮与版权页之间是一张「插页」：左侧用 [DOT / MOTION](https://dot-matrix-4gz.pages.dev/) 官方 `preview.png` 的本地副本 `static/img/dot-motion-preview.png`（目标站视觉全是 canvas 画的，这是它唯一的静态资源），右侧是动效名标签与一条外链。写在 `layouts/about.html` 里，不占章节编号、不加载对方脚本；图片也可点。原图直连外链实测加载不稳，所以存了一份本地副本，oxipng 后 58KB。
 - **标记**：主导航栏目，`data/highlights.json` 已入库。跑 `python3 scripts/highlights.py`，它扫 `content/` 下所有 `==…==`，按文章分组写成 `data/highlights.json`，结构是：
 
   ```json
@@ -271,7 +271,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 | 指标 | 数值 |
 |---|---|
-| 构建产物 | 203 页 / 315 个文件 / 13.8 MiB（应用栏目下线后少了 4 页、19 个文件、约 3.6 MiB 图片） |
+| 构建产物 | 203 页 / 316 个文件 / 13.8 MiB（应用栏目下线后少了 4 页、19 个文件、约 3.6 MiB 图片；后来补回 1 张 58KB 预览图） |
 | 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 woff2 + favicon 5KB），涟漪脚本内联在 HTML 里 |
 | 首页 HTML | 40.6KB（gzip 后 13.4KB，含内联的 field / tide 脚本与状态公报） |
 | 首页样式 | 153KB（gzip 后 28KB） |

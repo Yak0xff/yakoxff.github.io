@@ -308,23 +308,26 @@ article.ab {
   margin: 0 auto;
 }
 
+/* 目标站官方 preview.png 的本地副本，不在本站重画点阵图形 */
 .ab-play-figure {
-  position: relative;
-  display: grid;
-  place-items: center;
+  display: block;
   flex: none;
-  width: #{"clamp(116px, 12vw, 148px)"};
-  aspect-ratio: 1;
-}
+  width: #{"clamp(200px, 24vw, 300px)"};
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-2);
+  transition: border-color var(--t-2) var(--ease-ui);
 
-.ab-play-ring {
-  position: absolute;
-  inset: 0;
-  border: 1px solid var(--zhu-line);
-  border-radius: 50%;
-}
+  &:hover { border-color: var(--zhu); text-decoration: none; }
 
-.ab-play-mark { --dot-shape-size: 68%; }
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
 
 .ab-play-copy { min-width: 0; }
 
