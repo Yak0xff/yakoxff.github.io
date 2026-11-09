@@ -1,26 +1,51 @@
 {{ define "main" }}
-    {{ .Scratch.Set "shellWidth" "bento" }}{{/* 页脚外壳与 Bento 容器对齐，见 footer.html */}}
-    <article class="archive-page">
-        {{ partial "header" . }}
-        <p class="term-kicker" style="margin-top: var(--sp-6);">摘句集存</p>
-        <h1 class="term-title">{{ .Title }}</h1>
-        <div class="markdown-body" style="margin-top: var(--sp-3);">
-            {{ .Content }}
-        </div>
-        <!-- Highlights -->
-        {{ $highlights := site.Data.highlights }}
-        {{ if $highlights }}
-        {{ range $highlights }}
-        <h2 class="highlight-source"><a href="{{ .url }}">《{{ .title }}》</a></h2>
-        <ul class="highlight-rows">
-            {{ range .highlights }}
-                <li class="highlight-item">
-                    <a class="highlight-link" href="{{ .link }}">{{ .text | markdownify }}</a>
-                </li>
-            {{ end }}
-        </ul>
+{{/*
+  标记（V10.9 重做）
+  ---------------------------------------------------------------
+  数据不是手写内容：scripts/highlights.py 扫 content/ 下的 ==高亮==，
+  按文章分组写成 data/highlights.json，结构是
+    [ { title, url, highlights: [ { text, link } ] } ]
+  这里就按这个「来源 → 摘句列表」的格式展示，每组一条细线、等宽编号、
+  朱砂点作项目符号，链接带 text fragment 可跳回原文对应那句。
+  旧版用的是 Bento 外壳 + 荧光黄高亮条，与 V10 纸墨朱砂不同调。
+  V10.9：data/highlights.json 已从 .gitignore 放行并入库，线上不再是空壳。
+*/}}
+{{- $groups := site.Data.highlights -}}
+{{- $quoteCount := 0 -}}
+{{- range $groups -}}{{- $quoteCount = add $quoteCount (len .highlights) -}}{{- end -}}
+
+<article class="archive-page highlights-page">
+  {{ partial "header" . }}
+
+  <header class="v-page-head">
+    <p class="eyebrow eyebrow--zhu"><span class="v-dot" aria-hidden="true"></span>摘句集存</p>
+    <h1 class="v-page-title">{{ .Title }}</h1>
+    <p class="v-page-lede">一些偶现的精辟句子，留着自我欣赏一下。共 <span class="num">{{ len $groups }}</span> 篇 / <span class="num">{{ $quoteCount }}</span> 句。</p>
+  </header>
+
+  {{ if $groups }}
+  <div class="hl-groups pagefind-exclude">
+    {{ range $i, $g := $groups }}
+    <section class="hl-group" aria-labelledby="hl-source-{{ $i }}">
+      <header class="hl-group-head">
+        <span class="hl-group-no num" aria-hidden="true">{{ printf "%02d" (add $i 1) }}</span>
+        <h2 class="hl-group-title" id="hl-source-{{ $i }}"><a href="{{ .url }}">《{{ .title }}》</a></h2>
+        <span class="hl-group-count num">{{ len .highlights }} 句</span>
+      </header>
+      <ul class="hl-quotes">
+        {{ range .highlights }}
+        <li class="hl-quote">
+          <a class="hl-quote-link" href="{{ .link }}">{{ .text | markdownify }}</a>
+        </li>
         {{ end }}
-        {{ end }}
-    </article>
+      </ul>
+    </section>
+    {{ end }}
+  </div>
+  {{ else }}
+  <p class="hl-empty">还没有标记。跑一次 <code>python3 scripts/highlights.py</code>，从文章里的 <code>==高亮==</code> 生成数据。</p>
+  {{ end }}
+</article>
+
 {{ partial "footer.html" . }}
 {{ end }}

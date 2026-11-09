@@ -870,3 +870,53 @@ CDP 量化探针（1440 视口）量出两个叠加原因：
 - 章节名在明暗两色下都可读，过长时 ellipsis 截断（原有行为），当前章朱砂加粗醒目。
 - 三档偏好实测：窄 700 / 标准 980 / 宽 1200；宽档目录 `display: none`、胶囊 `flex`，与既有逻辑一致。
 - 文章页与首页控制台 0 报错；CSS 169.2 → 169.4KB（gzip 30.1KB），首页不受影响（改动只在 `_reading.scss` 的 `.rd` 作用域与 `--rd-measure`）。
+
+---
+
+## 二十六、V10.9：关于页此刻同步、应用栏目下线、标记进主导航（2026-11-09）
+
+> 前面章节里出现的 `/product/`、`_product.scss` 等是当时的状态，作为历史记录保留。
+
+### 26.1 三条反馈
+
+1. 关于页的「此刻」还挂着旧的 `currently`（正在读 / 听 / 做 / 喝 / 看，五条各带一段内联 SVG），而首页早已换成 `dispatch`（在读 / 在写手写 + 在发 / 在码自动算）。两处口径不一致，旧数据写完就过期。
+2. 去掉「应用」Tab，并移除所有数据。
+3. 把「标记」加进主导航，按数据格式展示。
+
+### 26.2 关于页此刻
+
+- 删 `data/about.yaml` 的 `currently` 整段（5 条含内联 SVG），连同过期已久的「网站图标来源」鸣谢组（现在 favicon 是自绘点阵，不再来自 Icons8 / Freepik）。
+- `about.html` 的「此刻」改读同一份 `dispatch`：在读 / 在写两条手写，在发 / 在码在模板里按与 `home/now.html` 相同的口径自动统计（全站篇数、总字数、最近更新、近 12 个月篇数、静默判断）。实测两页输出一致：`24 篇 · 7.1 万字 · 最近 02.17 更新` / `静默中 · 近 12 个月 20 篇`。
+- 视觉沿用 `.ab-now` 两列网格，圆形图标换成等宽编号 `01`–`04`（`.ab-now-icon` 加 `--font-num`），不再有手写图标数据。
+
+### 26.3 应用栏目下线
+
+`git rm` 共 26 个文件：
+
+| 类别 | 内容 |
+|---|---|
+| 内容 | `content/product/`（4 篇）、`data/products.yaml` |
+| 图片 | `static/img/product/`（10 张，1.2MB）、`static/img/neural-archive/`（5 张，**2.3MB**） |
+| 模板 | `layouts/product/`（2）、`layouts/web/`（1） |
+| 样式 | `components/_product.scss`、`_web.scss`、`_archive.scss` 里下线的 `.highlight-*` 段 |
+| 脚本 | `scripts/fetch_appstore.py` |
+
+`static/img/neural-archive/` 是额外查出来的：Neural Archive 应用页删掉后，那 5 张截图全站已无引用，却一直留在仓库里，比 product 图还大。
+
+引用清理：`params.zh.yaml` 导航、`config.yaml` 的 `permalinks.web`、底部标签栏图标映射、`dot-shape` 的形状映射、`items/post` 的栏目名、`main.scss` 两条 import、`_pages.scss` 里 `article.product-page / product-detail` 选择器、`data/imgmeta.json` 里 15 个失效条目（顺手把 `/img/header.png` 的旧尺寸 446×429 修正为实际的 1200×630）。
+
+### 26.4 标记进主导航 + 数据入库
+
+- 主导航第二项由「应用」换成「标记」`/highlights/`，页脚「站内」里重复的「标记」删掉；底部标签栏换成书签图标，路由同步。
+- **线上空壳的根因**：`data/highlights.json` 一直在 `.gitignore` 里，CI 构建时文件缺失，Hugo 静默跳过，`/highlights/` 只剩一个空壳（README 已知限制记过）。这次从 `.gitignore` 放行并入库，线上不再依赖本地脚本。
+- `layouts/highlights.html` 重做：弃用 Bento 外壳 + 荧光黄渐变高亮条，改 `v-page-head`（眉题 / 标题 / 统计）+ `hl-groups`。按 `data/highlights.json` 的原始结构 `[{title, url, highlights:[{text, link}]}]` 一组一篇文章：等宽编号、细线分节、来源链接、句数、朱砂点项目符号，摘句链接保留 `#:~:text=` 跳回原文。新增 `v10/_highlights.scss`。
+- `dot-shape` 的 triangle 从「应用」改派给「标记」。`/highlights/` 是独立页面、`.Section` 为空，所以除了 `$section` 还加了 `hasPrefix $path "/highlights"` 判断，否则会落回默认十字（实测发现并修正）。
+
+### 26.5 验证
+
+- 干净生产构建：207 → **203 页**，334 → **315 文件**，17.35 → **13.76 MiB**（少 3.59 MiB，主要是图片）；CSS 169.4 → **152.9KB**（gzip 30.1 → 27.7KB）。
+- 顶栏 `首页 / 归档 / 标记 / 关于`，底部标签栏同四路由且「标记」高亮；`/product/`、`/web/` 产物目录不再生成；全库配置 / 模板 / 样式里无 product 残留。
+- 标记页实测 8 组 / 36 句，形状 `triangle`；明暗两色与 390px 窄屏截图通过。
+- 关于页此刻 4 行，无 `currently` / 内联 SVG 残留，数值与首页一致。
+- 首页 / 标记 / 关于 / 归档四页控制台 0 报错；首页仍 6 请求、字体 1 个 / 683KB、CLS 0.0001。
+- README 的栏目表、目录结构、应用章节、部署说明、性能基线、已知限制同步；REFACTOR 追加本节（共 26 节）。

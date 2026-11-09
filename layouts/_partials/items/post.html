@@ -9,7 +9,7 @@
   入参：.ctx 页面；.showSummary 为 true 时用 Summary 代替 description
 */}}
 {{- $p := .ctx -}}
-{{- $sectionNames := dict "posts" "随笔" "fictions" "虚构" "library" "书房" "product" "应用" -}}
+{{- $sectionNames := dict "posts" "随笔" "fictions" "虚构" "library" "书房" -}}
 {{- $label := "" -}}
 {{- with $p.Params.categories -}}{{- $label = partial "components/first-term" . -}}{{- end -}}
 {{- if not $label -}}{{- with $p.Params.tags -}}{{- $label = index . 0 -}}{{- end -}}{{- end -}}

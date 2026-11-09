@@ -10,7 +10,6 @@
 /* ---------- 1. 容器 ---------- */
 article.archive-page,
 article.about-page,
-article.product-page,
 article.fiction-list-page {
   box-sizing: border-box;
   max-width: calc(var(--container) + var(--gutter) * 2);
@@ -25,9 +24,8 @@ article.fiction-list-page {
   margin-inline: 0;
 }
 
-/* 小说章节页、应用详情页：阅读型，窄栏 */
-article.fiction-page,
-article.product-detail {
+/* 小说章节页：阅读型，窄栏 */
+article.fiction-page {
   box-sizing: border-box;
   max-width: calc(var(--measure) + var(--gutter) * 2);
   padding: 0 var(--gutter);

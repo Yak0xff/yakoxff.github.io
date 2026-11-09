@@ -8,7 +8,8 @@
     2. 我写了什么  「写作年轮」：所有文章按日排在螺线上，一圈一年
     3. 我在哪      此刻 / 版权页（鸣谢）/ 在别处
   署名与社标使用「一点」笔墨标记（components/mark.html），不再用方印
-  数据：data/about.yaml（intro / currently / credits）+ 站点统计 + params
+  数据：data/about.yaml（intro / dispatch / credits）+ 站点统计 + params
+  V10.9：「此刻」与首页共用 dispatch，不再读已下线的 currently
 */}}
 {{- $about := site.Data.about -}}
 {{- $posts := sort (where site.RegularPages "Section" "posts") "Date" -}}
@@ -20,6 +21,16 @@
   {{- $k := .Date.Format "2006-01-02" -}}
   {{- $list := index $days $k | default slice -}}
   {{- $days = merge $days (dict $k ($list | append (dict "t" .Title "u" .RelPermalink))) -}}
+{{- end -}}
+
+{{/* 此刻：与首页 home/now.html 同口径，后两行从站点内容自动统计 */}}
+{{- $latest := index (last 1 $posts) 0 -}}
+{{- $thisMonth := add (mul now.Year 12) (int now.Month) -}}
+{{- $yearPosts := 0 -}}{{- $recent3 := 0 -}}
+{{- range $posts -}}
+  {{- $d := sub $thisMonth (add (mul .Date.Year 12) (int .Date.Month)) -}}
+  {{- if and (ge $d 0) (lt $d 12) -}}{{- $yearPosts = add $yearPosts 1 -}}{{- end -}}
+  {{- if and (ge $d 0) (lt $d 3) -}}{{- $recent3 = add $recent3 1 -}}{{- end -}}
 {{- end -}}
 
 {{/* 宣言：按第一个逗号拆成「引子」与「主句」，主句做大字 */}}
@@ -70,8 +81,7 @@
     <script type="application/json" id="rings-data">{{ $days | jsonify | safeJS }}</script>
   </section>
 
-  {{/* ---------- 2. 此刻 ---------- */}}
-  {{ with $about.currently }}
+  {{/* ---------- 2. 此刻（与首页同一份 dispatch） ---------- */}}
   <section class="v-section ab-now" aria-labelledby="ab-now-title">
     <div class="v-section-head">
       <span class="v-section-no" aria-hidden="true">01</span>
@@ -79,16 +89,34 @@
       <span class="ab-now-pulse" aria-hidden="true"></span>
     </div>
     <ul class="ab-now-list" data-stagger>
-      {{ range . }}
       <li class="ab-now-item reveal">
-        <span class="ab-now-icon" aria-hidden="true">{{ .svg | safeHTML }}</span>
-        <span class="ab-now-label">{{ .label }}</span>
-        <span class="ab-now-value">{{ replaceRE `\s*-{2,}\s*` " — " .value }}</span>
+        <span class="ab-now-icon" aria-hidden="true">01</span>
+        <span class="ab-now-label">在读</span>
+        <span class="ab-now-value">
+          {{- with $about.dispatch.reading -}}{{ .text }}{{ with .note }} · {{ . }}{{ end }}{{- end -}}
+        </span>
       </li>
-      {{ end }}
+      <li class="ab-now-item reveal">
+        <span class="ab-now-icon" aria-hidden="true">02</span>
+        <span class="ab-now-label">在写</span>
+        <span class="ab-now-value">
+          {{- with $about.dispatch.writing -}}
+          {{ if .link }}<a href="{{ .link }}">{{ .text }}</a>{{ else }}{{ .text }}{{ end }}{{ with .note }} · {{ . }}{{ end }}
+          {{- end -}}
+        </span>
+      </li>
+      <li class="ab-now-item reveal">
+        <span class="ab-now-icon" aria-hidden="true">03</span>
+        <span class="ab-now-label">在发</span>
+        <span class="ab-now-value">{{ len $posts }} 篇 · {{ lang.FormatNumber 1 (div (float $words) 10000) }} 万字 · 最近 {{ $latest.Date.Format "01.02" }} 更新</span>
+      </li>
+      <li class="ab-now-item reveal">
+        <span class="ab-now-icon" aria-hidden="true">04</span>
+        <span class="ab-now-label">在码</span>
+        <span class="ab-now-value">{{ cond (eq $recent3 0) "静默中" "持续更新" }} · 近 12 个月 {{ $yearPosts }} 篇</span>
+      </li>
     </ul>
   </section>
-  {{ end }}
 
   {{/* ---------- 3. 版权页：把鸣谢写成一本书的最后一页 ---------- */}}
   <section class="v-section ab-colophon-wrap" aria-labelledby="ab-colophon-title">

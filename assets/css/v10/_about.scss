@@ -331,6 +331,10 @@ article.ab {
   place-items: center;
   width: 2.5rem;
   height: 2.5rem;
+  /* V10.9：原先放内联 SVG 图标，now 改成等宽序号，不再有手写图标数据 */
+  font-family: var(--font-num);
+  font-size: .72rem;
+  letter-spacing: .04em;
   color: var(--zhu-ink);
   border: 1px solid var(--zhu-line);
   border-radius: 50%;

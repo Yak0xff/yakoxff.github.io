@@ -5,7 +5,7 @@
   同一套 5×5 网格，按栏目把点重排成不同形状，字标与配色都不变：
 
     首页 → 圆（circle）        归档 / 随笔 → 方（square）
-    应用 → 三角（triangle）    虚构 → 弧（arc）
+    标记 → 三角（triangle）    虚构 → 弧（arc）
     其余页面 → 十字（cross）
 
   纯模板 + SVG，无 JS、无额外请求；颜色取 --zhu，明暗主题自动跟随。
@@ -18,15 +18,17 @@
 {{- $shape := .shape -}}
 {{- if not $shape -}}
   {{- $section := "" -}}
+  {{- $path := "" -}}
   {{- $isHome := false -}}
   {{- with .ctx -}}
     {{- $section = .Section -}}
+    {{- $path = .RelPermalink -}}
     {{- $isHome = .IsHome -}}
   {{- end -}}
   {{- $shape = "cross" -}}
   {{- if $isHome -}}{{- $shape = "circle" -}}
   {{- else if eq $section "posts" -}}{{- $shape = "square" -}}
-  {{- else if or (eq $section "product") (eq $section "web") -}}{{- $shape = "triangle" -}}
+  {{- else if or (eq $section "highlights") (hasPrefix $path "/highlights") -}}{{- $shape = "triangle" -}}
   {{- else if eq $section "fictions" -}}{{- $shape = "arc" -}}
   {{- end -}}
 {{- end -}}

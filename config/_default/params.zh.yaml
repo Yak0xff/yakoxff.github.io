@@ -1,11 +1,12 @@
 # 主导航（顶栏 + 移动端底部标签栏共用）
 # 2026-11：「虚构」移出主导航，小说内容与 URL 保留，入口移到页脚「站内」
+# 2026-11-09：下线「应用」栏目及其全部数据；「标记」从页脚提到主导航
 nav:
   - name: 归档
     link: /posts/
     target: _self
-  - name: 应用
-    link: /product/
+  - name: 标记
+    link: /highlights/
     target: _self
   - name: 关于
     link: /about/
@@ -14,7 +15,5 @@ footerInternalLinks:
     link: /fictions/
   - name: 侠客
     link: /xiake/
-  - name: 标记
-    link: /highlights/
   # - name: 赞助
   #   link: /sponsor/

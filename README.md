@@ -27,11 +27,10 @@
 
 | 栏目 | 路径 | 内容 |
 |---|---|---|
-| 随笔 | `/posts/` | 25 篇：技术、认知、生活观察 |
+| 随笔 | `/posts/` | 24 篇：技术、认知、生活观察 |
 | 虚构 | `/fictions/` | 2 部连载、26 章：目录即书名，一章一个文件 |
-| 应用 | `/product/` | 2 个在列：APOD Cosmosnap（App）与 Neural Archive（`type: web`，落在 `/web/<slug>/`）；`example-app.md` 还是草稿 |
-| 关于 | `/about/` | 写作年轮（一圈一年）、正在读 / 听 / 做 / 喝、设备与鸣谢 |
-| 标记 | `/highlights/` | 从文章里摘出的 `==高亮==` 句，脚本自动汇总 |
+| 关于 | `/about/` | 写作年轮（一圈一年）、此刻状态公报、鸣谢 |
+| 标记 | `/highlights/` | 主导航栏目。8 篇 / 36 句，按来源文章分组；`==高亮==` 由脚本汇总，JSON 已入库 |
 | 侠客 | `/xiake/` | 友情链接与「网上邻居」（旧地址 `/blogroll/`、`/cards/links/` 会重定向） |
 | 精选 | `/featured/` | 自选的一批文章 |
 | 赞助 | `/sponsor/` | 支持创作，页内实时统计篇数与字数 |
@@ -91,7 +90,7 @@
 - **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 25 节，从诊断到 V10.8 阅读页宽版）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 26 节，从诊断到 V10.9 栏目收敛）。
 
 ## 目录结构
 
@@ -101,13 +100,13 @@
 │   ├── css/            # main.scss 入口 · _fonts.scss 字体声明 · v10/ 设计系统 · components/ 组件 · legacy/ 旧版
 │   └── js/             # field.js 涟漪场 · tide.js 潮汐之境 · reading.js 阅读页 · rings.js 写作年轮 …
 ├── config/_default/    # config · params · params.zh · languages · markup · services
-├── content/            # posts · fictions · product · tags · categories + 独立页面（about / highlights / xiake / sponsor …）
-├── data/               # about.yaml 关于页 + 首页 dispatch 状态 · products.yaml · imgmeta.json
+├── content/            # posts · fictions · tags · categories + 独立页面（about / highlights / xiake / sponsor …）
+├── data/               # about.yaml（intro / dispatch / credits）· highlights.json 标记数据 · imgmeta.json
 ├── i18n/               # zh.yml（en.yml 保留但未启用）
-├── layouts/            # baseof · home · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
-├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights · fetch_appstore
+├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
+├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights
 ├── static/             # img/（含 og:image header.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（25 节）
+├── REFACTOR.md         # 设计重构记录（26 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -153,7 +152,7 @@ npm run build:uno             # unocss --watch
 | `npm run build` | = `sh scripts/build-prod.sh`，生产构建到 `public/` |
 | `sh scripts/build-font-subset.sh` | 按全站用字重新裁剪字体子集（见[字体](#字体)） |
 | `python3 scripts/optimize-images.py` | 无损压缩 `static/img/` 下图片，并刷新 `data/imgmeta.json` |
-| `python3 scripts/highlights.py` | 扫全站 `==高亮==`，重新生成 `data/highlights.json` |
+| `python3 scripts/highlights.py` | 扫全站 `==高亮==`，重新生成 `data/highlights.json`（已入库，改完记得一起提交） |
 | `python3 scripts/run_scripts.py` | 依次跑完 `scripts/` 下所有 Python 脚本 |
 
 > 改过模板里的 `resources.Concat` / `fingerprint` 之后，如果产物没更新，先 `rm -rf resources/_gen` 再构建——Hugo 的资源缓存会把旧的合并结果喂回来（`resources.Concat` 以输出名为键，同名的多份只保留第一份，所以拆包时要换输出名）。
@@ -180,28 +179,10 @@ banner: /img/xxx.png   # 扉页横幅，可选
 
 站内的 `==高亮==` 会渲染成朱砂底标记，`**加粗**` 用暗朱色，正文图片自动套用 `figure` 样式并按 `data/imgmeta.json` 预留 `width` / `height`。
 
-### 应用条目
-
-`content/product/*.md` 用的是一套自己的字段：
-
-| 字段 | 说明 |
-|---|---|
-| `tagline` | 卡片与页头的一句话 |
-| `cover` / `icon` / `screenshots` | 封面、图标、截图数组（都指向 `static/img/product/<slug>/`） |
-| `type` | 缺省是 App；写 `web` 就改由 `layouts/web/` 渲染，产出到 `/web/<slug>/`，可额外写 `url` 指定落地地址 |
-| `status` | `released` / `beta` / `alpha` / `development`，页面上翻成「已发布 / 公测中 / 内测中 / 开发中」 |
-| `platform` / `stack` / `version` / `price` | 平台数组、技术栈数组、版本号、价格 |
-| `download` / `website` / `github` | 下载、官网、仓库链接 |
-| `appstore_id` | App Store ID，配合 `fetch_appstore.py` 自动取数 |
-| `pinned` | `true` 时在列表里置顶 |
-| `features` | 功能列表，每项 `{ title, icon, desc }` |
-
-懒得手写时，把 App ID 加进 `data/products.yaml` 再跑 `python3 scripts/fetch_appstore.py`：它走 iTunes 接口取图标、截图、版本、平台，把图下到 `static/img/product/<slug>/`，并生成一份 front matter 骨架，之后手改文案即可。
-
 ### 独立页面
 
-- **关于**：文案与「正在读 / 听 / 做 / 喝」都在 `data/about.yaml`，写作年轮与统计数字由文章自动算出，不用手填。
-- **标记**：不是手写的数据文件。跑 `python3 scripts/highlights.py`，它扫 `content/` 下所有 `==…==`，按文章分组写成 `data/highlights.json`，结构是：
+- **关于**：文案、`dispatch` 状态与鸣谢都在 `data/about.yaml`。「此刻」与首页共用同一份 `dispatch`：在读 / 在写手写，在发 / 在码由模板自动统计；写作年轮也由文章自动算出，不用手填。
+- **标记**：主导航栏目，`data/highlights.json` 已入库。跑 `python3 scripts/highlights.py`，它扫 `content/` 下所有 `==…==`，按文章分组写成 `data/highlights.json`，结构是：
 
   ```json
   [
@@ -215,20 +196,20 @@ banner: /img/xxx.png   # 扉页横幅，可选
   ]
   ```
 
-  `link` 带 `#:~:text=` 片段，点进去浏览器会直接高亮那句原文。这个 JSON 不入库（见[已知限制](#已知限制)）。
+  `link` 带 `#:~:text=` 片段，点进去浏览器会直接高亮那句原文。页面就按这个结构渲染：一组 = 一篇文章 + 若干摘句，细线分节、等宽编号、朱砂点作项目符号。JSON 已入库，CI 构建不会再变成空壳；改完 `==高亮==` 记得重跑脚本并把 JSON 一起提交。
 - **侠客**：直接写在 `content/xiake.md` 里，一条一个 `{{</* link link="…" title="…" */>}}`。
 - **精选 / 赞助 / RSS / 留白**：`/featured/` 用 `layout: featured`，`/blank/` 用 `layout: blank`，`/sponsor/` 与 `/rss/` 就是普通页面（赞助页里用了 `postcount` / `wordcount` 两个短代码做实时统计）。
 
 ### 维护此刻状态
 
-首页那张「此刻 · DISPATCH」状态公报的数据分两路，**只有前两行要手动改**：
+首页与关于页的「此刻」共用 `data/about.yaml` 的 `dispatch`，数据分两路，**只有前两行要手动改**：
 
 | 行 | 来源 | 怎么改 |
 |---|---|---|
 | 在读 / 在写 | `data/about.yaml` 的 `dispatch` | 改 `text` / `note`，「在写」还能给 `link` |
-| 在发 / 在码 | `layouts/_partials/home/now.html` 自动统计 | 不用管：在发取全站篇数、总字数、最近更新日期；在码按近 12 个月逐月数发文，画成迷你柱图，最近 3 个月为 0 就写「静默中」 |
+| 在发 / 在码 | 模板自动统计（首页 `home/now.html`、关于页 `about.html`） | 不用管：在发取全站篇数、总字数、最近更新日期；在码按近 12 个月逐月数发文，最近 3 个月为 0 就写「静默中」 |
 
-`about.yaml` 里另有一份 `currently`（正在读 / 听 / 做 / 喝）是**关于页**用的，和 `dispatch` 各管各的，改一边不会动到另一边。
+两处口径一致，改一处数据两边同步；旧版那份 `currently`（正在读 / 听 / 做 / 喝，带内联 SVG）已下线。首页把柱图画在右栏，关于页用两列网格配等宽编号。
 
 公报固定在头条右侧栏：`860px` 以下右栏落到头条下方，四行排成 2×2 压缩高度；`700px` 以下再收回单列，英文标签隐藏。柱图在窄栏里独占一行，不会被文字挤成一个小突起。
 
@@ -284,7 +265,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 - **Cloudflare Pages**：构建命令填 `npm run build:uno:prod && npm run build`，产物目录 `public`。仓库根目录的 `static/_headers` 在这里生效——HTML 每次回源校验，指纹化的 `/css/main.min.*`、`/js/*.min.*` 永久 immutable，字体 7 天、图片 30 天，同时带一条 CSP（目前只约束 `script-src`）。
 - **GitHub Pages**：`.github/workflows/hugo.yml` 在推送 `main` 时用同一套参数构建、上传产物并尝试部署；但仓库的 Pages 站点目前没启用（见[已知限制](#已知限制)），`_headers` 在这条线上也不生效。
 
-两边都只跑 `build:uno:prod` 和 `hugo`，**不会跑** `scripts/highlights.py` 与 `scripts/optimize-images.py`——涉及这两步的改动要在本地做完再提交（见[已知限制](#已知限制)）。
+两边都只跑 `build:uno:prod` 和 `hugo`，**不会跑** `scripts/highlights.py` 与 `scripts/optimize-images.py`——涉及这两步的改动要在本地做完再提交。`data/highlights.json` 已入库，所以 CI 不跑脚本也能出完整的标记页；但改了文章里的 `==高亮==` 之后，要本地重跑脚本并提交新的 JSON，线上才会跟着变。
 
 ## 性能基线
 
@@ -292,23 +273,22 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 | 指标 | 数值 |
 |---|---|
-| 构建产物 | 207 页 / 334 个文件 / 17.3 MiB |
+| 构建产物 | 203 页 / 315 个文件 / 13.8 MiB（应用栏目下线后少了 4 页、19 个文件、约 3.6 MiB 图片） |
 | 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 woff2 + favicon 5KB），涟漪脚本内联在 HTML 里 |
-| 首页 HTML | 40.8KB（gzip 后 13.5KB，含内联的 field / tide 脚本与状态公报） |
-| 首页样式 | 169KB（gzip 后 30KB） |
+| 首页 HTML | 40.6KB（gzip 后 13.4KB，含内联的 field / tide 脚本与状态公报） |
+| 首页样式 | 153KB（gzip 后 28KB） |
 | 首页 LCP / CLS | 约 120ms / 0.0001 |
 | 文章页 | 2 个 woff2（1.33MB）+ 21KB JS；LCP 140ms，CLS 0.0011 |
 | 列表页脚本 | 0.5KB（只剩进场动画，读程 / 目录 / 偏好按 `.IsPage` 才加载） |
 
-两处最值得注意的成本：**字体是大头**（文章页两个 woff2 就把首访流量顶到 1.5MB，换来的是正文不发虚、长期可缓存），**样式是第二块**（169KB 里大部分是 `uno.css` 与设计系统本身，gzip 后能压到 30KB）。
+两处最值得注意的成本：**字体是大头**（文章页两个 woff2 就把首访流量顶到 1.5MB，换来的是正文不发虚、长期可缓存），**样式是第二块**（153KB 里大部分是 `uno.css` 与设计系统本身，gzip 后能压到 28KB）。
 
 ## 已知限制
 
 - **搜索索引是旧的**：`static/pagefind/` 里存着提交进库的 Pagefind 产物，但只索引了 28 页（内容页现在 135 页）。加新文章不会自动进索引，要手动 `pagefind --site public` 重新生成再提交。模板已改成「文件存在才输出脚本」，所以索引缺失也不会 404，只是搜不到。
-- **`data/highlights.json` 不入库**：它由 `scripts/highlights.py` 生成。本地有这份文件时 `/highlights/` 正常，CI 构建时它缺失——Hugo 不会报错（实测 `exit 0`），但页面会缩成一个空壳（34KB → 14KB）。要修就把脚本加进构建命令，或把 JSON 一起入库。同目录的 `data/externallinks.json` 是另一回事：**没有任何模板引用它**，删掉后产出字节级一致，纯属残留。
+- **`data/externallinks.json` 没有被任何模板引用**：删掉后产出字节级一致，纯属残留，且仍在 `.gitignore` 里。
 - **GitHub Pages 其实没上线**：workflow 每次推送都在跑，但 `https://yakoxff.github.io/` 返回的是 GitHub 的「Site not found」——仓库 Settings → Pages 的 Source 没设成 GitHub Actions。真正对外的是 Cloudflare Pages 那条线。
 - **`static/_headers` 只对 Cloudflare Pages 生效**，GitHub Pages 的缓存策略与 CSP 走默认值，两份部署并不等价。
-- **`static/img/product/*/icon.png` 实际是 JPEG**（历史遗留，512×512）。脚本识别到扩展名与真实格式不符会跳过，不影响显示，但会误导后来的人。
 - **`layouts/shortcodes/` 是历史副本**：配置里 `shortcodeDir` 指向 `layouts/_shortcodes/`，前者已不参与渲染，可以删。
 - **CSP 只约束了 `script-src`**，没有 `default-src`；要收紧得逐项放开 giscus、Umami 与内联样式/脚本（页面里有几段防闪烁的内联 script）。
 - **品牌图标是生成物**：`favicon.svg` 是手写的，但 `favicon.ico`（5KB）/ `apple-touch-icon.png` / `img/header.png`（1200×630 分享卡片）由一次性脚本画出、脚本没入库。再改站名或形状时，这三张要跟着重画。
