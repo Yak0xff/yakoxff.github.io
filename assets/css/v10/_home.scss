@@ -156,8 +156,11 @@ body { margin: 0; }
   }
 }
 
-/* ---------- 2. 头条（V10.6：此刻已抽出为通栏公报，这里只剩一列） ---------- */
+/* ---------- 2. 头条 + 此刻（右栏） ---------- */
 .front {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  gap: #{"clamp(1.75rem, 4vw, 4.5rem)"};
   padding-top: #{"clamp(2rem, 1rem + 3vw, 3.5rem)"};
 }
 
@@ -332,6 +335,7 @@ body { margin: 0; }
 
 @media (max-width: 860px) {
   .masthead-grid { grid-template-columns: 1fr; align-items: start; }
+  .front { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
