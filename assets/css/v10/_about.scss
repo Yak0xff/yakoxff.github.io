@@ -11,13 +11,18 @@ article.ab {
 }
 
 /* ---------- 1. 首屏 ---------- */
+/* V10.14：关于页的分隔线统一收细、换柔和色。
+   全局 .v-section-head 是 2px 纯墨/纯白线（--line-ink），在这里只对
+   关于页覆盖成 1px 半透明 --line-2，不影响首页 / 归档等其它页面。 */
+.ab .v-section-head { border-top: 1px solid var(--line-2); }
+
 .ab-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: #{"clamp(2rem, 1rem + 4vw, 5rem)"};
   padding: #{"clamp(1rem, 2vw, 2rem) 0 clamp(2rem, 1rem + 3vw, 3.5rem)"};
-  border-bottom: 2px solid var(--line-ink);
+  border-bottom: 1px solid var(--line-2);
 }
 
 .ab-statement {
@@ -391,8 +396,8 @@ article.ab {
   margin: 0 auto;
   padding: #{"clamp(2rem, 1.25rem + 3vw, 3.25rem) clamp(1.25rem, .75rem + 3vw, 3rem)"};
   background: var(--surface);
-  border-top: 3px double var(--line-ink);
-  border-bottom: 3px double var(--line-ink);
+  border-top: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line-2);
   text-align: center;
 }
 
@@ -440,27 +445,16 @@ article.ab {
   }
 }
 
-.ab-sep { color: var(--ink-3); }
+/* V10.14：设计灵感 / 鸣谢整块下线，.ab-sep 与 .ab-colophon-thanks 一并移除 */
 
-.ab-colophon-thanks {
-  margin: 1.75rem 0 0;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--line);
-  font-family: var(--font-read);
-  font-size: .9375rem;
-  line-height: 1.85;
-  color: var(--ink-2);
-  text-align: left;
-}
-
-/* 社标：压在底部双线正中，纸色底把线「断开」，像书末的出版社标志 */
+/* 社标：压在底部细线正中，纸色底把线「断开」，像书末的出版社标志 */
 .ab-colophon-device {
   position: absolute;
   left: 50%;
   bottom: 0;
   padding: 0 .9rem;
   /* 上半截在卡片内（surface 色），下半截在卡片外（纸色）；
-     分界 45% 与下方 translateY(55%) 对应，正好落在双线上 */
+     分界 45% 与下方 translateY(55%) 对应，正好落在细线上 */
   background: linear-gradient(var(--surface) 45%, var(--paper) 45%);
   transform: translate(-50%, 55%);
   line-height: 0;

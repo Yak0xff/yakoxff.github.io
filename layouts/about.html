@@ -6,10 +6,10 @@
   等重的盒子，读完不知道这个人是谁、写了什么。新版只讲三件事：
     1. 我是谁      宣言大字 + 落款 + 一行数字
     2. 我写了什么  「写作年轮」：所有文章按日排在螺线上，一圈一年
-    3. 我在哪      版权页（鸣谢）/ 在别处
+    3. 我在哪      版权页 / 在别处
   署名与社标使用「一点」笔墨标记（components/mark.html），不再用方印
-  数据：data/about.yaml（intro / credits）+ 站点统计 + params
-  V10.11：「此刻」与「在 GitHub 上」先后下线，关于页只剩写作年轮 / 版权页 / 在别处
+  数据：data/about.yaml（intro）+ 站点统计 + params
+  V10.14：「设计灵感」与鸣谢整块下线；关于页的粗墨线收成 1px 柔和线
 */}}
 {{- $about := site.Data.about -}}
 {{- $posts := sort (where site.RegularPages "Section" "posts") "Date" -}}
@@ -118,20 +118,11 @@
         <div><dt>检　索</dt><dd>Pagefind</dd></div>
         <div><dt>评　论</dt><dd>Giscus</dd></div>
         <div><dt>统　计</dt><dd>Umami</dd></div>
-        {{ range $about.credits }}
-        <div>
-          <dt>{{ .title }}</dt>
-          <dd>{{ range $i, $c := .items }}{{ if $i }}<span class="ab-sep" aria-hidden="true"> · </span>{{ end }}<a class="v-link" href="{{ $c.link }}" target="_blank" rel="noopener" title="{{ $c.name }}">{{ $c.source }}</a>{{ end }}</dd>
-        </div>
-        {{ end }}
         {{ with $first }}<div><dt>版　次</dt><dd class="num">{{ .Date.Format "2006 年 1 月" }} 第 1 版</dd></div>{{ end }}
         <div><dt>印　次</dt><dd class="num">{{ now.Format "2006 年 1 月" }} 第 {{ len $posts }} 次印刷</dd></div>
         <div><dt>定　价</dt><dd>免费。以 <a class="v-link" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> 授权，欢迎转载</dd></div>
       </dl>
-      <p class="ab-colophon-thanks">
-        特别致谢「<a class="v-link" href="https://www.geedea.pro/" target="_blank" rel="noopener">極客死亡計劃</a>」。你会发现这个博客和他很像，不可否认这里使用了他的主题。很久没有觉得一个博客主题和内容这么摄人心扉啦，很羡慕 <a class="v-link" href="https://www.guhub.cn/" target="_blank" rel="noopener">Eltrec</a> 如此有学识，自叹不如。
-      </p>
-      {{/* 出版社社标：「一点」标记压在版权页底部双线上 */}}
+      {{/* 出版社社标：「一点」标记压在版权页底线上 */}}
       <span class="ab-colophon-device">{{ partial "components/mark" (dict "id" "mk-device" "size" "4.5rem" "play" "view") }}</span>
     </div>
   </section>

@@ -15,17 +15,3 @@ dispatch:
 # 个人简介
 intro: |
   欢迎来访，这里只有真情流露和赤裸的思考。
-
-# 鸣谢列表
-credits:
-  - title: "设计灵感"
-    items:
-      - name: "CSS 扭曲效果"
-        link: "https://endtimes.dev"
-        source: "endtimes.dev"
-      - name: "网站背景纹理"
-        link: "https://heropatterns.com"
-        source: "Hero Patterns"
-      - name: "主题灵感"
-        link: "https://www.geedea.pro/"
-        source: "極客死亡計劃"
