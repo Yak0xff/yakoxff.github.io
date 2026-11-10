@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <rect width="1200" height="420" fill="#f4f1ea"/>
+  <text x="48" y="46" font-size="22" font-weight="700" fill="#16130f">一个标题差了 45px</text>
+  <line x1="48" y1="62" x2="1152" y2="62" stroke="#ded8cc"/>
+
+  <!-- 容器与文字 -->
+  <text x="48" y="100" font-size="14" fill="#6a6257" letter-spacing="2">1440 视口 · 头条栏</text>
+  <rect x="48" y="116" width="900" height="46" fill="#ebe6dc" stroke="#16130f"/>
+  <text x="60" y="145" font-size="13" fill="#16130f" font-family="Menlo, monospace">容器 762px</text>
+  <line x1="948" y1="108" x2="948" y2="170" stroke="#16130f" stroke-dasharray="3 3"/>
+
+  <rect x="48" y="180" width="900" height="46" fill="#16130f"/>
+  <rect x="948" y="180" width="53" height="46" fill="#d9431f"/>
+  <text x="60" y="209" font-size="13" fill="#f4f1ea" font-family="Menlo, monospace">文字 807px @ 41.6px</text>
+  <text x="1006" y="209" font-size="13" fill="#b8361a" font-family="Menlo, monospace">+45px</text>
+
+  <text x="48" y="262" font-size="14" fill="#6a6257" letter-spacing="2">把字号挂回令牌，不自造数值</text>
+  <text x="48" y="296" font-size="16" fill="#16130f" font-family="Menlo, monospace">calc(var(--step-3) * .9)  →  37.4px</text>
+  <text x="640" y="296" font-size="14" fill="#b8361a" font-family="Menlo, monospace">一行放下需 38.5px</text>
+
+  <line x1="48" y1="320" x2="1152" y2="320" stroke="#ded8cc"/>
+
+  <!-- 三档 -->
+  <g font-size="12" fill="#4c463e">
+    <text x="48" y="348" font-family="Menlo, monospace">1100</text>
+    <text x="248" y="348" font-family="Menlo, monospace">1280</text>
+    <text x="448" y="348" font-family="Menlo, monospace">1440</text>
+  </g>
+  <g fill="#16130f">
+    <rect x="48" y="356" width="160" height="10"/><rect x="248" y="356" width="160" height="10"/><rect x="448" y="356" width="160" height="10"/>
+  </g>
+  <g font-size="12" fill="#b8361a">
+    <text x="48" y="386">1 行</text><text x="248" y="386">1 行</text><text x="448" y="386">1 行</text>
+  </g>
+  <text x="672" y="348" font-size="14" fill="#16130f">balance 会把断点提前配平两行；</text>
+  <text x="672" y="372" font-size="14" fill="#16130f">pretty 首行填满，第二行却只剩「行者」。</text>
+  <text x="672" y="396" font-size="13" fill="#6a6257">先量宽度，再谈折行策略。</text>
+
+  <circle cx="1142" cy="400" r="5" fill="#d9431f"/>
+</svg>

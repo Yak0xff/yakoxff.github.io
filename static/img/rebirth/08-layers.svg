@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <rect width="1200" height="520" fill="#f4f1ea"/>
+  <text x="48" y="48" font-size="23" font-weight="700" fill="#16130f">红笔落在四层上</text>
+  <line x1="48" y1="66" x2="1152" y2="66" stroke="#ded8cc"/>
+
+  <g font-size="14">
+    <!-- 令牌层 -->
+    <circle cx="66" cy="116" r="7" fill="#d9431f"/>
+    <text x="90" y="122" font-size="19" font-weight="700" fill="#16130f">令牌层</text>
+    <text x="90" y="150" fill="#4c463e">颜色、字号、间距都从变量来；明暗两套只换值，不换结构</text>
+    <text x="90" y="176" fill="#6a6257" font-family="Menlo, monospace" font-size="12">--paper #f4f1ea → #12110e   ·   --zhu #d9431f → #ff5b36   ·   calc(var(--step-3) * .9)</text>
+    <rect x="48" y="96" width="1104" height="96" fill="none" stroke="#ded8cc"/>
+    <line x1="48" y1="192" x2="1152" y2="192" stroke="#ded8cc"/>
+
+    <!-- 网格层 -->
+    <circle cx="66" cy="222" r="7" fill="#d9431f"/>
+    <text x="90" y="228" font-size="19" font-weight="700" fill="#16130f">网格层</text>
+    <text x="90" y="256" fill="#4c463e">宽度跟 --rd-measure，不跟父容器；目录通道早已扣掉</text>
+    <text x="90" y="282" fill="#6a6257" font-family="Menlo, monospace" font-size="12">min(var(--rd-measure), 100%)   ·  标题 980 / 864 / 684   ·  边界差 0   ·  距 rail 24px</text>
+    <line x1="48" y1="298" x2="1152" y2="298" stroke="#ded8cc"/>
+
+    <!-- 内容层 -->
+    <circle cx="66" cy="328" r="7" fill="#d9431f"/>
+    <text x="90" y="334" font-size="19" font-weight="700" fill="#16130f">内容层</text>
+    <text x="90" y="362" fill="#4c463e">机器读到的东西：描述优先链、显式分享图、合法结构化数据</text>
+    <text x="90" y="388" fill="#6a6257" font-family="Menlo, monospace" font-size="12">WebSite / BlogPosting / WebPage / CollectionPage   ·   dict | jsonify   ·   truncate 160</text>
+    <line x1="48" y1="404" x2="1152" y2="404" stroke="#ded8cc"/>
+
+    <!-- 缓存层 -->
+    <circle cx="66" cy="434" r="7" fill="#d9431f"/>
+    <text x="90" y="440" font-size="19" font-weight="700" fill="#16130f">缓存层</text>
+    <text x="90" y="468" fill="#4c463e">内容与地址是两件事，平台记的是后者</text>
+    <text x="90" y="494" fill="#6a6257" font-family="Menlo, monospace" font-size="12">/css/*.min.* 一年   ·   /img/* 30 天   ·   /share/* 与 HTML 每次回源   ·   og-card-v2 → v3</text>
+  </g>
+
+  <circle cx="1142" cy="500" r="5" fill="#d9431f"/>
+</svg>

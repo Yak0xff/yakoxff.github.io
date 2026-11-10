@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" width="1200" height="460" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <rect width="1200" height="460" fill="#f4f1ea"/>
+  <text x="48" y="48" font-size="23" font-weight="700" fill="#16130f">11 月 10 日，从 V10 到 V10.25</text>
+  <line x1="48" y1="66" x2="1152" y2="66" stroke="#ded8cc"/>
+  <text x="48" y="96" font-size="13" fill="#6a6257">同一天里推了十一次，记录写到第三十九节。</text>
+
+  <!-- 轴线 -->
+  <line x1="80" y1="230" x2="1120" y2="230" stroke="#16130f" stroke-width="1"/>
+  <g fill="#d9431f">
+    <circle cx="80" cy="230" r="8"/><circle cx="174" cy="230" r="6"/><circle cx="269" cy="230" r="6"/>
+    <circle cx="363" cy="230" r="6"/><circle cx="458" cy="230" r="6"/><circle cx="552" cy="230" r="6"/>
+    <circle cx="647" cy="230" r="6"/><circle cx="741" cy="230" r="6"/><circle cx="836" cy="230" r="6"/>
+    <circle cx="930" cy="230" r="6"/><circle cx="1025" cy="230" r="6"/><circle cx="1120" cy="230" r="8"/>
+  </g>
+
+  <!-- 版本号 -->
+  <g font-size="11" fill="#16130f" font-family="Menlo, monospace" text-anchor="middle">
+    <text x="80" y="204">V10</text><text x="174" y="204">.16</text><text x="269" y="204">.17</text>
+    <text x="363" y="204">.17b</text><text x="458" y="204">.18</text><text x="552" y="204">.19</text>
+    <text x="647" y="204">.20</text><text x="741" y="204">.21</text><text x="836" y="204">.22</text>
+    <text x="930" y="204">.23</text><text x="1025" y="204">.24</text><text x="1120" y="204">.25</text>
+  </g>
+
+  <!-- 关键词 -->
+  <g font-size="12" fill="#4c463e" text-anchor="middle">
+    <text x="80" y="262">起点</text><text x="174" y="262">实心点</text><text x="269" y="262">星盘</text>
+    <text x="363" y="262">并排</text><text x="458" y="262">标题</text><text x="552" y="262">四条</text>
+    <text x="647" y="262">账页</text><text x="741" y="262">分享</text><text x="836" y="262">行宽</text>
+    <text x="930" y="262">正文</text><text x="1025" y="262">引文</text><text x="1120" y="262">v2 卡</text>
+  </g>
+
+  <!-- 刻度数字 -->
+  <g font-size="10" fill="#b8361a" font-family="Menlo, monospace" text-anchor="middle">
+    <text x="458" y="292">37.4px</text><text x="647" y="292">44→32</text><text x="836" y="292">980</text>
+    <text x="930" y="292">1.85</text><text x="1120" y="292">200</text>
+  </g>
+
+  <line x1="48" y1="326" x2="1152" y2="326" stroke="#ded8cc"/>
+
+  <!-- 底部数据 -->
+  <g font-size="13" fill="#16130f">
+    <text x="48" y="362">构建产物</text><text x="48" y="392" font-family="Menlo, monospace" font-size="16">203 → 202 页</text>
+    <text x="300" y="362">文件</text><text x="300" y="392" font-family="Menlo, monospace" font-size="16">316 → 311 → 312</text>
+    <text x="620" y="362">首页 HTML</text><text x="620" y="392" font-family="Menlo, monospace" font-size="16">40.6 → 47.5 KB</text>
+    <text x="920" y="362">样式表 gzip</text><text x="920" y="392" font-family="Menlo, monospace" font-size="16">27.9 → 28.2 KB</text>
+  </g>
+  <text x="48" y="430" font-size="12" fill="#6a6257">改动不全是「加」：侠客整页、应用栏目、点阵形状、账页框线、简介、满屏朱砂、2px 粗墨线，一样一样划掉。</text>
+  <circle cx="1142" cy="440" r="5" fill="#d9431f"/>
+</svg>
