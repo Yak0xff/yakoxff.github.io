@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" width="1200" height="460" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <rect width="1200" height="460" fill="#f4f1ea"/>
+  <text x="48" y="46" font-size="23" font-weight="700" fill="#16130f">划掉的清单</text>
+  <line x1="48" y1="64" x2="1152" y2="64" stroke="#ded8cc"/>
+
+  <g font-size="15" fill="#4c463e">
+    <text x="82" y="112">「一点记」的「记」</text><line x1="78" y1="106" x2="292" y2="106" stroke="#b8361a" stroke-width="1"/>
+    <text x="82" y="152">「向死而生」旧标语</text><line x1="78" y1="146" x2="292" y2="146" stroke="#b8361a" stroke-width="1"/>
+    <text x="82" y="192">万圣节骷髅插画 88KB</text><line x1="78" y1="186" x2="322" y2="186" stroke="#b8361a" stroke-width="1"/>
+    <text x="82" y="232">朱砂方印</text><line x1="78" y1="226" x2="198" y2="226" stroke="#b8361a" stroke-width="1"/>
+    <text x="82" y="272">5×5 点阵形状</text><line x1="78" y1="266" x2="232" y2="266" stroke="#b8361a" stroke-width="1"/>
+    <text x="82" y="312">侠客整页 + 3 个别名</text><line x1="78" y1="306" x2="292" y2="306" stroke="#b8361a" stroke-width="1"/>
+    <text x="82" y="352">账页框线 / 扉页简介</text><line x1="78" y1="346" x2="292" y2="346" stroke="#b8361a" stroke-width="1"/>
+
+    <text x="650" y="112">2px 纯墨粗线</text><line x1="646" y1="106" x2="796" y2="106" stroke="#b8361a" stroke-width="1"/>
+    <text x="650" y="152">满屏朱砂 strong</text><line x1="646" y1="146" x2="820" y2="146" stroke="#b8361a" stroke-width="1"/>
+    <text x="650" y="192">U+300C 直角折角引号</text><line x1="646" y1="186" x2="856" y2="186" stroke="#b8361a" stroke-width="1"/>
+    <text x="650" y="232">两个 woff2 · 1.37MB</text><line x1="646" y1="226" x2="860" y2="226" stroke="#b8361a" stroke-width="1"/>
+    <text x="650" y="272">@font-face / preload</text><line x1="646" y1="266" x2="856" y2="266" stroke="#b8361a" stroke-width="1"/>
+    <text x="650" y="312">裁剪脚本 / fonts/ 目录</text><line x1="646" y1="306" x2="856" y2="306" stroke="#b8361a" stroke-width="1"/>
+    <text x="650" y="352">卡片上最后两个黑体字</text><line x1="646" y1="346" x2="886" y2="346" stroke="#b8361a" stroke-width="1"/>
+  </g>
+  <g fill="#d9431f">
+    <circle cx="62" cy="107" r="4"/><circle cx="62" cy="147" r="4"/><circle cx="62" cy="187" r="4"/>
+    <circle cx="62" cy="227" r="4"/><circle cx="62" cy="267" r="4"/><circle cx="62" cy="307" r="4"/><circle cx="62" cy="347" r="4"/>
+    <circle cx="630" cy="107" r="4"/><circle cx="630" cy="147" r="4"/><circle cx="630" cy="187" r="4"/>
+    <circle cx="630" cy="227" r="4"/><circle cx="630" cy="267" r="4"/><circle cx="630" cy="307" r="4"/><circle cx="630" cy="347" r="4"/>
+  </g>
+
+  <line x1="48" y1="380" x2="1152" y2="380" stroke="#ded8cc"/>
+  <g font-size="13" fill="#16130f" font-family="Menlo, monospace">
+    <text x="48" y="410">14.4 MiB → 8.4 MiB</text>
+    <text x="330" y="410">1.57MB → 170KB</text>
+    <text x="620" y="410">203 → 211 页</text>
+    <text x="880" y="410">v2 → v3 → v4</text>
+  </g>
+  <text x="48" y="440" font-size="13" fill="#6a6257">桌上剩下的东西越少，那枚点越看得见。</text>
+  <circle cx="1142" cy="440" r="5" fill="#d9431f"/>
+</svg>

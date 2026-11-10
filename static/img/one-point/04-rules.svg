@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <rect width="1200" height="540" fill="#f4f1ea"/>
+  <text x="48" y="46" font-size="23" font-weight="700" fill="#16130f">从这一点量出去</text>
+  <line x1="48" y1="64" x2="1152" y2="64" stroke="#ded8cc"/>
+
+  <g fill="none" stroke="#ded8cc">
+    <circle cx="320" cy="300" r="70"/><circle cx="320" cy="300" r="130"/>
+    <circle cx="320" cy="300" r="190"/><circle cx="320" cy="300" r="250"/>
+  </g>
+  <circle cx="320" cy="300" r="11" fill="#d9431f"/>
+  <g font-size="12" fill="#b8361a" text-anchor="middle" font-family="Menlo, monospace">
+    <text x="320" y="222">令牌</text><text x="320" y="162">网格</text>
+    <text x="320" y="102">删减</text><text x="320" y="42">缓存</text>
+  </g>
+  <text x="320" y="336" font-size="13" fill="#16130f" text-anchor="middle">一点</text>
+
+  <g font-size="13" fill="#4c463e">
+    <text x="640" y="118" font-size="17" font-weight="700" fill="#16130f">令牌层</text>
+    <text x="640" y="146">明暗只换变量的值，不换结构</text>
+    <text x="640" y="170" font-family="Menlo, monospace" fill="#6a6257" font-size="12">--zhu #d9431f → #ff5b36　·　calc(var(--step-3) * .9)</text>
+    <line x1="640" y1="188" x2="1152" y2="188" stroke="#ded8cc"/>
+
+    <text x="640" y="222" font-size="17" font-weight="700" fill="#16130f">网格层</text>
+    <text x="640" y="250">宽度跟着 --rd-measure，不跟父容器</text>
+    <text x="640" y="274" font-family="Menlo, monospace" fill="#6a6257" font-size="12">1200 / 980　·　980 / 864 / 684　·　边界差 0　·　距目录 24px</text>
+    <line x1="640" y1="292" x2="1152" y2="292" stroke="#ded8cc"/>
+
+    <text x="640" y="326" font-size="17" font-weight="700" fill="#16130f">删减层</text>
+    <text x="640" y="354">什么不出现，比什么出现更要紧</text>
+    <text x="640" y="378" font-family="Menlo, monospace" fill="#6a6257" font-size="12">203 页 / 316 文件 → 211 页 / 330 文件</text>
+    <line x1="640" y1="396" x2="1152" y2="396" stroke="#ded8cc"/>
+
+    <text x="640" y="430" font-size="17" font-weight="700" fill="#16130f">缓存层</text>
+    <text x="640" y="458">平台记的是地址，不是文件</text>
+    <text x="640" y="482" font-family="Menlo, monospace" fill="#6a6257" font-size="12">s-maxage=300　·　header.png → v2 → v3 → v4</text>
+  </g>
+
+  <text x="48" y="518" font-size="14" fill="#16130f">四层听起来是四件事，量的是同一把尺子：从一个点出发，只走必要的一步。</text>
+  <circle cx="1142" cy="520" r="5" fill="#d9431f"/>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <rect width="1200" height="560" fill="#f4f1ea"/>
+  <text x="48" y="46" font-size="23" font-weight="700" fill="#16130f">站内所有点，同一个色值</text>
+  <line x1="48" y1="64" x2="1152" y2="64" stroke="#ded8cc"/>
+  <rect x="48" y="82" width="1104" height="40" fill="#16130f"/>
+  <text x="66" y="108" font-size="15" fill="#f4f1ea" font-family="Menlo, monospace">--zhu: #d9431f</text>
+  <text x="1134" y="108" font-size="13" fill="#f4f1ea" text-anchor="end">暗色 #ff5b36　·　派生 --zhu-ink / --zhu-line / --zhu-wash</text>
+
+  <g font-size="13" fill="#4c463e">
+    <circle cx="90" cy="166" r="14" fill="#d9431f"/><text x="130" y="172">顶栏 .brand-dot</text><text x="420" y="172" font-family="Menlo, monospace" fill="#b8361a">14px</text>
+    <circle cx="90" cy="212" r="11" fill="#d9431f"/><text x="130" y="218">刊头 .masthead-dot</text><text x="420" y="218" font-family="Menlo, monospace" fill="#b8361a">.19em</text>
+    <circle cx="90" cy="258" r="8" fill="#d9431f"/><text x="130" y="264">此刻落款 .dispatch-mark</text><text x="420" y="264" font-family="Menlo, monospace" fill="#b8361a">8px</text>
+    <circle cx="90" cy="304" r="7" fill="#d9431f"/><text x="130" y="310">引用块线头</text><text x="420" y="310" font-family="Menlo, monospace" fill="#b8361a">7px · left -3px</text>
+    <circle cx="90" cy="350" r="6" fill="#d9431f"/><text x="130" y="356">h3 前缀 / 列表圆点</text><text x="420" y="356" font-family="Menlo, monospace" fill="#b8361a">.3em / .32em</text>
+    <circle cx="90" cy="396" r="5" fill="#d9431f"/><text x="130" y="402">目录点 / 进度珠</text><text x="420" y="402" font-family="Menlo, monospace" fill="#b8361a">9px</text>
+    <circle cx="90" cy="442" r="4" fill="#d9431f"/><text x="130" y="448">分隔线正中</text><text x="420" y="448" font-family="Menlo, monospace" fill="#b8361a">「·」</text>
+    <circle cx="90" cy="488" r="21" fill="#d9431f"/><text x="130" y="494">分享卡句点</text><text x="420" y="494" font-family="Menlo, monospace" fill="#b8361a">r = 21px</text>
+  </g>
+
+  <line x1="600" y1="146" x2="600" y2="516" stroke="#ded8cc"/>
+  <text x="632" y="166" font-size="14" fill="#16130f">同一个点，八个位置</text>
+  <g font-size="12" fill="#6a6257">
+    <text x="632" y="200">logo　·　导航当前项　·　列表悬停游标</text>
+    <text x="632" y="226">阅读进度珠　·　焦点环　·　刊头句点</text>
+    <text x="632" y="252">正文分隔「· · ·」　·　文末句点</text>
+  </g>
+  <rect x="632" y="282" width="500" height="86" fill="#fbf9f4" stroke="#ded8cc"/>
+  <text x="650" y="310" font-size="13" fill="#16130f">涟漪场以刊头点的包围盒为波心</text>
+  <text x="650" y="336" font-size="12" fill="#4c463e" font-family="Menlo, monospace">CLEAR = 38　·　3.8s / 圈　·　锚点 20×20</text>
+  <text x="650" y="356" font-size="12" fill="#6a6257">形状独占中间，水波从外圈荡开</text>
+
+  <rect x="632" y="392" width="500" height="106" fill="#fbf9f4" stroke="#ded8cc"/>
+  <text x="650" y="420" font-size="13" fill="#16130f">V10.5 曾按栏目变成五种形状</text>
+  <text x="650" y="446" font-size="12" fill="#4c463e">首页圆 21 点 · 归档方 16 · 应用三角 17</text>
+  <text x="650" y="468" font-size="12" fill="#4c463e">虚构弧 11 · 关于十字 9</text>
+  <text x="650" y="490" font-size="12" fill="#b8361a">V10.16 全部停用，文件保留但零引用</text>
+
+  <circle cx="1142" cy="540" r="5" fill="#d9431f"/>
+</svg>

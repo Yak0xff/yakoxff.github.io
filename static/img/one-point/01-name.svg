@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" width="1200" height="460" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <rect width="1200" height="460" fill="#f4f1ea"/>
+  <text x="48" y="46" font-size="23" font-weight="700" fill="#16130f">名字与符号，两条线收在一处</text>
+  <line x1="48" y1="64" x2="1152" y2="64" stroke="#ded8cc"/>
+
+  <text x="48" y="104" font-size="13" fill="#6a6257" letter-spacing="2">名字</text>
+  <line x1="150" y1="128" x2="1120" y2="128" stroke="#ded8cc"/>
+  <rect x="150" y="108" width="150" height="40" fill="#ebe6dc" stroke="#c9c2b4"/>
+  <text x="225" y="134" font-size="19" fill="#4c463e" text-anchor="middle">一点记</text>
+  <line x1="330" y1="128" x2="700" y2="128" stroke="#b8361a" stroke-dasharray="4 4"/>
+  <text x="515" y="118" font-size="12" fill="#b8361a" text-anchor="middle" font-family="Menlo, monospace">V10.5 · 2026-11-09</text>
+  <rect x="700" y="108" width="150" height="40" fill="#16130f"/>
+  <text x="775" y="135" font-size="20" fill="#f4f1ea" text-anchor="middle">一点</text>
+  <circle cx="862" cy="128" r="8" fill="#d9431f"/>
+  <text x="890" y="134" font-size="13" fill="#6a6257">去掉品类后缀；随笔 / 小说 / 应用都装得下</text>
+
+  <text x="48" y="216" font-size="13" fill="#6a6257" letter-spacing="2">符号</text>
+  <line x1="150" y1="244" x2="1120" y2="244" stroke="#ded8cc"/>
+  <g text-anchor="middle">
+    <circle cx="200" cy="244" r="7" fill="#6a6257"/><text x="200" y="278" font-size="12" fill="#4c463e">万圣节插画</text><text x="200" y="296" font-size="11" fill="#8a8378" font-family="Menlo, monospace">88KB</text>
+    <circle cx="410" cy="244" r="7" fill="#d9431f"/><text x="410" y="278" font-size="12" fill="#4c463e">朱砂方印</text><text x="410" y="296" font-size="11" fill="#8a8378" font-family="Menlo, monospace">V4</text>
+    <circle cx="620" cy="244" r="7" fill="#d9431f"/><text x="620" y="278" font-size="12" fill="#4c463e">一笔 + 一朱点</text><text x="620" y="296" font-size="11" fill="#8a8378" font-family="Menlo, monospace">V10.2 · 750ms</text>
+    <circle cx="830" cy="244" r="7" fill="#d9431f"/><text x="830" y="278" font-size="12" fill="#4c463e">5×5 点阵形状</text><text x="830" y="296" font-size="11" fill="#8a8378" font-family="Menlo, monospace">V10.5 · 五栏目</text>
+    <circle cx="1040" cy="244" r="9" fill="#d9431f"/><text x="1040" y="278" font-size="12" fill="#16130f" font-weight="700">实心朱砂圆</text><text x="1040" y="296" font-size="11" fill="#b8361a" font-family="Menlo, monospace">V10.16 · 14px</text>
+  </g>
+
+  <line x1="48" y1="330" x2="1152" y2="330" stroke="#ded8cc"/>
+  <text x="48" y="366" font-size="16" fill="#16130f">中间那段路，名字比符号多一个字。</text>
+  <text x="48" y="398" font-size="14" fill="#4c463e">「记」是品类后缀；纸面上那枚点从来不带它。</text>
+  <text x="48" y="428" font-size="12" fill="#6a6257" font-family="Menlo, monospace">V4 → V10 → V10.2 → V10.5 → V10.16</text>
+  <circle cx="1142" cy="440" r="5" fill="#d9431f"/>
+</svg>

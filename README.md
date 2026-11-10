@@ -1,4 +1,4 @@
-# 一点 · 向死而生
+# 一点 · 独立写作
 
 > 一个人的编辑部。世界不会等你准备好——写下来，就是在时间里刻下坐标。
 
@@ -85,8 +85,9 @@
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 - **分享与 SEO**：`head/siteinfo.html` 统一输出 title / canonical / description / OG / Twitter Card / JSON-LD；标题在非首页带站点名，描述按 front matter 优先链取并截断到 160 字。分享图优先用 `og_image` / `banner`，否则用 `static/share/og-card-v4.png`（1200×630，可用 `scripts/gen-og-image.py` 重生成）。文件名带版本号、放在独立的 `share/` 目录，是因为 X 按图片 URL 长期缓存卡片且 `_headers` 给 `/img/*` 设了 30 天缓存——换内容必须换 URL 才会被重新抓取。JSON-LD 按首页 `WebSite` / 文章 `BlogPosting` / 独立页 `WebPage` / 列表 `CollectionPage` 分流，全部走 `jsonify` 保证合法；`robots.txt` 默认放行并允许各类预览抓取器，只拦 AI 爬虫。文章页的「分享」按钮在桌面降级为复制「标题 + 摘要 + 链接」。
 - **重生第一篇**：`content/posts/付印之前：三十九道红笔.md` 是站点的设计编年长文，按 V10 → V10.25 复盘每一轮的取舍、前后数字与令牌 / 网格 / 内容 / 缓存四层底层规则，附完整编年表与 10 张配图（真实前后对比、手绘 SVG 示意、生成插画，均在 `static/img/rebirth/`）。
+- **品牌长文**：`content/posts/一笔，一枚点：为什么最后叫「一点」.md` 从「一点记」到「一点」的命名收敛、符号四次演变讲起，落到令牌 / 网格 / 删减 / 缓存四层底层规则，配 5 张手绘 SVG 与一张分享卡（`static/img/one-point/`）。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 45 节，从诊断到 V10.31 卡片整体宋体）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 46 节，从诊断到品牌长文《一笔，一枚点》）。
 
 ## 目录结构
 
@@ -102,7 +103,7 @@
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · gen-og-image · optimize-images · highlights
 ├── static/             # img/ · share/（版本化 OG 卡 og-card-v4.png）· pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（45 节）
+├── REFACTOR.md         # 设计重构记录（46 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -261,7 +262,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 | 指标 | 数值 |
 |---|---|
-| 构建产物 | 211 页 / 330 个文件 / **8.4 MiB**（V10.28 大图转 WebP，V10.29 移除字体文件；相比最初的 14.4 MiB 少约 42%） |
+| 构建产物 | 214 页 / 338 个文件 / **8.5 MiB**（V10.28 大图转 WebP，V10.29 移除字体文件，随后新增两篇设计长文与配图；相比最初的 14.4 MiB 少约 41%） |
 | 首页请求 | 4 个（1 CSS + 2 JS + favicon 5KB，字体零请求），涟漪脚本内联在 HTML 里；本地实测首屏传输 **170KB** |
 | 首页 HTML | 47.5KB（gzip 后 16.0KB，含内联的 field / tide / galaxy 三份脚本、状态公报、两篇次条与虚构书页） |
 | 首页样式 | 156KB（gzip 后 28KB） |
