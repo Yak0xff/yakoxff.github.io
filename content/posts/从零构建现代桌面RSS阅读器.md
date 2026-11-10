@@ -66,7 +66,7 @@ description: 在信息过载的时代，我选择回归 RSS，并亲手打造了
 
 综合考虑后，我选择了 **Tauri + React** 的组合。Tauri 是一个用 Rust 构建桌面应用的框架，打包后只有 8MB 左右，内存占用也很低。相比动辄 150MB+ 的 Electron 应用，这个体积让我非常满意。
 
-![YakReader 主界面](/img/rss-reader/main-interface.png)
+![YakReader 主界面](/img/rss-reader/main-interface.webp)
 *最终成品：YakReader 主界面*
 
 ### 3.2 核心功能的取舍
@@ -90,7 +90,7 @@ description: 在信息过载的时代，我选择回归 RSS，并亲手打造了
 | 🔍 全文搜索 | 快速找到之前读过的内容 |
 | 🌙 深色模式 | 晚上阅读更舒适 |
 
-![偏好设置面板](/img/rss-reader/settings.png)
+![偏好设置面板](/img/rss-reader/settings.webp)
 *丰富的个性化设置：主题、字体、快捷键一应俱全*
 
 ### 3.3 一些有趣的设计决策
@@ -113,7 +113,7 @@ description: 在信息过载的时代，我选择回归 RSS，并亲手打造了
 
 这个阅读器我已经用了一个多月，有一些意想不到的变化：
 
-![阅读视图](/img/rss-reader/reader-view.png)
+![阅读视图](/img/rss-reader/reader-view.webp)
 *干净的阅读视图：专注于内容本身*
 
 ### 4.1 阅读量反而下降了

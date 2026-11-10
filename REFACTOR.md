@@ -1501,3 +1501,41 @@ CDP 四档视口实测（长文含 1200×620 的宽图）：
 - 只改排布，不动 V10.26 的靠右距离与图片避让规则。
 
 验证：CDP 实测条目间距全为 26px（误差 0）、簇高 234px、线高 234px 且 `lineTop === listTop`、朱砂珠在线内、`--rail-cluster-h: 234px`；1440 / 1280 / 1100 三档图片与目录仍稳定留 32px，390px 目录隐藏；明暗两色视口截图、四页控制台 0 报错。README 阅读页条目同步。
+
+---
+
+## 四十二、V10.28：Cloudflare Pages 访问慢的诊断与四项收口（2026-11-10）
+
+### 42.1 诊断
+
+用户反馈「部署在 Cloudflare Pages 上，访问很慢，对比同类型站点也没这么慢」。所有测量都在同一个本机代理（`127.0.0.1:49389`）与同一个无头 Chrome 下做对照。
+
+| 场景 | TTFB | load | 传输 |
+|---|---|---|---|
+| 本地同源（屏蔽第三方） | 20ms | 174ms 完成 | 1.57MB |
+| 线上，含第三方 | 5020ms | 41s 仍 `interactive` | 只 31KB |
+| 线上，屏蔽 Umami + giscus | 2268ms | 6929ms 完成 | 1.43MB |
+| 参照 `gohugo.io` | 1920ms | 3725ms 完成 | 265KB |
+| 参照 `www.cloudflare.com`（curl） | 620ms | — | — |
+
+curl 三次：TLS 1.68 / 3.10 / 3.94s，TTFB 2.75 / 3.73 / 4.80s，一次 30s 超时只传 2729B；绕过代理直连 3/3 超时。`cf-ray` 本站落 **LAX**，同代理 `www.cloudflare.com` 落 **HKG**。HTML Brotli 正常。
+
+**结论：代码本身不慢（本地 174ms），慢在三层叠加**——① `*.pages.dev` 链路（LAX + 跨境丢包）② HTML `max-age=0, must-revalidate` 每次回源 ③ 首屏两个 woff2 共 1.37MB（占 96%）+ Umami 动态脚本挂起拖住 `load`（`script.defer` 对动态插入的脚本不生效）。
+
+### 42.2 四项改动
+
+1. **HTML 缓存头**：`static/_headers` 的 `/*` 兜底从 `public, max-age=0, must-revalidate` 改为 `public, max-age=0, s-maxage=300, stale-while-revalidate=86400`——浏览器仍每次校验，CDN 可缓存 5 分钟并后台刷新；Pages 部署会主动 purge，新文章仍立即可见。`/share/*` 的 `must-revalidate` 保留。注释移到规则块外，避免被 `_headers` 解析器当成 header。
+2. **Umami 延迟挂载**：`head/umami.html` 里 `defer = true` 改 `async = true`，去掉立即 `appendChild`，改为 `window.load` 之后（或 `readyState === 'complete'` 时）才 `mountUmami()`；`umamiTrack` / 滚动与点击跟踪逻辑不变。产物里 `mountUmami` 与 `window.addEventListener("load"...)` 均在。
+3. **字体**：`_fonts.scss` 只保留一个 `@font-face`，`font-weight: 100 900` 覆盖全部字重（加粗由浏览器合成），删掉 `lxgw-wenkai-medium.woff2`；head 加 `<link rel=preload as=font ... crossorigin>`，`font-display: swap` 保持。`scripts/build-font-subset.sh` 同步改为只生成 Regular。用 `uv` 临时装 `fonttools 4.68 + brotli` 重跑裁剪脚本，字符集 3111（汉字 2911），补齐了新文章带来的 5 个缺字（丘搁敛斩矮），产物 681KB。
+4. **大图转 WebP**：`static/img` 下 ≥100KB 的 PNG/JPG 共 9 张转 quality 82 WebP，同步替换 4 个 Markdown 的引用；零引用的 `mindmap-original-4k.png`（2.1MB）直接删除。`settings.png` 1103→80KB、`reader-view.png` 518→90KB、`WeChat.png` 227→28KB。转换后引用 0 失效，剩余最大 PNG 仅 94KB。
+
+### 42.3 验证
+
+- 构建 211 页 / **329 文件 / 9.05 MiB**（原 331 文件 / 14.37 MiB，少 5.3 MiB / 37%）；字体目录只剩 681KB 一个文件。
+- 本地同 Chrome 首屏传输 **1.57MB → 868KB**，TTFB 28ms、`load` 148ms；**不屏蔽第三方时 `load` 也在 153ms 完成**（此前会一直停在 `interactive`），证明 Umami 不再拖住页面。
+- 明暗截图：首页刊语、标题层级、文章页楷体与 `strong` 合成加粗均清晰，WebP 图片正常；首页 / 文章 / 归档 / 关于四页控制台 0 报错。
+- README 字体章节、部署段、性能基线、节数（41 → 42）同步。
+
+### 42.4 仍需用户决策的部分
+
+链路层（⑤）未动：`*.pages.dev` 落 LAX 与国内跨境质量不是仓库能改的，要绑自定义域名或换国内 CDN。另外顺带发现 CSP 的 `script-src` 只有 `'self'`，外部 `cloud.umami.is` 可能被拦截、统计未必生效；本轮只解决它拖慢页面的问题，未擅自放宽安全策略。

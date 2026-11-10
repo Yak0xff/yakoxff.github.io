@@ -4,6 +4,8 @@
 # 为什么需要它：原来从 jsdelivr 拉 6 个字体族样式（≈630KB CSS / 582 条 @font-face），
 # 实际只用到一个字族；且分片按需下载依赖第三方 CDN，国内首屏不稳定。
 # 这里按全站字符集裁成单文件，一次请求、永久缓存、不依赖外部域名。
+# V10.28：只生成 Regular（@font-face 用 font-weight:100 900 覆盖全部字重），
+# 首屏不再同时下载两个各 683KB 的 woff2。
 #
 # 依赖：fonttools（pyftsubset） + brotli
 #   python3 -m venv /tmp/fenv && /tmp/fenv/bin/pip install fonttools brotli
@@ -18,11 +20,9 @@ cd "$(dirname "$0")/.."
 
 PYFTSUBSET="${1:-${PYFTSUBSET:-pyftsubset}}"
 WORK="${TMPDIR:-/tmp}/yak-font"
-# Regular 用最新版；粗体：1.330 之后的版本不再单独发布 Bold（且 1.330 的 Bold.ttf 缺 cmap，
-# 无法子集化），改用同版本的 Medium 承载 500–700 字重。各档度量完全一致
-# （upem 1000 / hhea 928,-256 / win 1032,285），不会造成行高跳动，也不会出现合成假粗体。
+# V10.28 之前用同版本 Medium 承载 500–700 字重，两个文件各 683KB 且首屏都下；
+# 现只留 Regular，加粗交给浏览器合成，首屏字体请求减半。
 REGULAR_URL="https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/LXGWWenKai-Regular.ttf"
-MEDIUM_URL="https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/LXGWWenKai-Medium.ttf"
 mkdir -p "$WORK" static/fonts
 
 # 1. 收集全站字符集 ---------------------------------------------------------
@@ -57,13 +57,10 @@ print(f'  字符集：{len(chars)} 个（其中汉字 {len(han)}）')
 PY
 
 # 2. 下载源字体并裁剪 -------------------------------------------------------
-for weight in Regular Medium; do
+for weight in Regular; do
   ttf="$WORK/LXGWWenKai-${weight}.ttf"
   out="static/fonts/lxgw-wenkai-$(echo "$weight" | tr 'A-Z' 'a-z').woff2"
-  case "$weight" in
-    Regular) src="$REGULAR_URL" ;;
-    Medium)  src="$MEDIUM_URL" ;;
-  esac
+  src="$REGULAR_URL"
   # 小于 1MB 视为下载失败（GitHub 的 404 会返回几字节文本），重下
   if [ ! -f "$ttf" ] || [ "$(wc -c < "$ttf")" -lt 1000000 ]; then
     echo "  下载 LXGWWenKai-${weight}.ttf"

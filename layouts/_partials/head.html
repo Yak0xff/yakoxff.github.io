@@ -5,6 +5,8 @@
        字体已自托管、pagefind / littlefoot 已移除，jsdelivr 不再需要 -->
   <link rel="dns-prefetch" href="https://giscus.app">
   <link rel="dns-prefetch" href="https://cloud.umami.is">
+  {{/* V10.28：唯一的正文字体，预加载配合 font-display:swap，避免首屏回退闪烁 */}}
+  <link rel="preload" href="/fonts/lxgw-wenkai-regular.woff2" as="font" type="font/woff2" crossorigin>
   <!-- 主题初始化脚本（防止闪烁） -->
   <script>
     (function(){

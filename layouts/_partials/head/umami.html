@@ -5,12 +5,13 @@
     /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(window.location.hostname) ||
     /(^|\.)local$/.test(window.location.hostname);
   if (!isLocal) {
-    // 加载 Umami 跟踪脚本
+    // V10.28：先创建并绑好事件，但延迟到 window.load 之后才插入 DOM。
+    // 动态脚本的 defer 不生效；以前立即 append，在慢链路上这个请求
+    // 挂起会让页面一直停在「加载中」。
     const script = document.createElement('script');
-    script.defer = true;
+    script.async = true;
     script.src = 'https://cloud.umami.is/script.js';
     script.dataset.websiteId = '297a5367-a675-4a3b-a8e7-3b490231e695';
-    document.head.appendChild(script);
     
     // 简化的跟踪函数
     window.umamiTrack = function(eventName, eventData = {}) {
@@ -77,6 +78,11 @@
         }
       }, { passive: true });
     };
+
+    // load 之后再挂载，页面完成不再被外部统计脚本拖住
+    function mountUmami() { document.head.appendChild(script); }
+    if (document.readyState === 'complete') mountUmami();
+    else window.addEventListener('load', mountUmami, { once: true });
   } else {
     // 本地环境提供空函数
     window.umamiTrack = function() {};

@@ -21,7 +21,7 @@ draft: false
 
 <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0;">
   <div style="text-align: center;">
-    <img src="/img/sponsor/WeChat.png" alt="微信赞赏" style="width: 200px; border-radius: 8px;" />
+    <img src="/img/sponsor/WeChat.webp" alt="微信赞赏" style="width: 200px; border-radius: 8px;" />
     <p style="margin-top: 0.5rem; color: var(--secondary-text-color);">微信</p>
   </div>
   <div style="text-align: center;">

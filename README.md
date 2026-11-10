@@ -86,7 +86,7 @@
 - **分享与 SEO**：`head/siteinfo.html` 统一输出 title / canonical / description / OG / Twitter Card / JSON-LD；标题在非首页带站点名，描述按 front matter 优先链取并截断到 160 字。分享图优先用 `og_image` / `banner`，否则用 `static/share/og-card-v2.png`（1200×630，可用 `scripts/gen-og-image.py` 重生成）。文件名带版本号、放在独立的 `share/` 目录，是因为 X 按图片 URL 长期缓存卡片且 `_headers` 给 `/img/*` 设了 30 天缓存——换内容必须换 URL 才会被重新抓取。JSON-LD 按首页 `WebSite` / 文章 `BlogPosting` / 独立页 `WebPage` / 列表 `CollectionPage` 分流，全部走 `jsonify` 保证合法；`robots.txt` 默认放行并允许各类预览抓取器，只拦 AI 爬虫。文章页的「分享」按钮在桌面降级为复制「标题 + 摘要 + 链接」。
 - **重生第一篇**：`content/posts/付印之前：三十九道红笔.md` 是站点的设计编年长文，按 V10 → V10.25 复盘每一轮的取舍、前后数字与令牌 / 网格 / 内容 / 缓存四层底层规则，附完整编年表与 10 张配图（真实前后对比、手绘 SVG 示意、生成插画，均在 `static/img/rebirth/`）。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 41 节，从诊断到 V10.26 目录与图片避让）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 42 节，从诊断到 V10.28 首屏性能收口）。
 
 ## 目录结构
 
@@ -102,7 +102,7 @@
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights
 ├── static/             # img/ · share/（版本化 OG 卡 og-card-v2.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（41 节）
+├── REFACTOR.md         # 设计重构记录（42 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -225,12 +225,13 @@ Hugo 会按 front matter 自动生成 `/categories/` 与 `/tags/`。要改总览
 
 ### 字体
 
-正文字体是霞鹜文楷，已按全站实际用字（3125 字）裁成两个 woff2 放在 `static/fonts/`，不再依赖任何字体 CDN：
+正文字体是霞鹜文楷，已按全站实际用字（3111 字符，其中汉字 2911）裁成**一个** woff2 放在 `static/fonts/`，不再依赖任何字体 CDN：
 
 | 文件 | 字重 | 大小 |
 |---|---|---|
-| `lxgw-wenkai-regular.woff2` | 400 | 682KB |
-| `lxgw-wenkai-medium.woff2` | 500–700（承载粗体） | 682KB |
+| `lxgw-wenkai-regular.woff2` | 100–900（加粗由浏览器合成） | 681KB |
+
+V10.28 之前 Regular / Medium 各 683KB 且首屏会同时下载，占首屏 1.43MB 的 96%。现在 `@font-face` 用 `font-weight: 100 900` 覆盖全部字重、head 里 `preload` 这一个文件、`font-display: swap` 保持，首屏字体请求直接减半。
 
 **如果新文章用到子集之外的生僻字，它会退回系统宋体**——重跑一次即可补全：
 
@@ -239,7 +240,7 @@ python3 -m venv /tmp/fenv && /tmp/fenv/bin/pip install fonttools brotli
 PYFTSUBSET=/tmp/fenv/bin/pyftsubset sh scripts/build-font-subset.sh
 ```
 
-脚本会扫 `content/` `layouts/` `i18n/` `data/` 与配置，取全部用字，再从上游下载对应版本的 TTF 做子集化；下载结果小于 1MB 视为失败会重下。emoji 不在子集内，由系统字体兜底（站点实测缺 34 个 emoji，属于预期）。
+脚本会扫 `content/` `layouts/` `i18n/` `data/` 与配置，取全部用字，再从上游下载 Regular TTF 做子集化（含 `--no-hinting --desubroutinize`）；下载结果小于 1MB 视为失败会重下。V10.28 起只生成 Regular。emoji 不在子集内，由系统字体兜底（站点实测缺 34 个 emoji，属于预期）。
 
 ### 图片
 
@@ -255,7 +256,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 生产构建参数与 CI 一致：`--gc --minify --cleanDestinationDir`，`HUGO_ENVIRONMENT=production`（会注入 Umami、去掉标题里的 `[本地]`）。
 
-- **Cloudflare Pages**：构建命令填 `npm run build:uno:prod && npm run build`，产物目录 `public`。仓库根目录的 `static/_headers` 在这里生效——HTML 每次回源校验，指纹化的 `/css/main.min.*`、`/js/*.min.*` 永久 immutable，字体 7 天、图片 30 天，同时带一条 CSP（目前只约束 `script-src`）。
+- **Cloudflare Pages**：构建命令填 `npm run build:uno:prod && npm run build`，产物目录 `public`。仓库根目录的 `static/_headers` 在这里生效——HTML 由 CDN 短缓存 5 分钟并后台刷新（浏览器仍每次校验，部署会主动刷新缓存），指纹化的 `/css/main.min.*`、`/js/*.min.*` 永久 immutable，字体 7 天、图片 30 天，同时带一条 CSP（目前只约束 `script-src`）。
 - **GitHub Pages**：`.github/workflows/hugo.yml` 在推送 `main` 时用同一套参数构建、上传产物并尝试部署；但仓库的 Pages 站点目前没启用（见[已知限制](#已知限制)），`_headers` 在这条线上也不生效。
 
 两边都只跑 `build:uno:prod` 和 `hugo`，**不会跑** `scripts/highlights.py` 与 `scripts/optimize-images.py`——涉及这两步的改动要在本地做完再提交。`data/highlights.json` 已入库，所以 CI 不跑脚本也能出完整的标记页；但改了文章里的 `==高亮==` 之后，要本地重跑脚本并提交新的 JSON，线上才会跟着变。
@@ -266,15 +267,15 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 | 指标 | 数值 |
 |---|---|
-| 构建产物 | 211 页 / 331 个文件 / 14.4 MiB（侠客页与 3 个旧别名、友链组件一并下线；首页补了两篇次条与虚构书页区块，全站 head 换成完整的结构化数据；新增重生第一篇长文与 10 张配图） |
-| 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 woff2 + favicon 5KB），涟漪脚本内联在 HTML 里 |
-| 首页 HTML | 47.0KB（gzip 后 16.0KB，含内联的 field / tide / galaxy 三份脚本、状态公报、两篇次条与虚构书页） |
+| 构建产物 | 211 页 / 329 个文件 / **9.1 MiB**（V10.28：9 张文章大图转 WebP、清掉 2.1MB 零引用死图、字体去掉 Medium，比上一版少 5.3 MiB） |
+| 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 preload woff2 + favicon 5KB），涟漪脚本内联在 HTML 里；本地实测首屏传输 868KB |
+| 首页 HTML | 47.5KB（gzip 后 16.0KB，含内联的 field / tide / galaxy 三份脚本、状态公报、两篇次条与虚构书页） |
 | 首页样式 | 156KB（gzip 后 28KB） |
 | 首页 LCP / CLS | 约 120ms / 0.0001 |
-| 文章页 | 2 个 woff2（1.33MB）+ 21KB JS；LCP 140ms，CLS 0.0011 |
+| 文章页 | 1 个 woff2（681KB）+ 21KB JS；LCP 140ms，CLS 0.0011 |
 | 列表页脚本 | 0.5KB（只剩进场动画，读程 / 目录 / 偏好按 `.IsPage` 才加载） |
 
-两处最值得注意的成本：**字体是大头**（文章页两个 woff2 就把首访流量顶到 1.5MB，换来的是正文不发虚、长期可缓存），**样式是第二块**（153KB 里大部分是 `uno.css` 与设计系统本身，gzip 后能压到 28KB）。
+V10.28 后字体从 1.37MB 降到 681KB、大图从约 6.3MB 降到 1.5MB；本地同浏览器首屏传输由 1.57MB 降到 868KB。剩下的成本：**字体仍是最大单项**（681KB，换来正文不发虚且长期可缓存），**样式是第二块**（156KB 里大部分是 `uno.css` 与设计系统本身，gzip 后 28KB）。线上 TTFB 仍受 `pages.dev` 落 LAX 影响，见 REFACTOR 第四十二节。
 
 ## 已知限制
 
