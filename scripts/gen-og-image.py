@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""生成站点默认分享图 static/share/og-card-v2.png（1200×630）。
+"""生成站点默认分享图 static/share/og-card-v3.png（1200×630）。
 
 V10.21：旧卡片还停留在 V10.5 的点阵形状 + 旧标语「向死而生」，
 与当前「实心朱砂点 + 纸墨」的视觉不一致。这里用系统字体重画一张
@@ -8,17 +8,21 @@ V10.21：旧卡片还停留在 V10.5 的点阵形状 + 旧标语「向死而生�
 V10.25：换 URL + 换目录。旧 /img/header.png 的 URL 被 X 长期缓存，
 且 _headers 给 /img/* 设了 30 天缓存，换了图片内容也不会重新抓取。
 放到 /share/ 只受全站兜底 max-age=0 规则，文件名带版本号便于以后递增。
-以后再换卡片内容，请递增版本号（v3、v4…）并同步 params.yaml。
 
-用法：python3 scripts/gen-og-image.py && oxipng -o4 --strip safe static/share/og-card-v2.png
-依赖：Pillow、macOS 系统字体（Hiragino Sans GB、Menlo）。
+V10.30：全站正文改用系统宋体后，卡片里的主张与底部分类文字同步换成
+宋体（Songti.ttc 的 STSong Regular），大字「一点」仍用系统黑体——
+对应站点「黑体立骨、宋体行文、等宽记账」的分工。内容一变就必须递增
+版本号到 v3，否则 X 仍按旧 URL 用缓存卡片。v2 保留兼容旧分享链接。
+
+用法：python3 scripts/gen-og-image.py && oxipng -o4 --strip safe static/share/og-card-v3.png
+依赖：Pillow、macOS 系统字体（Hiragino Sans GB、Songti.ttc、Menlo）。
 """
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "static" / "share" / "og-card-v2.png"
+OUT = ROOT / "static" / "share" / "og-card-v3.png"
 
 PAPER = "#f4f1ea"     # --paper（明色）
 INK = "#16130f"       # --ink
@@ -28,6 +32,8 @@ ZHU = "#d9431f"       # --zhu
 LINE = "#ded8cc"
 
 HEI = "/System/Library/Fonts/Hiragino Sans GB.ttc"
+SONG = "/System/Library/Fonts/Supplemental/Songti.ttc"
+SONG_INDEX = 4          # STSong Regular，对应 --font-read 的常规字重
 MONO = "/System/Library/Fonts/Menlo.ttc"
 
 
@@ -51,12 +57,12 @@ cy = box[1] + (box[3] - box[1]) * 0.66
 r = 21
 d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=ZHU)
 
-# 主张
-d.text((88, 428), "写下来，就是在时间里刻下坐标。", font=face(HEI, 36), fill=INK_2)
+# 主张：宋体行文，与正文 --font-read 一致
+d.text((88, 428), "写下来，就是在时间里刻下坐标。", font=face(SONG, 36, index=SONG_INDEX), fill=INK_2)
 
-# 底部：细线 + 分类与署名
+# 底部：细线 + 分类与署名（同为宋体）
 d.line((88, 540, 1112, 540), fill=LINE, width=2)
-small = face(HEI, 22)
+small = face(SONG, 22, index=SONG_INDEX)
 d.text((88, 568), "独立写作 · 技术 / 思考 / 生活", font=small, fill=INK_3)
 d.text((1112, 568), "一点", font=small, fill=INK_3, anchor="ra")
 

@@ -1580,3 +1580,15 @@ curl 三次：TLS 1.68 / 3.10 / 3.94s，TTFB 2.75 / 3.73 / 4.80s，一次 30s �
 - CDP 实测 computed `font-family` 为宋体栈、`CSS.getPlatformFontsForNode` 返回 **`Songti SC`**，确认真的落到系统宋体而非回退。
 - 本地同浏览器首屏传输 **868KB → 170KB**（4 个资源，TTFB 76ms、`load` 234ms）；明暗截图宋体正文的顿笔、行距、加粗强调与标题层级均协调；首页 / 文章 / 归档 / 关于四页控制台 0 报错。
 - 首屏传输三轮变化：1.57MB（初始）→ 868KB（V10.28）→ 170KB（V10.29）。
+
+---
+
+## 四十四、V10.30：相关 OG 图同步（2026-11-10）
+
+用户指出「相关 og 图也需要更新」。全站只有一张默认分享卡（content 里无 `og_image` / `banner` 覆盖），`static/share/og-card-v2.png` 是 V10.25 生成的，主张与底部分类文字仍用黑体；V10.29 全站正文改系统宋体后，卡片跟站点「黑体立骨、宋体行文、等宽记账」的分工对不上了。
+
+- `scripts/gen-og-image.py`：新增 `SONG = /System/Library/Fonts/Supplemental/Songti.ttc`、`SONG_INDEX = 4`（`STSong Regular`）；主张「写下来，就是在时间里刻下坐标。」与底部「独立写作 · 技术 / 思考 / 生活」/ 署名改宋体，大字「一点」保持系统黑体，域名仍等宽。构图、色值、留白不动。
+- **按 V10.25 定下的规矩递增 URL**：输出改 `og-card-v3.png`，`params.yaml` 的 `default_og_image` 同步。只换文件内容不换地址，X 会继续用缓存的旧卡。v2 与更早的 `img/header.png` 保留，旧分享链接不裂。
+- README 分享与 SEO 条目、目录结构、生成物说明、性能基线（328 → 329 文件）与节数（43 → 44）同步。
+
+验证：新卡 1200×630 / 20.4KB，视觉确认宋体顿笔无缺字、黑体大字与朱砂点保留；构建后四类页面的 `og:image` / `twitter:image` 均指向 v3，`og:image:width/height/type` 仍由 `$isDefaultImage` 正确输出，`/share/*` 的 `max-age=0, must-revalidate` 规则未变。
