@@ -233,38 +233,46 @@ html[data-width] article.post-article.rd {
 
 .rd .rd-prose {
   counter-reset: rd-h2;
+  /* V10.23：正文整体用项目自带的霞鹜文楷，不另引字体。
+     旧版用 text-align:justify + text-justify:inter-character 逐字拉伸，
+     中文字距忽宽忽窄；strong 又整段刷成朱砂色，满屏红字没有重点。
+     这里取消拉伸、收敛朱砂、重调行距段距与色值层次。 */
+  font-family: var(--font-read);
+  font-size: 1.125rem;
+  line-height: 1.85;
+  letter-spacing: .012em;
   color: var(--ink-1);
+  text-align: left;
+  text-justify: auto;
+  hyphens: none;
 
   > p,
-  li {
-    text-align: justify;
-    text-justify: inter-character;
-  }
+  li { text-align: left; }
+  p { margin: 0 0 1.05em; }
 
-  p { margin: 0 0 1.2em; }
-
-  /* 首字下沉：章首第一段的第一个字 */
+  /* 首字下沉：开篇一枚朱砂，是记忆点而不是黑体大字 */
   > p:first-of-type::first-letter {
     float: left;
-    margin: .1em .16em 0 0;
-    font-family: var(--font-display);
-    font-size: 3.35em;
-    font-weight: 800;
-    line-height: .9;
-    color: var(--ink);
+    margin: .08em .14em 0 0;
+    font-family: var(--font-read);
+    font-size: 3.05em;
+    font-weight: 700;
+    line-height: .92;
+    color: var(--zhu-ink);
   }
 
-  /* 二级标题：编号悬挂在左页边（宽屏），窄屏落在标题上方 */
+  /* 二级标题：编号悬挂在左页边（宽屏），标题下压一条细线 */
   h2 {
     counter-increment: rd-h2;
     position: relative;
-    margin: 3em 0 1em;
-    padding: 0;
+    margin: 2.8em 0 1em;
+    padding: 0 0 .55em;
     border: 0;
+    border-bottom: 1px solid var(--line-2);
     font-family: var(--font-display);
-    font-size: 1.42em;
+    font-size: 1.5em;
     font-weight: 700;
-    line-height: 1.32;
+    line-height: 1.35;
     letter-spacing: -.012em;
     color: var(--ink);
     scroll-margin-top: calc(var(--topbar-h) + 1.5rem);
@@ -285,40 +293,58 @@ html[data-width] article.post-article.rd {
     border-radius: 0;
   }
 
+  /* 三级标题：一枚小朱砂点，呼应「一点」 */
   h3 {
-    margin: 2.2em 0 .7em;
+    position: relative;
+    margin: 2.4em 0 .8em;
+    padding-left: .85em;
     font-family: var(--font-display);
-    font-size: 1.14em;
+    font-size: 1.18em;
     font-weight: 650;
     line-height: 1.45;
     color: var(--ink);
     scroll-margin-top: calc(var(--topbar-h) + 1.5rem);
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .6em;
+      width: .3em;
+      height: .3em;
+      border-radius: 50%;
+      background: var(--zhu);
+    }
   }
 
   h4 {
-    margin: 1.8em 0 .6em;
+    margin: 1.9em 0 .6em;
     font-family: var(--font-display);
-    font-size: 1em;
+    font-size: 1.02em;
     font-weight: 650;
+    color: var(--ink-1);
   }
 
-  /* 引文：朱砂「」悬挂在左，大一号楷体 */
+  /* 引文：淡纸底 + 一道朱砂细线 + 楷体「」 */
   blockquote {
     position: relative;
-    margin: 2.2em 0;
-    padding: .1em 0 .1em 1.65em;
+    margin: 2.4em 0;
+    padding: 1.1em 1.4em 1.1em 2.6em;
     border: 0;
-    font-size: 1.04em;
-    line-height: 1.85;
+    border-left: 1px solid var(--zhu-line);
+    border-radius: 0 var(--r-2) var(--r-2) 0;
+    background: var(--surface);
+    font-size: 1.05em;
+    line-height: 1.9;
     color: var(--ink-2);
 
     &::before {
       content: "「";
       position: absolute;
-      top: -.12em;
-      left: -.15em;
+      top: -.1em;
+      left: .32em;
       font-family: var(--font-display);
-      font-size: 1.9em;
+      font-size: 1.8em;
       line-height: 1;
       color: var(--zhu);
     }
@@ -326,7 +352,12 @@ html[data-width] article.post-article.rd {
     p { display: block; margin: 0 0 .7em; text-align: left; }
     p:last-child { margin-bottom: 0; }
 
-    blockquote { margin: .8em 0; font-size: 1em; }
+    blockquote {
+      margin: .8em 0;
+      font-size: 1em;
+      background: none;
+      border-left-color: var(--line-2);
+    }
   }
 
   /* 列表：圆点即「一点」 */
@@ -340,9 +371,9 @@ html[data-width] article.post-article.rd {
       content: "";
       position: absolute;
       left: -1.05em;
-      top: .78em;
-      width: .34em;
-      height: .34em;
+      top: .82em;
+      width: .32em;
+      height: .32em;
       border-radius: 50%;
       background: var(--zhu);
     }
@@ -350,7 +381,7 @@ html[data-width] article.post-article.rd {
 
   ol { padding-left: 1.6em; }
   ol > li::marker { font-family: var(--font-num); font-size: .85em; color: var(--zhu-ink); }
-  li + li { margin-top: .35em; }
+  li + li { margin-top: .45em; }
 
   mark {
     padding: 0 .1em;
@@ -359,7 +390,19 @@ html[data-width] article.post-article.rd {
     background-color: transparent;
   }
 
-  strong { color: var(--mark-strong); font-weight: 700; }
+  /* 强调：深墨 + 淡朱砂底线，不再整段刷朱砂；
+     em 用中文着重号，比斜体更贴合楷体 */
+  strong {
+    color: var(--ink);
+    font-weight: 700;
+    background: linear-gradient(transparent 72%, var(--zhu-wash) 72%);
+  }
+  em {
+    font-style: normal;
+    color: var(--ink-1);
+    text-emphasis: filled dot var(--zhu-ink);
+    text-emphasis-position: under right;
+  }
 
   a {
     color: var(--ink);
@@ -371,6 +414,15 @@ html[data-width] article.post-article.rd {
 
     &:hover { color: var(--zhu-ink); text-decoration-color: currentColor; }
   }
+
+  /* 旧版 _markdown.scss 漏进来的装饰伪元素：行内代码反引号、
+     链接前的站点图标、代码块竖排语言标签、表头旧底色，一并清掉 */
+  a::before { content: none; display: none; }
+  a.external-link::after { content: "↗"; }
+  :not(pre) > code::before,
+  :not(pre) > code::after { content: none; }
+  pre > code::before { content: none; }
+  thead { background: none; }
 
   /* 图片：外扩出血，比正文栏更宽 */
   p:has(> img:only-child),
@@ -396,47 +448,92 @@ html[data-width] article.post-article.rd {
     color: var(--ink-3);
   }
 
-  /* 表格：横向可滚动，不撑破版面 */
+  /* 表格：表头朱砂小字，横向可滚动，不撑破版面 */
   table {
     display: block;
     max-width: 100%;
     overflow-x: auto;
-    margin: 2em 0;
+    margin: 2.2em 0;
     border-collapse: collapse;
     font-family: var(--font-ui);
     font-size: .86em;
-    line-height: 1.6;
+    line-height: 1.7;
   }
 
   th {
-    padding: .7em 1em;
+    padding: .75em 1em;
     text-align: left;
     white-space: nowrap;
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: .08em;
+    color: var(--zhu-ink);
     border-bottom: 1px solid var(--line-2);
   }
 
   td {
     padding: .7em 1em;
     vertical-align: top;
+    color: var(--ink-1);
     border-bottom: 1px solid var(--line);
   }
 
+  /* 代码：淡纸底 + 细线，等宽不抢正文 */
   pre {
-    margin: 2em 0;
-    padding: 1.1em 1.25em;
+    margin: 2.2em 0;
+    padding: 1.2em 1.35em;
     overflow-x: auto;
-    font-size: .8em;
-    line-height: 1.7;
-    border: 1px solid var(--line);
-    border-radius: var(--r-2);
-  }
-
-  :not(pre) > code {
-    padding: .12em .4em;
     font-family: var(--font-num);
     font-size: .84em;
+    line-height: 1.75;
+    color: var(--ink-1);
+    background: var(--paper-2);
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-2);
+  }
+  pre > code {
+    padding: 0;
+    font-size: 1em;
+    color: inherit;
+    background: none;
+  }
+  :not(pre) > code {
+    padding: .14em .42em;
+    font-family: var(--font-num);
+    font-size: .84em;
+    color: var(--ink-1);
     background: var(--paper-2);
     border-radius: var(--r-1);
+  }
+
+  /* 分隔线：一条细线，正中一枚朱砂点 */
+  hr {
+    position: relative;
+    height: 1.5rem;
+    margin: 3.2em 0;
+    border: 0;
+    background: none;
+  }
+  hr::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--line-2);
+  }
+  hr::after {
+    content: "·";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0 .7em;
+    font-size: 1.5em;
+    line-height: 1;
+    color: var(--zhu);
+    background: var(--paper);
   }
 }
 
@@ -1303,9 +1400,16 @@ html.rd-in-body .rd-pill {
 @media (prefers-reduced-motion: reduce) {
   .rd-title > span,
   .rd-kicker,
-  .rd-lede,
   .rd-ledger { animation: none; }
 
   .rd-rule i { animation: none; transform: none; }
   .rd-rule b { animation: none; transform: none; }
+}
+
+/* V10.23：窄屏引文别撑得过高，给正文多留一点纵向空间 */
+@media (max-width: 767px) {
+  .rd .rd-prose blockquote {
+    padding: .9em 1em .9em 2.1em;
+    line-height: 1.8;
+  }
 }
