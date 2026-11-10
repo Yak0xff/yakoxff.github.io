@@ -325,38 +325,47 @@ html[data-width] article.post-article.rd {
     color: var(--ink-1);
   }
 
-  /* 引文：淡纸底 + 一道朱砂细线 + 楷体「」 */
+  /* 引文：淡纸底 + 一道朱砂细线，线头落一枚实心朱砂点。
+     V10.24：撤掉「字符——横排里它会渲染成一个直角折角，像半个框；
+     也不再给它留 2.6em 左内边距把文字推到右侧。
+     同时显式覆盖旧 _markdown.scss 那段 absolute 弯引号的全部属性。 */
   blockquote {
     position: relative;
     margin: 2.4em 0;
-    padding: 1.1em 1.4em 1.1em 2.6em;
+    padding: 1.15em 1.6em 1.2em;
     border: 0;
     border-left: 1px solid var(--zhu-line);
     border-radius: 0 var(--r-2) var(--r-2) 0;
     background: var(--surface);
-    font-size: 1.05em;
-    line-height: 1.9;
-    color: var(--ink-2);
+    font-size: 1.1em;
+    line-height: 1.85;
+    color: var(--ink-1);
 
     &::before {
-      content: "「";
+      content: "";
       position: absolute;
-      top: -.1em;
-      left: .32em;
-      font-family: var(--font-display);
-      font-size: 1.8em;
+      top: 0;
+      left: -3px;              /* 7px 圆点，圆心压在 1px 细线上 */
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--zhu);
+      font-size: 0;
       line-height: 1;
-      color: var(--zhu);
+      color: transparent;
     }
 
     p { display: block; margin: 0 0 .7em; text-align: left; }
     p:last-child { margin-bottom: 0; }
 
     blockquote {
-      margin: .8em 0;
-      font-size: 1em;
+      margin: .9em 0 0;
+      padding: .6em 0 .6em 1em;
+      font-size: .94em;
       background: none;
       border-left-color: var(--line-2);
+
+      &::before { content: none; }   /* 嵌套不再重复线头圆点 */
     }
   }
 
@@ -1409,7 +1418,7 @@ html.rd-in-body .rd-pill {
 /* V10.23：窄屏引文别撑得过高，给正文多留一点纵向空间 */
 @media (max-width: 767px) {
   .rd .rd-prose blockquote {
-    padding: .9em 1em .9em 2.1em;
+    padding: 1em 1.2em;
     line-height: 1.8;
   }
 }
