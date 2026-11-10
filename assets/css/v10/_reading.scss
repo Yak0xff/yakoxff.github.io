@@ -627,7 +627,8 @@ html[data-width] article.post-article.rd {
 }
 
 @media (min-width: 1100px) {
-  .rd-rail { display: block; }
+  /* V10.27：章节列表紧挨成一簇，用 flex 让整簇在目录高度里垂直居中 */
+  .rd-rail { display: flex; align-items: center; }
 
   html.rd-in-body .rd-rail {
     opacity: 1;
@@ -658,11 +659,13 @@ html.rd-past-body .rd-pill { transform: translate(-50%, 16px); }
 
 .rd-rail-line {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: 50%;
+  bottom: auto;
   left: 4px;
   width: 1px;
+  height: var(--rail-cluster-h, 240px);
   background: var(--line-2);
+  transform: translateY(-50%);
 }
 
 .rd-rail-fill {
@@ -678,7 +681,8 @@ html.rd-past-body .rd-pill { transform: translate(-50%, 16px); }
   position: absolute;
   z-index: 2;
   left: 0;
-  top: calc(var(--rd-p, 0) * 100%);
+  /* 珠子只在这一簇的高度里移动，与紧凑列表对齐 */
+  top: #{"calc(50% - var(--rail-cluster-h, 240px) / 2 + var(--rd-p, 0) * var(--rail-cluster-h, 240px))"};
   width: 9px;
   height: 9px;
   border-radius: 50%;
@@ -688,17 +692,17 @@ html.rd-past-body .rd-pill { transform: translate(-50%, 16px); }
 }
 
 .rd-rail-list {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  width: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
-  /* V10.26：章节点等距铺排。旧版按 --at（章节在全文中的真实
-     相对位置）绝对定位，长章节之间会被拉出很大的空档，
-     也让目录在垂直方向上铺得太开、更容易撞上外扩图片。 */
+  /* V10.27：章节条目完全紧挨（gap: 0），整簇由 .rd-rail 的 flex
+     垂直居中。进度线的高度由 JS 量出的 --rail-cluster-h 跟随这簇，
+     否则朱砂珠会跑到列表外面。 */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 0;
 }
 
 .rd-rail-item {

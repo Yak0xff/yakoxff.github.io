@@ -1491,3 +1491,13 @@ CDP 四档视口实测（长文含 1200×620 的宽图）：
 | 390 | 隐藏 | — | — | — |
 
 九个点间距 `[68,67,68,67,68,67,68,67]`，误差 1px；390px 下目录 `display:none`、图片回到正文宽。`node --check` 通过，1440 明暗两色视口截图确认宽图与章节名之间留出干净间隙，首页 / 文章 / 归档 / 关于四页控制台 0 报错。README 阅读页条目与节数（40 → 41）同步。
+
+### 41.5 后续修正：章节完全紧挨成一簇（同日，V10.27）
+
+用户明确「『去掉章节之间的距离』是想要它们完全紧挨成一簇（而不是等距铺开）」。V10.26 做成了 flex `space-between` 等距，方向理解偏了，这轮改成真正的一簇。
+
+- `.rd-rail` 在 ≥1100px 时由 `display:block` 改成 `display:flex; align-items:center`；`.rd-rail-list` 从 `absolute + inset:0 + space-between` 改成 `position:relative; width:100%; flex-column; gap:0`。九条 `min-height:26px` 的条目紧挨成 234px 的一簇，垂直居中。
+- **进度线必须跟着缩短**：否则 `.rd-rail-line` 仍铺满 566px 的目录高度、朱砂珠按 `--rd-p` 跑到列表外。`measure()` 里量出 `ol.offsetHeight` 写到 `--rail-cluster-h`；`.rd-rail-line` 用 `height: var(--rail-cluster-h)` + `top:50%` 居中，`.rd-rail-bead` 的 `top` 改为 `calc(50% - h/2 + var(--rd-p) * h)`（SCSS 插值输出，避开 LibSass 对混合单位求值）。`.rd-rail-fill` 仍按 `var(--rd-p) * 100%` 相对缩短后的线。
+- 只改排布，不动 V10.26 的靠右距离与图片避让规则。
+
+验证：CDP 实测条目间距全为 26px（误差 0）、簇高 234px、线高 234px 且 `lineTop === listTop`、朱砂珠在线内、`--rail-cluster-h: 234px`；1440 / 1280 / 1100 三档图片与目录仍稳定留 32px，390px 目录隐藏；明暗两色视口截图、四页控制台 0 报错。README 阅读页条目同步。

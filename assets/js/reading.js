@@ -218,9 +218,9 @@
     geo.top = r.top + window.scrollY;
     geo.height = Math.max(1, prose.offsetHeight);
     geo.marks = h2s.map(function (el) { return (el.getBoundingClientRect().top + window.scrollY - geo.top) / geo.height; });
-    /* V10.26：点线目录改为 CSS 等距铺排（.rd-rail-list 用 flex
-       space-between），不再按章节真实长度设置 --at，免得长章节之间
-       被拉出大空档。geo.marks 保留，update() 判当前章仍要用。 */
+    /* V10.27：章节条目紧挨成一簇，进度线按这簇的实际高度缩短。
+       --at 不再设置（列表由 CSS 排布），geo.marks 保留给 update() 判当前章。 */
+    if (rail) rail.style.setProperty('--rail-cluster-h', (ol.offsetHeight || railDots.length * 26) + 'px');
     update();
   }
 
