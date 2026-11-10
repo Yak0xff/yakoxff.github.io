@@ -1,0 +1,19 @@
+{{/*
+  刊头右侧「夜航星海」星盘（V10.17）
+  ---------------------------------------------------------------
+  原型：DOT / WORLD · THE INFINITE GARDEN（桌面 Publisher/world 的 scene 2）
+  ——「远处的星辰，也是微小的点。在无限之中，留下一次温柔的回响」。
+  紧接在「潮汐之境」点云球之后，两颗同时缓慢自转，各自独立 canvas。
+
+  把 22000 点的可拖拽星系精简成 1800 点：四条对数旋臂 + 高斯抖动，
+  盘面倾斜投影，内快外慢的差速自转、逐颗闪烁，入场时星点由内向外
+  亮起，点击荡开两圈椭圆脉冲。
+
+  配色不用原型的青绿沙色调，改读站点令牌 --ink / --zhu / --ink-3，
+  纸底上是淡墨星尘与朱砂亮星，暗色主题自动跟随。
+  纯装饰，aria-hidden；reduced-motion 下只画一帧、不自转、不响应点击。
+  逻辑见 assets/js/galaxy.js（随本页内联，无额外请求）。
+*/}}
+<div class="galaxy" aria-hidden="true">
+  <canvas class="galaxy-canvas" data-galaxy></canvas>
+</div>

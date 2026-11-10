@@ -76,14 +76,14 @@
 三种字体角色分工：标题走 `--font-display`（系统黑体），正文走 `--font-read`（霞鹜文楷），数字 / 眉题走 `--font-num`（等宽）。正文之外的界面文字一律用系统 UI 字体。
 
 - **首页**：刊头是一块 canvas 涟漪点阵场——朱砂点像一滴墨落进水面，波前经过的点被点亮并沿径向推开；指针靠近会亮起，点击能激起新的涟漪。`prefers-reduced-motion` 下只画一帧静态晕圈，画面静止 600ms 后停表。
-- **刊头右侧**：不再重复「文章 / 主题 / 万字」（「此刻 → 在发」已有篇数和字数），改放「潮汐之境」点云球——2000 枚点按 Fibonacci 球面分布，多层噪声长出朱砂群岛，缓慢自转，入场时从海面往上生长，点一下荡开两圈潮汐。单 canvas + 内联 JS（30fps 节流、不可见停表），颜色读站点令牌跟随明暗，`prefers-reduced-motion` 下只画一帧。原型取自 DOT / WORLD 的 *TIDAL ARCHIPELAGO*，见 `assets/js/tide.js`。
+- **刊头右侧**：不再重复「文章 / 主题 / 万字」（「此刻 → 在发」已有篇数和字数），竖排放两颗独立点阵图。上为「潮汐之境」点云球——2000 枚点按 Fibonacci 球面分布，多层噪声长出朱砂群岛，缓慢自转，入场时从海面往上生长，点一下荡开两圈潮汐；下为「夜航星海」星盘——1800 点铺成四条对数旋臂的倾斜盘面，内快外慢差速自转、逐颗闪烁，点击荡开椭圆回响。两颗各一块 canvas、各自内联 JS（30fps 节流、不可见停表），颜色读站点令牌跟随明暗，`prefers-reduced-motion` 下都只画一帧。原型分别取自 DOT / WORLD 的 *TIDAL ARCHIPELAGO* 与 *THE INFINITE GARDEN*，见 `assets/js/tide.js` / `galaxy.js`。桌面竖排、≤860px 并排，避免首屏被拉空。
 - **按主题读**：三栏一行，每栏一个主题三篇。先挑没被头条与「最近发表」用掉的文章，不够再回补，所以三栏始终填满。
 - **此刻**：头条右侧栏里的「状态公报」——细线分栏、等宽标签、朱砂点、日期框、底部排印说明，四行「在读 / 在写 / 在发 / 在码」，字号比头条低一档，不抢刊头。后两行从站点内容自动算出（篇数、字数、最近更新、近 12 个月发文柱图），不会写完就过期。见[维护此刻状态](#维护此刻状态)。
 - **分隔线**：全站统一 1px 半透明 `--line-2`（明暗各 24% 墨 / 纸色）。原 `--line-ink` 纯墨纯白的 2px 强线与 `3px double` 双线已废弃；只有引用块、朱砂强调这类竖向装饰保留粗线。
 - **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 33 节，从诊断到 V10.16 品牌点回归实心）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 34 节，从诊断到 V10.17 夜航星海）。
 
 ## 目录结构
 
@@ -91,7 +91,7 @@
 .
 ├── assets/
 │   ├── css/            # main.scss 入口 · _fonts.scss 字体声明 · v10/ 设计系统 · components/ 组件 · legacy/ 旧版
-│   └── js/             # field.js 涟漪场 · tide.js 潮汐之境 · reading.js 阅读页 · rings.js 写作年轮 …
+│   └── js/             # field.js 涟漪场 · tide.js 潮汐之境 · galaxy.js 夜航星海 · reading.js 阅读页 · rings.js 写作年轮 …
 ├── config/_default/    # config · params · params.zh · languages · markup · services
 ├── content/            # posts · fictions · tags · categories + 独立页面（about / highlights / xiake / sponsor …）
 ├── data/               # about.yaml（intro + 首页 dispatch）· highlights.json · imgmeta.json
@@ -99,7 +99,7 @@
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights
 ├── static/             # img/（含 og:image header.png、dot-motion-preview.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（33 节）
+├── REFACTOR.md         # 设计重构记录（34 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -266,7 +266,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 |---|---|
 | 构建产物 | 203 页 / 316 个文件 / 13.8 MiB（应用栏目下线后少了 4 页、19 个文件、约 3.6 MiB 图片；后来补回 1 张 58KB 预览图） |
 | 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 woff2 + favicon 5KB），涟漪脚本内联在 HTML 里 |
-| 首页 HTML | 40.6KB（gzip 后 13.4KB，含内联的 field / tide 脚本与状态公报） |
+| 首页 HTML | 42.4KB（gzip 后 14.7KB，含内联的 field / tide / galaxy 三份脚本与状态公报） |
 | 首页样式 | 153KB（gzip 后 28KB） |
 | 首页 LCP / CLS | 约 120ms / 0.0001 |
 | 文章页 | 2 个 woff2（1.33MB）+ 21KB JS；LCP 140ms，CLS 0.0011 |

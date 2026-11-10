@@ -1,0 +1,40 @@
+/* ===================================================================
+   V10.17 刊头右侧「夜航星海」星盘
+   -------------------------------------------------------------------
+   原型 DOT / WORLD 的 scene 2，精简后由 assets/js/galaxy.js 单 canvas
+   绘制。与 _tide.scss 同宽同落位，紧接在潮汐之境之后，两颗竖排。
+   这里只负责尺寸：纸底 / 墨点 / 朱砂亮星由 JS 读 CSS 变量决定。
+   =================================================================== */
+
+/* 两颗的公共容器：桌面竖排右对齐，窄屏并排（否则首屏会被拉空） */
+.masthead-orbs { margin-top: #{"clamp(1.25rem, 1rem + 1.5vw, 2rem)"}; }
+.masthead-orbs .tide { margin: 0 0 0 auto; }
+
+.galaxy {
+  position: relative;
+  width: #{"clamp(128px, 12vw, 168px)"};
+  aspect-ratio: 1;
+  margin: #{"clamp(.5rem, .35rem + .6vw, .9rem)"} 0 0 auto;
+  cursor: pointer;              /* 点一下会有一圈回响 */
+  touch-action: manipulation;
+}
+
+.galaxy-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 860px) {
+  .masthead-orbs {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: .75rem;
+  }
+  .masthead-orbs .tide,
+  .masthead-orbs .galaxy {
+    width: #{"clamp(108px, 32vw, 140px)"};
+    margin: 0;
+  }
+}
