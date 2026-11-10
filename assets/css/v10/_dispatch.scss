@@ -6,7 +6,7 @@
    字号也压回侧栏尺度——比头条低一档，不跟刊头抢注意力。
 
    刻意不搬参考图里的东西：世界地图、BUREAUX、冷蓝、英文衬线。
-   蓝色小点换成朱砂点，右下角复用 components/dot-shape 的点阵圆。
+   蓝色小点换成朱砂点，右下角是一枚实心朱砂圆（V10.16 起）。
    =================================================================== */
 
 .dispatch {
@@ -171,7 +171,14 @@
   .dispatch-en { margin-right: .5em; }
 }
 
-.dispatch-mark { --dot-shape-size: 16px; }
+/* V10.16：落款与品牌点统一为实心纯色圆 */
+.dispatch-mark {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--zhu);
+}
 
 /* 中屏：.front 收成单列，公报改上边框，四行排成 2×2 压缩高度 */
 @media (max-width: 860px) {

@@ -4,7 +4,7 @@
   取代旧版三套互不相同的页头：首页「展字水印」页头、文章页
   header-simple、右上角浮动的 RSS / 主题按钮。所有页面同一位置、
   同一结构，跨页跳转时借 view-transition-name 常驻不闪。
-  · 品牌：点阵形状（按栏目变形）+ 站名「一点」
+  · 品牌：实心朱砂点 + 站名「一点」（V10.16 起不再按栏目变形）
   · 导航：当前项 aria-current="page"，视觉上由下方朱砂点标示
   · 工具：搜索 / 订阅 / 主题，触控目标均 ≥ 44px
   移动端导航移交底部标签栏（site/tabbar.html），这里只留品牌与工具。
@@ -12,7 +12,7 @@
 <header class="topbar pagefind-exclude" data-topbar>
   <div class="topbar-inner">
     <a class="brand" href="{{ site.LanguagePrefix }}/" aria-label="{{ site.Title }}，返回首页">
-      {{- partial "components/dot-shape" (dict "ctx" . "class" "brand-dot") -}}
+      <span class="brand-dot" aria-hidden="true"></span>
       <span class="brand-name">{{ site.Title }}</span>
     </a>
 

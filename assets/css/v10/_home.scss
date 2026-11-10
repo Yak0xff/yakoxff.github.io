@@ -100,11 +100,14 @@ body { margin: 0; }
   color: var(--ink);
 }
 
-/* 句末点阵形状：入场时「点」一下（缩放过冲），之后静止
-   V10.5：从一枚实心圆换成由点组成的形状，同时是 field.js 的涟漪源 */
+/* 句末朱砂点：实心纯色，入场时「点」一下（缩放过冲），之后静止。
+   V10.16 从 5×5 点阵形状换回实心圆；仍是 field.js 的涟漪源。 */
 .masthead-dot {
-  --dot-shape-size: .38em;
-  margin: 0 0 .05em .1em;
+  width: .19em;
+  height: .19em;
+  margin: 0 0 .06em .08em;
+  border-radius: 50%;
+  background: var(--zhu);
   animation: v-dot-in 900ms var(--ease-out) 240ms both;
 }
 
@@ -197,7 +200,7 @@ body { margin: 0; }
 }
 
 /* V10.6：原「此刻」侧栏（.now / .now-pulse / .now-list）整块下线，
-   改由 v10/_dispatch.scss 的通栏状态公报承接，见 components/dot-shape。 */
+   改由 v10/_dispatch.scss 的通栏状态公报承接。 */
 
 /* ---------- 4. 按主题读 ---------- */
 .topic-grid {

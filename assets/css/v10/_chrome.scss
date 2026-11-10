@@ -45,9 +45,12 @@
   &:hover .brand-dot { transform: scale(1.18); }
 }
 
-/* V10.5：实心圆 → 点阵形状（按栏目变形，见 components/dot-shape.html） */
+/* V10.16：品牌点回归实心纯色圆，不再用 5×5 点阵形状 */
 .brand-dot {
-  --dot-shape-size: 20px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--zhu);
   transition: transform var(--t-2) var(--ease-out);
 }
 
