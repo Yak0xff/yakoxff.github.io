@@ -608,7 +608,8 @@ html[data-width] article.post-article.rd {
 .rd-rail {
   /* V10.8：文字常显，右侧要稳定留出约 192px；--rd-measure 里已经
      用 100vw - 30rem 预留过，这里只扣掉与正文的间距和页边留白 */
-  --rail-gap: 1.5rem;
+  /* V10.26：通道再往右让一点，给外扩图片留出安全距离 */
+  --rail-gap: 2.5rem;
   --rail-left: calc(50% + var(--rd-measure) / 2 + var(--rail-gap));
   position: fixed;
   z-index: 40;
@@ -692,14 +693,20 @@ html.rd-past-body .rd-pill { transform: translate(-50%, 16px); }
   margin: 0;
   padding: 0;
   list-style: none;
+  /* V10.26：章节点等距铺排。旧版按 --at（章节在全文中的真实
+     相对位置）绝对定位，长章节之间会被拉出很大的空档，
+     也让目录在垂直方向上铺得太开、更容易撞上外扩图片。 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .rd-rail-item {
-  position: absolute;
-  top: var(--at, 0);
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  transform: none;
 }
 
 .rd-rail-link {
@@ -1420,5 +1427,18 @@ html.rd-in-body .rd-pill {
   .rd .rd-prose blockquote {
     padding: 1em 1.2em;
     line-height: 1.8;
+  }
+}
+
+/* V10.26：宽屏目录常显时，外扩图片不再向右侧出血。
+   旧版 --rd-wide 固定 1200px 居中，1440 视口下右缘到 1320px，
+   而目录从约 1250px 起，宽图会把章节名压在图上。
+   这里右缘只到正文栏右缘 + .5rem，与 --rail-gap 之间留出安全距离；
+   窄屏（<1100px）目录隐藏，仍保留原来的双侧大出血。 */
+@media (min-width: 1100px) {
+  html.rd-has-rail:not([data-width="wide"]) .rd .rd-prose p:has(> img:only-child),
+  html.rd-has-rail:not([data-width="wide"]) .rd .rd-prose figure {
+    width: calc(100% + 1rem);
+    margin-left: -.5rem;
   }
 }

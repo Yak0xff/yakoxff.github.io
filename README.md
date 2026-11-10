@@ -80,13 +80,13 @@
 - **虚构书页**：首页编号 03 的区块，两部连载各一张书页卡片——卷号、状态印、楷体书名、一句简介、最近三章的点线目录与「共 N 章 · 读全书」。数据直接读 `content/fictions` 下各部的 `_index.md` 与章节 front matter，不另建数据文件；窄屏改为上下竖排。
 - **此刻**：头条右侧栏里的「状态公报」——细线分栏、等宽标签、朱砂点、日期框、底部排印说明，四行「在读 / 在写 / 在发 / 在码」，字号比头条低一档，不抢刊头。后两行从站点内容自动算出（篇数、字数、最近更新、近 12 个月发文柱图），不会写完就过期。见[维护此刻状态](#维护此刻状态)。
 - **分隔线**：全站统一 1px 半透明 `--line-2`（明暗各 24% 墨 / 纸色）。原 `--line-ink` 纯墨纯白的 2px 强线与 `3px double` 双线已废弃；只有引用块、朱砂强调这类竖向装饰保留粗线。
-- **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页（V10.19 起只留标题与紧凑账页：简介下线、标题字号回调、上下留白与装饰线一并收紧；V10.20 账页改为「标签 + 值」横铺一行、去掉上下框线、Aa 收小；V10.22 标题行宽收回与正文同宽的 `--rd-measure`、长标题用 `balance` 配平，不再顶到右侧目录）、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
+- **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页（V10.19 起只留标题与紧凑账页：简介下线、标题字号回调、上下留白与装饰线一并收紧；V10.20 账页改为「标签 + 值」横铺一行、去掉上下框线、Aa 收小；V10.22 标题行宽收回与正文同宽的 `--rd-measure`、长标题用 `balance` 配平，不再顶到右侧目录）、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊；V10.26 起目录点改为等距铺排、整体右移，宽屏有目录时图片不再向右侧出血，避免宽图压住章节名。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
 - **正文排版**：统一用项目自带的霞鹜文楷（不另引字体），18px / 行距 1.85 / 段距 1.05em，取消 `text-align: justify + inter-character` 逐字拉伸（旧版中文字距忽宽忽窄）。朱砂收敛到 h2 编号、h3 小点、列表圆点、首字下沉、引用细线与分隔线中点；`strong` 改深墨加粗 + 淡朱砂底线，`em` 用中文着重号。引用块淡纸底 + 朱砂细线（线头一枚实心朱砂点，不用引号字符），代码块与表格统一细线，分隔线是「细线 + 一枚朱砂点」；旧版 markdown 漏进来的行内代码反引号、链接站点图标、竖排语言标签、表头底色全部清掉。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 - **分享与 SEO**：`head/siteinfo.html` 统一输出 title / canonical / description / OG / Twitter Card / JSON-LD；标题在非首页带站点名，描述按 front matter 优先链取并截断到 160 字。分享图优先用 `og_image` / `banner`，否则用 `static/share/og-card-v2.png`（1200×630，可用 `scripts/gen-og-image.py` 重生成）。文件名带版本号、放在独立的 `share/` 目录，是因为 X 按图片 URL 长期缓存卡片且 `_headers` 给 `/img/*` 设了 30 天缓存——换内容必须换 URL 才会被重新抓取。JSON-LD 按首页 `WebSite` / 文章 `BlogPosting` / 独立页 `WebPage` / 列表 `CollectionPage` 分流，全部走 `jsonify` 保证合法；`robots.txt` 默认放行并允许各类预览抓取器，只拦 AI 爬虫。文章页的「分享」按钮在桌面降级为复制「标题 + 摘要 + 链接」。
 - **重生第一篇**：`content/posts/付印之前：三十九道红笔.md` 是站点的设计编年长文，按 V10 → V10.25 复盘每一轮的取舍、前后数字与令牌 / 网格 / 内容 / 缓存四层底层规则，附完整编年表与 10 张配图（真实前后对比、手绘 SVG 示意、生成插画，均在 `static/img/rebirth/`）。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 40 节，从诊断到重生第一篇长文）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 41 节，从诊断到 V10.26 目录与图片避让）。
 
 ## 目录结构
 
@@ -102,7 +102,7 @@
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights
 ├── static/             # img/ · share/（版本化 OG 卡 og-card-v2.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（40 节）
+├── REFACTOR.md         # 设计重构记录（41 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
