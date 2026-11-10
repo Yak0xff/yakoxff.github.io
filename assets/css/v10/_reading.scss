@@ -105,56 +105,59 @@ html[data-width] article.post-article.rd {
   display: inline-flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: stretch;
-  margin: 1.1rem auto 0;
+  align-items: center;
+  margin: .85rem auto 0;
   padding: 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border: 0;                       /* 上下框线一并去掉，别再夹出一块空间 */
   animation: rd-fade 800ms var(--ease-out) 380ms both;
 
-  /* V10.18 去格子竖线；V10.19 再收一圈内边距与间距 */
-  column-gap: .25rem;
+  /* V10.20：标签与值横铺成一行，整条账页只剩一行高；
+     字号统一降一档，靠 column-gap 分组，不再有格子与内边距 */
+  column-gap: #{"clamp(.9rem, 2vw, 1.75rem)"};
+  row-gap: .3rem;
 
   > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: .15rem;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: .4rem;
     margin: 0;
-    padding: .45rem .85rem;
+    padding: 0;
   }
 
   dt {
-    font-family: var(--font-ui);
+    font-family: var(--font-num);
     font-size: var(--step--2);
-    letter-spacing: .12em;
+    letter-spacing: .08em;
     color: var(--ink-3);
   }
 
   dd {
     margin: 0;
-    font-size: var(--step--1);
-    color: var(--ink);
+    font-size: var(--step--2);
+    color: var(--ink-2);
   }
 
   .post-date {
     font-family: var(--font-num);
-    font-size: var(--step--1);
+    font-size: var(--step--2);
   }
 }
 
 .rd-ledger-tool {
   justify-content: center;
+  align-items: center;          /* Aa 是 inline-grid，别跟其它项 baseline 对齐 */
 }
 
 .rd-aa {
   display: inline-grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  /* V10.20：随账页一起收小，别让一个圆按钮撑高整行 */
+  width: 32px;
+  height: 32px;
   padding: 0;
   font-family: var(--font-display);
-  font-size: .95rem;
+  font-size: .8rem;
   font-weight: 700;
   color: var(--ink);
   background: none;
@@ -179,7 +182,7 @@ html[data-width] article.post-article.rd {
   gap: .7rem;
   width: 11rem;
   max-width: 70%;
-  margin: 1.25rem auto 0;
+  margin: 1rem auto 0;
 
   i {
     /* V10.18：2px 纯墨线收成全站统一的 1px 半透明线，朱砂点保留 */
@@ -1273,28 +1276,13 @@ html.rd-in-body .rd-pill {
     width: auto;
   }
 
-  /* 账页压成一行流：去掉标签与竖线，用间隔点分隔 */
-  .rd-ledger {
-    display: flex;
-    gap: .2rem .9rem;
-    padding: .7rem 0;
-    border-bottom: 0;
+  /* V10.20：窄屏沿用桌面的「标签 + 值」横铺，标签保留；
+     只是把间距再收紧、允许换行。旧规则曾用 sr-only 藏掉 dt 并加回
+     padding，会让窄屏只剩一串值、还多占一块空间。 */
+  .rd-ledger { gap: .25rem .7rem; }
 
-    > div { padding: 0; flex-direction: row; align-items: center; }
-    > div + div { border-left: 0; }
-
-    dt {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      white-space: nowrap;
-    }
-  }
-
-  .rd-aa { width: 36px; height: 36px; font-size: .85rem; }
-  .rd-rule { margin-top: 1.75rem; }
+  .rd-aa { width: 30px; height: 30px; font-size: .78rem; }
+  .rd-rule { margin-top: 1rem; }
 
   .rd .rd-prose > p,
   .rd .rd-prose li { text-align: left; }
