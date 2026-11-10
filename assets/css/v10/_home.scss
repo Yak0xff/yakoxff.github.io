@@ -159,12 +159,16 @@ body { margin: 0; }
 .lead-title {
   margin: .9rem 0 0;
   font-family: var(--font-display);
-  font-size: var(--step-3);
+  /* V10.18：按 --step-3 收 10%，让宽屏下整行放得下（原 41.6px 会把
+     20 字标题挤成两行）；balance 也换 pretty，首行用满栏宽 */
+  font-size: calc(var(--step-3) * .9);
   font-weight: 700;
   line-height: 1.12;
   letter-spacing: var(--tracking-display);
   color: var(--ink);
-  text-wrap: balance;
+  /* balance 会把断点提前配平两行，第一行明明还有空间就换行；
+     pretty 只避免孤字，让首行尽量用满栏宽 */
+  text-wrap: pretty;
   transition: color var(--t-2) var(--ease-ui);
 }
 

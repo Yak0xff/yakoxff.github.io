@@ -78,16 +78,18 @@ html[data-width] article.post-article.rd {
 }
 
 .rd-title {
-  max-width: 15em;
+  /* V10.18：放大一档，标题在扉页里重新拿回视觉重心。
+     不再用 15em/18em 锁宽度——扉页本身有 1200px，锁了反而把
+     放大后的标题折成「长行 + 两个孤字」；balance 也换 pretty。 */
+  max-width: 100%;
   margin: 1.1rem auto 0;
   font-family: var(--font-display);
-  /* V10.8：原本最大 4.5rem，收一档，不跟刊头「一点」抢视觉 */
-  font-size: #{"clamp(1.9rem, 1.4rem + 2.2vw, 3.1rem)"};
+  font-size: #{"clamp(2rem, 1.5rem + 2.4vw, 3.4rem)"};
   font-weight: 800;
-  line-height: 1.12;
+  line-height: 1.16;
   letter-spacing: -.03em;
   color: var(--ink);
-  text-wrap: balance;
+  text-wrap: pretty;
 
   /* 标题从下方「浮出纸面」：裁切 + 上移 */
   > span {
@@ -119,16 +121,17 @@ html[data-width] article.post-article.rd {
   border-bottom: 1px solid var(--line);
   animation: rd-fade 800ms var(--ease-out) 380ms both;
 
+  /* V10.18：去掉格子竖线，靠留白分组——扉页里不再多出四五条细线 */
+  column-gap: .35rem;
+
   > div {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: .2rem;
     margin: 0;
-    padding: .8rem 1.35rem;
+    padding: .8rem 1.1rem;
   }
-
-  > div + div { border-left: 1px solid var(--line); }
 
   dt {
     font-family: var(--font-ui);
@@ -188,8 +191,9 @@ html[data-width] article.post-article.rd {
   margin: 2.5rem auto 0;
 
   i {
-    height: 2px;
-    background: var(--ink);
+    /* V10.18：2px 纯墨线收成全站统一的 1px 半透明线，朱砂点保留 */
+    height: 1px;
+    background: var(--line-2);
     transform: scaleX(0);
     animation: rd-line 700ms var(--ease-out) 520ms forwards;
   }
