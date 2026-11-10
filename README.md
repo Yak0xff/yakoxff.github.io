@@ -83,10 +83,10 @@
 - **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页（V10.19 起只留标题与紧凑账页：简介下线、标题字号回调、上下留白与装饰线一并收紧；V10.20 账页改为「标签 + 值」横铺一行、去掉上下框线、Aa 收小；V10.22 标题行宽收回与正文同宽的 `--rd-measure`、长标题用 `balance` 配平，不再顶到右侧目录）、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊；V10.26 起目录整体右移、宽屏有目录时图片不再向右侧出血；V10.27 起章节条目完全紧挨成一簇，进度线与朱砂珠同步缩短到簇高，避免宽图压住章节名。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
 - **正文排版**：统一用项目自带的霞鹜文楷（不另引字体），18px / 行距 1.85 / 段距 1.05em，取消 `text-align: justify + inter-character` 逐字拉伸（旧版中文字距忽宽忽窄）。朱砂收敛到 h2 编号、h3 小点、列表圆点、首字下沉、引用细线与分隔线中点；`strong` 改深墨加粗 + 淡朱砂底线，`em` 用中文着重号。引用块淡纸底 + 朱砂细线（线头一枚实心朱砂点，不用引号字符），代码块与表格统一细线，分隔线是「细线 + 一枚朱砂点」；旧版 markdown 漏进来的行内代码反引号、链接站点图标、竖排语言标签、表头底色全部清掉。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
-- **分享与 SEO**：`head/siteinfo.html` 统一输出 title / canonical / description / OG / Twitter Card / JSON-LD；标题在非首页带站点名，描述按 front matter 优先链取并截断到 160 字。分享图优先用 `og_image` / `banner`，否则用 `static/share/og-card-v3.png`（1200×630，可用 `scripts/gen-og-image.py` 重生成）。文件名带版本号、放在独立的 `share/` 目录，是因为 X 按图片 URL 长期缓存卡片且 `_headers` 给 `/img/*` 设了 30 天缓存——换内容必须换 URL 才会被重新抓取。JSON-LD 按首页 `WebSite` / 文章 `BlogPosting` / 独立页 `WebPage` / 列表 `CollectionPage` 分流，全部走 `jsonify` 保证合法；`robots.txt` 默认放行并允许各类预览抓取器，只拦 AI 爬虫。文章页的「分享」按钮在桌面降级为复制「标题 + 摘要 + 链接」。
+- **分享与 SEO**：`head/siteinfo.html` 统一输出 title / canonical / description / OG / Twitter Card / JSON-LD；标题在非首页带站点名，描述按 front matter 优先链取并截断到 160 字。分享图优先用 `og_image` / `banner`，否则用 `static/share/og-card-v4.png`（1200×630，可用 `scripts/gen-og-image.py` 重生成）。文件名带版本号、放在独立的 `share/` 目录，是因为 X 按图片 URL 长期缓存卡片且 `_headers` 给 `/img/*` 设了 30 天缓存——换内容必须换 URL 才会被重新抓取。JSON-LD 按首页 `WebSite` / 文章 `BlogPosting` / 独立页 `WebPage` / 列表 `CollectionPage` 分流，全部走 `jsonify` 保证合法；`robots.txt` 默认放行并允许各类预览抓取器，只拦 AI 爬虫。文章页的「分享」按钮在桌面降级为复制「标题 + 摘要 + 链接」。
 - **重生第一篇**：`content/posts/付印之前：三十九道红笔.md` 是站点的设计编年长文，按 V10 → V10.25 复盘每一轮的取舍、前后数字与令牌 / 网格 / 内容 / 缓存四层底层规则，附完整编年表与 10 张配图（真实前后对比、手绘 SVG 示意、生成插画，均在 `static/img/rebirth/`）。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 44 节，从诊断到 V10.30 分享卡同步）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 45 节，从诊断到 V10.31 卡片整体宋体）。
 
 ## 目录结构
 
@@ -101,8 +101,8 @@
 ├── i18n/               # zh.yml（en.yml 保留但未启用）
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · gen-og-image · optimize-images · highlights
-├── static/             # img/ · share/（版本化 OG 卡 og-card-v3.png）· pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（44 节）
+├── static/             # img/ · share/（版本化 OG 卡 og-card-v4.png）· pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
+├── REFACTOR.md         # 设计重构记录（45 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -261,7 +261,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 | 指标 | 数值 |
 |---|---|
-| 构建产物 | 211 页 / 329 个文件 / **8.4 MiB**（V10.28 大图转 WebP，V10.29 移除字体文件；相比最初的 14.4 MiB 少约 42%） |
+| 构建产物 | 211 页 / 330 个文件 / **8.4 MiB**（V10.28 大图转 WebP，V10.29 移除字体文件；相比最初的 14.4 MiB 少约 42%） |
 | 首页请求 | 4 个（1 CSS + 2 JS + favicon 5KB，字体零请求），涟漪脚本内联在 HTML 里；本地实测首屏传输 **170KB** |
 | 首页 HTML | 47.5KB（gzip 后 16.0KB，含内联的 field / tide / galaxy 三份脚本、状态公报、两篇次条与虚构书页） |
 | 首页样式 | 156KB（gzip 后 28KB） |
@@ -277,7 +277,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 - **GitHub Pages 其实没上线**：workflow 每次推送都在跑，但 `https://yakoxff.github.io/` 返回的是 GitHub 的「Site not found」——仓库 Settings → Pages 的 Source 没设成 GitHub Actions。真正对外的是 Cloudflare Pages 那条线。
 - **`static/_headers` 只对 Cloudflare Pages 生效**，GitHub Pages 的缓存策略与 CSP 走默认值，两份部署并不等价。
 - **CSP 只约束了 `script-src`**，没有 `default-src`；要收紧得逐项放开 giscus、Umami 与内联样式/脚本（页面里有几段防闪烁的内联 script）。
-- **品牌图标是生成物**：`favicon.svg` 是手写的；`favicon.ico`（5KB）/ `apple-touch-icon.png` 由一次性脚本画出、脚本没入库，改站名时要重画。`share/og-card-v3.png`（1200×630 默认分享卡）由 `scripts/gen-og-image.py` 生成，改标语或域名后跑一次脚本再 `oxipng`；**若要让 X 重新抓卡，还得递增文件名版本号并同步 `params.yaml` 的 `default_og_image`**。旧 `img/header.png` 仅为旧链接兼容保留。
+- **品牌图标是生成物**：`favicon.svg` 是手写的；`favicon.ico`（5KB）/ `apple-touch-icon.png` 由一次性脚本画出、脚本没入库，改站名时要重画。`share/og-card-v4.png`（1200×630 默认分享卡）由 `scripts/gen-og-image.py` 生成，改标语或域名后跑一次脚本再 `oxipng`；**若要让 X 重新抓卡，还得递增文件名版本号并同步 `params.yaml` 的 `default_og_image`**。旧 `img/header.png` 仅为旧链接兼容保留。
 
 ## 许可
 

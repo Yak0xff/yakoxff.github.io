@@ -8,9 +8,10 @@ favicon: /favicon.ico
 # V10.25：换到 /share/ + 版本号文件名。X 按图片 URL 长期缓存卡片，
 # 且 _headers 给 /img/* 设了 30 天缓存，旧 /img/header.png 换了内容
 # 也不会被重新抓取；换新 URL 才会出新的 Twitter Card。
-# V10.30：全站正文改系统宋体后，卡片的标语 / 分类小字同步换宋体，
-# 内容一变就递增到 v3；v2 保留兼容旧分享链接。
-default_og_image: /share/og-card-v3.png
+# V10.30：全站正文改系统宋体后，卡片的标语 / 分类小字同步换宋体，递增到 v3。
+# V10.31：大字「一点」也换 Songti SC Bold，整张卡片统一宋体，再递增到 v4。
+# v2 / v3 与 img/header.png 保留兼容旧分享链接。
+default_og_image: /share/og-card-v4.png
 mainSections:
   - posts
   - fictions

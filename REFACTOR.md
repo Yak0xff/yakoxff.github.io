@@ -1592,3 +1592,25 @@ curl 三次：TLS 1.68 / 3.10 / 3.94s，TTFB 2.75 / 3.73 / 4.80s，一次 30s �
 - README 分享与 SEO 条目、目录结构、生成物说明、性能基线（328 → 329 文件）与节数（43 → 44）同步。
 
 验证：新卡 1200×630 / 20.4KB，视觉确认宋体顿笔无缺字、黑体大字与朱砂点保留；构建后四类页面的 `og:image` / `twitter:image` 均指向 v3，`og:image:width/height/type` 仍由 `$isDefaultImage` 正确输出，`/share/*` 的 `max-age=0, must-revalidate` 规则未变。
+
+---
+
+## 四十五、V10.31：分享卡大字也换宋体并升 v4（2026-11-10）
+
+### 45.1 反馈
+
+用户看了 v3 后问「为什么文字『一点』没有发生字体变更」。原因是 V10.30 把卡片里的「一点」当**标题**处理：站点 `--font-display` 一直是系统黑体，V10.29 切换的只是正文角色 `--font-read`，所以那次只换了主张与底部分类，大字一个像素未动。
+
+这个判断符合站点分工，但卡片是对外形象，最显眼的两个字没变会让人觉得没改完。于是出了两版预览：宋体 Bold（大字与标语同族、顿笔连贯、分量够）与宋体 Regular（「一」横过细，与「点」的方框和朱砂点失衡）。用户选 **Bold**。
+
+### 45.2 改动
+
+- `scripts/gen-og-image.py`：`big` 从 `Hiragino Sans GB` 黑体改成 `Songti.ttc` 的 `Songti SC Bold`（index 1）；加 `SONG_BOLD_INDEX` 常量，删掉已无引用的 `HEI`。大字、标语、底部分类至此全部宋体，域名仍等宽；构图、色值、朱砂点位置（由 `textbbox` 自适应）不变。
+- **再次递增 URL**：输出 `og-card-v4.png`，`params.yaml` 的 `default_og_image` 同步。沿用 v3 地址 X 会继续用缓存里的黑体大字卡，改了等于没改。v2 / v3 / `img/header.png` 全部保留兼容旧链接。
+- README 分享与 SEO 条目、目录结构、生成物说明、性能基线（329 → 330 文件）与节数（44 → 45）同步。
+
+### 45.3 验证
+
+- 新卡 1200×630 / 21.1KB，与预览图逐像素一致；宋体大字的三角顿笔与横细竖粗清楚，无缺字。
+- 构建后首页 / 文章 / 归档 / 关于四类页面的 `og:image` 与 `twitter:image` 均指向 v4，`og:image:width/height/type` 仍由 `$isDefaultImage` 正确输出；`/share/*` 短缓存规则未变。
+- 线上复查 `og:image` 与 v4 图片可访问性。
