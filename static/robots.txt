@@ -26,6 +26,33 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Slackbot-LinkExpanding
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Weibo
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: 360Spider
+Allow: /
+
+User-agent: PetalBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
 # Block known AI scrapers
 User-agent: GPTBot
 Disallow: /
@@ -54,8 +81,9 @@ Disallow: /
 User-agent: Diffbot
 Disallow: /
 
-# Disallow all others
+# 其余爬虫（含微信 / QQ / 知乎 / 小红书等分享预览抓取）默认放行：
+# 旧版这里写 Disallow 会让所有未列名的预览器拿不到 og 卡片
 User-agent: *
-Disallow: /
+Allow: /
 
 Sitemap: https://yakoxff.pages.dev/sitemap.xml

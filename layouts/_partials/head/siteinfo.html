@@ -1,118 +1,151 @@
-<!-- Link preview meta tags -->
+{{/*
+  全站 head 元信息（V10.21 重写）
+  ---------------------------------------------------------------
+  旧版问题：JSON-LD 全站都用 BlogPosting、keywords 数组带尾随逗号
+  （整段 JSON 非法）、mainEntityOfPage 永远指向首页、@context 用 http；
+  og:image 的宽高/类型对文章首图硬编码 1200×630/png（实际多为插图）；
+  首页 twitter:card 是 summary（无大图）；缺 robots / theme-color /
+  og:site_name / article:* 等标准字段。
+
+  现在：标题带品牌、描述有优先链并截断、图片只用显式指定的
+  og_image / banner 或站点默认卡（不再猜正文首图）、
+  JSON-LD 按首页 / 文章 / 列表分流并用 jsonify 输出合法 JSON。
+*/}}
 {{- $isHome := .IsHome -}}
-{{- $title := cond $isHome .Site.Title .Title -}}
-{{- $description := cond $isHome .Site.Params.description (default .Summary .Description | plainify) -}}
-{{- $ogType := cond $isHome "website" "article" -}}
+{{- $pageTitle := cond $isHome .Site.Title .Title -}}
+{{- $author := .Params.author | default .Site.Params.author -}}
+{{- $siteName := .Site.Title -}}
+{{/* 只有带栏目的内容页才是 article；关于 / 标记等独立页面不算文章 */}}
+{{- $isArticle := and .IsPage .Section -}}
 
-{{/* 图片逻辑优化 - 优先级：banner > 文章第一张图片 > 默认OG图片 > favicon */}}
-{{- $image := "" -}}
-{{- if isset .Params "banner" -}}
-  {{- $image = .Params.banner | absURL -}}
-{{- else if and (not .IsHome) .Content -}}
-  {{/* 从渲染后的 HTML 内容中提取第一张图片 */}}
-  {{- $content := .Content -}}
-  
-  {{/* 匹配 HTML img 标签 */}}
-  {{- $imgPattern := `<img[^>]+src="([^"]+)"[^>]*>` -}}
-  {{- $matches := findRE $imgPattern $content 1 -}}
-  {{- if $matches -}}
-    {{- $match := index $matches 0 -}}
-    {{- $imgSrc := replaceRE $imgPattern "$1" $match -}}
-    
-    {{/* 处理图片路径 */}}
-    {{- if hasPrefix $imgSrc "http" -}}
-      {{- $image = $imgSrc -}}
-    {{- else if hasPrefix $imgSrc "/" -}}
-      {{- $image = $imgSrc | absURL -}}
-    {{- else -}}
-      {{- $image = (printf "/%s" $imgSrc) | absURL -}}
-    {{- end -}}
-  {{- end -}}
+{{/* 描述：文章优先 front matter description，其次 Description / 自动摘要，
+       最后回退站点描述；统一 plainify 并截断，避免分享卡片文字被腰斩 */}}
+{{- $desc := .Site.Params.description | plainify -}}
+{{- if not $isHome -}}
+  {{- $d := default (default .Summary .Description) .Params.description -}}
+  {{- $desc = default .Site.Params.description $d | plainify -}}
 {{- end -}}
+{{- $desc = $desc | plainify | truncate 160 -}}
 
-{{/* 如果还没有找到图片，使用默认图片 */}}
-{{- if not $image -}}
-  {{- if .Site.Params.default_og_image -}}
-    {{- $image = .Site.Params.default_og_image | absURL -}}
-  {{- else -}}
-    {{- $image = .Site.Params.favicon | absURL -}}
-  {{- end -}}
+{{/* 分享图：只用显式指定的 og_image / banner，或站点默认卡。
+       不再从正文里抓第一张插图——比例与尺寸都不可控，会被平台裁坏。 */}}
+{{- $defaultImage := .Site.Params.default_og_image | absURL -}}
+{{- $image := $defaultImage -}}
+{{- $isDefaultImage := true -}}
+{{- with (.Params.og_image | default .Params.banner) -}}
+  {{- $image = . | absURL -}}
+  {{- $isDefaultImage = false -}}
 {{- end -}}
+{{- $imageAlt := printf "%s · %s" $pageTitle $siteName -}}
+{{- if $isHome -}}{{- $imageAlt = printf "%s · 独立写作" $siteName -}}{{- end -}}
 
-<title>{{ if hugo.IsServer }}[本地] {{ end }}{{ $title }}</title>
+<title>{{ if hugo.IsServer }}[本地] {{ end }}{{ if $isHome }}{{ $pageTitle }}{{ else }}{{ $pageTitle }} · {{ $siteName }}{{ end }}</title>
 <link rel="canonical" href="{{ .Permalink }}" />
-<meta name="author" content="{{ .Params.author | default .Site.Params.author }}" />
+<meta name="author" content="{{ $author }}" />
+{{/* max-image-preview:large 让 Google / 多数预览抓取器愿意出大图卡片 */}}
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+<meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#12110e" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-<!-- Open Graph meta tags -->
+<!-- Open Graph -->
 <meta property="og:url" content="{{ .Permalink }}" />
-<meta property="og:title" content="{{ $title }}" />
-<meta property="og:type" content="{{ $ogType }}" />
-<meta property="og:description" content="{{ $description }}" />
-<meta name="description" content="{{ $description }}" />
-<meta property="og:locale" content="{{ .Site.LanguageCode }}" />
+<meta property="og:title" content="{{ $pageTitle }}" />
+<meta property="og:type" content="{{ cond $isArticle "article" "website" }}" />
+<meta property="og:site_name" content="{{ $siteName }}" />
+<meta property="og:locale" content="zh_CN" />
+<meta property="og:description" content="{{ $desc }}" />
+<meta name="description" content="{{ $desc }}" />
 <meta property="og:image" content="{{ $image }}" />
-{{- if $image -}}
+<meta property="og:image:alt" content="{{ $imageAlt }}" />
+{{- if $isDefaultImage }}
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:type" content="image/png" />
+{{- end }}
+{{- if $isArticle -}}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" />
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}" />
+<meta property="article:author" content="{{ $author }}" />
+<meta property="article:section" content="{{ .Section }}" />
+{{- range (.Params.tags | default slice) }}
+<meta property="article:tag" content="{{ . }}" />
 {{- end -}}
+{{- end }}
 
-<!-- Twitter Card meta tags -->
-{{- $cardType := "summary" -}}
-{{- if or (isset .Params "banner") (and (not .IsHome) .Content (findRE `<img[^>]+src="[^"]+"[^>]*>` .Content 1)) -}}
-  {{- $cardType = "summary_large_image" -}}
-{{- end -}}
-<meta name="twitter:card" content="{{ $cardType }}" />
-{{- if .Site.Params.twitter -}}
-<meta name="twitter:site" content="@{{ .Site.Params.twitter }}" />
-{{- end -}}
-{{- if .Params.author_twitter -}}
-<meta name="twitter:creator" content="@{{ .Params.author_twitter }}" />
-{{- else if .Site.Params.author_twitter -}}
-<meta name="twitter:creator" content="@{{ .Site.Params.author_twitter }}" />
-{{- end -}}
-<meta name="twitter:title" content="{{ $title }}" />
-<meta name="twitter:description" content="{{ $description }}" />
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+{{- with .Site.Params.twitter }}<meta name="twitter:site" content="@{{ . }}" />{{ end }}
+{{- with (.Params.author_twitter | default .Site.Params.author_twitter) }}<meta name="twitter:creator" content="@{{ . }}" />{{ end }}
+<meta name="twitter:title" content="{{ $pageTitle }}" />
+<meta name="twitter:description" content="{{ $desc }}" />
 <meta name="twitter:image" content="{{ $image }}" />
-{{- if $image -}}
-<meta name="twitter:image:alt" content="{{ $title }}" />
-{{- end -}}
+<meta name="twitter:image:alt" content="{{ $imageAlt }}" />
 
 <!-- RSS -->
-<link rel="alternate" type="application/atom+xml" href="{{.Site.BaseURL}}index.xml" title="{{ .Site.Title }}">
-<link href="{{ .Site.Params.staticPrefix }}{{ "index.xml" | relURL }}" rel="alternate" type="application/rss+xml"
-    title="{{ .Site.Title }}">
+<link rel="alternate" type="application/atom+xml" href="{{ .Site.BaseURL }}index.xml" title="{{ $siteName }}">
+<link href="{{ .Site.Params.staticPrefix }}{{ "index.xml" | relURL }}" rel="alternate" type="application/rss+xml" title="{{ $siteName }}">
 
-<!-- JSON-LD -->
-<script type="application/ld+json">
-    {
-        "@context" : "http://schema.org",
-        "@type" : "BlogPosting",
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "{{ .Site.BaseURL }}"
-        },
-        "articleSection" : "{{ .Section }}",
-        "name" : "{{ .Title }}",
-        "headline" : "{{ .Title }}",
-        {{ if .IsHome -}}
-        "description" : "{{ .Site.Params.description | plainify }}",
-        {{- else -}}
-        "description" : "{{ default .Summary .Description | plainify }}",
-        {{- end }}
-        "inLanguage" : "zh-CN",
-        "author" : "{{ .Params.author | default .Site.Params.author }}",
-        "creator" : "{{ .Params.author | default .Site.Params.author }}",
-        "publisher": "{{ .Params.author | default .Site.Params.author }}",
-        "accountablePerson" : "{{ .Params.author | default .Site.Params.author }}",
-        "copyrightHolder" : "{{ .Params.author | default .Site.Params.author }}",
-        "copyrightYear" : "{{ .Date.Format "2006" }}",
-        "datePublished": "{{ .Date }}",
-        "dateModified" : "{{ .Date }}",
-        "url" : "{{ .Permalink }}",
-        "keywords" : [ {{ if isset .Params "tags" }}{{ range .Params.tags }}"{{ . }}",{{ end }}{{ end }} ]
-    }
-</script>
+{{/* JSON-LD：按页面类型分流，全部走 jsonify（自动处理转义与数组逗号） */}}
+{{- $person := dict "@type" "Person" "name" $author "url" .Site.BaseURL -}}
+{{- $ld := dict -}}
+{{- if $isHome -}}
+  {{- $ld = dict
+      "@context" "https://schema.org"
+      "@type" "WebSite"
+      "@id" (printf "%s#website" .Site.BaseURL)
+      "url" .Permalink
+      "name" $siteName
+      "description" $desc
+      "inLanguage" "zh-CN"
+      "author" $person
+      "publisher" $person
+      "image" $image -}}
+{{- else if $isArticle -}}
+  {{- $ld = dict
+      "@context" "https://schema.org"
+      "@type" "BlogPosting"
+      "@id" (printf "%s#article" .Permalink)
+      "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+      "headline" .Title
+      "name" .Title
+      "description" $desc
+      "image" $image
+      "inLanguage" "zh-CN"
+      "author" $person
+      "creator" $person
+      "publisher" $person
+      "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+      "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+      "articleSection" .Section
+      "keywords" (.Params.tags | default slice)
+      "wordCount" .WordCount
+      "url" .Permalink -}}
+{{- else if .IsPage -}}
+  {{- $ld = dict
+      "@context" "https://schema.org"
+      "@type" "WebPage"
+      "@id" .Permalink
+      "url" .Permalink
+      "name" $pageTitle
+      "description" $desc
+      "inLanguage" "zh-CN"
+      "isPartOf" (dict "@type" "WebSite" "@id" (printf "%s#website" .Site.BaseURL))
+      "publisher" $person
+      "image" $image -}}
+{{- else -}}
+  {{- $ld = dict
+      "@context" "https://schema.org"
+      "@type" "CollectionPage"
+      "@id" .Permalink
+      "url" .Permalink
+      "name" $pageTitle
+      "description" $desc
+      "inLanguage" "zh-CN"
+      "isPartOf" (dict "@type" "WebSite" "@id" (printf "%s#website" .Site.BaseURL))
+      "publisher" $person
+      "image" $image -}}
+{{- end -}}
+<script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>

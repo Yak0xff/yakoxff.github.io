@@ -1,6 +1,6 @@
 author: Yak0xff
 email: hi@guhub.cn
-description: "Yak0xff 的个人博客 - 分享技术、思考与生活"
+description: "一点 · 独立写作。记录一个普通人在加速时代里的观察、误判与重新校准，关于技术、思考与生活。"
 twitter: zh_robin
 author_twitter: zh_robin
 favicon: /favicon.ico
@@ -10,7 +10,6 @@ mainSections:
   - posts
   - fictions
   - library
-favicon: /favicon.png
 # 需要从 static 引入的外部脚本（键名沿用历史拼写，Hugo 不区分大小写）
 # littlefoot 已移除：全站没有脚注用法，却每页加载 10KB 脚本
 externalJSFiles: []

@@ -69,6 +69,19 @@
     }
   }
   function baseURL() { return location.origin + location.pathname; }
+  function pageDesc() {
+    var m = document.querySelector('meta[name="description"]');
+    return m ? (m.getAttribute('content') || '').trim() : '';
+  }
+  /* V10.21：桌面浏览器多数没有可用的系统分享面板，降级为复制一段
+     「标题 + 摘要 + 链接」的分享文案，粘到微信 / 微博 / 聊天里即可带图文 */
+  function shareCard() {
+    var d = pageDesc();
+    return '《' + pageTitle + '》\n' + (d ? d + '\n' : '') + baseURL();
+  }
+  function systemShare() {
+    return !!(navigator.share && matchMedia('(pointer: coarse)').matches);
+  }
 
   // ---------- 章节 ----------
   var heads = Array.prototype.slice.call(prose.querySelectorAll('h2, h3'));
@@ -264,11 +277,9 @@
   quote.setAttribute('aria-label', '摘句');
   var qCopy = h('button', 'rd-quote-btn', '复制摘句'); qCopy.type = 'button';
   quote.appendChild(qCopy);
-  var qShare = null;
-  if (navigator.share) {
-    qShare = h('button', 'rd-quote-btn', '分享'); qShare.type = 'button';
-    quote.appendChild(qShare);
-  }
+  /* V10.21：桌面也显示「分享」，无系统分享时降级为复制摘句文案 */
+  var qShare = h('button', 'rd-quote-btn', '分享'); qShare.type = 'button';
+  quote.appendChild(qShare);
   document.body.appendChild(quote);
   var picked = '';
 
@@ -302,8 +313,12 @@
     copy('「' + picked + '」\n——《' + pageTitle + '》 ' + baseURL(), '摘句已复制');
     hideQuote();
   });
-  if (qShare) qShare.addEventListener('click', function () {
-    navigator.share({ title: pageTitle, text: '「' + picked + '」', url: baseURL() }).catch(function () {});
+  qShare.addEventListener('click', function () {
+    if (systemShare()) {
+      navigator.share({ title: pageTitle, text: '「' + picked + '」', url: baseURL() }).catch(function () {});
+    } else {
+      copy('「' + picked + '」\n——《' + pageTitle + '》 ' + baseURL(), '摘句文案已复制');
+    }
     hideQuote();
   });
 
@@ -344,10 +359,24 @@
     });
   }
   var shareBtn = document.querySelector('[data-rd-share]');
-  if (shareBtn && navigator.share) {
+  if (shareBtn) {
+    /* V10.21：桌面不再隐藏分享按钮；移动端走系统分享，桌面复制分享文案 */
     shareBtn.hidden = false;
+    var shareLabel = shareBtn.querySelector('span');
     shareBtn.addEventListener('click', function () {
-      navigator.share({ title: pageTitle, url: baseURL() }).catch(function () {});
+      if (systemShare()) {
+        navigator.share({ title: pageTitle, text: pageDesc(), url: baseURL() }).catch(function () {});
+        return;
+      }
+      copy(shareCard(), '分享文案已复制');
+      if (shareLabel) {
+        shareLabel.textContent = '文案已复制 ✓';
+        shareBtn.classList.add('is-done');
+        setTimeout(function () {
+          shareLabel.textContent = '分享';
+          shareBtn.classList.remove('is-done');
+        }, 1800);
+      }
     });
   }
 })();

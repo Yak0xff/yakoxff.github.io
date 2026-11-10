@@ -1285,3 +1285,47 @@ CDP 实测（1440 视口）：容器 762px、字号 41.6px、标题单行文字�
 - **窄屏旧规则冲突**：`@media (max-width: 767px)` 里原有一段「账页压成一行流、去掉标签」的规则，用 sr-only 藏掉 `dt` 并加回 `.7rem` padding，导致 390px 下只剩一串值。改成只收紧 `gap: .25rem .7rem`、Aa 30px、`rd-rule` 1rem，标签保留、允许换行。
 
 验证：1440 明暗两色账页只剩一行、无框线、Aa 明显收小，标题到正文的距离进一步缩短；390px 窄屏标签与值都可见、换行正常不溢出；首页 / 文章页 / 归档三页控制台 0 报错。README 阅读页条目同步。
+
+---
+
+## 三十七、V10.21：整站分享体验与 SEO 图文收口（2026-11-10）
+
+### 37.1 反馈
+
+「优化一些整站的分享体验，以及分享的一些图文设置，以便更好的 SEO」。盘点后发现四个真问题，不只是「补几个 meta」。
+
+### 37.2 结构化数据本来是坏的
+
+`head/siteinfo.html` 旧版 JSON-LD 是手拼字符串，问题叠在一起：全站（含首页 / 归档 / 关于）都标 `BlogPosting`；`keywords` 的 `range` 每项后都带逗号，生成 `["a","b",]` 这类**非法 JSON**，整段结构化数据会被搜索引擎丢弃；`mainEntityOfPage.@id` 永远指向首页；`@context` 用 `http://schema.org`；`author` / `publisher` 是裸字符串；`dateModified` 直接复用 `.Date`。
+
+重写为 Hugo `dict` + `jsonify | safeJS`，按页面类型分流：
+
+| 页面 | @type | 关键字段 |
+|---|---|---|
+| 首页 | `WebSite` | name / url / description / author / publisher / image |
+| 带栏目的文章页 | `BlogPosting` | headline、image、datePublished / dateModified、mainEntityOfPage（**当前页 URL**）、articleSection、keywords、wordCount |
+| 关于 / 标记等独立页 | `WebPage` | isPartOf → WebSite |
+| 归档 / 标签等列表 | `CollectionPage` | isPartOf → WebSite |
+
+`og:type` 同步按这个分流（只有真文章才是 `article`），并补 `article:published_time` / `modified_time` / `section` / `tag`。
+
+### 37.3 分享图文与 meta
+
+- **标题**：非首页统一 `标题 · 一点`，分享出去能认出站点；`og:title` / `twitter:title` 仍用纯标题。
+- **描述**：文章按 `Params.description → .Description → .Summary → 站点描述` 优先链取，`plainify` 后 `truncate 160`，避免自动摘要被腰斩。
+- **分享图**：旧逻辑从正文抓第一张 `<img>` 当 OG 图，尺寸 / 比例不可控；且无论什么图都硬标 `1200×630 / image/png`。现在只用显式指定的 `og_image` / `banner`，否则统一用默认卡；宽高与类型**只在默认卡时输出**。补 `og:image:alt` / `twitter:image:alt`。
+- **其它标准字段**：`og:site_name`、`og:locale=zh_CN`、明暗两套 `theme-color`、`name=robots`（含 `max-image-preview:large`，让抓取器愿意出大图卡片）；`twitter:card` 全站改 `summary_large_image`（旧版首页是 `summary`，没有大图）。
+- **默认分享卡重画**：旧 `img/header.png` 还停留在 V10.5 的点阵形状与旧标语「向死而生」，和现在「实心朱砂点 + 纸墨」对不上。新增 `scripts/gen-og-image.py`（Pillow + 系统字体）生成 1200×630 卡片：域名 / 黑体「一点」+ 实心朱砂点 / 当前主张 / 分类信息，oxipng 后 20.5KB（旧图 44KB）。脚本入库，改标语可复现。
+- **配置清理**：`params.yaml` 里 `favicon` 被定义两次，后者 `/favicon.png` 根本不存在；删掉重复项，站点描述也改成与「一点」品牌一致的文案。
+
+### 37.4 robots 与桌面分享
+
+- `static/robots.txt` 末尾是 `User-agent: * / Disallow: /` —— 所有未列名的爬虫（含微信 / QQ / 知乎 / 小红书的分享预览抓取）全被挡在门外，og 卡片根本抓不到。改成 `Allow: /`，并补 LinkedInBot / Slackbot / WhatsApp / Weibo / Sogou / 360Spider / PetalBot / Applebot 等预览 UA；AI 爬虫仍单独拦。
+- `assets/js/reading.js`：旧版「分享」按钮只在 `navigator.share` 存在时显示，桌面基本看不到；摘句工具条的「分享」同理。现在两者桌面也显示，触屏走系统分享，桌面降级为复制一段「《标题》 + 摘要 + 链接」的分享文案（新增 `pageDesc()` / `shareCard()` / `systemShare()`），按钮文案与 toast 都有反馈。
+
+### 37.5 验证
+
+- 干净生产构建 202 页；首页 / 文章页 / 归档页 / 关于页 / 标记页五类 JSON-LD 全部 `json.loads` 通过，类型分别为 WebSite / BlogPosting / CollectionPage / WebPage / WebPage，`og:type` 一致。
+- `node --check` 通过；CDP 实测桌面 `hasShare=true` 但 `pointer: coarse=false` 时走降级：点击后按钮变「文案已复制 ✓」、toast「分享文案已复制」，摘句工具条有 2 个按钮。
+- 首页 / 文章页 / 关于页 / 归档页控制台 0 报错；`robots.txt` 默认放行、Sitemap 指向正确；分享图 1200×630。
+- README 新增「分享与 SEO」条目、更新生成物说明与节数（36 → 37）。
