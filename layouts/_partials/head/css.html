@@ -2,10 +2,8 @@
   主样式包：UnoCSS + 主 SCSS，经 Hugo Pipes 合并压缩并加指纹。
   外链后可被浏览器长期缓存，避免每页重复内联样式。
 
-  字体：正文字体已自托管（static/fonts/*.woff2，@font-face 在 assets/css/_fonts.scss），
-  不再请求 jsdelivr：
-    · 原方案 6 个字体族样式共 ≈630KB CSS / 582 条 @font-face，实际只用到 1 个族；
-    · 现在按全站用字裁成 2 个 woff2，一次请求、长期缓存、不依赖第三方域名。
+  字体：V10.29 起全站使用系统字体，零字体下载、零 @font-face、零外部字体域名。
+  正文走 --font-read（系统宋体栈），标题走 --font-display（系统黑体）。
   Aplayer 样式只在用到 aplayer 短代码的页面需要，已改为由短代码按需加载。
 */}}
 

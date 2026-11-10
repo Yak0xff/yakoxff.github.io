@@ -6,8 +6,8 @@
    相邻档位差 0.02rem 肉眼无差别却让样式表无法维护。
    =================================================================== */
 :root {
-    /* ---- 字族：内容用衬线（楷），界面用无衬线，编号日期用等宽 ---- */
-    --font-serif: "LXGW WenKai", "Songti SC", serif;
+    /* ---- 字族：内容用系统宋体，界面用无衬线，编号日期用等宽 ---- */
+    --font-serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Microsoft YaHei", sans-serif;
     --font-sans: system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, "PingFang SC", monospace;
 
@@ -63,7 +63,7 @@
 :root {
     /* colors —— 纸墨暖调
        中性色一律向品牌绛红倾斜（偏暖），不用纯白/纯黑：纸张是暖白的，
-       冷灰底 + 暖绛红会让 accent 显脏。与霞鹜文楷、方印同为一套气质。 */
+       冷灰底 + 暖绛红会让 accent 显脏。与宋体正文、方印同为一套气质。 */
     --background-color: #f7f5f2;
     --block-background-color: rgb(var(--block-background-color-rgb));
     --block-background-color-rgb: 238, 235, 230;

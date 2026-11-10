@@ -81,12 +81,13 @@
   --zhu-line: rgba(217, 67, 31, .35);
   --on-zhu: #fffaf6;
 
-  /* ---------- 字族：黑体立骨，楷体说话，等宽记账 ----------
-     标题用系统黑体（零下载、字重全），正文保留霞鹜文楷作为
-     站点的「声音」，日期 / 编号 / 计数统一等宽，三者职责不重叠。 */
+  /* ---------- 字族：黑体立骨，宋体行文，等宽记账 ----------
+     V10.29：全站零字体下载。标题系统黑体，正文系统宋体
+     （刻意跳过 SimSun，Windows 落微软雅黑，避免小字号发虚），
+     日期 / 编号 / 计数统一等宽，三者职责不重叠。 */
   --font-display: "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC",
     "Microsoft YaHei", system-ui, -apple-system, sans-serif;
-  --font-read: "LXGW WenKai", "Songti SC", "STKaiti", serif;
+  --font-read: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "Microsoft YaHei", sans-serif;
   --font-ui: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-num: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
 

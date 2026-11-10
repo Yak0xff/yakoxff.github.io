@@ -233,7 +233,7 @@ html[data-width] article.post-article.rd {
 
 .rd .rd-prose {
   counter-reset: rd-h2;
-  /* V10.23：正文整体用项目自带的霞鹜文楷，不另引字体。
+  /* V10.23 定下正文的排布，V10.29 起字体改走 --font-read 的系统宋体栈。
      旧版用 text-align:justify + text-justify:inter-character 逐字拉伸，
      中文字距忽宽忽窄；strong 又整段刷成朱砂色，满屏红字没有重点。
      这里取消拉伸、收敛朱砂、重调行距段距与色值层次。 */

@@ -40,7 +40,7 @@
 .dispatch-sigil {
   margin-right: .4em;
   font-family: var(--font-read);
-  /* 标题继承 600 字重，会把 medium 那份 woff2 也拉下来（+682KB），这里压回 400 */
+  /* 标题会继承 600 字重，这里压回 400，让符号与正文同粗细 */
   font-weight: 400;
   font-size: 1.2em;
   color: var(--zhu);

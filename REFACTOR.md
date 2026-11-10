@@ -1539,3 +1539,44 @@ curl 三次：TLS 1.68 / 3.10 / 3.94s，TTFB 2.75 / 3.73 / 4.80s，一次 30s �
 ### 42.4 仍需用户决策的部分
 
 链路层（⑤）未动：`*.pages.dev` 落 LAX 与国内跨境质量不是仓库能改的，要绑自定义域名或换国内 CDN。另外顺带发现 CSP 的 `script-src` 只有 `'self'`，外部 `cloud.umami.is` 可能被拦截、统计未必生效；本轮只解决它拖慢页面的问题，未擅自放宽安全策略。
+
+---
+
+## 四十三、V10.29：去掉自托管字体，正文改用系统宋体（2026-11-10）
+
+### 43.1 选型
+
+用户问「去掉自定义字体、采用系统自带字体，哪种比较好」。先查了 `--font-read` 的影响面（全站约 20 处：base、阅读页、首页刊语、此刻栏、虚构书页、页脚、标记页、关于页等），再用浏览器 canvas 实测本机可用字族：`Songti SC` / `STSong` / `Kaiti SC` / `STKaiti` / `PingFang SC` / `STHeiti` 可用，`SimSun` / `Microsoft YaHei` / `Noto Serif CJK SC` 不在 macOS 本机（属 Windows / Linux 侧）。
+
+给了四种同段正文的并排样张：A 宋体、B 系统楷体、C 系统黑体、D 标题黑体 + 正文宋体。用户选 **A 宋体优先**。
+
+理由：中文印刷正文的标准字体就是宋体，横细竖粗、有顿笔，在「纸墨朱砂 / 书页」的版式里最接近原先的楷体气质；系统楷体（B）虽在 macOS 上几乎无差别，但 Windows 的 KaiTi 笔画细、长文吃力；黑体（C）最清晰却会把站点变成现代网页感。
+
+### 43.2 字体栈与取舍
+
+```css
+--font-read: "Songti SC", "STSong", "Noto Serif CJK SC",
+             "Source Han Serif SC", "Microsoft YaHei", sans-serif;
+```
+
+**刻意跳过 `SimSun`**：Windows 的中易宋体在 18px 下发虚、有锯齿，让它落到微软雅黑更可读。代价是各平台字形不再一致——这本来就是自托管字体当初要解决的问题，去掉它就得接受：
+
+| 平台 | 实际落点 |
+|---|---|
+| macOS / iOS | Songti SC（CDP `CSS.getPlatformFontsForNode` 实测） |
+| Windows | Microsoft YaHei |
+| Android / Linux | Noto Serif CJK SC，或最终 sans |
+
+### 43.3 改动清单
+
+- `_tokens.scss` 的 `--font-read` 换成上面的宋体栈，注释改「黑体立骨，宋体行文，等宽记账」；`utils/_variables.scss` 的 `--font-serif` 同步；`layouts/fictions/section.html` 里硬编码的 `"LXGW WenKai"` 一并换掉。
+- **删除**：`assets/css/_fonts.scss`（及 `main.scss` 的 `@import "fonts"`）、`static/fonts/lxgw-wenkai-regular.woff2`、`scripts/build-font-subset.sh`、`head.html` 的字体 `preload`、`static/_headers` 的 `/fonts/*` 缓存规则。
+- **同步文案**：`head/css.html`、`_fictions.scss`、`_reading.scss`、`_dispatch.scss` 的过时注释，`layouts/about.html` 的「字　体」一行；编年长文《付印之前》在编年表后补一句「字体文件被拿走、正文换上系统宋体」，保留上文对当时楷体的历史描述。
+- README 字体章节重写（含四角色字体栈与跳过 SimSun 的原因）、许可里删掉 SIL OFL、依赖表与维护命令表删掉字体工具、性能基线、节数（42 → 43）同步。
+
+### 43.4 验证
+
+- 构建 211 页 / **328 文件 / 8.38 MiB**（再省 681KB）；产物无 woff2、CSS 无 `@font-face`、HTML 无 preload、`_headers` 无 fonts 规则。
+- CDP 实测 computed `font-family` 为宋体栈、`CSS.getPlatformFontsForNode` 返回 **`Songti SC`**，确认真的落到系统宋体而非回退。
+- 本地同浏览器首屏传输 **868KB → 170KB**（4 个资源，TTFB 76ms、`load` 234ms）；明暗截图宋体正文的顿笔、行距、加粗强调与标题层级均协调；首页 / 文章 / 归档 / 关于四页控制台 0 报错。
+- 首屏传输三轮变化：1.57MB（初始）→ 868KB（V10.28）→ 170KB（V10.29）。

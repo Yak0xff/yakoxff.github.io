@@ -45,7 +45,7 @@
 | 生成器 | Hugo 0.150 extended | 模板 + Hugo Pipes：Sass 编译、minify、fingerprint + SRI |
 | 样式 | SCSS + UnoCSS | 设计令牌在 `assets/css/v10/_tokens.scss`；UnoCSS 只为模板里真正出现的原子类产出 CSS（当前 618 条） |
 | 脚本 | 原生 JavaScript，无框架 | 首页涟漪场（canvas）、阅读页（读程 / 摘句 / 偏好）、主题切换、评论与目录抽屉 |
-| 字体 | 霞鹜文楷 LXGW WenKai，自托管子集 | 见[字体](#字体) |
+| 字体 | 系统宋体正文 / 系统黑体标题，零字体下载 | 见[字体](#字体) |
 | 评论 | giscus | GitHub Discussions，配自建无边框主题 `static/css/giscus_noborder.css` |
 | 统计 | Umami | 只在 `production` 注入，本地预览不请求线上统计 |
 | 部署 | Cloudflare Pages + GitHub Pages | `static/_headers` 是 Pages 的缓存 / CSP 配置，GitHub Pages 会忽略 |
@@ -72,7 +72,7 @@
 
 ![暗色主题下的首页](screenshot-dark.png)
 
-三种字体角色分工：标题走 `--font-display`（系统黑体），正文走 `--font-read`（霞鹜文楷），数字 / 眉题走 `--font-num`（等宽）。正文之外的界面文字一律用系统 UI 字体。
+三种字体角色分工：标题走 `--font-display`（系统黑体），正文走 `--font-read`（系统宋体栈），数字 / 眉题走 `--font-num`（等宽）。正文之外的界面文字一律用系统 UI 字体。全站零字体下载，见[字体](#字体)。
 
 - **首页**：刊头是一块 canvas 涟漪点阵场——朱砂点像一滴墨落进水面，波前经过的点被点亮并沿径向推开；指针靠近会亮起，点击能激起新的涟漪。`prefers-reduced-motion` 下只画一帧静态晕圈，画面静止 600ms 后停表。头条（最新 / 精选）下方还有两篇「次条」，只给标题与日期、阅读时长，不显示摘要，且会先从「最近发表」的时间序里扣掉，避免重复。
 - **刊头右侧**：不再重复「文章 / 主题 / 万字」（「此刻 → 在发」已有篇数和字数），水平并排放两颗独立点阵图（整体靠栏目右侧，潮汐因此向左让出位置）。左为「潮汐之境」点云球——2000 枚点按 Fibonacci 球面分布，多层噪声长出朱砂群岛，缓慢自转，入场时从海面往上生长，点一下荡开两圈潮汐；右为「夜航星海」星盘——1800 点铺成四条对数旋臂的倾斜盘面，内快外慢差速自转、逐颗闪烁，点击荡开椭圆回响。两颗各一块 canvas、各自内联 JS（30fps 节流、不可见停表），颜色读站点令牌跟随明暗，`prefers-reduced-motion` 下都只画一帧。原型分别取自 DOT / WORLD 的 *TIDAL ARCHIPELAGO* 与 *THE INFINITE GARDEN*，见 `assets/js/tide.js` / `galaxy.js`。全视口保持水平并排，≤860px 时两颗等比缩到 `clamp(108px, 32vw, 140px)`，避免溢出与首屏被拉空。
@@ -86,7 +86,7 @@
 - **分享与 SEO**：`head/siteinfo.html` 统一输出 title / canonical / description / OG / Twitter Card / JSON-LD；标题在非首页带站点名，描述按 front matter 优先链取并截断到 160 字。分享图优先用 `og_image` / `banner`，否则用 `static/share/og-card-v2.png`（1200×630，可用 `scripts/gen-og-image.py` 重生成）。文件名带版本号、放在独立的 `share/` 目录，是因为 X 按图片 URL 长期缓存卡片且 `_headers` 给 `/img/*` 设了 30 天缓存——换内容必须换 URL 才会被重新抓取。JSON-LD 按首页 `WebSite` / 文章 `BlogPosting` / 独立页 `WebPage` / 列表 `CollectionPage` 分流，全部走 `jsonify` 保证合法；`robots.txt` 默认放行并允许各类预览抓取器，只拦 AI 爬虫。文章页的「分享」按钮在桌面降级为复制「标题 + 摘要 + 链接」。
 - **重生第一篇**：`content/posts/付印之前：三十九道红笔.md` 是站点的设计编年长文，按 V10 → V10.25 复盘每一轮的取舍、前后数字与令牌 / 网格 / 内容 / 缓存四层底层规则，附完整编年表与 10 张配图（真实前后对比、手绘 SVG 示意、生成插画，均在 `static/img/rebirth/`）。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 42 节，从诊断到 V10.28 首屏性能收口）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 43 节，从诊断到 V10.29 系统字体切换）。
 
 ## 目录结构
 
@@ -100,9 +100,9 @@
 ├── data/               # about.yaml（intro + 首页 dispatch）· highlights.json · imgmeta.json
 ├── i18n/               # zh.yml（en.yml 保留但未启用）
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
-├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights
-├── static/             # img/ · share/（版本化 OG 卡 og-card-v2.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（42 节）
+├── scripts/            # dev-server · build-prod · gen-og-image · optimize-images · highlights
+├── static/             # img/ · share/（版本化 OG 卡 og-card-v2.png）· pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
+├── REFACTOR.md         # 设计重构记录（43 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -115,7 +115,6 @@
 | [Hugo](https://gohugo.io/) | 0.150 **extended** | 生成站点（extended 才有 LibSass） |
 | Node.js | 18+ | 只用来跑 UnoCSS，产出 `assets/css/uno.css` |
 | `oxipng` · `jpegtran` | 任意 | 可选，跑图片优化脚本时用（`brew install oxipng jpeg-turbo`） |
-| `fonttools` + `brotli` | 任意 | 可选，重新裁剪字体子集时用 |
 
 ### 起步
 
@@ -146,7 +145,6 @@ npm run build:uno             # unocss --watch
 |---|---|
 | `npm run dev` | 本地预览（1313 端口，`PORT=1314 npm run dev` 可换端口） |
 | `npm run build` | = `sh scripts/build-prod.sh`，生产构建到 `public/` |
-| `sh scripts/build-font-subset.sh` | 按全站用字重新裁剪字体子集（见[字体](#字体)） |
 | `python3 scripts/optimize-images.py` | 无损压缩 `static/img/` 下图片，并刷新 `data/imgmeta.json` |
 | `python3 scripts/highlights.py` | 扫全站 `==高亮==`，重新生成 `data/highlights.json`（已入库，改完记得一起提交） |
 | `python3 scripts/run_scripts.py` | 依次跑完 `scripts/` 下所有 Python 脚本 |
@@ -225,22 +223,18 @@ Hugo 会按 front matter 自动生成 `/categories/` 与 `/tags/`。要改总览
 
 ### 字体
 
-正文字体是霞鹜文楷，已按全站实际用字（3111 字符，其中汉字 2911）裁成**一个** woff2 放在 `static/fonts/`，不再依赖任何字体 CDN：
+V10.29 起全站**零字体下载**：不再自托管 woff2，也不请求任何字体 CDN，正文、标题、数字全部用系统字体。
 
-| 文件 | 字重 | 大小 |
+| 角色 | 变量 | 字体栈 |
 |---|---|---|
-| `lxgw-wenkai-regular.woff2` | 100–900（加粗由浏览器合成） | 681KB |
+| 标题 | `--font-display` | PingFang SC / 思源黑体 / 微软雅黑 等系统黑体 |
+| 正文 | `--font-read` | `Songti SC` → `STSong` → `Noto Serif CJK SC` → `Source Han Serif SC` → `Microsoft YaHei` → `sans-serif` |
+| 界面 | `--font-ui` | 系统 UI 字体 |
+| 数字 / 编号 | `--font-num` | 系统等宽 |
 
-V10.28 之前 Regular / Medium 各 683KB 且首屏会同时下载，占首屏 1.43MB 的 96%。现在 `@font-face` 用 `font-weight: 100 900` 覆盖全部字重、head 里 `preload` 这一个文件、`font-display: swap` 保持，首屏字体请求直接减半。
+宋体是中文印刷正文的标准字体，横细竖粗、有顿笔，在「纸墨朱砂」的版式里最贴近原先的楷体气质。字体栈**刻意跳过 `SimSun`**：Windows 的中易宋体在 18px 下发虚，让它落到微软雅黑更可读；代价是各平台字形不完全一致，这是去掉自托管字体换来的取舍。实测 macOS Chrome 落在 `Songti SC`。
 
-**如果新文章用到子集之外的生僻字，它会退回系统宋体**——重跑一次即可补全：
-
-```bash
-python3 -m venv /tmp/fenv && /tmp/fenv/bin/pip install fonttools brotli
-PYFTSUBSET=/tmp/fenv/bin/pyftsubset sh scripts/build-font-subset.sh
-```
-
-脚本会扫 `content/` `layouts/` `i18n/` `data/` 与配置，取全部用字，再从上游下载 Regular TTF 做子集化（含 `--no-hinting --desubroutinize`）；下载结果小于 1MB 视为失败会重下。V10.28 起只生成 Regular。emoji 不在子集内，由系统字体兜底（站点实测缺 34 个 emoji，属于预期）。
+旧方案（霞鹜文楷子集 681KB、`@font-face`、`preload` 与 `scripts/build-font-subset.sh`）已在 V10.29 一并移除。
 
 ### 图片
 
@@ -256,7 +250,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 生产构建参数与 CI 一致：`--gc --minify --cleanDestinationDir`，`HUGO_ENVIRONMENT=production`（会注入 Umami、去掉标题里的 `[本地]`）。
 
-- **Cloudflare Pages**：构建命令填 `npm run build:uno:prod && npm run build`，产物目录 `public`。仓库根目录的 `static/_headers` 在这里生效——HTML 由 CDN 短缓存 5 分钟并后台刷新（浏览器仍每次校验，部署会主动刷新缓存），指纹化的 `/css/main.min.*`、`/js/*.min.*` 永久 immutable，字体 7 天、图片 30 天，同时带一条 CSP（目前只约束 `script-src`）。
+- **Cloudflare Pages**：构建命令填 `npm run build:uno:prod && npm run build`，产物目录 `public`。仓库根目录的 `static/_headers` 在这里生效——HTML 由 CDN 短缓存 5 分钟并后台刷新（浏览器仍每次校验，部署会主动刷新缓存），指纹化的 `/css/main.min.*`、`/js/*.min.*` 永久 immutable，图片 30 天，同时带一条 CSP（目前只约束 `script-src`）。
 - **GitHub Pages**：`.github/workflows/hugo.yml` 在推送 `main` 时用同一套参数构建、上传产物并尝试部署；但仓库的 Pages 站点目前没启用（见[已知限制](#已知限制)），`_headers` 在这条线上也不生效。
 
 两边都只跑 `build:uno:prod` 和 `hugo`，**不会跑** `scripts/highlights.py` 与 `scripts/optimize-images.py`——涉及这两步的改动要在本地做完再提交。`data/highlights.json` 已入库，所以 CI 不跑脚本也能出完整的标记页；但改了文章里的 `==高亮==` 之后，要本地重跑脚本并提交新的 JSON，线上才会跟着变。
@@ -267,15 +261,15 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 | 指标 | 数值 |
 |---|---|
-| 构建产物 | 211 页 / 329 个文件 / **9.1 MiB**（V10.28：9 张文章大图转 WebP、清掉 2.1MB 零引用死图、字体去掉 Medium，比上一版少 5.3 MiB） |
-| 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 preload woff2 + favicon 5KB），涟漪脚本内联在 HTML 里；本地实测首屏传输 868KB |
+| 构建产物 | 211 页 / 328 个文件 / **8.4 MiB**（V10.28 大图转 WebP，V10.29 移除字体文件；相比最初的 14.4 MiB 少约 42%） |
+| 首页请求 | 4 个（1 CSS + 2 JS + favicon 5KB，字体零请求），涟漪脚本内联在 HTML 里；本地实测首屏传输 **170KB** |
 | 首页 HTML | 47.5KB（gzip 后 16.0KB，含内联的 field / tide / galaxy 三份脚本、状态公报、两篇次条与虚构书页） |
 | 首页样式 | 156KB（gzip 后 28KB） |
 | 首页 LCP / CLS | 约 120ms / 0.0001 |
-| 文章页 | 1 个 woff2（681KB）+ 21KB JS；LCP 140ms，CLS 0.0011 |
+| 文章页 | 21KB JS，字体零下载；LCP 140ms，CLS 0.0011 |
 | 列表页脚本 | 0.5KB（只剩进场动画，读程 / 目录 / 偏好按 `.IsPage` 才加载） |
 
-V10.28 后字体从 1.37MB 降到 681KB、大图从约 6.3MB 降到 1.5MB；本地同浏览器首屏传输由 1.57MB 降到 868KB。剩下的成本：**字体仍是最大单项**（681KB，换来正文不发虚且长期可缓存），**样式是第二块**（156KB 里大部分是 `uno.css` 与设计系统本身，gzip 后 28KB）。线上 TTFB 仍受 `pages.dev` 落 LAX 影响，见 REFACTOR 第四十二节。
+两轮优化后：大图从约 6.3MB 降到 1.5MB，字体从 1.37MB 归零，本地同浏览器首屏传输 **1.57MB → 868KB → 170KB**。现在最大的单项是样式（156KB，大部分是 `uno.css` 与设计系统，gzip 后 28KB），其次是 47.5KB 的首页 HTML。线上 TTFB 仍受 `pages.dev` 落 LAX 影响，见 REFACTOR 第四十二节；字体跨平台差异见第四十三节。
 
 ## 已知限制
 
@@ -289,4 +283,3 @@ V10.28 后字体从 1.37MB 降到 681KB、大图从约 6.3MB 降到 1.5MB；本�
 
 - 博客内容：[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.zh)
 - 站点源代码：[MIT](LICENSE)
-- 字体：霞鹜文楷 [SIL Open Font License 1.1](https://github.com/lxgw/LxgwWenKai)
