@@ -79,9 +79,12 @@ html[data-width] article.post-article.rd {
 }
 
 .rd-title {
-  /* V10.19：用户反馈字号过大，回调到比 V10.8 原版还收一档；
-     行宽仍不锁（扉页 1200px），balance 仍换 pretty 避免孤字。 */
-  max-width: 100%;
+  /* V10.22：V10.19 把行宽放到扉页全宽 1200px，长标题第一行会顶到
+     右侧点线目录、第二行只剩三个孤字。收回到与正文同宽的
+     --rd-measure（≥1100px 时已为目录留好通道），左右与正文对齐；
+     balance 让折行后的两行长度接近，居中排不出现孤字尾行。
+     min() 用插值输出，避开 LibSass 对混合单位求值。 */
+  max-width: #{"min(var(--rd-measure), 100%)"};
   margin: .7rem auto 0;
   font-family: var(--font-display);
   font-size: #{"clamp(1.65rem, 1.25rem + 1.5vw, 2.4rem)"};
@@ -89,7 +92,7 @@ html[data-width] article.post-article.rd {
   line-height: 1.2;
   letter-spacing: -.03em;
   color: var(--ink);
-  text-wrap: pretty;
+  text-wrap: balance;
 
   /* 标题从下方「浮出纸面」：裁切 + 上移 */
   > span {
