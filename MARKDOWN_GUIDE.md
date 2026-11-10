@@ -177,13 +177,6 @@ description: 这是一个配置示例
 {{</ gallery >}}
 ```
 
-### 链接卡片
-```markdown
-{{< link type="podcast" title="播客标题" link="https://example.com" image="https://example.com/image.jpg" >}}
-
-{{< link type="website" title="网站标题" link="https://example.com" image="https://example.com/image.jpg" >}}
-```
-
 ### 最近文章
 ```markdown
 {{< recent-posts >}}

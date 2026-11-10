@@ -1,0 +1,20 @@
+{{/*
+  头条下方的两篇「次条」（V10.19）
+  ---------------------------------------------------------------
+  首页「最新」原本只有头条一篇，这里补上时间序的第 2、3 篇。
+  按反馈只给标题与必要元信息，不显示摘要；与头条同栏、细线分隔，
+  像报纸头版的下半栏。数据由 home.html 的 $leadMore 传入。
+*/}}
+{{- with .pages -}}
+<ul class="lead-more" data-stagger>
+  {{ range . }}
+  <li class="lead-more-item reveal">
+    <a class="lead-more-link" href="{{ .RelPermalink }}">
+      <span class="lead-more-title">{{ .Title }}</span>
+      <span class="lead-more-meta num">{{ .Date.Format "2006.01.02" }} <span aria-hidden="true">·</span> {{ .ReadingTime }} 分钟</span>
+      <span class="v-arrow" aria-hidden="true">→</span>
+    </a>
+  </li>
+  {{ end }}
+</ul>
+{{- end -}}

@@ -13,7 +13,6 @@ content/posts/_template.md
 /content/templates
 /content/ebooks
 static/link-graph.json
-data/externallinks.json
 assets/css/uno.css
 
 # Hugo 运行时锁文件，不需要入库

@@ -1238,3 +1238,39 @@ CDP 实测（1440 视口）：容器 762px、字号 41.6px、标题单行文字�
 - 干净生产构建 203 页；首页头条标题 1100 / 1280 / 1440 三档均 1 行，阅读页标题在 1440 明暗两色均 1 行、390px 窄屏折成语义自然的两行且无孤字、不溢出。
 - 阅读页账页去掉竖线后仍上下各一条细线框住，Aa 按钮位置正常；扉页底部朱砂点保留、线不再刺眼。
 - 首页 / 阅读页 / 关于页控制台 0 报错。README 首页明暗截图重拍，设计章节「阅读页」与节数（34 → 35）同步。
+
+---
+
+## 三十六、V10.19：首页增补、扉页精简、侠客下线、虚构书页（2026-11-10）
+
+### 36.1 四条反馈
+
+1. 首页「最新」只有一篇，底部再补两篇，只显示标题与必要信息、不显示摘要，样式自定。
+2. 阅读页顶部只显示标题、不显示简介，其它信息占空间过多，标题字号也太大。
+3. 去除整个「侠客」的定义和数据。
+4. 首页增加一个展示虚构内容与必要信息的 section，要有「小说的感觉」，样式自定。
+
+### 36.2 首页：两篇次条 + 虚构书页
+
+- **次条**：`home.html` 取时间序第 2、3 篇（`$leadMore := first 2 (after 1 $sorted)`），先记进 `used`，「最近发表」不再重复它们。`.front` 左栏包一层 `.front-main`（`align-items: start` 防止右栏「此刻」被拉伸），新 partial `home/lead-more.html` 只渲染标题 + 日期 / 阅读时长 + 箭头，细线分隔，无摘要。≤600px 时元信息落到标题下一行。
+- **虚构书页**：新 partial `home/fictions.html` + `v10/_fictions.scss`，放在「按主题读」之后、底部按钮之前，编号 `03`。两部连载各一张书页卡片：卷号 + 状态印（已完结 / 连载中）+ 霞鹜文楷书名 + 两行截断简介 + 最近三章的**点线目录**（leader + 日期）+「共 N 章 · 读全书」。数据全部来自 `site.GetPage "section" "fictions"` 的 `.Sections` 与各章 front matter，不另建数据文件、不加载 JS；≤860px 竖排。
+- 踩坑：模板注释里写 `content/fictions/*/_index.md`，`*/` 会让 Hugo 报 `comment ends before closing delimiter`；改成「content/fictions 下各部的 _index.md」。
+
+### 36.3 阅读页扉页精简
+
+- 模板删掉 `$lede` 变量与 `.rd-lede` 简介整块，CSS 里对应样式一并删。
+- 标题字号回调：`clamp(2rem, 1.5rem+2.4vw, 3.4rem)` → `clamp(1.65rem, 1.25rem+1.5vw, 2.4rem)`（1440 下 38.4px），比 V10.8 原版还收一档；行宽仍不锁、仍用 `pretty`。
+- 整体收紧：`.rd-head` 顶部 padding `clamp(1rem,3vw,3.5rem)` → `clamp(.5rem,1.5vw,1.75rem)`，标题 margin `1.1rem → .7rem`，账页 margin-top `2.25rem → 1.1rem`、内边距 `.8rem 1.1rem → .45rem .85rem`，`.rd-rule` 宽度 `15rem → 11rem`、margin-top `2.5rem → 1.25rem`。正文明显更早出现。
+
+### 36.4 侠客整体下线
+
+`git rm`： `content/xiake.md`（含 `/cards/links/` `/links/` `/blogroll/` 三个别名）、`assets/css/components/_links.scss`、`layouts/_shortcodes/link.html` 与历史副本 `layouts/shortcodes/link.html`、`static/img/default-favicon.svg`；另删未被跟踪的 `data/externallinks.json`。配置/文档清掉 `params.zh.yaml` 页脚「侠客」、`main.scss` 的 `_links` import、`.gitignore` 的 externallinks 行、`MARKDOWN_GUIDE.md` 的链接卡片段、README 的栏目表/目录/独立页面/已知限制四处，以及 CSS 注释里的三处提及。REFACTOR 历史章节保留。`_markup/render-link.html` 的 `.external-link` 与 Umami 的同名事件是外链渲染，不是友链，未动。
+
+产物：`/xiake/`、`/blogroll/` 均 404，`/fictions/` 200；首页无 `xiake` / `侠客` 残留。
+
+### 36.5 验证
+
+- 干净生产构建 **202 页 / 311 文件 / 13.73 MiB**（侠客页 + 3 别名 + 友链图下线，少 5 个文件）；首页 HTML 42.4 → 47.0KB（gzip 14.7 → 16.0KB），CSS 152.8 → 154.3KB。
+- 首页产物：次条 2 篇、虚构卡片 2 张各 3 章目录、章节编号 `01 / 02 / 03`、书名与状态正确；阅读页产物无 `rd-lede`。
+- 1440 明暗两色 + 390px 窄屏截图：次条细线清爽不重复摘要、虚构书页有书卷气且不溢出、扉页紧凑但仍有呼吸感；首页 / 阅读页 / 虚构 / 关于 / 归档五页控制台 0 报错。
+- README 首页明暗截图重拍，设计章节、性能基线与节数（35 → 36）同步。

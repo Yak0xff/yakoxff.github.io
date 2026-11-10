@@ -14,7 +14,7 @@
   padding: 0 var(--sp-4);
 }
 
-/* 目录页内的长文（侠客 / 赞助等 page 页）维持阅读行长，
+/* 目录页内的长文（赞助等 page 页）维持阅读行长，
    只约束正文，不约束页头 */
 .archive-page .post-content {
   max-width: var(--page-width);

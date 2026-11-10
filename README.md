@@ -31,7 +31,6 @@
 | 虚构 | `/fictions/` | 2 部连载、26 章：目录即书名，一章一个文件 |
 | 关于 | `/about/` | 写作年轮（一圈一年）、DOT / MOTION 点阵动效插页、版权页、鸣谢、在别处 |
 | 标记 | `/highlights/` | 主导航栏目。8 篇 / 36 句，按来源文章分组；`==高亮==` 由脚本汇总，JSON 已入库 |
-| 侠客 | `/xiake/` | 友情链接与「网上邻居」（旧地址 `/blogroll/`、`/cards/links/` 会重定向） |
 | 精选 | `/featured/` | 自选的一批文章 |
 | 赞助 | `/sponsor/` | 支持创作，页内实时统计篇数与字数 |
 | 标签 | `/tags/` | 主题总览 + 站内搜索（搜索索引见[已知限制](#已知限制)） |
@@ -75,15 +74,16 @@
 
 三种字体角色分工：标题走 `--font-display`（系统黑体），正文走 `--font-read`（霞鹜文楷），数字 / 眉题走 `--font-num`（等宽）。正文之外的界面文字一律用系统 UI 字体。
 
-- **首页**：刊头是一块 canvas 涟漪点阵场——朱砂点像一滴墨落进水面，波前经过的点被点亮并沿径向推开；指针靠近会亮起，点击能激起新的涟漪。`prefers-reduced-motion` 下只画一帧静态晕圈，画面静止 600ms 后停表。
+- **首页**：刊头是一块 canvas 涟漪点阵场——朱砂点像一滴墨落进水面，波前经过的点被点亮并沿径向推开；指针靠近会亮起，点击能激起新的涟漪。`prefers-reduced-motion` 下只画一帧静态晕圈，画面静止 600ms 后停表。头条（最新 / 精选）下方还有两篇「次条」，只给标题与日期、阅读时长，不显示摘要，且会先从「最近发表」的时间序里扣掉，避免重复。
 - **刊头右侧**：不再重复「文章 / 主题 / 万字」（「此刻 → 在发」已有篇数和字数），水平并排放两颗独立点阵图（整体靠栏目右侧，潮汐因此向左让出位置）。左为「潮汐之境」点云球——2000 枚点按 Fibonacci 球面分布，多层噪声长出朱砂群岛，缓慢自转，入场时从海面往上生长，点一下荡开两圈潮汐；右为「夜航星海」星盘——1800 点铺成四条对数旋臂的倾斜盘面，内快外慢差速自转、逐颗闪烁，点击荡开椭圆回响。两颗各一块 canvas、各自内联 JS（30fps 节流、不可见停表），颜色读站点令牌跟随明暗，`prefers-reduced-motion` 下都只画一帧。原型分别取自 DOT / WORLD 的 *TIDAL ARCHIPELAGO* 与 *THE INFINITE GARDEN*，见 `assets/js/tide.js` / `galaxy.js`。全视口保持水平并排，≤860px 时两颗等比缩到 `clamp(108px, 32vw, 140px)`，避免溢出与首屏被拉空。
 - **按主题读**：三栏一行，每栏一个主题三篇。先挑没被头条与「最近发表」用掉的文章，不够再回补，所以三栏始终填满。
+- **虚构书页**：首页编号 03 的区块，两部连载各一张书页卡片——卷号、状态印、楷体书名、一句简介、最近三章的点线目录与「共 N 章 · 读全书」。数据直接读 `content/fictions` 下各部的 `_index.md` 与章节 front matter，不另建数据文件；窄屏改为上下竖排。
 - **此刻**：头条右侧栏里的「状态公报」——细线分栏、等宽标签、朱砂点、日期框、底部排印说明，四行「在读 / 在写 / 在发 / 在码」，字号比头条低一档，不抢刊头。后两行从站点内容自动算出（篇数、字数、最近更新、近 12 个月发文柱图），不会写完就过期。见[维护此刻状态](#维护此刻状态)。
 - **分隔线**：全站统一 1px 半透明 `--line-2`（明暗各 24% 墨 / 纸色）。原 `--line-ink` 纯墨纯白的 2px 强线与 `3px double` 双线已废弃；只有引用块、朱砂强调这类竖向装饰保留粗线。
-- **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页（标题放大一档且不再锁行宽，账页去格子竖线、底部墨线收成 1px 细线）、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
+- **阅读页**：「一章书页」——宽版排版（外壳与首页同宽 1200px，正文最多 980px）、居中扉页（V10.19 起只留标题与紧凑账页：简介下线、标题字号回调、上下留白与装饰线一并收紧）、首字下沉、图片外扩出血；右页边点线目录的章节名常显（≥1100px），当前章朱砂加粗，窄屏改底部胶囊。选中文字浮出「复制摘句 / 分享」，文末「全文完」并给出实际用时。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 35 节，从诊断到 V10.18 标题排版收口）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 36 节，从诊断到 V10.19 首页增补与侠客下线）。
 
 ## 目录结构
 
@@ -93,13 +93,13 @@
 │   ├── css/            # main.scss 入口 · _fonts.scss 字体声明 · v10/ 设计系统 · components/ 组件 · legacy/ 旧版
 │   └── js/             # field.js 涟漪场 · tide.js 潮汐之境 · galaxy.js 夜航星海 · reading.js 阅读页 · rings.js 写作年轮 …
 ├── config/_default/    # config · params · params.zh · languages · markup · services
-├── content/            # posts · fictions · tags · categories + 独立页面（about / highlights / xiake / sponsor …）
+├── content/            # posts · fictions · tags · categories + 独立页面（about / highlights / sponsor …）
 ├── data/               # about.yaml（intro + 首页 dispatch）· highlights.json · imgmeta.json
 ├── i18n/               # zh.yml（en.yml 保留但未启用）
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/（含 components/dot-shape、tide）· _shortcodes/ · _markup/
 ├── scripts/            # dev-server · build-prod · build-font-subset · optimize-images · highlights
 ├── static/             # img/（含 og:image header.png、dot-motion-preview.png）· fonts/ · pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（35 节）
+├── REFACTOR.md         # 设计重构记录（36 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -190,7 +190,6 @@ banner: /img/xxx.png   # 扉页横幅，可选
   ```
 
   `link` 带 `#:~:text=` 片段，点进去浏览器会直接高亮那句原文。页面就按这个结构渲染：一组 = 一篇文章 + 若干摘句，细线分节、等宽编号、朱砂点作项目符号。JSON 已入库，CI 构建不会再变成空壳；改完 `==高亮==` 记得重跑脚本并把 JSON 一起提交。
-- **侠客**：直接写在 `content/xiake.md` 里，一条一个 `{{</* link link="…" title="…" */>}}`。
 - **精选 / 赞助 / RSS / 留白**：`/featured/` 用 `layout: featured`，`/blank/` 用 `layout: blank`，`/sponsor/` 与 `/rss/` 就是普通页面（赞助页里用了 `postcount` / `wordcount` 两个短代码做实时统计）。
 
 ### 维护此刻状态
@@ -264,10 +263,10 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 | 指标 | 数值 |
 |---|---|
-| 构建产物 | 203 页 / 316 个文件 / 13.8 MiB（应用栏目下线后少了 4 页、19 个文件、约 3.6 MiB 图片；后来补回 1 张 58KB 预览图） |
+| 构建产物 | 202 页 / 311 个文件 / 13.7 MiB（侠客页与 3 个旧别名、友链组件一并下线；首页补了两篇次条与虚构书页区块） |
 | 首页请求 | 6 个（文档 + 1 CSS + 2 JS + 1 woff2 + favicon 5KB），涟漪脚本内联在 HTML 里 |
-| 首页 HTML | 42.4KB（gzip 后 14.7KB，含内联的 field / tide / galaxy 三份脚本与状态公报） |
-| 首页样式 | 153KB（gzip 后 28KB） |
+| 首页 HTML | 47.0KB（gzip 后 16.0KB，含内联的 field / tide / galaxy 三份脚本、状态公报、两篇次条与虚构书页） |
+| 首页样式 | 154KB（gzip 后 28KB） |
 | 首页 LCP / CLS | 约 120ms / 0.0001 |
 | 文章页 | 2 个 woff2（1.33MB）+ 21KB JS；LCP 140ms，CLS 0.0011 |
 | 列表页脚本 | 0.5KB（只剩进场动画，读程 / 目录 / 偏好按 `.IsPage` 才加载） |
@@ -277,10 +276,8 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 ## 已知限制
 
 - **搜索索引是旧的**：`static/pagefind/` 里存着提交进库的 Pagefind 产物，但只索引了 28 页（内容页现在 135 页）。加新文章不会自动进索引，要手动 `pagefind --site public` 重新生成再提交。模板已改成「文件存在才输出脚本」，所以索引缺失也不会 404，只是搜不到。
-- **`data/externallinks.json` 没有被任何模板引用**：删掉后产出字节级一致，纯属残留，且仍在 `.gitignore` 里。
 - **GitHub Pages 其实没上线**：workflow 每次推送都在跑，但 `https://yakoxff.github.io/` 返回的是 GitHub 的「Site not found」——仓库 Settings → Pages 的 Source 没设成 GitHub Actions。真正对外的是 Cloudflare Pages 那条线。
 - **`static/_headers` 只对 Cloudflare Pages 生效**，GitHub Pages 的缓存策略与 CSP 走默认值，两份部署并不等价。
-- **`layouts/shortcodes/` 是历史副本**：配置里 `shortcodeDir` 指向 `layouts/_shortcodes/`，前者已不参与渲染，可以删。
 - **CSP 只约束了 `script-src`**，没有 `default-src`；要收紧得逐项放开 giscus、Umami 与内联样式/脚本（页面里有几段防闪烁的内联 script）。
 - **品牌图标是生成物**：`favicon.svg` 是手写的，但 `favicon.ico`（5KB）/ `apple-touch-icon.png` / `img/header.png`（1200×630 分享卡片）由一次性脚本画出、脚本没入库。再改站名或形状时，这三张要跟着重画。
 

@@ -33,6 +33,13 @@
 {{- end -}}
 {{- if not ($scratch.Get "leadURL") -}}{{- $scratch.Set "leadURL" "" -}}{{- end -}}
 
+{{/* 头条下方两篇次条：紧跟时间序的第 2、3 篇，只给标题与元信息。
+     先记进 used，下面的「最近发表」不再重复展示它们。 */}}
+{{- $leadMore := first 2 (after 1 $sorted) -}}
+{{- range $leadMore -}}
+  {{- $scratch.Add "used" (slice .RelPermalink) -}}
+{{- end -}}
+
 {{/* 最近发表：头条之后的 N 篇，严格时间序 */}}
 {{- $streamLimit := site.Params.features.restCount | default 8 -}}
 {{- range $sorted -}}
@@ -77,7 +84,10 @@
 
   {{ with $lead }}
   <div class="front">
-    {{ partial "home/lead" (dict "ctx" .page "badge" .badge) }}
+    <div class="front-main">
+      {{ partial "home/lead" (dict "ctx" .page "badge" .badge) }}
+      {{ partial "home/lead-more" (dict "pages" $leadMore) }}
+    </div>
     {{ partial "home/now" . }}
   </div>
   {{ end }}
@@ -98,6 +108,8 @@
   {{ end }}
 
   {{ partial "home/topics" (dict "groups" ($scratch.Get "groups") "taxo" $taxoName) }}
+
+  {{ partial "home/fictions" . }}
 
   <p class="home-more">
     <a class="v-button" href="/posts/">翻阅全部 {{ len $sorted }} 篇 <span class="v-arrow" aria-hidden="true">→</span></a>

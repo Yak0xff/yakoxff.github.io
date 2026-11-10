@@ -1,0 +1,52 @@
+{{/*
+  首页「虚构」书页（V10.19）
+  ---------------------------------------------------------------
+  两部连载各做成一张书页卡片：卷号 + 状态印 + 楷体书名 + 一句简介
+  + 最近三章的点线目录，像翻开一本书的目录页。数据全部来自
+  content/fictions 下各部的 _index.md 与章节 front matter，不另建数据文件。
+  纯展示，无 JS；章节按日期倒序取前三。
+*/}}
+{{- $fictionRoot := site.GetPage "section" "fictions" -}}
+{{- with $fictionRoot -}}
+{{- if .Sections -}}
+<section class="v-section fiction-shelf pagefind-exclude" aria-labelledby="fiction-heading">
+  <div class="v-section-head">
+    <span class="v-section-no" aria-hidden="true">03</span>
+    <h2 class="v-section-title" id="fiction-heading">虚构</h2>
+    <a class="v-section-more" href="/fictions/">全部连载 <span class="v-arrow" aria-hidden="true">→</span></a>
+  </div>
+
+  <div class="fiction-grid" data-stagger>
+    {{- $vol := 0 -}}
+    {{- range sort .Sections "Weight" -}}
+    {{- $vol = add $vol 1 -}}
+    {{- $chapters := sort .RegularPages "Date" "desc" -}}
+    <article class="fiction-book reveal">
+      <div class="fiction-book-head">
+        <span class="fiction-vol num">卷 {{ printf "%02d" $vol }}</span>
+        <span class="fiction-status">{{ .Params.status | default "连载中" }}</span>
+      </div>
+
+      <h3 class="fiction-title"><a href="{{ .RelPermalink }}">《{{ .Title }}》</a></h3>
+      <p class="fiction-desc">{{ .Params.description | default .Description }}</p>
+
+      <p class="fiction-toc-label num">目 录 · 最近三章</p>
+      <ul class="fiction-toc">
+        {{ range first 3 $chapters }}
+        <li>
+          <a href="{{ .RelPermalink }}">
+            <span class="fiction-chapter-name">{{ .Title }}</span>
+            <span class="fiction-leader" aria-hidden="true"></span>
+            <span class="fiction-chapter-date num">{{ .Date.Format "01.02" }}</span>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+
+      <a class="fiction-more" href="{{ .RelPermalink }}">共 {{ len $chapters }} 章 · 读全书 <span class="v-arrow" aria-hidden="true">→</span></a>
+    </article>
+    {{- end -}}
+  </div>
+</section>
+{{- end -}}
+{{- end -}}

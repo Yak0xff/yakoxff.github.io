@@ -42,11 +42,12 @@ html[data-width] article.post-article.rd {
 .rd-head {
   max-width: var(--container);   /* 扉页与首页外壳同宽 */
   margin: 0 auto;
-  padding: #{"clamp(1rem, 3vw, 3.5rem)"} 0 0;
+  /* V10.19：扉页整体收紧，简介下线后不再需要那么大的上下留白 */
+  padding: #{"clamp(.5rem, 1.5vw, 1.75rem)"} 0 0;
   border: 0;
   text-align: center;
 
-  > img { margin-bottom: 2.5rem; border-radius: var(--r-2); }
+  > img { margin-bottom: 1.5rem; border-radius: var(--r-2); }
 }
 
 .rd-kicker {
@@ -78,15 +79,14 @@ html[data-width] article.post-article.rd {
 }
 
 .rd-title {
-  /* V10.18：放大一档，标题在扉页里重新拿回视觉重心。
-     不再用 15em/18em 锁宽度——扉页本身有 1200px，锁了反而把
-     放大后的标题折成「长行 + 两个孤字」；balance 也换 pretty。 */
+  /* V10.19：用户反馈字号过大，回调到比 V10.8 原版还收一档；
+     行宽仍不锁（扉页 1200px），balance 仍换 pretty 避免孤字。 */
   max-width: 100%;
-  margin: 1.1rem auto 0;
+  margin: .7rem auto 0;
   font-family: var(--font-display);
-  font-size: #{"clamp(2rem, 1.5rem + 2.4vw, 3.4rem)"};
+  font-size: #{"clamp(1.65rem, 1.25rem + 1.5vw, 2.4rem)"};
   font-weight: 800;
-  line-height: 1.16;
+  line-height: 1.2;
   letter-spacing: -.03em;
   color: var(--ink);
   text-wrap: pretty;
@@ -98,16 +98,7 @@ html[data-width] article.post-article.rd {
   }
 }
 
-.rd-lede {
-  max-width: 32em;
-  margin: 1.4rem auto 0;
-  font-family: var(--font-read);
-  font-size: var(--step-1);
-  line-height: 1.7;
-  color: var(--ink-2);
-  text-wrap: pretty;
-  animation: rd-fade 800ms var(--ease-out) 260ms both;
-}
+/* V10.19：简介（.rd-lede）整块下线，扉页只留标题与必要元信息 */
 
 /* 账页：写于 | 篇幅 | 阅读 | 章节 | Aa */
 .rd-ledger {
@@ -115,22 +106,22 @@ html[data-width] article.post-article.rd {
   flex-wrap: wrap;
   justify-content: center;
   align-items: stretch;
-  margin: 2.25rem auto 0;
+  margin: 1.1rem auto 0;
   padding: 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   animation: rd-fade 800ms var(--ease-out) 380ms both;
 
-  /* V10.18：去掉格子竖线，靠留白分组——扉页里不再多出四五条细线 */
-  column-gap: .35rem;
+  /* V10.18 去格子竖线；V10.19 再收一圈内边距与间距 */
+  column-gap: .25rem;
 
   > div {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: .2rem;
+    gap: .15rem;
     margin: 0;
-    padding: .8rem 1.1rem;
+    padding: .45rem .85rem;
   }
 
   dt {
@@ -186,9 +177,9 @@ html[data-width] article.post-article.rd {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: .7rem;
-  width: 15rem;
+  width: 11rem;
   max-width: 70%;
-  margin: 2.5rem auto 0;
+  margin: 1.25rem auto 0;
 
   i {
     /* V10.18：2px 纯墨线收成全站统一的 1px 半透明线，朱砂点保留 */

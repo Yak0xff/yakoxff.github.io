@@ -27,7 +27,6 @@
 {{- end -}}{{- end -}}
 {{- if not $kicker -}}{{- $kicker = index (dict "posts" "随笔" "library" "书房" "fictions" "虚构") .Section | default .Section -}}{{- end -}}
 {{- $chapters := len (findRE `<h2[\s>]` .Content) -}}
-{{- $lede := .Params.subtitle | default .Params.description -}}
 
 <article class="post-article rd">
   {{/* ---------- 扉页 ---------- */}}
@@ -39,8 +38,6 @@
     </p>
 
     <h1 class="rd-title"><span data-pagefind-meta="title">{{ .Title }}</span></h1>
-
-    {{ with $lede }}<p class="rd-lede">{{ . }}</p>{{ end }}
 
     <dl class="rd-ledger">
       <div class="rd-ledger-date"><dt>写于</dt><dd>{{ partial "components/date" . }}</dd></div>
