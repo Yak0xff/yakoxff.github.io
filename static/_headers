@@ -17,3 +17,10 @@
   Cache-Control: public, max-age=604800
 /img/*
   Cache-Control: public, max-age=2592000
+
+# 分享卡片（OG / Twitter）单独放一个目录：只受 /* 兜底的
+# max-age=0, must-revalidate 约束，不要套用上面 /img/* 的 30 天缓存，
+# 否则 X / 微信 / QQ 的预览抓取器会一直拿到旧卡片。
+# 文件名带版本号，换内容时递增 v3、v4… 强制平台重新抓取。
+/share/*
+  Cache-Control: public, max-age=0, must-revalidate

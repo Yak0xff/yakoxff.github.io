@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
-"""生成站点默认分享图 static/img/header.png（1200×630）。
+"""生成站点默认分享图 static/share/og-card-v2.png（1200×630）。
 
 V10.21：旧卡片还停留在 V10.5 的点阵形状 + 旧标语「向死而生」，
 与当前「实心朱砂点 + 纸墨」的视觉不一致。这里用系统字体重画一张
 克制的标准 OG 卡片：域名 / 站名 / 一句主张 / 分类信息。
 
-用法：python3 scripts/gen-og-image.py && oxipng -o4 --strip safe static/img/header.png
+V10.25：换 URL + 换目录。旧 /img/header.png 的 URL 被 X 长期缓存，
+且 _headers 给 /img/* 设了 30 天缓存，换了图片内容也不会重新抓取。
+放到 /share/ 只受全站兜底 max-age=0 规则，文件名带版本号便于以后递增。
+以后再换卡片内容，请递增版本号（v3、v4…）并同步 params.yaml。
+
+用法：python3 scripts/gen-og-image.py && oxipng -o4 --strip safe static/share/og-card-v2.png
 依赖：Pillow、macOS 系统字体（Hiragino Sans GB、Menlo）。
 """
 from pathlib import Path
@@ -13,7 +18,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "static" / "img" / "header.png"
+OUT = ROOT / "static" / "share" / "og-card-v2.png"
 
 PAPER = "#f4f1ea"     # --paper（明色）
 INK = "#16130f"       # --ink

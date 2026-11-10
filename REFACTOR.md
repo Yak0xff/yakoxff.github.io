@@ -1392,3 +1392,34 @@ CDP 三档实测（长标题）：
 - **嵌套引用**：`blockquote blockquote::before { content: none }`，不再重复线头圆点；内层细线改 `--line-2`、字号收回 .94em。
 
 验证：CDP 实测外层 `::before` 为 `""` / 7×7px / 朱砂 / absolute，内层为 `none`，外层 padding `19.8px 23.76px`、左线 `1px rgba(217,67,31,.35)`；1440 明暗 + 390px 窄屏截图确认折角消失、文字不再偏右、线头圆点可见；首页 / 文章 / 关于三页控制台 0 报错。README「正文排版」条目同步。
+
+---
+
+## 三十九、V10.25：Twitter Card 一直是旧图的根因与收口（2026-11-10）
+
+### 39.1 现象
+
+用户反馈「现在的 twitter card 还是旧的图」，截图是一张黑底骷髅插画，既不是 V10.21 重画的新卡，也不是旧版 `header.png`（纸色底 + 点阵形状）。
+
+### 39.2 诊断：不是模板没部署
+
+抓线上 `https://yakoxff.pages.dev/` 核对，V10.21 的 head 已经生效：`og:image` / `twitter:image` 都指向 `/img/header.png`，`og:image:alt` 是「一点 · 独立写作」，`twitter:card` 是 `summary_large_image`。所以问题不在 meta。
+
+真正原因是两层缓存叠加：
+
+1. **X 的卡片按 URL 长期缓存**。图片地址从始至终是同一个 `/img/header.png`，即使文件内容与 meta 全换了，X 不会为已缓存的 URL 重新抓取，会一直展示它第一次抓到的图（那张骷髅插画很可能来自更早版本的页面内图片）。
+2. **`static/_headers` 给 `/img/*` 设了 `max-age=2592000`（30 天）**。线上响应头实测是 `public, max-age=0, must-revalidate, public, max-age=2592000` 两个值合并，CDN 与抓取器也会拿旧文件。
+
+### 39.3 做法：换 URL + 脱离长缓存目录
+
+- 分享图改名并挪到 **`static/share/og-card-v2.png`**，URL 变成 `/share/og-card-v2.png`。新 URL 对 X 而言是全新资源，必须重新抓；版本号写在文件名里，以后换卡片递增 v3 / v4 即可。
+- `params.yaml` 的 `default_og_image` 同步改指新路径；`scripts/gen-og-image.py` 的输出路径、docstring 与用法同步（生成内容与旧 `header.png` 像素一致，只是换了地址）。
+- `/share/` **不匹配 `/img/*` 规则**，只受全站兜底 `max-age=0, must-revalidate`；另在 `_headers` 显式补一条 `/share/*` 同名规则并写明原因，避免以后被误加长缓存。
+- 旧 `/img/header.png` **保留不删**：`components/logo.html` 仍以它为默认值（虽已无模板引用），且旧分享链接不该变成 404。
+
+### 39.4 验证与仍需注意的 X 侧缓存
+
+- 干净构建 202 页 / 312 文件 / 13.84 MiB；首页、文章页、归档页、关于页四类页面的 `og:image` 与 `twitter:image` 全部指向 `https://yakoxff.pages.dev/share/og-card-v2.png`；`og:image:width/height/type` 仍正确输出；`public/share/og-card-v2.png` 1200×630 / 21KB，`public/_headers` 含 `/share/*` 规则。
+- **工程侧只能保证新抓取拿到新卡**：已发布旧推文的卡片由 X 缓存并转存，不会回源更新。要立刻验证，用带查询参数的新链接（如 `https://yakoxff.pages.dev/?v=2`）发一条测试推文，或登录 X 的 Card Validator 重新抓取该 URL；之后正常分享首页链接即可。
+
+- README「分享与 SEO」、目录结构、生成物说明、性能基线（311 → 312 文件）与节数同步。

@@ -5,7 +5,10 @@ twitter: zh_robin
 author_twitter: zh_robin
 favicon: /favicon.ico
 # 默认的社交媒体分享图片
-default_og_image: /img/header.png
+# V10.25：换到 /share/ + 版本号文件名。X 按图片 URL 长期缓存卡片，
+# 且 _headers 给 /img/* 设了 30 天缓存，旧 /img/header.png 换了内容
+# 也不会被重新抓取；换新 URL 才会出新的 Twitter Card。
+default_og_image: /share/og-card-v2.png
 mainSections:
   - posts
   - fictions
