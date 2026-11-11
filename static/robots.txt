@@ -73,6 +73,27 @@ User-agent: Diffbot
 User-agent: Applebot-Extended
 Allow: /
 
+# 国内 AI 搜索 / 答案引擎（GEO V10.33）
+# 这些 UA 原本已由下面的 User-agent: * Allow: / 放行，此处显式列名用于
+# 声明意图与服务器日志核对；按第三方爬虫分级建议，不据此放宽访问权限。
+# 豆包(字节)：DoubaoBot / imageSpider / ToutiaoSpider（Bytespider 已在上方放行）
+# DeepSeek：DeepSeekBot；Kimi：KimiBot / Kimi-SearchBot / Kimi-User
+#   其中 Kimi-SearchBot 一旦被禁，站点不会出现在 Kimi 搜索结果中
+# 通义千问：QwenBot；文心(百度)：Baiduspider-render（Baiduspider 已在上方放行）
+# 元宝(腾讯)：TencentBot（Sogou web spider 已在上方放行）；夸克：QuarkSpider
+User-agent: DoubaoBot
+User-agent: imageSpider
+User-agent: ToutiaoSpider
+User-agent: DeepSeekBot
+User-agent: KimiBot
+User-agent: Kimi-SearchBot
+User-agent: Kimi-User
+User-agent: QwenBot
+User-agent: Baiduspider-render
+User-agent: TencentBot
+User-agent: QuarkSpider
+Allow: /
+
 # 其余爬虫（含微信 / QQ / 知乎 / 小红书等分享预览抓取）默认放行：
 # 旧版这里写 Disallow 会让所有未列名的预览器拿不到 og 卡片
 User-agent: *

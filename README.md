@@ -84,11 +84,11 @@
 - **正文排版**：统一用项目自带的霞鹜文楷（不另引字体），18px / 行距 1.85 / 段距 1.05em，取消 `text-align: justify + inter-character` 逐字拉伸（旧版中文字距忽宽忽窄）。朱砂收敛到 h2 编号、h3 小点、列表圆点、首字下沉、引用细线与分隔线中点；`strong` 改深墨加粗 + 淡朱砂底线，`em` 用中文着重号。引用块淡纸底 + 朱砂细线（线头一枚实心朱砂点，不用引号字符），代码块与表格统一细线，分隔线是「细线 + 一枚朱砂点」；旧版 markdown 漏进来的行内代码反引号、链接站点图标、竖排语言标签、表头底色全部清掉。
 - **无障碍**：所有动效尊重 `prefers-reduced-motion`；正文级对比度按 WCAG AA 实算；读程 / 评论 / 目录按钮的展开状态同步 `aria-expanded`。
 - **分享与 SEO**：`head/siteinfo.html` 统一输出 title / canonical / description / OG / Twitter Card / JSON-LD；标题在非首页带站点名，描述按 `answer` → `description` → `Description` → `Summary` → 站点描述的优先链取并截断到 160 字。分享图优先用 `og_image` / `banner`，否则用 `static/share/og-card-v4.png`（1200×630，可用 `scripts/gen-og-image.py` 重生成）。文件名带版本号、放在独立的 `share/` 目录，是因为 X 按图片 URL 长期缓存卡片且 `_headers` 给 `/img/*` 设了 30 天缓存——换内容必须换 URL 才会被重新抓取。JSON-LD 按首页 `WebSite` / 文章 `BlogPosting` / 独立页 `WebPage` / 列表 `CollectionPage` 分流，全部走 `jsonify` 保证合法；`robots.txt` 默认放行并允许各类预览抓取器，只拦 AI 爬虫。文章页的「分享」按钮在桌面降级为复制「标题 + 摘要 + 链接」。
-- **GEO / AI 可引用**：`static/robots.txt` 放行全部 AI 代理（GPTBot / OAI-SearchBot / ChatGPT-User / ClaudeBot / Claude-User / PerplexityBot / Google-Extended 等）并声明 `Content-Signal: ai-train=yes, search=yes, ai-input=yes`；Hugo 自动生成 `llms.txt`（结构化索引 + 常见问题答案式入口）与 `llms-full.txt`（纯文本全文），新增文章自动进入索引；每页 JSON-LD 输出主对象 + `BreadcrumbList`，文章补 `isAccessibleForFree` / `license` / `about`；三页带 `answer` 一句话直接答案；全站 52 张图的 alt 均改为传达图中信息的描述。
+- **GEO / AI 可引用**：`static/robots.txt` 放行全部 AI 代理（GPTBot / OAI-SearchBot / ChatGPT-User / ClaudeBot / Claude-User / PerplexityBot / Google-Extended 等）并声明 `Content-Signal: ai-train=yes, search=yes, ai-input=yes`；Hugo 自动生成 `llms.txt`（结构化索引 + 常见问题答案式入口）与 `llms-full.txt`（纯文本全文），新增文章自动进入索引；每页 JSON-LD 输出主对象 + `BreadcrumbList`，文章补 `isAccessibleForFree` / `license` / `about`；三页带 `answer` 一句话直接答案；全站 52 张图的 alt 均改为传达图中信息的描述。 V10.33 针对国内 AI 搜索：`sitemap.xml` 由 8 条补全到 135 条（此前约 130 篇文章页未进索引）、`robots.txt` 显式列名 11 个国内 AI 爬虫、JSON-LD 的 `Person` 补 `sameAs`/`alternateName`/`knowsAbout`、`WebSite` 补 `alternateName`、`llms.txt` 加实体信息块与国内问法。
 - **重生第一篇**：`content/posts/付印之前：三十九道红笔.md` 是站点的设计编年长文，按 V10 → V10.25 复盘每一轮的取舍、前后数字与令牌 / 网格 / 内容 / 缓存四层底层规则，附完整编年表与 10 张配图（真实前后对比、手绘 SVG 示意、生成插画，均在 `static/img/rebirth/`）。
 - **品牌长文**：`content/posts/一笔，一枚点：为什么最后叫「一点」.md` 从「一点记」到「一点」的命名收敛、符号四次演变讲起，落到令牌 / 网格 / 删减 / 缓存四层底层规则，配 5 张手绘 SVG 与一张分享卡（`static/img/one-point/`）。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 47 节，从诊断到 V10.32 GEO 深度优化）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 48 节，从诊断到 V10.33 国内 AI 搜索通道收口）。
 
 ## 目录结构
 
@@ -104,7 +104,7 @@
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/ · _shortcodes/ · _markup/ · index.llms.txt / index.llmsfull.txt（GEO 索引）
 ├── scripts/            # dev-server · build-prod · gen-og-image · optimize-images · highlights
 ├── static/             # img/ · share/（版本化 OG 卡 og-card-v4.png）· pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（47 节）
+├── REFACTOR.md         # 设计重构记录（48 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -263,7 +263,7 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 | 指标 | 数值 |
 |---|---|
-| 构建产物 | 214 页 / 340 个文件 / **9.3 MiB**（V10.32 新增 `llms.txt` 26KB 与 `llms-full.txt` 650KB；相比最初的 14.4 MiB 少约 35%） |
+| 构建产物 | 214 页 / 340 个文件 / **9.3 MiB**（V10.32 新增 `llms.txt` 与 `llms-full.txt`，V10.33 把 sitemap 从 8 条补到 135 条；相比最初的 14.4 MiB 少约 35%） |
 | 首页请求 | 4 个（1 CSS + 2 JS + favicon 5KB，字体零请求），涟漪脚本内联在 HTML 里；本地实测首屏传输 **170KB** |
 | 首页 HTML | 47.5KB（gzip 后 16.0KB，含内联的 field / tide / galaxy 三份脚本、状态公报、两篇次条与虚构书页） |
 | 首页样式 | 156KB（gzip 后 28KB） |

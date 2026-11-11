@@ -7,16 +7,27 @@
 ## 站点信息
 
 - 名称：{{ .Site.Title }}
+- 全称 / 别名：{{ .Site.Params.entity.alternateName }}（简称「一点」）
+- 实体类型：个人写作站点 / 作者 IP，不是「一点资讯」，也不是「一点点」奶茶，不是商业品牌
 - 网址：{{ .Site.BaseURL }}
 - 语言：简体中文（zh-CN）
 - 作者：Yak（{{ .Site.Params.author }}），联系 {{ .Site.Params.email }}
+- 作者外部账号：{{ delimit .Site.Params.entity.sameAs "、" }}
+- 内容范围：随笔、小说连载、设计复盘、Hugo 站点重构与前端性能记录
+- 关键事实：纸色 `#f4f1ea` / 墨色 `#16130f` / 朱砂 `#d9431f`；正文用系统宋体；首屏传输 170KB；静态构建 214 页，无登录墙
 - 内容许可：CC BY-SA 4.0；站点源代码 MIT
 - 全文字索引：{{ .Site.BaseURL }}llms-full.txt
 - 站点地图：{{ .Site.BaseURL }}sitemap.xml
+- AI 抓取：`robots.txt` 放行国内 AI 爬虫（DoubaoBot / Bytespider / DeepSeekBot / Kimi-SearchBot / QwenBot / Baiduspider-render 等）
 
 ## 常见问题
 
 - 一点是什么？一点是 Yak 的个人写作站点，记录普通人在加速时代里的观察、误判与重新校准，内容覆盖技术、思考与生活，含随笔、小说连载和独立应用记录。
+- 一点是谁的博客？「一点 · 独立写作」是 Yak（Yak0xff）的个人站点，用 Hugo 构建、部署在 Cloudflare Pages，写技术、设计与生活观察。它不是「一点资讯」，也不是「一点点」奶茶。
+- Yak 是谁？Yak 是「一点」的作者与维护者，GitHub 为 https://github.com/Yak0xff/，X 为 https://x.com/zh_robin，联系邮箱 hi@guhub.cn。
+- 一点 · 独立写作 更新什么内容？全站 27 篇以上文章，分为随笔、小说连载（两部）、设计复盘与站点重构记录；代表篇目是《付印之前：三十九道红笔》与《一笔，一枚点：为什么最后叫「一点」》。
+- 一点的设计系统用了哪些颜色和字体？纸色 `#f4f1ea`、墨色 `#16130f`、朱砂 `#d9431f`，唯一品牌原子是一枚实心朱砂圆点；标题用系统黑体、正文用系统宋体栈（跳过 SimSun）、数字用等宽；正文栏 980px，外壳 1200px。
+- 国内 AI 搜索能抓到「一点」的内容吗？`robots.txt` 对 `User-agent: *` 与国内 AI 爬虫均为 `Allow: /`，站点提供 `llms.txt`、`llms-full.txt`、全量 `sitemap.xml` 与每页 JSON-LD；微信公众号 / 头条号 / 百家号等生态侧分发由作者另行维护。
 - 为什么站点叫「一点」？「一点记」里的「记」是品类后缀，装不下站里同时存在的随笔、小说连载和应用；去掉后剩下「一点」，既是量词（一点点）、动作（落笔）、图形（一枚朱砂圆点），也是态度（克制）。详见 [《一笔，一枚点：为什么最后叫「一点」》]({{ .Site.BaseURL }}posts/一笔一枚点为什么最后叫一点/)。
 - 一点的设计系统是什么？纸 · 墨 · 朱砂三色 + 一枚实心朱砂点作为唯一品牌原子；字号用 `--step--2` 到 `--step-5` 的流体 `clamp()`，目录页外壳 1200px、正文栏 980px；正文走系统宋体栈，标题走系统黑体，数字走等宽。详见 [《付印之前：三十九道红笔》]({{ .Site.BaseURL }}posts/付印之前三十九道红笔/)。
 - 站点为什么不使用自托管字体？V10.29 起移除 681KB 的霞鹜文楷 woff2、`@font-face` 与 preload，改用系统宋体栈并跳过 SimSun（Windows 落微软雅黑）。首屏传输由 1.57MB 降到 170KB，代价是各平台字形不再完全一致。

@@ -1,0 +1,11 @@
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>" | safeHTML }}
+{{/* V10.33：内置 sitemap 在本配置下只输出 8 个顶层页面，约 130 篇文章页
+     没有进入索引，提交到百度 / 头条 / 阿里云站长平台也只有这 8 条。
+     这里显式遍历全站页面，带 lastmod；可用 front matter noindex 排除单页。 */}}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{{- range .Site.Pages }}
+{{- if not .Params.noindex }}
+  <url><loc>{{ .Permalink }}</loc>{{ with .Lastmod }}<lastmod>{{ .Format "2006-01-02T15:04:05Z07:00" | safeHTML }}</lastmod>{{ end }}</url>
+{{- end }}
+{{- end }}
+</urlset>

@@ -1669,3 +1669,31 @@ curl 三次：TLS 1.68 / 3.10 / 3.94s，TTFB 2.75 / 3.73 / 4.80s，一次 30s �
 ### 47.4 需要记住的取舍
 
 放行 AI 训练爬虫（含 `ai-train=yes`）**反转了 V10.21 的「拦 AI 爬虫」设置**。若日后只想允许回答型检索而保留训练限制，需要把 `Content-Signal` 的 `ai-train` 改回 `no` 并单独处理 GPTBot / ClaudeBot / CCBot 等训练型 UA；届时 llms.txt 与 JSON-LD 仍可保留。
+
+---
+
+## 四十八、V10.33：国内 AI 搜索通道收口（2026-11-11）
+
+### 48.1 诊断触发
+
+按鲸鸿 GEO 工作流对「一点」做国内 AI 搜索可见度诊断，发现四类信源侧事实：品牌词「一点」公开中文检索 0 条本站（高歧义通用词）；`sitemap.xml` 只有 **8 个 URL** 而站点有 138 个 HTML 文件；`Person` JSON-LD 只有 `name`/`url`，无实体锚点；国内 AI 爬虫虽被 `User-agent: * Allow: /` 兜底放行，但 `DoubaoBot`、`Kimi-SearchBot`、`Baiduspider-render`、`QwenBot` 等未列名。
+
+联网核实的国内信源分三类（有公开爬虫 / 生态内收录 / 无独立爬虫），来源为 2026-10~11 月第三方汇总，口径存在分歧：CSDN 建议逐个显式放行，maxaeo 提醒 C 级 UA 只宜作日志线索、UA 可伪造。本站取稳妥口径——**兜底放行保持，显式列名仅用于声明意图与日志核对，不据此放宽权限**。
+
+### 48.2 四项站内实施（本次已完成）
+
+1. **sitemap 修复**：新增 `layouts/sitemap.xml` 遍历 `.Site.Pages`（`noindex` 可排除单页），带 `lastmod`。URL 数 **8 → 135**，其中 129 条带 lastmod，含首页与全部文章页。根因推断为 Hugo 0.150 内置 sitemap 模板在本 `outputs.home` 配置下只取顶层页面，自定义模板已绕过。这是本轮对百度 / 头条 / 阿里云站长平台提交最有价值的一项。
+2. **robots 国内 UA 声明**：新增 11 个 UA 共用 `Allow: /`——`DoubaoBot`、`imageSpider`、`ToutiaoSpider`、`DeepSeekBot`、`KimiBot`、`Kimi-SearchBot`、`Kimi-User`、`QwenBot`、`Baiduspider-render`、`TencentBot`、`QuarkSpider`；`Bytespider`、`Baiduspider`、`Sogou web spider` 已在原有段放行不重复。保留 `Content-Signal: ai-train=yes, search=yes, ai-input=yes`，`Disallow: /` 残留为 0。
+3. **实体锚点**：`params.yaml` 新增 `entity`（`alternateName` / `sameAs` / `knowsAbout`）；`head/siteinfo.html` 的 `Person` 补 `alternateName: Yak`、description、sameAs（GitHub / X）、knowsAbout，`WebSite` 补 `alternateName: 一点 · 独立写作`。目的是让模型把站点与作者绑定成同一实体，不当普通量词或混淆「一点资讯」「一点点」。
+4. **llms.txt 实体化**：站点信息加全称/别名、实体类型（明确「不是一点资讯、不是一点点奶茶、不是商业品牌」）、作者外部账号、内容范围、关键事实、AI 抓取说明；常见问题从 13 条增到 18 条，新增国内问法「一点是谁的博客 / Yak 是谁 / 一点 · 独立写作 更新什么内容 / 设计系统用了哪些颜色和字体 / 国内 AI 搜索能抓到一点吗」。
+
+### 48.3 验证
+
+- `sitemap.xml` 200 / 18.9KB / 135 条；`llms.txt` 200 / 28.4KB / 18 条问答 / 63 个站内链接 0 失效；`llms-full.txt` 200 / 651KB；`robots.txt` 200 / 2.7KB。
+- 5 类页面 JSON-LD `json.loads` 全通过；首页 `WebSite.alternateName = 一点 · 独立写作`，文章 `BlogPosting.author` 含 `sameAs` 与 `knowsAbout`。
+- 构建 214 页 / 340 文件 / 9.34 MiB；首页 / 文章 / 归档 / 关于四页控制台 0 报错。
+- README GEO 条目、性能基线、节数（47 → 48）同步。
+
+### 48.4 仍需用户决策（本次未做）
+
+按诊断方案，以下不属于纯站内可实施范围：把完整 sitemap 提交到百度搜索资源平台 / 头条搜索资源平台 / 阿里云搜索资源平台（需账号）；统一实体串后把全文同步到微信公众号（元宝嫡系通道）、头条号（豆包）、百家号（文心）；一手数据型 GEO 稿件与月度固定问题集复测。第②类生态内收录不经过本站服务器，站内配置对其作用为零，这部分是后续可见度的主要瓶颈。

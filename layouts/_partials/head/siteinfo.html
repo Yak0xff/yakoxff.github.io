@@ -90,7 +90,13 @@
 <link href="{{ .Site.Params.staticPrefix }}{{ "index.xml" | relURL }}" rel="alternate" type="application/rss+xml" title="{{ $siteName }}">
 
 {{/* JSON-LD：按页面类型分流，全部走 jsonify（自动处理转义与数组逗号） */}}
-{{- $person := dict "@type" "Person" "name" $author "url" .Site.BaseURL -}}
+{{/* GEO（V10.33）：给高歧义的「一点」补实体锚点，帮助国内 AI 搜索把
+       站点、作者、外部账号识别成同一个实体，而不是当普通量词处理。 */}}
+{{- $person := dict "@type" "Person" "name" $author "url" .Site.BaseURL
+      "alternateName" "Yak"
+      "description" "「一点」独立写作站点的作者，写技术、设计与生活观察。"
+      "sameAs" (.Site.Params.entity.sameAs | default slice)
+      "knowsAbout" (.Site.Params.entity.knowsAbout | default slice) -}}
 {{- $ld := dict -}}
 {{- if $isHome -}}
   {{- $ld = dict
@@ -99,6 +105,7 @@
       "@id" (printf "%s#website" .Site.BaseURL)
       "url" .Permalink
       "name" $siteName
+      "alternateName" .Site.Params.entity.alternateName
       "description" $desc
       "inLanguage" "zh-CN"
       "author" $person
