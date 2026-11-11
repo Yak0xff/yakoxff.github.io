@@ -9,11 +9,26 @@ layoutDir: layouts
 # 确保短代码路径正确
 shortcodeDir: layouts/_shortcodes
 
+# GEO：为 AI 答案引擎输出结构化索引与纯文本全文。
+# 两个自定义输出格式都挂在首页，模板见 layouts/index.llms.txt
+# 与 layouts/index.llmsfull.txt；新增文章会自动进入索引。
+outputFormats:
+  LLMS:
+    mediaType: text/plain
+    baseName: llms
+    isPlainText: true
+  LLMSFULL:
+    mediaType: text/plain
+    baseName: llms-full
+    isPlainText: true
+
 outputs:
   home:
     - HTML
     - RSS
     - Sitemap
+    - LLMS
+    - LLMSFULL
 
 
 # 安全设置，允许内联短代码

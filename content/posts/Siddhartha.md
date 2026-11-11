@@ -104,7 +104,7 @@ description: 赫尔曼·黑塞的《悉达多》讲述了一个古印度婆罗�
 
 ## 这本书教会我的
 
-![日出](/img/siddhartha/sunrise.webp)
+![《悉达多》读书笔记配图：日出时分的河面与天光，呼应悉达多在河边悟道的段落](/img/siddhartha/sunrise.webp)
 
 读完《悉达多》，我记住了三件事：
 

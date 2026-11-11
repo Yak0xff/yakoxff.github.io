@@ -18,11 +18,12 @@
 {{/* 只有带栏目的内容页才是 article；关于 / 标记等独立页面不算文章 */}}
 {{- $isArticle := and .IsPage .Section -}}
 
-{{/* 描述：文章优先 front matter description，其次 Description / 自动摘要，
-       最后回退站点描述；统一 plainify 并截断，避免分享卡片文字被腰斩 */}}
+{{/* 描述：GEO（V10.32）——优先 front matter 的 answer（一句话直接回答），
+       其次 description / Description / 自动摘要，最后回退站点描述；
+       统一 plainify 并截断，避免分享卡片文字被腰斩 */}}
 {{- $desc := .Site.Params.description | plainify -}}
 {{- if not $isHome -}}
-  {{- $d := default (default .Summary .Description) .Params.description -}}
+  {{- $d := default (default (default .Summary .Description) .Params.description) .Params.answer -}}
   {{- $desc = default .Site.Params.description $d | plainify -}}
 {{- end -}}
 {{- $desc = $desc | plainify | truncate 160 -}}
@@ -122,6 +123,9 @@
       "articleSection" .Section
       "keywords" (.Params.tags | default slice)
       "wordCount" .WordCount
+      "isAccessibleForFree" true
+      "license" "https://creativecommons.org/licenses/by-sa/4.0/"
+      "about" (dict "@type" "CreativeWork" "name" $siteName "url" .Site.BaseURL)
       "url" .Permalink -}}
 {{- else if .IsPage -}}
   {{- $ld = dict
@@ -149,3 +153,17 @@
       "image" $image -}}
 {{- end -}}
 <script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>
+
+{{/* GEO：面包屑让答案引擎理解页面在站点中的位置。首页不输出单项面包屑。 */}}
+{{- if not $isHome -}}
+  {{- $crumbs := slice (dict "@type" "ListItem" "position" 1 "name" $siteName "item" .Site.BaseURL) -}}
+  {{- if $isArticle -}}
+    {{- $sectionURL := printf "%s%s/" .Site.BaseURL .Section -}}
+    {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 2 "name" .Section "item" $sectionURL) -}}
+    {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 3 "name" .Title "item" .Permalink) -}}
+  {{- else -}}
+    {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 2 "name" $pageTitle "item" .Permalink) -}}
+  {{- end -}}
+  {{- $bread := dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $crumbs -}}
+<script type="application/ld+json">{{ $bread | jsonify | safeJS }}</script>
+{{- end -}}

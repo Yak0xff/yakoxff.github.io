@@ -4,6 +4,7 @@ title: RSS
 aliases:
   - /cards/my-rss-url/
   - /cards/rss/
+description: 「一点」的 RSS / Atom 订阅地址，以及在阅读器中订阅的方法。
 ---
 
 你可以通过 RSS 订阅本博客。用[这个链接](/index.xml)订阅本站的所有更新。

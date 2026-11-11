@@ -1,0 +1,43 @@
+# {{ .Site.Title }}
+
+> {{ .Site.Params.description | plainify }}
+
+本站是 Yak 的个人写作站点「一点」，简体中文，内容包含随笔、小说连载、设计复盘与站点重构记录。全站使用「纸 · 墨 · 朱砂」设计系统：纸色 `#f4f1ea`、墨色 `#16130f`、朱砂 `#d9431f`，唯一品牌原子是一枚实心朱砂点。静态构建（Hugo），托管于 Cloudflare Pages，无登录墙、无付费墙。
+
+## 站点信息
+
+- 名称：{{ .Site.Title }}
+- 网址：{{ .Site.BaseURL }}
+- 语言：简体中文（zh-CN）
+- 作者：Yak（{{ .Site.Params.author }}），联系 {{ .Site.Params.email }}
+- 内容许可：CC BY-SA 4.0；站点源代码 MIT
+- 全文字索引：{{ .Site.BaseURL }}llms-full.txt
+- 站点地图：{{ .Site.BaseURL }}sitemap.xml
+
+## 常见问题
+
+- 一点是什么？一点是 Yak 的个人写作站点，记录普通人在加速时代里的观察、误判与重新校准，内容覆盖技术、思考与生活，含随笔、小说连载和独立应用记录。
+- 为什么站点叫「一点」？「一点记」里的「记」是品类后缀，装不下站里同时存在的随笔、小说连载和应用；去掉后剩下「一点」，既是量词（一点点）、动作（落笔）、图形（一枚朱砂圆点），也是态度（克制）。详见 [《一笔，一枚点：为什么最后叫「一点」》]({{ .Site.BaseURL }}posts/一笔一枚点为什么最后叫一点/)。
+- 一点的设计系统是什么？纸 · 墨 · 朱砂三色 + 一枚实心朱砂点作为唯一品牌原子；字号用 `--step--2` 到 `--step-5` 的流体 `clamp()`，目录页外壳 1200px、正文栏 980px；正文走系统宋体栈，标题走系统黑体，数字走等宽。详见 [《付印之前：三十九道红笔》]({{ .Site.BaseURL }}posts/付印之前三十九道红笔/)。
+- 站点为什么不使用自托管字体？V10.29 起移除 681KB 的霞鹜文楷 woff2、`@font-face` 与 preload，改用系统宋体栈并跳过 SimSun（Windows 落微软雅黑）。首屏传输由 1.57MB 降到 170KB，代价是各平台字形不再完全一致。
+- Cloudflare Pages 访问慢怎么优化？诊断出三层原因：`pages.dev` 落 LAX、HTML 每次回源、首屏字体与第三方统计脚本拖住 load。做法是 HTML 加 `s-maxage=300` 后台刷新、Umami 延到 `window.load` 之后、大图转 WebP、去掉自托管字体。详见 [《付印之前：三十九道红笔》]({{ .Site.BaseURL }}posts/付印之前三十九道红笔/)。
+- 分享卡为什么带版本号？X 按图片 URL 长期缓存卡片，只换文件内容不换地址不会被重新抓取。因此每次换卡都递增 `og-card-v2` → `v3` → `v4`，并同步 `default_og_image`；旧版本文件保留兼容旧链接。
+- 站点如何被引用？所有页面开放 `index,follow,max-image-preview:large`，JSON-LD 按首页 WebSite / 文章 BlogPosting / 独立页 WebPage / 列表 CollectionPage 分流，`robots.txt` 放行全部 AI 代理并声明 `Content-Signal: ai-train=yes, search=yes, ai-input=yes`。
+
+{{- $pages := sort .Site.RegularPages "Date" "desc" }}
+
+## 文章（{{ len $pages }} 篇，按发布时间倒序）
+
+{{ range $pages -}}
+{{- $d := default (.Summary | plainify) (.Params.description | plainify) | plainify | truncate 120 -}}
+- [{{ .Title }}]({{ .Permalink }}): {{ $d }}
+{{ end }}
+## 栏目与页面
+
+- [随笔归档]({{ .Site.BaseURL }}posts/)：全部文章按时间与主题检索
+- [虚构连载]({{ .Site.BaseURL }}fictions/)：两部连载小说及分章目录
+- [关于]({{ .Site.BaseURL }}about/)：作者、站点构成与写作说明
+- [摘句]({{ .Site.BaseURL }}highlights/)：全站 `==高亮==` 标记的句子
+- [精选]({{ .Site.BaseURL }}featured/)：精选文章
+- [赞助]({{ .Site.BaseURL }}sponsor/)：支持站点的方式
+- [订阅]({{ .Site.BaseURL }}rss/)：RSS / Atom 订阅说明

@@ -7,7 +7,7 @@ toc: true
 description: "当AI能做所有事情时，人类还能做什么？答案不在于你能做什么，而在于你能成为什么。在后劳动时代，真正稀缺的不是技能，而是视角、品味和说服力。"
 ---
 
-![后劳动时代](/img/dan-koe-future-work/future-work-cover.svg)
+![后劳动时代题图：当 AI 能做所有事情时，人类还能做什么——Dan Koe 谈工作的意义危机](/img/dan-koe-future-work/future-work-cover.svg)
 
 > 原文作者：Dan Koe
 > 原文链接：[The future of work when work is meaningless](https://thedankoe.com/letters/the-future-of-work-when-work-is-meaningless/)
@@ -26,7 +26,7 @@ description: "当AI能做所有事情时，人类还能做什么？答案不在�
 
 先快速捋一下历史。人类给自己找活着的理由，大概经历了三个版本。
 
-![意义系统演变](/img/dan-koe-future-work/meaning-evolution.svg)
+![意义系统从 1.0 到 3.0 的演变：前现代靠神与传统、现代靠工作与进步、后现代意义来源未知；前现代的问题是窒息，现代的问题是破产中](/img/dan-koe-future-work/meaning-evolution.svg)
 
 **版本1.0：神说了算。**
 
@@ -80,7 +80,7 @@ AI不只是另一个新技术。它是对人类意义系统的精确打击。
 
 Dan Koe给了一个公式，我觉得很精准：
 
-![意义公式](/img/dan-koe-future-work/meaning-formula.svg)
+![意义公式：意义 = 进步（朝目标前进的感觉）+ 贡献（对他人有用的感觉），AI 正在同时威胁这两个来源](/img/dan-koe-future-work/meaning-formula.svg)
 
 **进步**是朝着某个目标前进的感觉。你在职业阶梯上往上爬，你的技能在变强，你离某个终点越来越近——这种感觉让人觉得活着有奔头。
 
@@ -99,7 +99,7 @@ Dan Koe给了一个公式，我觉得很精准：
 
 Dan Koe进一步拆解了人类获得意义感的机制。他说有三个"发动机"：
 
-![意义的三个发动机](/img/dan-koe-future-work/meaning-engines.svg)
+![意义的三个发动机：奋斗带来挣来的成就、好奇心带来探索的乐趣、地位带来被认可的感觉，三者都受 AI 威胁](/img/dan-koe-future-work/meaning-engines.svg)
 
 **第一个：奋斗。**
 
@@ -159,7 +159,7 @@ Dan Koe进一步拆解了人类获得意义感的机制。他说有三个"发动
 
 Dan Koe提出了一个框架叫"后劳动技能栈"。核心思想是：有些技能在AI时代会变得更稀缺、更值钱，因为它们是AI不擅长的，是人类独有的。
 
-![后劳动技能栈](/img/dan-koe-future-work/skill-stack.svg)
+![后劳动技能栈自下而上：技术专业知识（可自动化）、说服力、视角、品味、主体性（人类独有、最稀缺）](/img/dan-koe-future-work/skill-stack.svg)
 
 这个栈分五层，从下往上看：
 
@@ -229,7 +229,7 @@ AI是被动的。它需要提示才能行动。它不会主动设目标、识别
 
 Dan Koe提出了一个思想实验，我觉得很有用。叫"交换测试"。
 
-![交换测试](/img/dan-koe-future-work/swap-test.svg)
+![交换测试示意：把「你 + 当前岗位」与「AI + 初级员工」对调，问雇主会不会选右边；若会，你的岗位处于危险区](/img/dan-koe-future-work/swap-test.svg)
 
 很简单，就一个问题：
 

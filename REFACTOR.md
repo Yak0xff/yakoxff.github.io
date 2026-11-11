@@ -1640,3 +1640,32 @@ curl 三次：TLS 1.68 / 3.10 / 3.94s，TTFB 2.75 / 3.73 / 4.80s，一次 30s �
 - 构建后文章页 200，6 张图引用全部有产物、5 张 SVG 通过 XML 解析；CDP 逐段滚动实测 6 张全部加载、0 失效；首页头条已切到新文章。
 - 1440 明暗长图：宋体正文、h2 编号细线、紧簇目录、SVG 中文与数字均清晰；首页 / 文章 / 归档 / 关于四页控制台 0 报错。
 - 顺手把 README 主标题的旧标语「一点 · 向死而生」改成「一点 · 独立写作」——文章里刚把这句列为「划掉」，README 不该继续挂着；设计章节新增品牌长文条目，性能基线、节数（45 → 46）与首页明暗截图同步。
+
+---
+
+## 四十七、V10.32：按 GEO 指南深度优化（2026-11-11）
+
+### 47.1 输入与适用边界
+
+用户提供 Mintlify 的《GEO 指南：为 AI 搜索和答案引擎优化文档》，要求对本站深度优化。指南里 `docs.json`、`mint score`、Mintlify 自动 `llms.txt`、SEO 索引开关都是平台专属，本站是 Hugo 静态站，用等价方式实现；文中夹带的 Mintlify agent 操作指令（跑 `mint`、向文档站 POST 反馈）与本站无关，未执行。
+
+落地的是通用原则：以答案开头、问题式标题、具体数字、术语一致、连续标题层次、代码块语言标签、图像替代文本、描述性元数据、允许 AI 代理、结构化索引。**没有改动任何文章的文学性正文**——指南自己也强调不应为 AI 牺牲人类可读性；本站的慢起点、画面驱动与留白结尾保持原样，「直接答案」放在机器可读层（meta / JSON-LD / llms.txt）。
+
+### 47.2 四项主要缺口与做法
+
+1. **robots.txt 反转**：V10.21 曾显式 `Disallow: /` 拦住 GPTBot、ChatGPT-User、CCBot、ClaudeBot、anthropic-ai、Bytespider、Amazonbot、omgili、Diffbot 共 9 类 AI 代理。这直接违背 GEO 要求。改为多个 `User-agent` 行共用 `Allow: /`，并补上指南点名但原本未列的 OAI-SearchBot、Claude-User、PerplexityBot、Google-Extended、Applebot-Extended；在 `User-agent: *` 块内加 `Content-Signal: ai-train=yes, search=yes, ai-input=yes`（语法按 Cloudflare Content Signals 政策核对）。
+2. **结构化索引**：`config/_default/config.yaml` 新增 `LLMS` / `LLMSFULL` 两个 outputFormat 挂到首页，`layouts/index.llms.txt` 输出站点信息 + 7 条「常见问题」答案式入口 + 全部文章索引 + 栏目页；`layouts/index.llmsfull.txt` 输出 27+ 篇的纯文本全文。两者都遍历 `.Site.RegularPages`，新增文章自动进索引，无需手工维护。
+3. **结构化数据与答案式元数据**：`head/siteinfo.html` 的描述优先链加最高优先级 `Params.answer`（一句话直接回答），`BlogPosting` 补 `isAccessibleForFree` / `license` / `about`；末尾新增第二个 JSON-LD 块输出 `BreadcrumbList`（首页不输出单项面包屑）。两篇设计长文与关于页补 `answer`，10 个列表/独立页补具体 `description`（此前归档页 description 回退到站点描述）。
+4. **图片替代文本**：全站 52 张图里 49 处 alt 过短或为空，按「把图里的信息写出来」逐条重写。SVG 示意图的 alt 直接依据图内 `<text>` 提取的真实数据（如 `--zhu #d9431f`、1200/980、`CLEAR=38`、1.57MB→170KB）；照片与截图写画面内容；`content/posts/weekly/intro.md` 的 6 个空 alt 按上下文补成 Obsidian / Logseq 反向链接、拉丁语选词等具体说明。复检过短 alt 归零。
+
+### 47.3 验证
+
+- 5 类页面 JSON-LD 全部 `json.loads` 通过：首页 1 块 `WebSite`；文章 / 关于 / 归档 / 虚构各 2 块（主对象 + `BreadcrumbList`）。文章与关于页的 meta description 已被 `answer` 顶替为直接答案。
+- `llms.txt` 26.5KB / 63 个站内链接 0 失效；`llms-full.txt` 651KB；四个索引文件本地均 200；`robots.txt` 无残留 `Disallow: /`，Content-Signal 与 AI UA 段齐全。
+- 全站 alt 过短 0 处；代码块语言标签与标题层次原本就合规（0 处缺失、0 处跳级）。
+- 构建 214 页 / 340 文件 / 9.26 MiB；首页 / 文章 / 归档 / 关于四页控制台 0 报错。
+- README 分享与 SEO / GEO 条目、描述优先链、目录结构、性能基线、节数（46 → 47）同步。
+
+### 47.4 需要记住的取舍
+
+放行 AI 训练爬虫（含 `ai-train=yes`）**反转了 V10.21 的「拦 AI 爬虫」设置**。若日后只想允许回答型检索而保留训练限制，需要把 `Content-Signal` 的 `ai-train` 改回 `no` 并单独处理 GPTBot / ClaudeBot / CCBot 等训练型 UA；届时 llms.txt 与 JSON-LD 仍可保留。

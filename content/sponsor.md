@@ -3,6 +3,7 @@ title: 赞助
 date: 2025-04-03 13:23:02
 kicker: 支持创作
 draft: false
+description: 支持「一点」独立写作的方式与赞助二维码。
 ---
 
 该站已发布 {{< postcount >}} 篇文章，共 {{< wordcount >}} 字。

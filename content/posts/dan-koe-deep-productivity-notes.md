@@ -7,7 +7,7 @@ toc: true
 description: "你不需要每天工作12小时才能改变人生。你需要的是清晰度——知道自己要什么，为什么要，怎么拿到。一天一小时，一个有意义的项目，一个清晰的愿景。够了。"
 ---
 
-![一天一小时](/img/dan-koe-notes/cover.svg)
+![Dan Koe 深度生产力笔记题图：1 Hour × 365 Days，一天一小时、一个项目、一个愿景](/img/dan-koe-notes/cover.svg)
 
 > 原文作者：Dan Koe
 > 原文链接：[X (Twitter)](https://x.com/thedankoe/status/2012956603297964167)
@@ -56,7 +56,7 @@ description: "你不需要每天工作12小时才能改变人生。你需要的�
 
 想进入那种"时间飞逝、效率爆表"的深度专注状态，你需要三样东西：
 
-![深度专注三要素](/img/dan-koe-notes/focus-elements.svg)
+![深度专注三要素示意：清晰度（做什么）、重要性（为什么做）、紧迫性（为什么是现在），三者齐备才能进入深度专注](/img/dan-koe-notes/focus-elements.svg)
 
 **清晰度**——你知道自己在做什么。
 
@@ -80,7 +80,7 @@ description: "你不需要每天工作12小时才能改变人生。你需要的�
 
 Dan Koe 把工作分成三类。大多数人只知道第一种，完全忽略了第三种。
 
-![三种工作类型](/img/dan-koe-notes/work-types.svg)
+![三种工作类型示意：Building 建设（创造新事物）、Maintenance 维护（保持运转）、Recovery 恢复（让灵感浮现）；建议每天 1 小时 Building](/img/dan-koe-notes/work-types.svg)
 
 **Building（建设）**——高强度的深度工作，用来创造新事物。写一本书、开发一个产品、建立一个品牌。这是让你从 0 到 1 的工作。
 
@@ -108,7 +108,7 @@ Dan Koe 把工作分成三类。大多数人只知道第一种，完全忽略了
 
 所以，高效的一天应该长这样：
 
-![每日节奏](/img/dan-koe-notes/daily-rhythm.svg)
+![每日节奏 USE / FILL / EMPTY：早晨使用大脑做创造与输出，下午填充大脑阅读学习，晚上清空大脑写日记与计划](/img/dan-koe-notes/daily-rhythm.svg)
 
 **早晨：使用大脑。** 这是你精力最充沛的时候，拿来做最重要的创造性工作。别浪费在刷邮件上。
 
@@ -166,7 +166,7 @@ Dan Koe 把工作分成三类。大多数人只知道第一种，完全忽略了
 
 ### 第二步：建立目标层级
 
-![目标层级](/img/dan-koe-notes/goal-hierarchy.svg)
+![目标层级从 10 年、1 年、1 月、1 周收敛到今天这 1 小时：方向自上而下，清晰度自下而上](/img/dan-koe-notes/goal-hierarchy.svg)
 
 把你的愿景拆解成可执行的层级：
 

@@ -46,7 +46,7 @@ John 觉得这些东西是"反人性"的。他追求的是骑行时的自由感�
 
 Pirsig 说，这就是问题所在。
 
-![图 1：现代人被割裂的两种认知方式](/img/zen-motorcycle/illustration-1.svg)
+![《禅与摩托车维修艺术》示意图 1：浪漫（感性体验）与古典（理性逻辑）之间隔着一道认知鸿沟](/img/zen-motorcycle/illustration-1.svg)
 
 ## 二、两种人，两种世界观
 
@@ -94,7 +94,7 @@ Pirsig 花了整本书的篇幅，去追问一个问题：
 
 Pirsig 说，Quality 不在主体（人）里，也不在客体（物）里。**它在两者相遇的那个瞬间。**
 
-![图 2：良质是缝合世界的唯一黏合剂](/img/zen-motorcycle/illustration-2.svg)
+![示意图 2：良质居中，当主体与客体不再分离时，浪漫与古典之间的鸿沟被弥合](/img/zen-motorcycle/illustration-2.svg)
 
 这听起来很玄，但你仔细想想，其实很日常。
 
