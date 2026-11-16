@@ -27,7 +27,7 @@
 
 | 栏目 | 路径 | 内容 |
 |---|---|---|
-| 随笔 | `/posts/` | 24 篇：技术、认知、生活观察 |
+| 随笔 | `/posts/` | 28 篇：技术、认知、生活观察 |
 | 虚构 | `/fictions/` | 2 部连载、26 章：目录即书名，一章一个文件 |
 | 关于 | `/about/` | 写作年轮（一圈一年）、DOT / MOTION 点阵动效插页、版权页、鸣谢、在别处 |
 | 标记 | `/highlights/` | 主导航栏目。8 篇 / 36 句，按来源文章分组；`==高亮==` 由脚本汇总，JSON 已入库 |
@@ -87,8 +87,9 @@
 - **GEO / AI 可引用**：`static/robots.txt` 放行全部 AI 代理（GPTBot / OAI-SearchBot / ChatGPT-User / ClaudeBot / Claude-User / PerplexityBot / Google-Extended 等）并声明 `Content-Signal: ai-train=yes, search=yes, ai-input=yes`；Hugo 自动生成 `llms.txt`（结构化索引 + 常见问题答案式入口）与 `llms-full.txt`（纯文本全文），新增文章自动进入索引；每页 JSON-LD 输出主对象 + `BreadcrumbList`，文章补 `isAccessibleForFree` / `license` / `about`；三页带 `answer` 一句话直接答案；全站 52 张图的 alt 均改为传达图中信息的描述。 V10.33 针对国内 AI 搜索：`sitemap.xml` 由 8 条补全到 135 条（此前约 130 篇文章页未进索引）、`robots.txt` 显式列名 11 个国内 AI 爬虫、JSON-LD 的 `Person` 补 `sameAs`/`alternateName`/`knowsAbout`、`WebSite` 补 `alternateName`、`llms.txt` 加实体信息块与国内问法。
 - **重生第一篇**：`content/posts/付印之前：三十九道红笔.md` 是站点的设计编年长文，按 V10 → V10.25 复盘每一轮的取舍、前后数字与令牌 / 网格 / 内容 / 缓存四层底层规则，附完整编年表与 10 张配图（真实前后对比、手绘 SVG 示意、生成插画，均在 `static/img/rebirth/`）。
 - **品牌长文**：`content/posts/一笔，一枚点：为什么最后叫「一点」.md` 从「一点记」到「一点」的命名收敛、符号四次演变讲起，落到令牌 / 网格 / 删减 / 缓存四层底层规则，配 5 张手绘 SVG 与一张分享卡（`static/img/one-point/`）。
+- **认知长文写作**：项目级 skill `.workbuddy/skills/cognition-writer/`（SKILL.md / playbook.md / lint.py）固化慢起点、画面驱动、主线类比与量化自检；纯按需出稿、草稿制不自动发布。首篇实战《一张地图，一把钢尺》从《解惑》整本书取材，先出「地图」「尺子」两版，再按八节对称合并发布。
 
-重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 49 节，从诊断到 V10.34 首页书页卡片边距修复）。
+重构过程、每一版的取舍与前后对比都记在 [REFACTOR.md](REFACTOR.md)（共 50 节，从诊断到认知长文写作流程与首篇发布）。
 
 ## 目录结构
 
@@ -104,7 +105,7 @@
 ├── layouts/            # baseof · home · highlights · page · section · taxonomy · term + _partials/ · _shortcodes/ · _markup/ · index.llms.txt / index.llmsfull.txt（GEO 索引）
 ├── scripts/            # dev-server · build-prod · gen-og-image · optimize-images · highlights
 ├── static/             # img/ · share/（版本化 OG 卡 og-card-v4.png）· pagefind/ · css/ · js/ · _headers · favicon.svg / .ico / apple-touch-icon.png
-├── REFACTOR.md         # 设计重构记录（49 节）
+├── REFACTOR.md         # 设计重构记录（50 节）
 └── MARKDOWN_GUIDE.md   # 写作语法与短代码速查
 ```
 
@@ -263,9 +264,9 @@ npm run build:uno:prod && npm run build   # 生产构建 → public/
 
 | 指标 | 数值 |
 |---|---|
-| 构建产物 | 214 页 / 340 个文件 / **9.3 MiB**（V10.32 新增 `llms.txt` 与 `llms-full.txt`，V10.33 把 sitemap 从 8 条补到 135 条；相比最初的 14.4 MiB 少约 35%） |
+| 构建产物 | 217 页 / 341 个文件 / **9.5 MiB**（V10.32 新增 `llms.txt` 与 `llms-full.txt`，V10.33 把 sitemap 从 8 条补到 135 条，随后发布《一张地图，一把钢尺》；相比最初的 14.4 MiB 少约 34%） |
 | 首页请求 | 4 个（1 CSS + 2 JS + favicon 5KB，字体零请求），涟漪脚本内联在 HTML 里；本地实测首屏传输 **170KB** |
-| 首页 HTML | 47.5KB（gzip 后 16.0KB，含内联的 field / tide / galaxy 三份脚本、状态公报、两篇次条与虚构书页） |
+| 首页 HTML | 47.9KB（gzip 后 16.0KB，含内联的 field / tide / galaxy 三份脚本、状态公报、两篇次条与虚构书页） |
 | 首页样式 | 156KB（gzip 后 28KB） |
 | 首页 LCP / CLS | 约 120ms / 0.0001 |
 | 文章页 | 21KB JS，字体零下载；LCP 140ms，CLS 0.0011 |
