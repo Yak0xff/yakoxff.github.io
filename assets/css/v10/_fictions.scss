@@ -12,7 +12,12 @@
   gap: #{"clamp(1.25rem, 3vw, 2.5rem)"};
 }
 
-.fiction-book {
+/* V10.34：限定在 .fiction-shelf 作用域内，把优先级提到 0,2,0。
+   全局 .home article { padding: 0 }（0,1,1）本是为首页列表项抵消
+   _reset.scss 的 article{padding:0 1rem}，却把同为 article 的书页卡片
+   四边内边距一起清零，导致文字贴着 1px 边框。不动全局规则，卡片自己
+   声明自己的留白；同时补上 transition 里漏掉的空格（原先整条失效）。 */
+.fiction-shelf .fiction-book {
   box-sizing: border-box;
   padding: #{"clamp(1.5rem, 1rem + 2vw, 2.25rem)"};
   background: var(--surface);

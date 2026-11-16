@@ -273,6 +273,7 @@ body { margin: 0; }
 }
 
 .topic-item-title {
+  min-width: 0;              /* V10.34：flex 项可收缩，否则长标题把 grid 列撑破 */
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -327,7 +328,8 @@ body { margin: 0; }
 
 @media (max-width: 600px) {
   .masthead-dateline span:nth-child(2) { display: none; }
-  .topic-grid { grid-template-columns: 1fr; }
+  /* V10.34：1fr 的自动最小尺寸会被长标题撑到 409px，改成 minmax(0,1fr) */
+  .topic-grid { grid-template-columns: minmax(0, 1fr); }
   .home-more .v-button { width: 100%; justify-content: center; }
   .lead-cta { margin-left: 0; }
 }

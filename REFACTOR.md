@@ -1697,3 +1697,42 @@ curl 三次：TLS 1.68 / 3.10 / 3.94s，TTFB 2.75 / 3.73 / 4.80s，一次 30s �
 ### 48.4 仍需用户决策（本次未做）
 
 按诊断方案，以下不属于纯站内可实施范围：把完整 sitemap 提交到百度搜索资源平台 / 头条搜索资源平台 / 阿里云搜索资源平台（需账号）；统一实体串后把全文同步到微信公众号（元宝嫡系通道）、头条号（豆包）、百家号（文心）；一手数据型 GEO 稿件与月度固定问题集复测。第②类生态内收录不经过本站服务器，站内配置对其作用为零，这部分是后续可见度的主要瓶颈。
+
+---
+
+## 四十九、V10.34：首页虚构书页内边距与窄屏溢出修复（2026-11-16）
+
+### 49.1 反馈与诊断
+
+用户「首页 虚构 部分的内容边距有严重排版问题」。CDP 量测发现两张 `.fiction-book` 的 `paddingLeft/Right` 实测 **0px**，标题、目录、链接距卡片左边框只有 1px（正好是 border 宽度），完全没有内边距。
+
+用 `CSS.getMatchedStylesForNode` 拿到三条匹配规则，根因是选择器优先级：
+
+| 规则 | 优先级 | padding |
+|---|---|---|
+| `article`（`utils/_reset.scss`） | 0,0,1 | `0 1rem` |
+| `.home article`（`v10/_home.scss`，为首页列表项抵消上一条） | **0,1,1** | **`0`** |
+| `.fiction-book`（`v10/_fictions.scss`） | 0,1,0 | `clamp(1.5rem,1rem + 2vw,2.25rem)` |
+
+`.home article` 比 `.fiction-book` 高一级，把同为 `<article>` 的书页卡片四边内边距一起清零。`clamp()` 值本身有效（inline 设置可得 31~36px），也没有 `!important` 规则。
+
+### 49.2 顺带发现的独立问题
+
+390px 视口下 `document.documentElement.scrollWidth = 429`，横向溢出 39px；39 个溢出元素**全部属于「按主题读」`.topic` 区块**，虚构区块为 0。根因是 `@media (max-width:600px)` 里 `.topic-grid { grid-template-columns: 1fr }` 的自动最小尺寸被长标题撑开：容器 337px，列宽却算到 409.67px；`.topic-item-title` 作为 flex 项没有 `min-width: 0`，`time` 又是 `flex-shrink: 0`。
+
+### 49.3 修改
+
+1. `v10/_fictions.scss`：`.fiction-book` 与 `:hover` 改为 `.fiction-shelf .fiction-book`（优先级 0,2,0），卡片在自己作用域内声明留白，**不动全局 `.home article`**（它还要管首页其它列表项）。同条规则里 `transition: border-color var(--t-2)var(--ease-ui)` 漏了一个空格导致声明无效，已补；实测 computed transition 仍是 `.reveal` 的 opacity/transform，hover 无过渡属既有行为，未额外改动。
+2. `v10/_home.scss`：`.topic-item-title` 加 `min-width: 0`；600px 断点的 `1fr` 改为 `minmax(0, 1fr)`。
+
+### 49.4 验证
+
+| 视口 | 卡片内边距 | topic 列数 | 横向溢出 |
+|---|---|---|---|
+| 390 | 24px | 1（337px） | 无（docW = winW = 390） |
+| 600 | 28px | 1（537px） | 无 |
+| 860 | 33.2px | 2 | 无 |
+| 1024 | 36px | 3 | 无 |
+| 1440 | 36px | 3 | 无 |
+
+1440 下标题/目录距左边框 37px（36 padding + 1 border）；四边 border 均 1px；首页其它 `article.entry` 的 padding 仍为 0，全局重置未被破坏。1440 明暗截图与 390 窄屏截图确认卷号、书名、简介、目录、读全书在同一条左线上，朱砂书脊与状态印正常；首页 / 文章 / 归档 / 关于四页控制台 0 报错。构建 340 文件。README 虚构书页条目与节数（48 → 49）同步。
